@@ -148,6 +148,8 @@ cython_debug/
 *.sqlite3
 
 # HealthLens knowledge base data
+data/uploads/
+data/tongue_images/
 data/tcm_*.json
 data/symptom_*.json
 data/herb_*.json
