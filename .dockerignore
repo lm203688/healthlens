@@ -1,0 +1,35 @@
+# Git
+.git/
+.github/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Data & logs (mounted as volumes in production)
+data/
+logs/
+
+# Tests & dev
+tests/
+scripts/
+*.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore

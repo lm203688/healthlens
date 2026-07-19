@@ -1,0 +1,164 @@
+services:
+  # ----------------------------------------------------------
+  # FastAPI 应用服务
+  # ----------------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Celery Worker (异步 OCR/分析/诊断任务)
+  # ----------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-worker
+    restart: unless-stopped
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=2
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "celery", "-A", "app.worker.celery_app", "inspect", "ping"]
+      interval: 60s
+      timeout: 15s
+      start_period: 30s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # PostgreSQL + TimescaleDB
+  # ----------------------------------------------------------
+  db:
+    image: timescale/timescaledb:latest-pg16
+    container_name: healthlens-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-healthlens}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-healthlens_dev}
+      POSTGRES_DB: ${DB_NAME:-healthlens}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-healthlens} -d ${DB_NAME:-healthlens}"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Redis (缓存 + Celery broker)
+  # ----------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: healthlens-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # MinIO (对象存储 - 用于 FHIR 文档、影像等)
+  # ----------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: healthlens-minio
+    restart: unless-stopped
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
+    volumes:
+      - miniodata:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Database Init (one-shot: migration + seed)
+  # Usage: docker compose --profile init up init-db
+  # ----------------------------------------------------------
+  init-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-init-db
+    restart: "no"
+    profiles:
+      - init
+    entrypoint: ""
+    command: >
+      sh -c "alembic upgrade head && python scripts/seed_admin.py && echo '=== Init complete ==='"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - healthlens-net
+
+volumes:
+  pgdata:
+    driver: local
+  redisdata:
+    driver: local
+  miniodata:
+    driver: local
+
+networks:
+  healthlens-net:
+    driver: bridge
