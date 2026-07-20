@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.8.2"
     DEBUG: bool = False
     CORS_ORIGINS: list[str] = ["*"]  # 生产环境应设为具体域名
+    RATE_LIMIT_ENABLED: bool = True  # 认证端点限流（测试环境可禁用）
+    LOG_LEVEL: str = "INFO"
     
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://healthlens:healthlens@db:5432/healthlens"

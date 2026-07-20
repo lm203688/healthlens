@@ -8,7 +8,7 @@ class MedicationRecommendation(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "medication_recommendations"
 
     diagnosis_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("diagnosis_results.id")
+        String(36), ForeignKey("diagnosis_results.id"), index=True
     )
     drug_name: Mapped[str] = mapped_column(String(255), nullable=False)
     drug_code: Mapped[str | None] = mapped_column(String(50))  # ATC code

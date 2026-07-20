@@ -9,7 +9,7 @@ class MedicationAdherence(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     """用药记录 - 追踪用户是否按时服药"""
     __tablename__ = "medication_adherence"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     medication_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("medication_recommendations.id"), nullable=True)
     medication_name: Mapped[str] = mapped_column(String(200))
     prescribed_dose: Mapped[str | None] = mapped_column(String(100), nullable=True)

@@ -22,6 +22,10 @@ async def lifespan(app: FastAPI):
             logger.critical("生产环境检测到不安全密钥配置，拒绝启动。请在 .env 中设置安全的密钥值。")
             raise SystemExit(1)
 
+    # 初始化日志配置
+    from app.utils.logging_config import setup_logging
+    setup_logging()
+
     yield
     logger.info("Shutting down...")
 
@@ -34,7 +38,13 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.DEBUG else None,
         lifespan=lifespan,
     )
-    
+
+    from slowapi import _rate_limit_exceeded_handler
+    from slowapi.errors import RateLimitExceeded
+    from app.api.auth import limiter
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ORIGINS,
@@ -46,6 +56,10 @@ def create_app() -> FastAPI:
     # Prometheus metrics middleware
     from app.utils.metrics import RequestMetricsMiddleware
     app.add_middleware(RequestMetricsMiddleware)
+
+    # 请求 ID 追踪中间件
+    from app.utils.request_id import RequestIDMiddleware
+    app.add_middleware(RequestIDMiddleware)
 
     # 注册路由
     from app.api.auth import router as auth_router
@@ -90,6 +104,22 @@ def create_app() -> FastAPI:
         from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
         from starlette.responses import Response
         return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+    @app.exception_handler(Exception)
+    async def global_exception_handler(request, exc):
+        from loguru import logger
+        request_id = getattr(request.state, "request_id", "unknown")
+        logger.error(f"Unhandled exception | request_id={request_id} | path={request.url.path} | error={exc}")
+        from fastapi.responses import JSONResponse
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": "Internal server error",
+                "request_id": request_id,
+                "detail": str(exc) if settings.DEBUG else None,
+            },
+        )
 
     return app
 

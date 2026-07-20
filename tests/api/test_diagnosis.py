@@ -47,7 +47,7 @@ async def test_diagnosis_with_abnormal_observations(client, test_user_data):
 
 
 @pytest.mark.asyncio
-async def test_prescribe_medication(client, test_user_data):
+async def test_prescribe_medication(client, test_user_data, db_session):
     """测试: 诊断后开具处方"""
     register_resp = await client.post("/api/v1/auth/register", json=test_user_data)
     if register_resp.status_code not in (200, 201):
@@ -55,6 +55,16 @@ async def test_prescribe_medication(client, test_user_data):
     login_resp = await client.post("/api/v1/auth/login", json=test_user_data)
     token = login_resp.json()["data"]["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
+    user_id = register_resp.json()["data"]["user"]["id"]
+
+    # 升级为 doctor (/prescribe 需要 doctor 权限)
+    from sqlalchemy import select
+    from app.models.user import User
+    result = await db_session.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if user:
+        user.role = "doctor"
+        await db_session.commit()
 
     # 上传报告并诊断
     files = {"file": ("report.pdf", b"%PDF-1.4 fake", "application/pdf")}

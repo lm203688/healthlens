@@ -9,8 +9,8 @@ import uuid
 class HealthObservation(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "health_observations"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
-    loinc_code: Mapped[str | None] = mapped_column(String(50))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
+    loinc_code: Mapped[str | None] = mapped_column(String(50), index=True)
     loinc_name: Mapped[str | None] = mapped_column(String(500))
     value_numeric: Mapped[Decimal | None] = mapped_column(Numeric(15, 5))
     value_string: Mapped[str | None] = mapped_column(Text)

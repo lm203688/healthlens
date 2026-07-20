@@ -8,7 +8,7 @@ import uuid
 class TcmSyndromeDiagnosis(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "tcm_syndrome_diagnoses"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     syndrome_code: Mapped[str | None] = mapped_column(String(50))  # TCD code
     syndrome_name: Mapped[str | None] = mapped_column(String(100))
     principle: Mapped[str | None] = mapped_column(Text)

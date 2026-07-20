@@ -153,11 +153,13 @@ async def get_diagnosis_result(
             "recommendations": [
                 {
                     "id": str(m.id),
-                    "medication_name": m.medication_name,
+                    "drug_name": m.drug_name,
+                    "drug_code": m.drug_code,
                     "dosage": m.dosage,
+                    "dosage_unit": m.dosage_unit,
                     "frequency": m.frequency,
-                    "duration": m.duration,
-                    "notes": m.notes,
+                    "route": m.route,
+                    "pgx_evidence": m.pgx_evidence,
                 }
                 for m in medications
             ],

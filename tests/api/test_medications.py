@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 from app.models.observation import HealthObservation
 from app.models.diagnosis import DiagnosisResult
+from app.models.user import User
 
 
 async def _register_and_login(client, user_data):
@@ -17,6 +18,16 @@ async def _register_and_login(client, user_data):
     token = reg_data["access_token"]
     user_id = reg_data["user"]["id"]
     return token, user_id
+
+
+async def _upgrade_to_doctor(db_session, user_id):
+    """将用户升级为 doctor 角色（/prescribe 需要 doctor 权限）"""
+    from sqlalchemy import select
+    result = await db_session.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if user:
+        user.role = "doctor"
+        await db_session.commit()
 
 
 async def _create_diagnosis(db_session, user_id, icd_code="5A11"):
@@ -42,6 +53,9 @@ async def test_get_recommendations(client, test_user_data, db_session):
     """需要 diagnosis_id，先创建诊断再查询推荐"""
     token, user_id = await _register_and_login(client, test_user_data)
     headers = {"Authorization": f"Bearer {token}"}
+
+    # 升级为 doctor 以便调用 /prescribe
+    await _upgrade_to_doctor(db_session, user_id)
 
     # 创建诊断记录
     diagnosis_id = await _create_diagnosis(db_session, user_id, icd_code="5A11")
@@ -74,6 +88,9 @@ async def test_prescribe(client, test_user_data, db_session):
     token, user_id = await _register_and_login(client, test_user_data)
     headers = {"Authorization": f"Bearer {token}"}
 
+    # 升级为 doctor
+    await _upgrade_to_doctor(db_session, user_id)
+
     # 创建诊断记录（ICD 5C70 = 高脂血症 -> 阿托伐他汀）
     diagnosis_id = await _create_diagnosis(db_session, user_id, icd_code="5C70")
 
@@ -94,10 +111,29 @@ async def test_prescribe(client, test_user_data, db_session):
 
 
 @pytest.mark.asyncio
+async def test_prescribe_forbidden_for_patient(client, test_user_data, db_session):
+    """patient 角色调用 /prescribe 应返回 403"""
+    token, user_id = await _register_and_login(client, test_user_data)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    diagnosis_id = await _create_diagnosis(db_session, user_id)
+
+    resp = await client.post(
+        "/api/v1/medications/prescribe",
+        json={"diagnosis_id": diagnosis_id},
+        headers=headers,
+    )
+    assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
 async def test_medication_history(client, test_user_data, db_session):
     """查看用药历史"""
     token, user_id = await _register_and_login(client, test_user_data)
     headers = {"Authorization": f"Bearer {token}"}
+
+    # 升级为 doctor
+    await _upgrade_to_doctor(db_session, user_id)
 
     # 创建两个诊断并各生成一个处方
     diag_id_1 = await _create_diagnosis(db_session, user_id, icd_code="5A11")

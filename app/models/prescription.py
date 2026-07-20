@@ -9,7 +9,7 @@ from app.models.base import Base, UUIDPrimaryKeyMixin, TimestampMixin
 class Prescription(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "prescriptions"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     diagnosis_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("diagnosis_results.id"), nullable=True)
     prescription_no: Mapped[str | None] = mapped_column(String(50), unique=True)
     status: Mapped[str] = mapped_column(String(20), default="draft", server_default="draft")  # draft/active/discontinued

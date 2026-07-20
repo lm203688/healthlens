@@ -13,6 +13,14 @@ from app.config import settings
 # 测试环境统一使用 mock OCR 引擎
 settings.OCR_ENGINE = "mock"
 
+# 测试环境禁用限流（避免注册/登录频次超限）
+settings.RATE_LIMIT_ENABLED = False
+try:
+    from app.api.auth import limiter
+    limiter.enabled = False
+except ImportError:
+    pass
+
 TEST_DATABASE_URL = "sqlite+aiosqlite://"
 
 engine = create_async_engine(TEST_DATABASE_URL, echo=False)

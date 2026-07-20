@@ -9,7 +9,7 @@ class Notification(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     """站内通知"""
     __tablename__ = "notifications"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     category: Mapped[str] = mapped_column(String(50))  # health_alert / medication / appointment / system / tcm
     title: Mapped[str] = mapped_column(String(200))
     content: Mapped[str] = mapped_column(Text)

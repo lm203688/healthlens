@@ -72,7 +72,7 @@ async def get_recommendations(
 @router.post("/prescribe", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def create_prescription(
     body: PrescribeRequest,
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_doctor_or_admin),
     db: AsyncSession = Depends(get_db),
 ):
     """

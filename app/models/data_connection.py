@@ -8,7 +8,7 @@ import uuid
 class DataConnection(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "data_connections"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     source_type: Mapped[str] = mapped_column(String(50), nullable=False)
     access_token: Mapped[str | None] = mapped_column(Text)
     refresh_token: Mapped[str | None] = mapped_column(Text)

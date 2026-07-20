@@ -10,7 +10,7 @@ class HealthGoal(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     """健康目标"""
     __tablename__ = "health_goals"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     goal_type: Mapped[str] = mapped_column(String(50))  # weight / steps / bp / glucose / exercise / sleep
     goal_name: Mapped[str] = mapped_column(String(200))
     target_value: Mapped[float] = mapped_column(Numeric(10, 2))
@@ -28,7 +28,7 @@ class GoalProgress(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     """目标进度记录"""
     __tablename__ = "goal_progress"
 
-    goal_id: Mapped[str] = mapped_column(String(36), ForeignKey("health_goals.id"))
+    goal_id: Mapped[str] = mapped_column(String(36), ForeignKey("health_goals.id"), index=True)
     value: Mapped[float] = mapped_column(Numeric(10, 2))
     recorded_at: Mapped[datetime] = mapped_column(DateTime)
     note: Mapped[str | None] = mapped_column(Text, nullable=True)

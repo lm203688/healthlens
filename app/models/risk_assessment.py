@@ -9,7 +9,7 @@ class RiskAssessment(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     """风险评估记录"""
     __tablename__ = "risk_assessments"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     risk_type: Mapped[str] = mapped_column(String(50))  # ascvd / diabetes / metabolic_syndrome
     risk_level: Mapped[str] = mapped_column(String(20))  # low / moderate / high / very_high
     risk_score: Mapped[float] = mapped_column(Numeric(10, 2))

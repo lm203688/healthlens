@@ -8,7 +8,7 @@ import uuid
 class DiagnosisResult(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "diagnosis_results"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     diagnosis_text: Mapped[str | None] = mapped_column(Text)
     icd_code: Mapped[str | None] = mapped_column(String(50))
     confidence: Mapped[Decimal | None] = mapped_column(Numeric(4, 3))

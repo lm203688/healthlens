@@ -8,7 +8,7 @@ import uuid
 class TongueImage(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "tongue_images"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     image_url: Mapped[str | None] = mapped_column(Text)
     tongue_color: Mapped[str | None] = mapped_column(String(50))
     tongue_shape: Mapped[str | None] = mapped_column(String(50))

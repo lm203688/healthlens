@@ -58,7 +58,7 @@ class TcmHerb(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 class TcmDeliveryOrder(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "tcm_delivery_orders"
 
-    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"))
+    user_id: Mapped[str] = mapped_column(String(36), ForeignKey("users.id"), index=True)
     formula_id: Mapped[str | None] = mapped_column(
         String(36), ForeignKey("tcm_formula_recommendations.id"), nullable=True
     )
