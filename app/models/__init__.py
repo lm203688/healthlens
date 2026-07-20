@@ -16,3 +16,4 @@ from app.models.health_goal import HealthGoal, GoalProgress
 from app.models.notification import Notification
 from app.models.risk_assessment import RiskAssessment
 from app.models.medication_adherence import MedicationAdherence
+from app.models.tcm_knowledge import TcmClassicalBook, FoodTherapyRecipe, ClassicalFormula, NonPharmaTreatment

@@ -62,6 +62,7 @@ def create_app() -> FastAPI:
     from app.api.goals import router as goals_router
     from app.api.notifications import router as notifications_router
     from app.api.medication_adherence import router as adherence_router
+    from app.api.knowledge import router as knowledge_router
 
     app.include_router(auth_router, prefix="/api/v1/auth", tags=["认证"])
     app.include_router(records_router, prefix="/api/v1/records", tags=["数据接入"])
@@ -77,6 +78,7 @@ def create_app() -> FastAPI:
     app.include_router(goals_router, prefix="/api/v1/goals", tags=["健康目标"])
     app.include_router(notifications_router, prefix="/api/v1/notifications", tags=["通知中心"])
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
+    app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
 
     # 健康检查端点（Docker HEALTHCHECK 使用）
     @app.get("/health")
