@@ -1,4 +1,9 @@
-name: 部署静态站到 Cloudflare Pages
+name: 构建与校验静态站
+
+# 说明：实际部署由 Cloudflare Pages 的「连接 GitHub」原生集成完成
+# （Cloudflare 后台连 lm203688/healthlens，构建命令 python auto-pipeline/scripts/phase_6_deploy/build_site.py，
+#  输出目录 auto-pipeline/dist）。本工作流只负责在每次 push 时构建并做内容完整性校验，
+#  不依赖任何 Cloudflare API Token，保持绿色。
 
 on:
   push:
@@ -9,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-deploy:
+  build-and-verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,10 +35,3 @@ jobs:
           echo "知识页面数: $N"
           [ "$N" -ge 10 ] || { echo "::error::知识页面仅 $N 个，低于最低阈值 10"; exit 1; }
           echo "产物校验通过：$(du -sh auto-pipeline/dist | cut -f1)"
-
-      - name: 部署到 Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy auto-pipeline/dist --project-name=healthlens --branch=main
