@@ -1,0 +1,110 @@
+name: 站点看门狗
+
+# 解决的问题：
+#   8-03 站点全挂、数据库拒连、SSH 超时，系统报「全部成功」，没有任何通知。
+#   宕机持续了至少 8 天没人知道。
+#
+# 这里用 GitHub Issues 当告警通道——零成本，且自带邮件/App 推送与去重：
+#   故障时开 issue（已存在则追加评论，不刷屏）
+#   恢复时自动关闭 issue
+#
+# 关键设计：不只看 HTTP 状态码，还校验返回内容是不是自己的站。
+# 这是 8-04 事故的直接教训：源站返回 200，但内容是另一个项目（AIShield）的。
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'      # 每 30 分钟（UTC，与时区无关）
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 探测站点
+        id: probe
+        run: |
+          FAIL=0
+          REPORT=""
+          for p in / /llms.txt /sitemap.xml /robots.txt; do
+            CODE=$(curl -s -o /tmp/body -w "%{http_code}" --max-time 20 "https://healthlens.cc$p" || echo "000")
+            if [ "$CODE" = "200" ]; then
+              REPORT="${REPORT}| \`$p\` | ✅ $CODE | |"$'\n'
+            else
+              REPORT="${REPORT}| \`$p\` | ❌ $CODE | 端点不可用 |"$'\n'
+              FAIL=1
+            fi
+          done
+
+          # 内容级身份校验：200 不等于「这是我的站」
+          BODY=$(curl -s --max-time 20 "https://healthlens.cc/" || echo "")
+          if echo "$BODY" | grep -q "HealthLens"; then
+            REPORT="${REPORT}| 身份校验 | ✅ | 含 HealthLens 标识 |"$'\n'
+          elif [ -n "$BODY" ]; then
+            SNIP=$(echo "$BODY" | grep -oP '<title>\K[^<]*' | head -1)
+            REPORT="${REPORT}| 身份校验 | ❌ | 返回的不是本站，title=\"$SNIP\" |"$'\n'
+            FAIL=1
+          fi
+
+          {
+            echo "status=$FAIL"
+            echo "report<<EOF"
+            echo "$REPORT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: 故障时开/更新 Issue
+        if: steps.probe.outputs.status != '0'
+        uses: actions/github-script@v7
+        env:
+          REPORT: ${{ steps.probe.outputs.report }}
+        with:
+          script: |
+            const TITLE = '🔴 站点不可用 healthlens.cc';
+            const body = [
+              `**检测时间**: ${new Date().toISOString()}`,
+              '',
+              '| 检查项 | 结果 | 说明 |',
+              '|---|---|---|',
+              process.env.REPORT,
+              '',
+              `[查看运行记录](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+            ].join('\n');
+
+            const { data: open } = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'uptime'
+            });
+            const exist = open.find(i => i.title === TITLE);
+            if (exist) {
+              // 已有告警则追加评论，避免同一故障刷出几十个 issue
+              await github.rest.issues.createComment({
+                ...context.repo, issue_number: exist.number,
+                body: `仍未恢复（第 ${exist.comments + 2} 次探测）\n\n${body}`
+              });
+            } else {
+              await github.rest.issues.create({
+                ...context.repo, title: TITLE, body, labels: ['uptime', 'P0']
+              });
+            }
+
+      - name: 恢复时自动关闭 Issue
+        if: steps.probe.outputs.status == '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const TITLE = '🔴 站点不可用 healthlens.cc';
+            const { data: open } = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'uptime'
+            });
+            for (const i of open.filter(x => x.title === TITLE)) {
+              await github.rest.issues.createComment({
+                ...context.repo, issue_number: i.number,
+                body: `✅ 站点已恢复 — ${new Date().toISOString()}`
+              });
+              await github.rest.issues.update({
+                ...context.repo, issue_number: i.number, state: 'closed'
+              });
+            }

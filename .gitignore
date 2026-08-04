@@ -1,169 +1,96 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-*.egg
-MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# poetry
-poetry.lock
-
-# pdm
-.pdm.toml
-
-# PEP 582
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat-schedule.db
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# ============================================================
+# 安全第一：以下文件绝对不能进仓库
+# 已确认本地存在真实密钥：
+#   healthlens/.env            含 XUNHU_SECRET（虎皮椒支付）、JWT_SECRET_KEY
+#   healthlens/nginx/ssl/*.key SSL 私钥
+# 一旦推送到 GitHub，即使后续删除，历史记录里仍可被检索到。
+# ============================================================
 .env
 .env.*
 !.env.example
-.venv
-env/
+*.pem
+*.key
+!**/public*.key
+id_rsa*
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# ============================================================
+# 大体积资产：不进仓库（中医语料 247MB，且自带独立 .git）
+# 需要时从原始来源单独同步，不占用 GitHub 配额
+# ============================================================
+中医/
+*.pdf
+*.ttf
+*.woff
+*.woff2
+
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+develop-eggs/
+dist/
+!auto-pipeline/dist/          # 构建产物需要被 Actions 部署，例外放行
+.venv/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
+env/
+.pytest_cache/
 .mypy_cache/
-.dmypy.json
-dmypy.json
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
 
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# Database files
-*.db
+# ============================================================
+# 本地自测与运行时产物
+# ============================================================
+.selftest/
+.selftest_logs/
+.probe/
+tools_size_check.py
+celerybeat-schedule*
 *.sqlite
 *.sqlite3
+*.db
 
-# HealthLens knowledge base data
-data/uploads/
-data/tongue_images/
-data/tcm_*.json
-data/symptom_*.json
-data/herb_*.json
-data/prescription_*.json
-data/loinc_*.json
-data/fhir_*.json
+# ============================================================
+# 日志与临时状态（保留目录结构，不保留内容）
+# ============================================================
+*.log
+auto-pipeline/logs/*
+!auto-pipeline/logs/.gitkeep
+auto-pipeline/alerts/*.jsonl
+auto-pipeline/backups/
 
-# Docker
-docker-compose.override.yml
-
-# OS files
+# ============================================================
+# 编辑器 / 系统
+# ============================================================
+.vscode/
+.idea/
+*.swp
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Logs
-logs/
-*.log
+# ============================================================
+# 前端
+# ============================================================
+node_modules/
+.next/
+.cache/
+
+# ============================================================
+# 内层应用仓库（healthlens/ 子目录自带 .git + 后端代码）
+# 排除后端与嵌套 .git，仅保留前端 SPA（站点构建必需 index.html）
+# 这样父仓库 git add 不会把 healthlens/ 当成 submodule
+# ============================================================
+healthlens/**
+!healthlens/frontend
+!healthlens/frontend/**

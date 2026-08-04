@@ -1,0 +1,86 @@
+{
+  "generated_at": "2026-07-31",
+  "source": "weekly-content-production-loop",
+  "status": "pending_import",
+  "scan_dir": "c:\\Users\\xing\\Desktop\\healthlens\\reports\\education\\education-2026-07-31",
+  "category": "education",
+  "total_pages": 14,
+  "pages": [
+    {
+      "slug": "cognition-gut-microbiome-value",
+      "title": "你的第二基因组：肠道菌群如何重塑健康认知",
+      "category": "education",
+      "layer": "认知层"
+    },
+    {
+      "slug": "understanding-gut-tcm-spleen",
+      "title": "肠道菌群与中医脾胃理论的科学交汇",
+      "category": "education",
+      "layer": "理解层"
+    },
+    {
+      "slug": "trust-microbiome-verification",
+      "title": "药食同源菌群调理方案的效果验证框架",
+      "category": "education",
+      "layer": "信任层"
+    },
+    {
+      "slug": "action-gut-7day-challenge",
+      "title": "7天肠道修复健康改善挑战",
+      "category": "education",
+      "layer": "行动层"
+    },
+    {
+      "slug": "sour-jujube-seed-sleep",
+      "title": "酸枣仁：安神助眠的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "astragalus-qi-immunity",
+      "title": "黄芪：补气固表的免疫调节智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "aged-tangerine-peel-phlegm",
+      "title": "陈皮：理气化痰的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "chrysanthemum-liver-eyes",
+      "title": "菊花：清肝明目的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "angelica-blood-circulation",
+      "title": "当归：补血活血的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "longan-heart-calm",
+      "title": "龙眼肉：养心安神的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "black-sesame-liver-kidney",
+      "title": "黑芝麻：补肝肾的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "coix-seed-spleen-dampness",
+      "title": "薏苡仁：健脾渗湿的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "lily-bulb-lung-heart",
+      "title": "百合：润肺清心的药食同源智慧",
+      "category": "herbs"
+    },
+    {
+      "slug": "walnut-kidney-brain",
+      "title": "核桃：补肾健脑的药食同源智慧",
+      "category": "herbs"
+    }
+  ],
+  "import_command": "cd c:\\Users\\xing\\Desktop\\healthlens\\healthlens && python scripts/import_seo_pages.py",
+  "note": "远程数据库无权限时，本队列文件记录待导入页面。有数据库权限时运行导入命令即可批量导入。"
+}

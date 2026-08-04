@@ -1,0 +1,130 @@
+name: 自动化流水线（定时）
+
+# 解决的问题：
+#   auto-pipeline 此前跑在厉兴的 Windows 本机——电脑关机，整个项目的自动化就停了。
+#   这与「无人值守运营」的目标直接冲突。
+#   迁到 GitHub Actions 后：云端执行、不依赖任何本地设备、失败自动通知。
+#
+# 闭环设计（此前缺失的正是后三段）：
+#   执行 → 失败重试 → 自愈 → 产出内容 → 提交 → 自动触发部署 → 失败开 Issue
+
+on:
+  schedule:
+    - cron: '0 1 * * *'      # 每天 09:00 北京时间（UTC 01:00）
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: '只跑指定阶段（留空=全流程）'
+        required: false
+        type: string
+
+permissions:
+  contents: write            # 需要提交生成的内容
+  issues: write              # 失败时开告警 Issue
+
+concurrency:
+  group: pipeline            # 防止上一轮没跑完就叠加下一轮
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装依赖
+        run: pip install -q requests
+
+      - name: 执行流水线
+        id: run
+        continue-on-error: true      # 先记录结果，后面统一判定，保证告警一定发得出去
+        working-directory: auto-pipeline
+        run: |
+          if [ -n "${{ inputs.phase }}" ]; then
+            python scheduler.py "${{ inputs.phase }}"
+          else
+            python scheduler.py run-all
+          fi
+
+      - name: 失败时尝试自愈并重跑一次
+        id: heal
+        if: steps.run.outcome == 'failure'
+        continue-on-error: true
+        working-directory: auto-pipeline
+        run: |
+          echo "::warning::流水线失败，触发自愈"
+          python scheduler.py heal
+          python scheduler.py run-all
+
+      - name: 构建静态产物
+        id: build
+        continue-on-error: true
+        run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
+
+      - name: 提交内容变更
+        if: steps.build.outcome == 'success'
+        run: |
+          git config user.name  "healthlens-bot"
+          git config user.email "bot@healthlens.cc"
+          git add -A auto-pipeline/content auto-pipeline/reports auto-pipeline/pipeline_state.json reports/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "无内容变更，跳过提交"
+          else
+            git commit -m "chore(pipeline): 自动内容更新 $(date -u +%Y-%m-%d)"
+            git push
+            echo "已提交，将自动触发 Pages 部署"
+          fi
+
+      - name: 汇总与告警
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          RUN_OUTCOME:   ${{ steps.run.outcome }}
+          HEAL_OUTCOME:  ${{ steps.heal.outcome }}
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+        with:
+          script: |
+            const run   = process.env.RUN_OUTCOME;
+            const heal  = process.env.HEAL_OUTCOME;
+            const build = process.env.BUILD_OUTCOME;
+            const healed = run === 'failure' && heal === 'success';
+            const broken = (run === 'failure' && heal !== 'success') || build === 'failure';
+
+            const TITLE = '⚠️ 自动化流水线执行失败';
+            const { data: open } = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'pipeline'
+            });
+            const exist = open.find(i => i.title === TITLE);
+            const link = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            if (broken) {
+              const body = [
+                `**时间**: ${new Date().toISOString()}`, '',
+                '| 阶段 | 结果 |', '|---|---|',
+                `| 流水线执行 | ${run} |`,
+                `| 自愈重跑 | ${heal || '未触发'} |`,
+                `| 产物构建 | ${build} |`, '',
+                '自愈已尝试但未能恢复，需要人工介入。', '',
+                `[查看日志](${link})`
+              ].join('\n');
+              if (exist) {
+                await github.rest.issues.createComment({ ...context.repo, issue_number: exist.number, body });
+              } else {
+                await github.rest.issues.create({ ...context.repo, title: TITLE, body, labels: ['pipeline','P1'] });
+              }
+              core.setFailed('流水线失败且自愈未成功');
+            } else {
+              if (exist) {
+                await github.rest.issues.createComment({
+                  ...context.repo, issue_number: exist.number,
+                  body: `✅ 流水线已恢复正常 — ${new Date().toISOString()}`
+                });
+                await github.rest.issues.update({ ...context.repo, issue_number: exist.number, state: 'closed' });
+              }
+              core.info(healed ? '首次失败，自愈后成功' : '流水线执行成功');
+            }
