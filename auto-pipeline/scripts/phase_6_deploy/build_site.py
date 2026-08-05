@@ -132,7 +132,9 @@ def build():
         log(f"     覆盖: {name}  ({old} -> {new})")
 
     if not pages:
-        errors.append("没有任何知识库页面，产物无内容价值")
+        # 知识页缺失只影响 SEO/GEO 覆盖，不应阻断前端与支付函数上线
+        # （8-04 事故教训保留：站点身份 HealthLens 仍作为硬性校验）
+        log("  [WARN] 无任何知识库页面（auto-pipeline 尚未生成），仍部署前端与函数")
 
     # ---------- 3. sitemap.xml ----------
     log("\n[3/5] sitemap.xml")
