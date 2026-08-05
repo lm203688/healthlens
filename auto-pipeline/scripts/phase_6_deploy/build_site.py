@@ -99,13 +99,26 @@ def build():
         log("  [WARN] 无 assets 目录")
 
     # ---------- 1b. Pages Functions（支付/接口 serverless 层） ----------
+    # 记录函数数量到 manifest，方便线上核验（之前函数未进产物却无痕迹，难以排查）
+    functions_count = 0
     functions_dir = FRONTEND / "functions"
+    log(f"  [debug] functions_dir = {functions_dir}  exists={functions_dir.is_dir()}")
     if functions_dir.is_dir():
         shutil.copytree(functions_dir, DIST / "functions", dirs_exist_ok=True)
-        nf = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
-        log(f"  functions/            {nf} 个 serverless 函数（支付/接口）")
+        functions_count = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
+        log(f"  functions/            {functions_count} 个 serverless 函数（支付/接口）")
     else:
-        log("  [WARN] 无 functions 目录（支付接口将不可用）")
+        # 兜底：在 ROOT 下全局搜索 functions 目录，避免路径假设失误导致漏复制
+        hits = sorted({p.parent for p in ROOT.rglob("functions") if p.is_dir()})
+        log(f"  [WARN] 未找到 {functions_dir}（支付接口将不可用）；候选 functions 目录: {[str(h) for h in hits]}")
+        for h in hits:
+            try:
+                shutil.copytree(h, DIST / "functions", dirs_exist_ok=True)
+                functions_count = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
+                log(f"  [fallback] 已从 {h} 复制 {functions_count} 个函数")
+                break
+            except Exception as e:
+                log(f"  [fallback][ERR] {h}: {e}")
 
     # ---------- 2. 知识库页面（去重，后者覆盖前者） ----------
     log("\n[2/5] 知识库页面")
@@ -242,7 +255,24 @@ Last-Updated: {today}
   Content-Type: text/plain; charset=utf-8
 """
     (DIST / "_headers").write_text(headers, encoding="utf-8")
-    log("  robots.txt / llms.txt / ai.txt / _headers 已生成")
+
+    # 路由声明：把 /api/* 留给 Pages Functions，避免被 SPA 兜底成 index.html
+    routes = {
+        "version": 1,
+        "include": ["/*"],
+        "exclude": [
+            "/api/*",
+            "/assets/*",
+            "/knowledge/*",
+            "/build-manifest.json",
+            "/sitemap.xml",
+            "/robots.txt",
+            "/llms.txt",
+            "/ai.txt",
+        ],
+    }
+    (DIST / "_routes.json").write_text(json.dumps(routes, ensure_ascii=False, indent=2), encoding="utf-8")
+    log("  robots.txt / llms.txt / ai.txt / _headers / _routes.json 已生成")
 
     # ---------- 5. 构建校验 ----------
     log("\n[5/5] 构建产物校验")
@@ -271,6 +301,7 @@ Last-Updated: {today}
         "files": count,
         "total_bytes": total,
         "knowledge_pages": len(pages),
+        "functions_count": functions_count,
         "sitemap_urls": len(entries),
         "sources": [str(s.relative_to(ROOT)) for s in CONTENT_SOURCES if s.is_dir()],
         "overridden": [{"file": n, "from": o, "to": t} for n, o, t in overridden],
