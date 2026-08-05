@@ -12,6 +12,7 @@ env:
 jobs:
   lint-and-test:
     name: Lint & Test
+    if: false   # 已禁用：后端 app/ tests/ pyproject.toml 不在本仓库根目录（被 .gitignore 排除），此 CI 永远失败；静态站校验见 deploy-pages.yml
     runs-on: ubuntu-latest
 
     steps:
@@ -51,6 +52,7 @@ jobs:
 
   docker-build:
     name: Docker Build
+    if: false   # 已禁用：同上，后端 Docker 构建不在本仓库范围内
     runs-on: ubuntu-latest
     needs: lint-and-test
 

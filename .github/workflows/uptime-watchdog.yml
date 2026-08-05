@@ -89,6 +89,8 @@ jobs:
                 ...context.repo, title: TITLE, body, labels: ['uptime', 'P0']
               });
             }
+            // 让本次运行真实标红：站点挂了不能显示 success，否则会误导人工判断
+            core.setFailed('站点探测失败，详见上方 Issue：' + TITLE);
 
       - name: 恢复时自动关闭 Issue
         if: steps.probe.outputs.status == '0'
