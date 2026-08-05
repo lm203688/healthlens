@@ -4195,4 +4195,152 @@ p:last-child {
 .profile-menu-item:hover {
   background: rgba(255,255,255,0.03);
 }
+
+/* ==================== Trust Band (首页信任背书) ==================== */
+.trust-band {
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  padding: 2.25rem 0;
+}
+.trust-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 140px;
+}
+.trust-num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+.trust-label {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 0.35rem;
+  line-height: 1.4;
+}
+.trust-divider {
+  width: 1px;
+  height: 38px;
+  background: rgba(0,0,0,0.08);
+}
+.trust-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 1.25rem;
+}
+@media (max-width: 768px) {
+  .trust-divider { display: none; }
+  .trust-inner { gap: 1rem; }
+  .trust-item { min-width: 110px; }
+}
+
+/* ==================== Pricing Section (定价方案) ==================== */
+.pricing-section {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #0f172a 0%, #131c30 100%);
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.price-card {
+  position: relative;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+.price-card.featured {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.12), 0 16px 48px rgba(0,0,0,0.4);
+}
+.price-tag {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.price-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.price-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #10b981;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
+}
+.price-num span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-left: 0.25rem;
+}
+.price-feats {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+.price-feats li {
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  padding: 0.5rem 0 0.5rem 1.4rem;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.price-feats li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: 700;
+}
+.pricing-note {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+}
+@media (max-width: 980px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
 </arg_value>
