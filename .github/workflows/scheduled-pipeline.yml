@@ -66,6 +66,17 @@ jobs:
         continue-on-error: true
         run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
 
+      - name: 部署到 Cloudflare Pages
+        id: deploy
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler pages deploy auto-pipeline/dist --project-name=healthlens --branch=main
+
+
       - name: 提交内容变更
         if: steps.build.outcome == 'success'
         run: |
