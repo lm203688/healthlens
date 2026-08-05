@@ -98,6 +98,15 @@ def build():
     else:
         log("  [WARN] 无 assets 目录")
 
+    # ---------- 1b. Pages Functions（支付/接口 serverless 层） ----------
+    functions_dir = FRONTEND / "functions"
+    if functions_dir.is_dir():
+        shutil.copytree(functions_dir, DIST / "functions", dirs_exist_ok=True)
+        nf = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
+        log(f"  functions/            {nf} 个 serverless 函数（支付/接口）")
+    else:
+        log("  [WARN] 无 functions 目录（支付接口将不可用）")
+
     # ---------- 2. 知识库页面（去重，后者覆盖前者） ----------
     log("\n[2/5] 知识库页面")
     pages, overridden = {}, []
