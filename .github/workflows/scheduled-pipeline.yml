@@ -10,7 +10,7 @@ name: 自动化流水线（定时）
 
 on:
   schedule:
-    - cron: '0 1 * * *'      # 每天 09:00 北京时间（UTC 01:00）
+    - cron: '*/30 * * * *'      # 爆发期：每30分钟（至2026-08-30；8/31回滚至每日09:00）
   workflow_dispatch:
     inputs:
       phase:
