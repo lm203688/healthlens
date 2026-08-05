@@ -99,6 +99,7 @@ jobs:
           HEAL_OUTCOME:  ${{ steps.heal.conclusion }}
           BUILD_OUTCOME: ${{ steps.build.conclusion }}
           DEPLOY_OUTCOME: ${{ steps.deploy.conclusion }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.conclusion }}
         with:
           script: |
             const run   = process.env.RUN_OUTCOME;
