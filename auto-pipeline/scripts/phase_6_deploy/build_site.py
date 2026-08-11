@@ -25,6 +25,7 @@ import json
 import re
 import shutil
 import sys
+import paramiko
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -48,6 +49,36 @@ CONTENT_SOURCES = [
 
 FRONTEND = ROOT / "healthlens" / "frontend"
 
+# 后端 sitemap 拉取（ECS 本机 FastAPI，含全部 SEO 长尾页，约 1255 条）
+ECS_HOST = "150.158.119.19"
+ECS_PORT = 22
+ECS_USER = "ubuntu"
+ECS_KEY = ROOT / ".workbuddy" / "cache" / "ecs_deploy_key"
+
+
+def fetch_backend_sitemap() -> str | None:
+    """从 ECS 本机 FastAPI 拉取真实 sitemap（/sitemap.xml，含后端 SEO 页 ~1255 条）。
+
+    走 127.0.0.1:8000（nginx 反代源站），不经过 Cloudflare。失败返回 None 由调用方兜底。
+    """
+    try:
+        c = paramiko.SSHClient()
+        c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        c.connect(
+            ECS_HOST, port=ECS_PORT, username=ECS_USER,
+            key_filename=str(ECS_KEY), timeout=25,
+            look_for_keys=False, allow_agent=False,
+        )
+        _, o, e = c.exec_command("curl -s -m20 http://127.0.0.1:8000/sitemap.xml")
+        txt = o.read().decode(errors="ignore")
+        c.close()
+        if "<urlset" in txt and txt.count("<loc>") > 50:
+            return txt
+        log(f"  [WARN] 后端 sitemap 内容异常（<loc>={txt.count('<loc>')}），放弃使用")
+    except Exception as ex:
+        log(f"  [WARN] 后端 sitemap 拉取失败: {ex}")
+    return None
+
 
 def log(m=""):
     print(m, flush=True)
@@ -68,6 +99,32 @@ def extract_meta(html_path: Path) -> dict:
     }
 
 
+def normalize_links(path: Path):
+    """防御性收敛：无论源文件里出现什么外部域名（healthlens.com/app）或错路径（/education/），
+    构建时一律强制收敛到本站 SITE_URL 与 /knowledge/ 路径，杜绝把权重/链接/结构化数据送给死域。
+    """
+    try:
+        txt = path.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return
+    CANON_RE = re.compile(r'(rel="canonical"\s+href=")([^"]*)(")', re.I)
+    OGURL_RE = re.compile(r'(property="og:url"\s+content=")([^"]*)(")', re.I)
+
+    def _fix(url: str) -> str:
+        url = re.sub(r"^https?://[^/]+", SITE_URL, url, count=1)
+        url = re.sub(r"/education/", "/knowledge/", url)
+        return url
+
+    new = CANON_RE.sub(lambda m: m.group(1) + _fix(m.group(2)) + m.group(3), txt)
+    new = OGURL_RE.sub(lambda m: m.group(1) + _fix(m.group(2)) + m.group(3), new)
+    # 全局收敛：正文中残留的外部域名 / 错路径也一并修正（含 JSON-LD、内部链接）
+    new = re.sub(r"https?://healthlens\.app", SITE_URL, new)
+    new = re.sub(r"https?://healthlens\.com", SITE_URL, new)
+    new = re.sub(r"/education/", "/knowledge/", new)
+    if new != txt:
+        path.write_text(new, encoding="utf-8")
+
+
 def build():
     started = datetime.now(CST)
     log("=" * 64)
@@ -85,6 +142,7 @@ def build():
     idx = FRONTEND / "index.html"
     if idx.exists():
         shutil.copy2(idx, DIST / "index.html")
+        normalize_links(DIST / "index.html")
         log(f"  index.html            {idx.stat().st_size // 1024} KB")
     else:
         errors.append(f"首页缺失: {idx}")
@@ -98,27 +156,40 @@ def build():
     else:
         log("  [WARN] 无 assets 目录")
 
-    # ---------- 1b. Pages Functions（支付/接口 serverless 层） ----------
-    # 记录函数数量到 manifest，方便线上核验（之前函数未进产物却无痕迹，难以排查）
-    functions_count = 0
+    # ---------- 1b. Pages Functions / _worker.js（支付/接口 serverless 层） ----------
     functions_dir = FRONTEND / "functions"
-    log(f"  [debug] functions_dir = {functions_dir}  exists={functions_dir.is_dir()}")
-    if functions_dir.is_dir():
+    worker_file = FRONTEND / "_worker.js"
+    if worker_file.is_file():
+        # _worker.js 模式（Direct Upload 与 Git 模式均支持）：整合全部路由，
+        # 不再复制分散的 functions/ 目录，避免两种模式冲突。
+        log("  functions/            跳过（_worker.js 已整合全部路由，避免模式冲突）")
+    elif functions_dir.is_dir():
         shutil.copytree(functions_dir, DIST / "functions", dirs_exist_ok=True)
-        functions_count = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
-        log(f"  functions/            {functions_count} 个 serverless 函数（支付/接口）")
+        nf = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
+        log(f"  functions/            {nf} 个 serverless 函数（支付/接口）")
     else:
-        # 兜底：在 ROOT 下全局搜索 functions 目录，避免路径假设失误导致漏复制
-        hits = sorted({p.parent for p in ROOT.rglob("functions") if p.is_dir()})
-        log(f"  [WARN] 未找到 {functions_dir}（支付接口将不可用）；候选 functions 目录: {[str(h) for h in hits]}")
-        for h in hits:
-            try:
-                shutil.copytree(h, DIST / "functions", dirs_exist_ok=True)
-                functions_count = len([f for f in (DIST / "functions").rglob("*") if f.is_file()])
-                log(f"  [fallback] 已从 {h} 复制 {functions_count} 个函数")
-                break
-            except Exception as e:
-                log(f"  [fallback][ERR] {h}: {e}")
+        log("  [WARN] 无 functions 目录（支付接口将不可用）")
+
+    # ---------- 1c. _worker.js（Pages 高级模式入口，整合全部路由，替代 functions 目录） ----------
+    worker_src = FRONTEND / "_worker.js"
+    if worker_src.is_file():
+        shutil.copy2(worker_src, DIST / "_worker.js")
+        log(f"  _worker.js            {worker_src.stat().st_size // 1024} KB（整合路由；Direct Upload 下替代 functions/ 使其真正运行）")
+    else:
+        log("  [WARN] 无 _worker.js（Direct Upload 模式 functions 不被编译，需改用 Git 构建或补 _worker.js）")
+
+    # ---------- 1d. 信任/法务静态页（隐私/条款/免责/安全/关于/联系/更新日志/帮助/API） ----------
+    # 独立 HTML，由 _worker.js 的 serveStatic(path+".html") 直接命中 /privacy 等，不依赖 SPA。
+    legal_slugs = ["privacy", "terms", "disclaimer", "security", "about", "contact", "changelog", "help", "api-docs"]
+    legal_n = 0
+    for slug in legal_slugs:
+        src = FRONTEND / f"{slug}.html"
+        if src.is_file():
+            shutil.copy2(src, DIST / f"{slug}.html")
+            normalize_links(DIST / f"{slug}.html")
+            legal_n += 1
+    if legal_n:
+        log(f"  信任页                {legal_n} 个（/privacy /terms /disclaimer /security /about /contact /changelog /help /api-docs）")
 
     # ---------- 2. 知识库页面（去重，后者覆盖前者） ----------
     log("\n[2/5] 知识库页面")
@@ -140,37 +211,46 @@ def build():
 
     for name, f in sorted(pages.items()):
         shutil.copy2(f, DIST / "knowledge" / name)
+        normalize_links(DIST / "knowledge" / name)
     log(f"  {'去重后合计':<28} {len(pages):>3} 页")
     for name, old, new in overridden:
         log(f"     覆盖: {name}  ({old} -> {new})")
 
     if not pages:
-        # 知识页缺失只影响 SEO/GEO 覆盖，不应阻断前端与支付函数上线
-        # （8-04 事故教训保留：站点身份 HealthLens 仍作为硬性校验）
-        log("  [WARN] 无任何知识库页面（auto-pipeline 尚未生成），仍部署前端与函数")
+        errors.append("没有任何知识库页面，产物无内容价值")
 
     # ---------- 3. sitemap.xml ----------
     log("\n[3/5] sitemap.xml")
-    entries = [{"loc": f"{SITE_URL}/", "priority": "1.0", "changefreq": "weekly"}]
     metas = {}
-    for name in sorted(pages):
-        p = DIST / "knowledge" / name
-        metas[name] = extract_meta(p)
-        entries.append({
-            "loc": f"{SITE_URL}/knowledge/{name}",
-            "priority": "0.8",
-            "changefreq": "monthly",
-        })
     today = started.strftime("%Y-%m-%d")
-    xml = ['<?xml version="1.0" encoding="UTF-8"?>',
-           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for e in entries:
-        xml += ["  <url>", f"    <loc>{e['loc']}</loc>", f"    <lastmod>{today}</lastmod>",
+    backend_xml = fetch_backend_sitemap()
+    if backend_xml:
+        # 后端 sitemap 含全部 SEO 长尾页（tcm-herb / faq / symptom / constitution / health-tools）
+        (DIST / "sitemap.xml").write_text(backend_xml, encoding="utf-8")
+        sitemap_count = backend_xml.count("<loc>")
+        log(f"  {sitemap_count} 条 URL（来自后端 FastAPI /sitemap.xml，含全部 SEO 长尾页）")
+    else:
+        # 兜底：仅本地知识库页面（后端不可达时）
+        entries = [{"loc": f"{SITE_URL}/", "priority": "1.0", "changefreq": "weekly"}]
+        for name in sorted(pages):
+            p = DIST / "knowledge" / name
+            metas[name] = extract_meta(p)
+            entries.append({
+                "loc": f"{SITE_URL}/knowledge/{name}",
+                "priority": "0.8",
+                "changefreq": "monthly",
+            })
+        today = started.strftime("%Y-%m-%d")
+        xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+        for e in entries:
+            xml += ["  <url>", f"    <loc>{e['loc']}</loc>", f"    <lastmod>{today}</lastmod>",
                 f"    <changefreq>{e['changefreq']}</changefreq>",
                 f"    <priority>{e['priority']}</priority>", "  </url>"]
-    xml.append("</urlset>")
-    (DIST / "sitemap.xml").write_text("\n".join(xml), encoding="utf-8")
-    log(f"  {len(entries)} 条 URL（全部来自真实文件，无占位）")
+        xml.append("</urlset>")
+        (DIST / "sitemap.xml").write_text("\n".join(xml), encoding="utf-8")
+        sitemap_count = len(entries)
+        log(f"  {sitemap_count} 条 URL（本地知识库兜底，未能连接后端）")
 
     # ---------- 4. robots.txt / llms.txt / ai.txt ----------
     log("\n[4/5] GEO 文件（robots / llms / ai）")
@@ -236,6 +316,22 @@ Last-Updated: {today}
 """
     (DIST / "ai.txt").write_text(ai_txt, encoding="utf-8")
 
+    # humans.txt（人类可读的项目/团队信息，GEO 文件之一）
+    humans = (
+        "# humans.txt - HealthLens\n\n"
+        "/* TEAM */\n"
+        f"Site: {SITE_URL}\n"
+        "Maintainer: HealthLens Team\n"
+        f"Contact: {SITE_URL}\n\n"
+        "/* SITE */\n"
+        "Language: zh-CN\n"
+        "Doctype: HTML5\n"
+        "Backend: FastAPI + PostgreSQL\n"
+        "Frontend: Cloudflare Pages\n"
+        f"Last update: {today}\n"
+    )
+    (DIST / "humans.txt").write_text(humans, encoding="utf-8")
+
     headers = """/*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
@@ -255,24 +351,7 @@ Last-Updated: {today}
   Content-Type: text/plain; charset=utf-8
 """
     (DIST / "_headers").write_text(headers, encoding="utf-8")
-
-    # 路由声明：把 /api/* 留给 Pages Functions，避免被 SPA 兜底成 index.html
-    routes = {
-        "version": 1,
-        "include": ["/*"],
-        "exclude": [
-            "/api/*",
-            "/assets/*",
-            "/knowledge/*",
-            "/build-manifest.json",
-            "/sitemap.xml",
-            "/robots.txt",
-            "/llms.txt",
-            "/ai.txt",
-        ],
-    }
-    (DIST / "_routes.json").write_text(json.dumps(routes, ensure_ascii=False, indent=2), encoding="utf-8")
-    log("  robots.txt / llms.txt / ai.txt / _headers / _routes.json 已生成")
+    log("  robots.txt / llms.txt / ai.txt / _headers 已生成")
 
     # ---------- 5. 构建校验 ----------
     log("\n[5/5] 构建产物校验")
@@ -301,8 +380,7 @@ Last-Updated: {today}
         "files": count,
         "total_bytes": total,
         "knowledge_pages": len(pages),
-        "functions_count": functions_count,
-        "sitemap_urls": len(entries),
+        "sitemap_urls": sitemap_count,
         "sources": [str(s.relative_to(ROOT)) for s in CONTENT_SOURCES if s.is_dir()],
         "overridden": [{"file": n, "from": o, "to": t} for n, o, t in overridden],
         "errors": errors,
@@ -314,7 +392,7 @@ Last-Updated: {today}
     log("\n" + "=" * 64)
     log(f"  产物目录 : {DIST}")
     log(f"  文件总数 : {count}    体积: {total // 1024} KB")
-    log(f"  知识页面 : {len(pages)}    sitemap: {len(entries)} 条")
+    log(f"  知识页面 : {len(pages)}    sitemap: {sitemap_count} 条")
     if errors:
         log(f"\n  构建失败，{len(errors)} 个问题:")
         for e in errors:

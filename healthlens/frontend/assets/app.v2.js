@@ -7,7 +7,7 @@
   'use strict';
 
   // ==================== Configuration ====================
-  const API_BASE = window.location.origin;  // 同源部署时自动使用当前域名
+  const API_BASE = window.API_BASE_OVERRIDE || window.location.origin;  // 同源部署时自动使用当前域名；预览可经 window.API_BASE_OVERRIDE 强制指定
 
   // LOINC codes for trend metrics
   const LOINC_CODES = {
@@ -22,6 +22,8 @@
     currentPage: 'dashboard',
     trendMetric: 'glucose',
     demoMode: false,
+    resultReadOnly: false,   // 演示/不可用结果不可保存/分享（信任护栏）
+    resultTrust: null,
     cache: {},
     isRefreshing: false,
     refreshPromise: null,
@@ -928,6 +930,7 @@
   var appView = document.getElementById('app-view');
   var loginForm = document.getElementById('login-form');
   var registerForm = document.getElementById('register-form');
+  var phoneForm = document.getElementById('phone-form');
   var authTabs = document.querySelectorAll('.auth-tab');
   var navItems = document.querySelectorAll('.nav-item');
   var pages = document.querySelectorAll('.page');
@@ -1095,6 +1098,76 @@
     window.scrollTo(0, 0);
   });
 
+  // 手机验证码：获取验证码（带 60s 倒计时）
+  var sendCodeBtn = document.getElementById('send-code-btn');
+  if (sendCodeBtn && phoneForm) {
+    sendCodeBtn.addEventListener('click', async function () {
+      var phoneInput = phoneForm.querySelector('input[name="phone"]');
+      var phone = phoneInput.value.trim();
+      if (!/^1[3-9]\d{9}$/.test(phone)) {
+        showErrorToast('请输入有效的手机号');
+        return;
+      }
+      sendCodeBtn.disabled = true;
+      var sendData = await api('/api/v1/auth/send-sms-code', {
+        method: 'POST',
+        body: JSON.stringify({ phone: phone, purpose: 'login' })
+      });
+      if (sendData) {
+        if (sendData.dev_code) {
+          showSuccessToast('验证码已发送（开发模式：' + sendData.dev_code + '）');
+        } else {
+          showSuccessToast('验证码已发送，请查收短信');
+        }
+        var left = 60;
+        sendCodeBtn.textContent = left + 's 后重发';
+        var timer = setInterval(function () {
+          left -= 1;
+          if (left <= 0) {
+            clearInterval(timer);
+            sendCodeBtn.textContent = '获取验证码';
+            sendCodeBtn.disabled = false;
+          } else {
+            sendCodeBtn.textContent = left + 's 后重发';
+          }
+        }, 1000);
+      } else {
+        sendCodeBtn.disabled = false;
+      }
+    });
+  }
+
+  // 手机验证码：登录 / 注册（账号不存在则自动注册）
+  if (phoneForm) {
+    phoneForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var phoneInput = phoneForm.querySelector('input[name="phone"]');
+      var codeInput = phoneForm.querySelector('input[name="code"]');
+      var phone = phoneInput.value.trim();
+      var code = codeInput.value.trim();
+      if (!/^1[3-9]\d{9}$/.test(phone) || !code) return;
+
+      var submitBtn = phoneForm.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+
+      var data = await api('/api/v1/auth/phone-login', {
+        method: 'POST',
+        body: JSON.stringify({ phone: phone, code: code })
+      });
+
+      submitBtn.classList.remove('loading');
+
+      if (data) {
+        saveTokens(data.access_token, data.refresh_token, data.user);
+        hideDemoBanner();
+        showSuccessToast('登录成功');
+        showAppView();
+      } else if (!state.demoMode) {
+        showErrorToast('验证码错误，请重新获取');
+      }
+    });
+  }
+
   async function loadCurrentUser() {
     var data = await api('/api/v1/auth/me', { silent: true });
     if (data) {
@@ -1154,19 +1227,18 @@
     }, 100);
   }
 
-  // Open auth modal (login or register tab)
+  // Open auth modal (login / register / phone tab)
   function openAuthModal(tab) {
     authModal.classList.remove('hidden');
     authTabs.forEach(function (t) { t.classList.remove('active'); });
-    if (tab === 'register') {
-      authTabs[1].classList.add('active');
-      loginForm.classList.remove('active');
-      registerForm.classList.add('active');
-    } else {
-      authTabs[0].classList.add('active');
-      loginForm.classList.add('active');
-      registerForm.classList.remove('active');
-    }
+    var targetTab = authModal.querySelector('.auth-tab[data-tab="' + tab + '"]');
+    if (targetTab) targetTab.classList.add('active');
+    // 隐藏所有表单，再显示目标表单（表单 id 约定为 {tab}-form）
+    [loginForm, registerForm, phoneForm].forEach(function (f) {
+      if (f) f.classList.remove('active');
+    });
+    var targetForm = document.getElementById(tab + '-form');
+    if (targetForm) targetForm.classList.add('active');
   }
 
   // ==================== Auth Modal Triggers ====================
@@ -1365,8 +1437,13 @@
   }
 
   async function generateShareLink(contentType, contentId) {
+    // 信任护栏：演示/不可用结果（非用户真实分析）禁止分享
+    if (state.resultReadOnly && contentType !== 'app') {
+      showErrorToast('演示/不可用结果不可分享，请使用你的真实分析结果');
+      return { share_url: '', share_text: '' };
+    }
     if (state.demoMode) {
-      var base = 'https://healthlens.app';
+      var base = 'https://healthlens.cc';
       var url = contentType === 'plan' ? base + '/plan/' + (contentId || 'default') :
                 contentType === 'knowledge' ? base + '/knowledge/' + (contentId || 'intro') :
                 base;
@@ -1376,12 +1453,12 @@
       method: 'POST',
       body: JSON.stringify({ content_type: contentType, content_id: contentId || null })
     });
-    return result || { share_url: 'https://healthlens.app', share_text: '推荐 HealthLens' };
+    return result || { share_url: 'https://healthlens.cc', share_text: '推荐 HealthLens' };
   }
 
   async function generateInviteCode() {
     if (state.demoMode) {
-      return { invite_code: 'HL' + Math.random().toString(36).substring(2, 8).toUpperCase(), invite_url: 'https://healthlens.app/register?invite=DEMO' };
+      return { invite_code: 'HL' + Math.random().toString(36).substring(2, 8).toUpperCase(), invite_url: 'https://healthlens.cc/register?invite=DEMO' };
     }
     var result = await api('/api/v1/growth/invite', { method: 'POST' });
     return result || { invite_code: '', invite_url: '' };
@@ -2557,8 +2634,58 @@
     };
   }
 
+  // ==================== 结果信任护栏（消 demo 信任雷） ====================
+  // 依据后端返回的 is_demo / analysis_status 显示醒目横幅，并标记结果是否只读。
+  function applyResultTrust(data) {
+    // 清除上一次的横幅
+    var old = document.getElementById('result-trust-banner');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+
+    var isDemo = (!!(data && data.is_demo)) || state.demoMode === true;
+    var status = (data && data.analysis_status) || (isDemo ? 'demo' : 'ok');
+    var readOnly = isDemo || status === 'unavailable';
+    state.resultReadOnly = readOnly;
+    state.resultTrust = { isDemo: isDemo, status: status, readOnly: readOnly };
+
+    var banner = document.createElement('div');
+    banner.id = 'result-trust-banner';
+    banner.style.cssText = 'padding:10px 16px;font-size:0.82rem;font-weight:600;line-height:1.5;text-align:center;margin-bottom:12px;border-radius:10px;';
+
+    if (status === 'unavailable') {
+      banner.style.background = 'rgba(239,68,68,0.12)';
+      banner.style.color = '#b91c1c';
+      banner.style.border = '1px solid rgba(239,68,68,0.4)';
+      var reason = (data && data.unavailable_reason) ? ('：' + data.unavailable_reason) : '';
+      banner.textContent = '⚠ 真实分析暂不可用，仅展示你本人上传的数据，未生成基因/机制解读' + reason + '。该结果不可保存或分享。';
+    } else if (isDemo) {
+      banner.style.background = 'rgba(245,158,11,0.12)';
+      banner.style.color = '#92400e';
+      banner.style.border = '1px solid rgba(245,158,11,0.4)';
+      banner.textContent = '⚠ 当前为演示数据，并非你的真实分析结果，请勿用于健康决策，不可保存或分享。';
+    } else {
+      banner.style.background = 'rgba(16,185,129,0.12)';
+      banner.style.color = '#065f46';
+      banner.style.border = '1px solid rgba(16,185,129,0.4)';
+      banner.textContent = '✓ 基于你的真实健康数据生成 · 可在「我的」中保存与分享';
+    }
+
+    // 插入到结果页顶部（优先 page-plan，退而求其次 body 顶部）
+    var host = document.getElementById('page-plan') || document.getElementById('page-diagnosis') || document.body;
+    if (host === document.body) {
+      banner.style.position = 'sticky';
+      banner.style.top = '0';
+      banner.style.zIndex = '9999';
+    }
+    if (host.firstChild) {
+      host.insertBefore(banner, host.firstChild);
+    } else {
+      host.appendChild(banner);
+    }
+  }
+
   function renderFusionChain(data) {
     if (!data || !data.layers) return;
+    applyResultTrust(data);
     var L = data.layers;
 
     // Layer 1: Gene Variants
@@ -3802,7 +3929,7 @@
     polling: null,
     currentOrder: null,
     packages: [],
-    payMethod: 'xunhu'  // 默认微信/支付宝，可选 'creem'（国际信用卡）
+    payMethod: 'xunhu'  // 默认微信/支付宝（虎皮椒）
   };
 
   function showBuyStep(stepId) {
@@ -3878,15 +4005,11 @@
   // 支付方式选择
   window.selectPayMethod = function(method) {
     _buyPointsState.payMethod = method;
-    var xunhuEl = document.getElementById('pay-method-xunhu');
-    var creemEl = document.getElementById('pay-method-creem');
-    if (method === 'creem') {
-      if (creemEl) creemEl.style.borderColor = 'var(--accent)';
-      if (xunhuEl) xunhuEl.style.borderColor = 'var(--border)';
-    } else {
-      if (xunhuEl) xunhuEl.style.borderColor = 'var(--accent)';
-      if (creemEl) creemEl.style.borderColor = 'var(--border)';
-    }
+    // 高亮当前选中项，其余恢复默认边框
+    ['xunhu', 'creem'].forEach(function(m) {
+      var el = document.getElementById('pay-method-' + m);
+      if (el) el.style.borderColor = (m === method) ? 'var(--accent)' : 'var(--border)';
+    });
   };
 
   window.showBuyPoints = async function() {
@@ -3940,56 +4063,6 @@
 
     var payMethod = _buyPointsState.payMethod || 'xunhu';
 
-    // Creem支付：跳转checkout页面
-    if (payMethod === 'creem') {
-      // 显示跳转中状态
-      showBuyStep('buy-step-pay');
-      var nameEl0 = document.getElementById('pay-package-name');
-      if (nameEl0) nameEl0.textContent = pkg.package_name + ' (' + pkg.total_points + '积分)';
-      var amtEl0 = document.getElementById('pay-amount');
-      if (amtEl0) amtEl0.textContent = pkg.price_cny;
-      var statusEl0 = document.getElementById('pay-status-text');
-      if (statusEl0) { statusEl0.textContent = '正在创建支付订单...'; statusEl0.style.color = 'var(--accent)'; }
-      var qrEl0 = document.getElementById('qrcode-container');
-      if (qrEl0) qrEl0.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.8rem">跳转中...</div>';
-
-      try {
-        var tokenC = getAccessToken();
-        var buyRespC = await fetch(API_BASE + '/api/v1/growth/points/buy?package_code=' + encodeURIComponent(packageCode) + '&payment_method=creem', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': tokenC ? ('Bearer ' + tokenC) : ''
-          }
-        });
-        var buyJsonC = await buyRespC.json();
-        var dataC = (buyJsonC && buyJsonC.success) ? buyJsonC.data : null;
-
-        if (!dataC) {
-          showBuyStepError(buyJsonC.detail || buyJsonC.message || '创建订单失败，请稍后重试');
-          return;
-        }
-
-        // Creem checkout：跳转到支付页面
-        var checkoutUrl = dataC.checkout_url || '';
-        if (checkoutUrl) {
-          if (statusEl0) { statusEl0.textContent = '即将跳转到支付页面...'; statusEl0.style.color = 'var(--accent)'; }
-          if (qrEl0) qrEl0.innerHTML = '<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-size:0.8rem;gap:0.5rem"><div style="width:40px;height:40px;border:3px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite"></div>跳转中</div>';
-          // 保存订单号用于轮询
-          _buyPointsState.currentOrder = dataC.order_no;
-          // 延迟1秒跳转，让用户看到状态
-          setTimeout(function() {
-            window.location.href = checkoutUrl;
-          }, 1000);
-        } else {
-          showBuyStepError('未能创建支付链接，请稍后重试');
-        }
-      } catch (e) {
-        showBuyStepError(e.message || '创建支付订单时出错');
-      }
-      return;
-    }
-
     // 虎皮椒支付：显示二维码
     // 显示支付步骤
     showBuyStep('buy-step-pay');
@@ -4005,7 +4078,7 @@
     try {
       // 直接fetch绕过demoMode，购买API需要认证
       var token = getAccessToken();
-      var buyResp = await fetch(API_BASE + '/api/v1/growth/points/buy?package_code=' + encodeURIComponent(packageCode) + '&payment_method=xunhu', {
+      var buyResp = await fetch(API_BASE + '/api/v1/growth/points/buy?package_code=' + encodeURIComponent(packageCode) + '&payment_method=' + encodeURIComponent(payMethod), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -4038,9 +4111,20 @@
 
       _buyPointsState.currentOrder = orderNo;
 
-      // 渲染二维码
+      // 渲染二维码 / 国际信用卡支付入口
+      var isCreem = (payMethod === 'creem' || payMethod === 'card' || payMethod === 'international');
       if (qrEl) {
-        if (qrcodeUrl) {
+        if (isCreem) {
+          if (payUrl) {
+            qrEl.innerHTML = '<div style="text-align:center;padding:0.5rem">' +
+              '<div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.6rem">国际信用卡支付（USD）</div>' +
+              '<a href="' + payUrl + '" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:12px 22px;border-radius:50px;text-decoration:none;font-weight:600;font-size:0.95rem">前往信用卡支付 ↗</a>' +
+              '<div style="font-size:0.7rem;color:var(--muted);margin-top:0.6rem">支付完成后本页将自动到账</div>' +
+              '</div>';
+          } else {
+            qrEl.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.8rem">未获取到支付链接</div>';
+          }
+        } else if (qrcodeUrl) {
           // 虎皮椒返回的二维码URL
           qrEl.innerHTML = '<img src="' + qrcodeUrl + '" width="180" height="180" alt="支付二维码" style="border-radius:8px" />';
         } else if (payUrl) {
@@ -4051,7 +4135,10 @@
         }
       }
 
-      if (statusEl) { statusEl.textContent = '请使用微信/支付宝扫码支付'; statusEl.style.color = 'var(--accent)'; }
+      if (statusEl) {
+        statusEl.textContent = isCreem ? '请在新窗口完成信用卡支付（USD）' : '请使用微信/支付宝扫码支付';
+        statusEl.style.color = 'var(--accent)';
+      }
 
       // 开始轮询支付状态
       startPaymentPolling(orderNo);

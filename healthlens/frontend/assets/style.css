@@ -968,6 +968,28 @@ p:last-child {
   box-shadow: 0 0 0 4px rgba(13, 138, 106, 0.1);
 }
 
+/* 手机验证码：验证码输入 + 获取按钮一行 */
+.code-input-row {
+  display: flex;
+  gap: 0.625rem;
+  align-items: stretch;
+}
+.code-input-row input {
+  flex: 1 1 auto;
+  width: auto;
+}
+.code-input-row #send-code-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+}
+.code-input-row #send-code-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
