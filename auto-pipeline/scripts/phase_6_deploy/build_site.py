@@ -222,6 +222,8 @@ def build():
     # ---------- 3. sitemap.xml ----------
     log("\n[3/5] sitemap.xml")
     metas = {}
+    for name in pages:
+        metas[name] = extract_meta(DIST / "knowledge" / name)
     today = started.strftime("%Y-%m-%d")
     backend_xml = fetch_backend_sitemap()
     if backend_xml:

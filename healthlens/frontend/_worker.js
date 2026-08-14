@@ -169,17 +169,27 @@ export default {
     if (path.startsWith("/api/")) {
       return proxy(request, env, url);
     }
-    // 4. SEO 动态页前缀：后端优先、静态兜底
-    // 注意：Cloudflare Pages 对未命中的 HTML 请求会做 SPA 回退（返回 index.html 且 status=200），
-    // 因此「静态优先」会让动态长尾页永远拿到空壳。必须先问后端，后端 404 再回落静态文件。
+    // 4. SEO 动态页前缀：静态 .html 优先、缺失再代理后端
+    // 说明：Cloudflare Pages 对未命中的路径会做 SPA 回退（返回首页 index.html 且 status=200），
+    // 直接 proxy 后端时后端也会对未知 slug 返回 SPA 壳，二者都会把我们的静态知识页顶替成首页。
+    // 故改为：直接探测 path+.html 真实静态文件，命中且非 SPA 壳即返回；否则才代理后端动态页。
     if (path.startsWith("/knowledge/") || path.startsWith("/health/") || path.startsWith("/health-tools/")) {
+      const candidates = (!path.endsWith(".html") && !path.endsWith("/")) ? [path + ".html"] : [path];
+      for (const c of candidates) {
+        const s = await env.ASSETS.fetch(new Request(url.origin + c));
+        if (s && s.status < 400) {
+          const txt = await s.text();
+          // 命中 SPA 回退（首页标题含「您的健康全景平台」）→ 视为未命中，转代理后端
+          if (txt.includes("您的健康全景平台")) continue;
+          return new Response(txt, { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600" } });
+        }
+      }
+      // 静态缺失 → 代理后端动态页（DB 长尾 SEO 页）
       try {
         const r = await proxy(request, env, url);
         if (r && r.status < 400) return r;
-      } catch (e) {
-        /* 后端不可用时回落静态 */
-      }
-      return serveStatic(request, env, url);
+      } catch (e) { /* 后端不可用 */ }
+      return new Response("Not Found", { status: 404 });
     }
     // 4b. sitemap.xml：优先取后端动态 sitemap（含全部 SEO 长尾页），失败或过小则回退静态
     if (path === "/sitemap.xml") {
