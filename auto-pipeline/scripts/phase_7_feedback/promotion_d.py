@@ -4,14 +4,16 @@ D线：推广营销闭环
 计算ROI、转化归因、淘汰低效渠道
 输出：promotion_report.json + 更新渠道权重
 
-注意：当前渠道数据为占位数据（placeholder），需要接入真实数据源：
-- SEO：Google Search Console API
+注意：各渠道数据当前为占位数据（placeholder），需要接入真实数据源：
+- SEO：可通过HTTP探测获取页面健康度（已在feedback_a中实现），流量数据需接入百度统计
 - Social：各平台开放平台API
 - Referral：数据库 referral_events 表
 - Brand：社交媒体监控API
 """
 import sys
 import json
+import urllib.request
+import urllib.error
 from datetime import datetime
 from pathlib import Path
 
@@ -19,14 +21,44 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
 from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
 
 
+def _probe_seo_health():
+    """通过HTTP探测获取SEO渠道基础数据（真实数据，无需外部平台）"""
+    project_url = "https://healthlens.cc"
+    pages = ["/", "/robots.txt", "/sitemap.xml", "/llms.txt"]
+    ok_count = 0
+    total = len(pages)
+    for path in pages:
+        try:
+            req = urllib.request.Request(project_url + path, headers={"User-Agent": "HealthLens-PromoCheck/1.0"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if 200 <= resp.status < 400:
+                    ok_count += 1
+        except Exception:
+            pass
+    return {
+        "pages_healthy": ok_count,
+        "pages_total": total,
+        "health_rate": round(ok_count / max(total, 1) * 100, 1),
+    }
+
+
 def get_channel_metrics():
     """获取各推广渠道数据
     
-    当前返回占位数据（所有值为0），需要接入真实数据源。
-    接入后将替换为真实API调用。
+    SEO渠道：通过HTTP探测获取页面健康度（真实数据）
+    其他渠道：当前为占位数据，需接入真实数据源
     """
+    seo_health = _probe_seo_health()
+    
     return {
-        "SEO": {"visits": 0, "signups": 0, "conversions": 0, "cost": 0, "content_pages": 0, "data_source": "placeholder"},
+        "SEO": {
+            "visits": 0, "signups": 0, "conversions": 0, "cost": 0,
+            "content_pages": seo_health["pages_total"],
+            "pages_healthy": seo_health["pages_healthy"],
+            "health_rate": seo_health["health_rate"],
+            "data_source": "http_probe",
+            "note": f"页面健康度 {seo_health['health_rate']}%，流量数据需接入百度统计"
+        },
         "social": {"visits": 0, "signups": 0, "conversions": 0, "cost": 0, "posts": 0, "data_source": "placeholder"},
         "referral": {"visits": 0, "signups": 0, "conversions": 0, "cost": 0, "invites_sent": 0, "data_source": "placeholder"},
         "wake_up": {"visits": 0, "signups": 0, "conversions": 0, "cost": 0, "status": "discontinued", "discontinued_reason": "零转化，CAC无穷大", "data_source": "placeholder"},
@@ -104,7 +136,8 @@ def run():
         state = get_state()
         state.setdefault("feedback_metrics", {})["promotion"] = {
             "checked_at": datetime.now().isoformat(),
-            "data_source": "placeholder",
+            "data_source": "mixed",
+            "seo_data_source": "http_probe",
             "total_visits": total_visits,
             "total_signups": total_signups,
             "overall_cac": overall_cac,
@@ -115,7 +148,7 @@ def run():
         report = {
             "report_id": f"promotion_d_{datetime.now().strftime('%Y%m%d')}",
             "generated_at": datetime.now().isoformat(),
-            "data_source": "placeholder",
+            "data_source": "mixed",
             "total_visits": total_visits,
             "total_signups": total_signups,
             "total_cost": total_cost,
@@ -134,7 +167,7 @@ def run():
             json.dump(report, f, ensure_ascii=False, indent=2)
         
         complete_phase(phase, output_file=output_file, items_processed=len(channels))
-        log(f"D线推广分析完成 (数据源=placeholder): 总访问 {total_visits}, 注册 {total_signups}, CAC ¥{overall_cac}")
+        log(f"D线推广分析完成: SEO健康度{channels['SEO'].get('health_rate', 0)}%, 总访问 {total_visits}, 注册 {total_signups}, CAC ¥{overall_cac}")
         return True
     except Exception as e:
         fail_phase(phase, str(e))

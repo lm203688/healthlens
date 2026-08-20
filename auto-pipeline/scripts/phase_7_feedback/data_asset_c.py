@@ -29,7 +29,7 @@ def _fetch_json(url, timeout=15):
 
 def check_kegg_status():
     """检查 KEGG 数据库同步状态"""
-    url = "https://rest.kegg.jp/info/ pathway"
+    url = "https://rest.kegg.jp/info/pathway"
     data = _fetch_json(url, timeout=10)
     if data and "link" in data:
         return {"name": "KEGG", "type": "pathway", "status": "current", "detail": str(data.get("link", ""))[:100]}

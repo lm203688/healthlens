@@ -12,7 +12,27 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
 from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
 
-DB_URL = "postgresql://healthlens:healthlens@localhost:5432/healthlens"
+DB_URL_FALLBACK = "postgresql://healthlens:healthlens@localhost:5432/healthlens"
+
+
+def _get_db_url():
+    """优先级：环境变量 DATABASE_URL > config.database.url > 本地默认"""
+    import os
+    url = os.environ.get("DATABASE_URL")
+    if url:
+        return url
+    try:
+        with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+        url = cfg.get("database", {}).get("url", "")
+        if url:
+            return url
+    except Exception:
+        pass
+    return DB_URL_FALLBACK
+
+
+DB_URL = _get_db_url()
 
 
 def get_user_metrics_from_db():

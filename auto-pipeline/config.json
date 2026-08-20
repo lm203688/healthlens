@@ -1,0 +1,157 @@
+{
+  "project_name": "HealthLens",
+  "project_url": "https://healthlens.cc",
+  "deployment": {
+    "_comment_incident_20260804": "重大发现：原 ssh_host=root@150.158.119.19 是 AIShield 项目的服务器，不是 HealthLens 的。该机器 nginx 只有 aishield 的 vhost，带 Host:healthlens.cc 直连会返回 AIShield 首页。HealthLens 实际从未部署到任何服务器。已将 ssh_host 置空，使部署阶段显式报「未配置」而不是静默指向他人服务器。",
+    "deploy_method": "scp",
+    "ssh_host": "",
+    "verified_at": null,
+    "known_foreign_hosts": {
+      "150.158.119.19": "AIShield (aishield.tools)"
+    },
+    "remote_content_path": "/opt/healthlens/web/static/knowledge",
+    "remote_sitemap_path": "/opt/healthlens/web/static/sitemap.xml",
+    "sitemap_url": "https://healthlens.cc/sitemap.xml",
+    "_comment_dry_run": "此前 config 里没有 dry_run 键，而代码用 .get('dry_run', True) 兜底，导致部署阶段永久 dry-run，从未真正上线过任何文件。现在显式声明。要真实部署请改为 false 并确保 ssh_host 已填且 SSH 免密可用。",
+    "dry_run": true,
+    "verify_after_deploy": true,
+    "rollback_on_verify_fail": true
+  },
+  "alerting": {
+    "enabled": true,
+    "cooldown_seconds": 14400,
+    "_comment": "告警通道：本地文件（必选）+ 控制台（醒目输出）。如需webhook，添加enabled=true的真实地址。",
+    "webhooks": []
+  },
+  "database": {
+    "_comment": "后端数据库连接。优先级：环境变量 DATABASE_URL > 本地Docker PostgreSQL > SQLite fallback。",
+    "url": "",
+    "_comment_url": "填入 PostgreSQL 连接串，如 postgresql://user:pass@host:5432/healthlens。留空则尝试环境变量 DATABASE_URL 或本地Docker。",
+    "fallback_sqlite": true,
+    "_comment_sqlite": "当 PostgreSQL 不可用时，自动降级到 SQLite 本地数据库（适合开发/免费部署）。"
+  },
+  "execution": {
+    "_comment": "调度器的重试与超时策略。此前无任何重试：脚本失败即整条线中断且无人知晓。",
+    "max_retries": 2,
+    "retry_delay_seconds": 30,
+    "script_timeout_seconds": 300,
+    "fail_fast_on_phase_error": true,
+    "auto_heal_enabled": true
+  },
+  "watchdog": {
+    "_comment": "任务超期未跑的判定阈值（小时）。看门狗据此发现「任务悄悄死了」。",
+    "enabled": true,
+    "max_staleness_hours": {
+      "pipeline_run": 30,
+      "ops_health_f": 30,
+      "backup": 30,
+      "collect": 200
+    },
+    "site_endpoints": [
+      "https://healthlens.cc/health",
+      "https://healthlens.cc/robots.txt",
+      "https://healthlens.cc/sitemap.xml",
+      "https://healthlens.cc/llms.txt"
+    ],
+    "_comment_identity": "内容级身份校验。只看 HTTP 状态码会漏掉「200 但返回的是别人的站」这类事故（2026-08-04 实际发生过）。forbidden_markers 里列出同机/同账号下其他项目的标识。",
+    "identity_paths": [
+      "/",
+      "/robots.txt"
+    ],
+    "identity_markers": [
+      "healthlens",
+      "HealthLens"
+    ],
+    "forbidden_markers": [
+      "aishield",
+      "AIShield",
+      "roboparts",
+      "oraclemind"
+    ]
+  },
+  "backup": {
+    "_comment": "数据库备份。mode: local_docker(本机 docker exec) / ssh(远程服务器) / auto(先试 ssh 再试 local)",
+    "enabled": true,
+    "mode": "auto",
+    "_comment_ssh_host": "同 deployment：原值 root@150.158.119.19 是 AIShield 的服务器，向它 pg_dump 只会拿到别人的库或直接失败。置空以强制显式报错。",
+    "ssh_host": "",
+    "db_container": "healthlens-db",
+    "db_user": "healthlens",
+    "db_name": "healthlens",
+    "local_backup_dir": "backups",
+    "retention_days": 14,
+    "verify_restore": true,
+    "min_valid_size_bytes": 1024
+  },
+  "content_targets": {
+    "seo_knowledge_pages": {
+      "min_per_week": 3,
+      "max_per_week": 5,
+      "word_count_min": 1500,
+      "word_count_max": 3000
+    },
+    "user_education": {
+      "min_per_week": 2,
+      "max_per_week": 3
+    }
+  },
+  "decision_gate": {
+    "approved_threshold": 70,
+    "watch_threshold": 50,
+    "weights": {
+      "source_count": 35,
+      "goal_alignment": 30,
+      "market_validation": 25,
+      "feasibility": 15
+    },
+    "core_goals": [
+      "量化追踪健康改善",
+      "数据积累与验证",
+      "非药物治疗融合",
+      "用户增长与盈利闭环"
+    ]
+  },
+  "intelligence_sources": [
+    {
+      "name": "GitHub",
+      "type": "tech_trend",
+      "keywords": [
+        "health AI",
+        "wearable data",
+        "quantified self",
+        "exosome therapy",
+        "iPSC",
+        "mRNA therapeutic"
+      ]
+    },
+    {
+      "name": "arXiv",
+      "type": "academic",
+      "keywords": [
+        "digital health",
+        "lifestyle intervention",
+        "precision medicine",
+        "exosome miRNA cell repair",
+        "induced pluripotent stem cell differentiation",
+        "mRNA therapy non-invasive"
+      ]
+    },
+    {
+      "name": "Competitor Analysis",
+      "type": "market",
+      "targets": [
+        "华米",
+        "Keep",
+        "薄荷健康",
+        "妙健康"
+      ]
+    }
+  ],
+  "quality_checks": {
+    "medical_terms_scan": true,
+    "schema_markup": true,
+    "link_validity": true,
+    "word_count": true,
+    "seo_keywords": true
+  }
+}

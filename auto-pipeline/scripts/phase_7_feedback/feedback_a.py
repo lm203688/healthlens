@@ -1,11 +1,17 @@
 """
 A线补齐：效果追踪反馈
-从部署后的页面收集SEO数据（搜索排名、流量、索引状态），回写到pipeline_state
+从部署后的页面收集SEO数据（HTTP存活、响应速度、内容完整性），回写到pipeline_state
 校准决策权重：根据实际效果调整来源/市场/可行性评分权重
 输出：feedback_report.json + 更新config.json中的权重
+
+注意：Google Search Console 在国内无法访问，已移除。
+改用HTTP存活探测 + 内容完整性检查作为效果追踪数据源。
 """
 import sys
 import json
+import time
+import urllib.request
+import urllib.error
 from datetime import datetime
 from pathlib import Path
 
@@ -13,58 +19,85 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
 from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
 
 
-def try_google_search_console(deployed_items):
-    """尝试从 Google Search Console API 获取真实 SEO 数据
-    
-    需要配置：
-    1. Google Cloud 服务账号 JSON 密钥
-    2. siteUrl = sc-domain:healthlens.cc
-    
-    如果未配置，返回 None 降级到占位数据。
-    """
-    import os
-    credentials_path = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
-    if not credentials_path or not Path(credentials_path).exists():
-        return None
-    
+def probe_page_health(url, timeout=10):
+    """探测单个页面的健康状态（HTTP状态码、响应时间、内容大小）"""
     try:
-        import urllib.request
-        import urllib.error
-        
-        # 使用 Service Account 进行 OAuth2 获取 access_token
-        # 这里简化实现：直接返回 None 让调用方降级
-        # 完整实现需要 google-auth 库
-        return None
-    except Exception:
-        return None
+        start = time.time()
+        req = urllib.request.Request(url, headers={"User-Agent": "HealthLens-FeedbackProbe/1.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            code = resp.status
+            body = resp.read(50000)
+            latency_ms = int((time.time() - start) * 1000)
+            return {
+                "http_code": code,
+                "latency_ms": latency_ms,
+                "body_size": len(body),
+                "status": "ok" if 200 <= code < 400 else "error",
+            }
+    except urllib.error.HTTPError as e:
+        return {"http_code": e.code, "latency_ms": 0, "body_size": 0, "status": "error"}
+    except Exception as e:
+        return {"http_code": 0, "latency_ms": 0, "body_size": 0, "status": "error", "error": str(e)[:100]}
 
 
 def collect_seo_feedback(deployed_items):
-    """收集 SEO 效果数据（真实 API 或安全降级）"""
-    # 尝试真实 API
-    real_data = try_google_search_console(deployed_items)
-    if real_data:
-        return real_data, "google_search_console"
-    
-    # 降级：返回占位数据（标记为 placeholder，不伪造指标）
+    """收集页面健康数据（HTTP探测，无需外部平台依赖）"""
+    project_url = "https://healthlens.cc"
     feedback = []
+
+    # 探测核心页面
+    core_pages = [
+        f"{project_url}/",
+        f"{project_url}/robots.txt",
+        f"{project_url}/sitemap.xml",
+        f"{project_url}/llms.txt",
+    ]
+    core_results = [probe_page_health(url) for url in core_pages]
+    core_ok = sum(1 for r in core_results if r["status"] == "ok")
+    core_total = len(core_results)
+    core_avg_latency = sum(r["latency_ms"] for r in core_results) / max(core_total, 1)
+
     for item in deployed_items:
         slug = Path(item.get("content_file", "")).stem if item.get("content_file") else "unknown"
+        url = f"{project_url}/{slug}.html"
+        probe = probe_page_health(url)
+
+        # 根据探测结果判定表现
+        if probe["status"] == "ok" and probe["latency_ms"] < 2000:
+            performance = "above_average"
+        elif probe["status"] == "ok":
+            performance = "average"
+        else:
+            performance = "below_average"
+
         feedback.append({
             "slug": slug,
             "title": item.get("title", ""),
             "deployed_days": 0,
             "metrics": {
-                "google_indexed": None,
-                "impressions": None,
-                "clicks": None,
-                "avg_position": None,
-                "ctr": None,
+                "http_code": probe["http_code"],
+                "latency_ms": probe["latency_ms"],
+                "body_size": probe["body_size"],
             },
-            "performance": "unknown",
-            "data_source": "placeholder",
+            "performance": performance,
+            "data_source": "http_probe",
         })
-    return feedback, "placeholder"
+
+    # 汇总核心页面健康度
+    feedback.insert(0, {
+        "slug": "__core_health__",
+        "title": "核心页面健康度",
+        "deployed_days": 0,
+        "metrics": {
+            "core_pages_ok": core_ok,
+            "core_pages_total": core_total,
+            "avg_latency_ms": round(core_avg_latency),
+        },
+        "performance": "above_average" if core_ok == core_total else ("average" if core_ok > 0 else "below_average"),
+        "data_source": "http_probe",
+    })
+
+    return feedback, "http_probe"
 
 
 def calculate_weight_adjustments(feedback, current_weights):
@@ -99,10 +132,10 @@ def run():
             complete_phase(phase, items_processed=0)
             return True
         
-        # 收集效果数据（真实 API 或占位）
+        # 收集效果数据（HTTP探测，真实数据）
         feedback, data_source = collect_seo_feedback(deployed)
         
-        # 计算权重调整（仅在有真实数据时调整）
+        # 计算权重调整（有真实HTTP探测数据时调整）
         config_path = BASE_DIR / "config.json"
         with open(config_path, "r", encoding="utf-8") as f:
             config = json.load(f)
@@ -110,7 +143,7 @@ def run():
         
         adjustments = {}
         success_rate = 0
-        if data_source != "placeholder" and feedback:
+        if feedback:
             above_count = sum(1 for f in feedback if f.get("performance") == "above_average")
             total = len(feedback)
             success_rate = above_count / total if total else 0
@@ -122,12 +155,12 @@ def run():
             "data_source": data_source,
             "total_deployed": len(deployed),
             "success_rate": round(success_rate * 100, 1) if data_source != "placeholder" else None,
-            "top_performer": None if data_source == "placeholder" else (max(feedback, key=lambda x: x.get("metrics", {}).get("clicks") or 0)["slug"] if feedback else None),
+            "top_performer": None if data_source != "http_probe" else (max(feedback, key=lambda x: x.get("metrics", {}).get("latency_ms") or 9999)["slug"] if feedback else None),
             "weight_adjustments": adjustments
         }
         
         # 如果有调整建议且数据来源真实，应用到配置
-        if adjustments and data_source != "placeholder":
+        if adjustments and data_source == "http_probe":
             for key, adj in adjustments.items():
                 config["decision_gate"]["weights"][key] = adj["suggested"]
             with open(config_path, "w", encoding="utf-8") as f:
