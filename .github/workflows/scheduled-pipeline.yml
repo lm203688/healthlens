@@ -38,7 +38,7 @@ jobs:
           python-version: '3.12'
 
       - name: 安装依赖
-        run: pip install -q requests
+        run: pip install -q requests paramiko
 
       - name: 执行流水线
         id: run

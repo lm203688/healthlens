@@ -1,0 +1,651 @@
+{
+  "pipeline_id": "W30-2026",
+  "created_at": "2026-07-27T17:04:40.328202",
+  "status": "idle",
+  "current_phase": "ops_health_f",
+  "phases": {
+    "collect": {
+      "status": "completed",
+      "started_at": "2026-07-27T17:04:40.553412",
+      "completed_at": "2026-07-27T17:04:40.561986",
+      "output_file": "reports/intelligence/2026-07-27_intelligence_report.json",
+      "items_processed": 7,
+      "error": null
+    },
+    "analyze": {
+      "status": "completed",
+      "started_at": "2026-07-27T17:04:40.665960",
+      "completed_at": "2026-07-27T17:04:40.684810",
+      "output_file": "reports/analysis/2026-07-27_analysis_report.json",
+      "items_processed": 7,
+      "error": null,
+      "approved_count": 3,
+      "watch_count": 3,
+      "rejected_count": 1
+    },
+    "decide": {
+      "status": "completed",
+      "started_at": "2026-07-27T17:04:40.788846",
+      "completed_at": "2026-07-27T17:04:40.811019",
+      "output_file": "reports/analysis/2026-07-27_decision_report.json",
+      "items_processed": 7,
+      "error": null,
+      "tasks_created": 3,
+      "new_approved": 3
+    },
+    "develop": {
+      "status": "completed",
+      "started_at": "2026-07-27T17:04:40.917204",
+      "completed_at": "2026-07-27T17:04:40.938362",
+      "output_file": "reports/analysis/2026-07-27_development_report.json",
+      "items_processed": 3,
+      "error": null,
+      "seo_articles": 2,
+      "education_articles": 1
+    },
+    "test": {
+      "status": "completed",
+      "started_at": "2026-08-04T17:34:10.279692",
+      "completed_at": "2026-08-04T17:34:10.290666",
+      "output_file": null,
+      "items_processed": 0,
+      "error": null,
+      "passed": 2,
+      "failed": 1,
+      "warnings": 0
+    },
+    "deploy": {
+      "status": "completed",
+      "started_at": "2026-07-27T17:04:41.178562",
+      "completed_at": "2026-07-27T17:04:41.197679",
+      "output_file": "reports/deployed/2026-07-27_deployment_report.json",
+      "items_processed": 2,
+      "error": null,
+      "deployed_count": 2,
+      "failed_count": 0
+    },
+    "feedback_a": {
+      "status": "completed",
+      "started_at": "2026-08-04T17:34:10.523215",
+      "completed_at": "2026-08-04T17:34:10.541062",
+      "output_file": "reports/analysis/2026-08-04_feedback_a.json",
+      "items_processed": 2,
+      "error": null
+    },
+    "user_conversion_b": {
+      "status": "completed",
+      "started_at": "2026-08-04T17:34:10.637396",
+      "completed_at": "2026-08-04T17:34:10.655631",
+      "output_file": "reports/analysis/2026-08-04_conversion_b.json",
+      "items_processed": 4,
+      "error": null
+    },
+    "data_asset_c": {
+      "status": "completed",
+      "started_at": "2026-08-04T17:34:10.745057",
+      "completed_at": "2026-08-04T17:34:10.761759",
+      "output_file": "reports/analysis/2026-08-04_data_asset_c.json",
+      "items_processed": 6,
+      "error": null,
+      "quality_issues": 0
+    },
+    "promotion_d": {
+      "status": "completed",
+      "started_at": "2026-08-04T17:34:10.851848",
+      "completed_at": "2026-08-04T17:34:10.868865",
+      "output_file": "reports/analysis/2026-08-04_promotion_d.json",
+      "items_processed": 5,
+      "error": null
+    },
+    "finance_e": {
+      "status": "failed",
+      "started_at": "2026-08-04T17:35:41.379342",
+      "completed_at": "2026-08-04T17:35:41.390966",
+      "output_file": "reports/analysis/2026-08-03_finance_e.json",
+      "items_processed": 1,
+      "error": "'weekly'",
+      "alerts": 1
+    },
+    "ops_health_f": {
+      "status": "pending",
+      "started_at": "2026-08-04T17:39:58.068218",
+      "completed_at": "2026-08-04T17:40:02.367089",
+      "output_file": "reports/analysis/2026-08-03_ops_health_f.json",
+      "items_processed": 5,
+      "error": null
+    }
+  },
+  "approved_queue": [
+    {
+      "id": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "approved",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "七麦数据",
+          "url": "",
+          "relevance": 0.75
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.9,
+      "tags": [
+        "竞品分析",
+        "市场格局",
+        "差异化"
+      ],
+      "total_score": 79.7,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 9.0,
+        "feasibility": 0.9
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "行业洞察",
+          "用户教育内容"
+        ],
+        "rationale": "基因归因+量化修复是差异化核心竞争力"
+      }
+    },
+    {
+      "id": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "category": "approved",
+      "summary": "越来越多的可穿戴设备厂商开始集成AI驱动的健康分析功能，包括睡眠质量深度分析、压力水平评估等。",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/trending/health-ai",
+          "relevance": 0.85
+        },
+        {
+          "name": "arXiv",
+          "url": "https://arxiv.org/search/?query=wearable+health+ai",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可增强睡眠修复追踪模块的AI分析能力",
+      "market_signals": {
+        "github_stars_growth": "+25%/month",
+        "startup_funding": "3家获投"
+      },
+      "technical_feasibility": 0.85,
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ],
+      "total_score": 79.2,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 8.5,
+        "feasibility": 0.85
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新",
+          "睡眠修复专题"
+        ],
+        "rationale": "可增强睡眠修复追踪模块的AI分析能力"
+      }
+    },
+    {
+      "id": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "category": "approved",
+      "summary": "多项临床研究证实，综合生活方式干预（饮食+运动+睡眠）可使表观遗传年龄逆转2-5年。",
+      "sources": [
+        {
+          "name": "Nature Aging",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "为修复年龄和修复评分提供更坚实的学术依据",
+      "market_signals": {
+        "clinical_trials": "12项进行中",
+        "consumer_interest": "上升"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ],
+      "total_score": 78.2,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 7.5,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "深度知识文章",
+          "科研速递"
+        ],
+        "rationale": "为修复年龄和修复评分提供更坚实的学术依据"
+      }
+    }
+  ],
+  "watch_queue": [
+    {
+      "item": {
+        "id": "intel_006",
+        "title": "LLM驱动的健康助手用户体验研究",
+        "category": "watch",
+        "summary": "大语言模型在健康咨询场景的应用日益广泛，但用户信任度和准确性仍是核心挑战。",
+        "sources": [
+          {
+            "name": "HuggingFace",
+            "url": "",
+            "relevance": 0.8
+          },
+          {
+            "name": "用户研究",
+            "url": "",
+            "relevance": 0.7
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "优化AI健康助手的回答质量和可信度",
+        "market_signals": {
+          "adoption_rate": "快速增长",
+          "trust_score": "中等"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "LLM",
+          "健康助手",
+          "用户体验"
+        ],
+        "total_score": 66.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 8.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "intel_005",
+        "title": "肠道菌群检测与个性化营养推荐",
+        "category": "watch",
+        "summary": "基于肠道菌群检测的个性化营养方案成为健康管理新热点，多家创业公司进入此领域。",
+        "sources": [
+          {
+            "name": "行业报告",
+            "url": "",
+            "relevance": 0.75
+          },
+          {
+            "name": "学术论文",
+            "url": "",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "肠道菌群是汇聚节点理论的重要组成部分",
+        "market_signals": {
+          "startups": "20+家",
+          "consumer_adoption": "早期"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "肠道菌群",
+          "个性化营养",
+          "微生物组"
+        ],
+        "total_score": 65.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 7.0,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "intel_004",
+        "title": "PEMF频率疗法在家用设备中的应用增长",
+        "category": "watch",
+        "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/",
+            "relevance": 0.7
+          },
+          {
+            "name": "市场研究",
+            "url": "",
+            "relevance": 0.65
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "可探索频率干预模块与现有方案的融合",
+        "market_signals": {
+          "market_size": "12亿美元",
+          "cagr": "8.5%"
+        },
+        "technical_feasibility": 0.6,
+        "tags": [
+          "PEMF",
+          "频率疗法",
+          "线粒体"
+        ],
+        "total_score": 64.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 6.0,
+          "feasibility": 0.6
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    }
+  ],
+  "rejected_items": [
+    {
+      "item": {
+        "id": "intel_007",
+        "title": "连续血糖监测(CGM)与代谢健康管理",
+        "category": "reject",
+        "summary": "CGM设备价格下降推动代谢健康管理普及，从糖尿病人群延伸到健康人群。",
+        "sources": [
+          {
+            "name": "市场研究",
+            "url": "",
+            "relevance": 0.75
+          }
+        ],
+        "relevance_to_healthlens": "low",
+        "actionable_insight": "可作为数据来源拓展方向",
+        "market_signals": {
+          "price_drop": "50%/3年",
+          "consumer_market": "启动"
+        },
+        "technical_feasibility": 0.5,
+        "tags": [
+          "CGM",
+          "代谢健康",
+          "数据整合"
+        ],
+        "total_score": 41.3,
+        "score_breakdown": {
+          "source_score": 13.3,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 9.0,
+          "relevance": "low",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 5.0,
+          "feasibility": 0.5
+        },
+        "recommendation": {
+          "action": "archive",
+          "reason": "当前价值不高，建议后续重新评估"
+        }
+      },
+      "rejected_at": "2026-07-27T17:04:40.803928"
+    }
+  ],
+  "deployment_history": [
+    {
+      "deployment_id": "deploy_20260727_170441",
+      "timestamp": "2026-07-27T17:04:41.189633",
+      "items_deployed": 2,
+      "items_failed": 0,
+      "details": [
+        {
+          "task_id": "task_seo_002",
+          "file": "content/generated/可穿戴设备与ai健康分析的融合趋势.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/可穿戴设备与ai健康分析的融合趋势.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_003",
+          "file": "content/generated/表观遗传时钟与生活方式干预的临床验证.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/表观遗传时钟与生活方式干预的临床验证.html",
+          "note": "dry-run"
+        }
+      ]
+    }
+  ],
+  "feedback_metrics": {
+    "content_pipeline": {
+      "checked_at": "2026-08-04T17:34:10.532556",
+      "total_deployed": 2,
+      "success_rate": 50.0,
+      "top_performer": "可穿戴设备与ai健康分析的融合趋势",
+      "weight_adjustments": {}
+    },
+    "user_conversion": {
+      "checked_at": "2026-08-04T17:34:10.647079",
+      "weekly_active_rate": 42.9,
+      "d7_retention": 42.3,
+      "paid_conversion": 11.5,
+      "biggest_dropoff": {
+        "from": "viewed_plan",
+        "to": "purchased_points",
+        "dropoff_rate": 53.8,
+        "users_lost": 28
+      },
+      "plan_effectiveness": 0.72
+    },
+    "data_asset": {
+      "checked_at": "2026-08-04T17:34:10.752954",
+      "total_records": 1063200,
+      "quality_issues": 0,
+      "estimated_value": 1807.44,
+      "freshness": 0.85
+    },
+    "promotion": {
+      "checked_at": "2026-08-04T17:34:10.860924",
+      "total_visits": 2380,
+      "total_signups": 105,
+      "overall_cac": 1.9,
+      "channel_actions": 1
+    },
+    "ops_health": {
+      "checked_at": "2026-08-04T17:40:02.359715",
+      "overall": "down",
+      "endpoints_ok": 0,
+      "endpoints_error": 4,
+      "server_reachable": false,
+      "containers_unhealthy": 0,
+      "security_issues": 0,
+      "medical_terms_found": 0
+    },
+    "finance": {
+      "checked_at": "2026-08-03T03:01:31.808561",
+      "weekly_profit": -77.5,
+      "monthly_profit_est": -333.25,
+      "unit_economics": "negative",
+      "all_time_revenue": 0,
+      "alerts": 1,
+      "data_source": "db_error"
+    },
+    "backup": {
+      "checked_at": "2026-08-04T17:33:36.681264",
+      "status": "failed",
+      "file": "backups\\healthlens_20260804_173336.sql.gz",
+      "mode": "auto"
+    }
+  },
+  "development_tasks": [
+    {
+      "task_id": "task_edu_001",
+      "type": "user_education",
+      "based_on_item": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "priority": "medium",
+      "status": "pending_test",
+      "tags": [
+        "竞品分析",
+        "市场格局",
+        "差异化"
+      ],
+      "target_word_count": 1200,
+      "content_file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+      "heal_note": "自愈重试 (原状态 test_failed) @ 2026-08-04T17:34:10.183767"
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/可穿戴设备与ai健康分析的融合趋势.html",
+      "deploy_info": {
+        "task_id": "task_seo_002",
+        "file": "content/generated/可穿戴设备与ai健康分析的融合趋势.html",
+        "status": "deployed",
+        "remote_path": "/opt/healthlens/web/static/knowledge/可穿戴设备与ai健康分析的融合趋势.html",
+        "note": "dry-run"
+      }
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/表观遗传时钟与生活方式干预的临床验证.html",
+      "deploy_info": {
+        "task_id": "task_seo_003",
+        "file": "content/generated/表观遗传时钟与生活方式干预的临床验证.html",
+        "status": "deployed",
+        "remote_path": "/opt/healthlens/web/static/knowledge/表观遗传时钟与生活方式干预的临床验证.html",
+        "note": "dry-run"
+      }
+    }
+  ],
+  "backup_history": [
+    {
+      "backup_id": "bk_20260804_173336",
+      "started_at": "2026-08-04T17:33:36.326596",
+      "finished_at": "2026-08-04T17:33:36.681264",
+      "status": "failed"
+    }
+  ],
+  "run_history": [
+    {
+      "run_id": "run_20260804_173410",
+      "started_at": "2026-08-04T17:34:10.137205",
+      "finished_at": "2026-08-04T17:37:35.705401",
+      "verdict": "FAILED",
+      "failed_count": 2
+    }
+  ]
+}
