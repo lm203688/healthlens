@@ -1,0 +1,177 @@
+﻿profile_id,case_id,mode,recommendation_score,evidence_level,biological_axes,tcm_mapping,intervention
+P01-single-A,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P01-single-A,CASE-003,personalized,3,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P01-single-A,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P01-single-A,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P01-single-A,CASE-014,personalized,1,L3,"Autophagy(AMPK-mTOR); Mitochondrial(PGC-1α/SIRT1)",Food property: Warm,Food therapy: Ginger
+P01-single-A,CASE-020,personalized,1,L3,"Autophagy(AMPK-mTOR); Affect(HRV/EEG)",Food property: Cold,Food therapy: Lotus seed
+P01-single-A,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P01-single-A,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P02-single-B,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate shen,Regular exercise (aerobic/HIIT)
+P02-single-B,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P02-single-B,CASE-014,personalized,1,L3,"Autophagy(AMPK-mTOR); Mitochondrial(PGC-1α/SIRT1)",Food property: Warm,Food therapy: Ginger
+P02-single-B,CASE-018,personalized,1,L3,"Mitochondrial(PGC-1α/SIRT1); Epigenetic clock",Food property: Slightly cold,Food therapy: Rehmannia
+P02-single-B,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P02-single-B,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P02-single-B,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P02-single-B,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P03-single-C,CASE-005,personalized,3,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P03-single-C,CASE-006,personalized,3,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P03-single-C,CASE-013,personalized,1,L3,"Senolytics; Inflammaging",Medicated diet / Clear stasis,Dietary quercetin (onion/apple/tea)
+P03-single-C,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P03-single-C,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P03-single-C,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P03-single-C,CASE-007,general,0.9,L1,"Circadian(CLOCK/BMAL1)",Meridian flow / Yang feeding,Early TRE
+P03-single-C,CASE-008,general,0.9,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P04-single-D,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P04-single-D,CASE-007,personalized,3,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P04-single-D,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P04-single-D,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P04-single-D,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P04-single-D,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P04-single-D,CASE-022,personalized,2,L2,Circadian(CLOCK/BMAL1),Night avoid light / Yin entering,Blue light avoidance 4h pre-sleep
+P04-single-D,CASE-023,personalized,2,L2,Circadian(CLOCK/BMAL1),Morning sun / Yang rising,Morning bright light 10000 lux 1h
+P05-single-E,CASE-012,personalized,2,L2,"Neuroendocrine(HPA); Affect(HRV/EEG)",Regulate breath / Calm shen,Meditation / Breathing (HRV stress)
+P05-single-E,CASE-024,personalized,2,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P05-single-E,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P05-single-E,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P05-single-E,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P05-single-E,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P05-single-E,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P05-single-E,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P06-single-F,CASE-005,personalized,3,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P06-single-F,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P06-single-F,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P06-single-F,CASE-024,personalized,2,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P06-single-F,CASE-013,personalized,1,L3,"Senolytics; Inflammaging",Medicated diet / Clear stasis,Dietary quercetin (onion/apple/tea)
+P06-single-F,CASE-015,personalized,1,L3,"Inflammaging; Affect(HRV/EEG)",Food property: Neutral,Food therapy: Lily bulb
+P06-single-F,CASE-016,personalized,1,L3,"Circadian(CLOCK/BMAL1); Inflammaging",Food property: Neutral,Food therapy: Mung bean
+P06-single-F,CASE-017,personalized,1,L3,"Circadian(CLOCK/BMAL1); Inflammaging",Food property: Neutral,Food therapy: Cassia seed
+P07-single-G,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P07-single-G,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P07-single-G,CASE-012,personalized,2,L2,"Neuroendocrine(HPA); Affect(HRV/EEG)",Regulate breath / Calm shen,Meditation / Breathing (HRV stress)
+P07-single-G,CASE-024,personalized,2,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P07-single-G,CASE-015,personalized,1,L3,"Inflammaging; Affect(HRV/EEG)",Food property: Neutral,Food therapy: Lily bulb
+P07-single-G,CASE-020,personalized,1,L3,"Autophagy(AMPK-mTOR); Affect(HRV/EEG)",Food property: Cold,Food therapy: Lotus seed
+P07-single-G,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P07-single-G,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P08-single-H,CASE-003,personalized,3,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P08-single-H,CASE-006,personalized,3,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P08-single-H,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P08-single-H,CASE-018,personalized,1,L3,"Mitochondrial(PGC-1α/SIRT1); Epigenetic clock",Food property: Slightly cold,Food therapy: Rehmannia
+P08-single-H,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P08-single-H,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P08-single-H,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P08-single-H,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P09-pair-AB,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P09-pair-AB,CASE-003,personalized,3,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P09-pair-AB,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P09-pair-AB,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P09-pair-AB,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P09-pair-AB,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P09-pair-AB,CASE-014,personalized,2,L3,"Autophagy(AMPK-mTOR); Mitochondrial(PGC-1α/SIRT1)",Food property: Warm,Food therapy: Ginger
+P09-pair-AB,CASE-018,personalized,1,L3,"Mitochondrial(PGC-1α/SIRT1); Epigenetic clock",Food property: Slightly cold,Food therapy: Rehmannia
+P10-pair-BD,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P10-pair-BD,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P10-pair-BD,CASE-007,personalized,3,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P10-pair-BD,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P10-pair-BD,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P10-pair-BD,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P10-pair-BD,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P10-pair-BD,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P11-pair-CF,CASE-005,personalized,6,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P11-pair-CF,CASE-006,personalized,3,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P11-pair-CF,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P11-pair-CF,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P11-pair-CF,CASE-013,personalized,2,L3,"Senolytics; Inflammaging",Medicated diet / Clear stasis,Dietary quercetin (onion/apple/tea)
+P11-pair-CF,CASE-024,personalized,2,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P11-pair-CF,CASE-015,personalized,1,L3,"Inflammaging; Affect(HRV/EEG)",Food property: Neutral,Food therapy: Lily bulb
+P11-pair-CF,CASE-016,personalized,1,L3,"Circadian(CLOCK/BMAL1); Inflammaging",Food property: Neutral,Food therapy: Mung bean
+P12-pair-EG,CASE-012,personalized,4,L2,"Neuroendocrine(HPA); Affect(HRV/EEG)",Regulate breath / Calm shen,Meditation / Breathing (HRV stress)
+P12-pair-EG,CASE-024,personalized,4,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P12-pair-EG,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P12-pair-EG,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P12-pair-EG,CASE-015,personalized,1,L3,"Inflammaging; Affect(HRV/EEG)",Food property: Neutral,Food therapy: Lily bulb
+P12-pair-EG,CASE-020,personalized,1,L3,"Autophagy(AMPK-mTOR); Affect(HRV/EEG)",Food property: Cold,Food therapy: Lotus seed
+P12-pair-EG,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P12-pair-EG,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P13-pair-FG,CASE-024,personalized,4,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory
+P13-pair-FG,CASE-004,personalized,3,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P13-pair-FG,CASE-005,personalized,3,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P13-pair-FG,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P13-pair-FG,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P13-pair-FG,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P13-pair-FG,CASE-012,personalized,2,L2,"Neuroendocrine(HPA); Affect(HRV/EEG)",Regulate breath / Calm shen,Meditation / Breathing (HRV stress)
+P13-pair-FG,CASE-015,personalized,2,L3,"Inflammaging; Affect(HRV/EEG)",Food property: Neutral,Food therapy: Lily bulb
+P14-pair-DH,CASE-009,personalized,4,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P14-pair-DH,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P14-pair-DH,CASE-003,personalized,3,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P14-pair-DH,CASE-006,personalized,3,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P14-pair-DH,CASE-007,personalized,3,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P14-pair-DH,CASE-008,personalized,3,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P14-pair-DH,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P14-pair-DH,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P15-path-mito,CASE-004,personalized,6,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P15-path-mito,CASE-011,personalized,2,L2,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Regulate qi-blood,Tai chi / Qigong (HRV vagal tone)
+P15-path-mito,CASE-014,personalized,1,L3,"Autophagy(AMPK-mTOR); Mitochondrial(PGC-1α/SIRT1)",Food property: Warm,Food therapy: Ginger
+P15-path-mito,CASE-018,personalized,1,L3,"Mitochondrial(PGC-1α/SIRT1); Epigenetic clock",Food property: Slightly cold,Food therapy: Rehmannia
+P15-path-mito,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P15-path-mito,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P15-path-mito,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P15-path-mito,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P16-path-circ,CASE-022,personalized,2,L2,Circadian(CLOCK/BMAL1),Night avoid light / Yin entering,Blue light avoidance 4h pre-sleep
+P16-path-circ,CASE-023,personalized,2,L2,Circadian(CLOCK/BMAL1),Morning sun / Yang rising,Morning bright light 10000 lux 1h
+P16-path-circ,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P16-path-circ,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P16-path-circ,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P16-path-circ,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P16-path-circ,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P16-path-circ,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P17-path-autop,CASE-001,personalized,6,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P17-path-autop,CASE-003,personalized,6,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P17-path-autop,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P17-path-autop,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P17-path-autop,CASE-014,personalized,2,L3,"Autophagy(AMPK-mTOR); Mitochondrial(PGC-1α/SIRT1)",Food property: Warm,Food therapy: Ginger
+P17-path-autop,CASE-020,personalized,2,L3,"Autophagy(AMPK-mTOR); Affect(HRV/EEG)",Food property: Cold,Food therapy: Lotus seed
+P17-path-autop,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P17-path-autop,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P18-path-sen,CASE-005,personalized,6,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P18-path-sen,CASE-006,personalized,6,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P18-path-sen,CASE-009,personalized,2,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P18-path-sen,CASE-013,personalized,2,L3,"Senolytics; Inflammaging",Medicated diet / Clear stasis,Dietary quercetin (onion/apple/tea)
+P18-path-sen,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P18-path-sen,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P18-path-sen,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P18-path-sen,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P19-ctrl-strong,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P19-ctrl-strong,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P19-ctrl-strong,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P19-ctrl-strong,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P19-ctrl-strong,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P19-ctrl-strong,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P19-ctrl-strong,CASE-008,general,0.9,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P19-ctrl-strong,CASE-002,general,0.6,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P20-ctrl-empty,CASE-001,general,0.9,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P20-ctrl-empty,CASE-003,general,0.9,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P20-ctrl-empty,CASE-004,general,0.9,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P20-ctrl-empty,CASE-005,general,0.9,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P20-ctrl-empty,CASE-006,general,0.9,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P20-ctrl-empty,CASE-007,general,0.9,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P20-ctrl-empty,CASE-008,general,0.9,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P20-ctrl-empty,CASE-002,general,0.6,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P21-contra-FD,CASE-008,personalized,6,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P21-contra-FD,CASE-009,personalized,4,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P21-contra-FD,CASE-001,personalized,3,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P21-contra-FD,CASE-005,personalized,3,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P21-contra-FD,CASE-007,personalized,3,L1,Circadian(CLOCK/BMAL1),Meridian flow / Yang feeding,Early TRE
+P21-contra-FD,CASE-002,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Circadian rhythm,IF vs TRF 20 days
+P21-contra-FD,CASE-010,personalized,2,L2,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi disorder / Glucose fluctuation,CGM postprandial exposure
+P21-contra-FD,CASE-016,personalized,2,L3,"Circadian(CLOCK/BMAL1); Inflammaging",Food property: Neutral,Food therapy: Mung bean
+P22-all8,CASE-001,personalized,6,L1,"Autophagy(AMPK-mTOR); Circadian(CLOCK/BMAL1)",Qi transformation / Spleen transport,Intermittent fasting 4 weeks
+P22-all8,CASE-003,personalized,6,L1,"Autophagy(AMPK-mTOR); Epigenetic clock",Fasting-mimicking diet reboot,Fasting-mimicking diet 3 months
+P22-all8,CASE-004,personalized,6,L1,"Mitochondrial(PGC-1α/SIRT1); Affect(HRV/EEG)",Qigong / Move qi,Regular exercise (aerobic/HIIT)
+P22-all8,CASE-005,personalized,6,L1,"Senolytics; Inflammaging",Clear stasis / Unblock collaterals,Senolytics (D+Q) IPF pilot
+P22-all8,CASE-006,personalized,6,L1,"Senolytics; Epigenetic clock",Tonify zheng expel stasis,D+Q frailty trial
+P22-all8,CASE-008,personalized,6,L1,"Circadian(CLOCK/BMAL1); Inflammaging",Rhythmic diet / Transform dampness,16:8 TRE 4 months (hepatic fat)
+P22-all8,CASE-009,personalized,6,L2,"Circadian(CLOCK/BMAL1); Inflammaging; Epigenetic clock",Rhythmic regimen / Tonify zheng,16:8 TRE anti-aging
+P22-all8,CASE-024,personalized,6,L2,"Neuroendocrine(HPA); Inflammaging; Affect(HRV/EEG)",Acupuncture ST36 / Clear collaterals,Electroacupuncture ST36 0.5mA anti-inflammatory

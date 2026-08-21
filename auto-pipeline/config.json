@@ -83,6 +83,29 @@
     "verify_restore": true,
     "min_valid_size_bytes": 1024
   },
+  "hardware": {
+    "_comment": "硬件接口配置。BioWell为可选的经脉光子评估设备（GDV/EPI），其他为可穿戴设备。",
+    "biowell": {
+      "_comment": "BioWell GDV/EPI设备——指尖光电发射成像，60秒扫描获取经脉能量分布。非自动化设备，作为周期性评估工具。",
+      "enabled": false,
+      "scan_interval_days": 30,
+      "data_format": "gdv_xml",
+      "_comment_api": "BioWell软件可导出XML/CSV数据，需用户手动上传扫描结果。",
+      "user_upload_enabled": true
+    },
+    "wearables": {
+      "_comment": "可穿戴设备数据源（通过HealthKit/Google Fit API获取）。",
+      "apple_health": true,
+      "google_fit": true,
+      "garmin": false,
+      "huawei_hihealth": true
+    },
+    "consumer_bci": {
+      "_comment": "消费级BCI/EEG设备（未来态）。",
+      "enabled": false,
+      "supported_devices": ["Muse", "NeuroSky"]
+    }
+  },
   "content_targets": {
     "seo_knowledge_pages": {
       "min_per_week": 3,
@@ -121,7 +144,9 @@
         "quantified self",
         "exosome therapy",
         "iPSC",
-        "mRNA therapeutic"
+        "mRNA therapeutic",
+        "CD4 T cell immunosenescence longevity",
+        "BioWell GDV biofield"
       ]
     },
     {

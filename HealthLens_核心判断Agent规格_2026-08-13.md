@@ -223,3 +223,71 @@ if regeneration.score < 0.5:
 | 导引 / 动则生阳 | 运动诱导外泌体miRNA释放 | L2 | 有氧/HIIT 20-30min×3-5/周 |
 | 辟谷 / 气化重启 | 断食调控外泌体cargo | L2 | 16:8 TRE或周期性FMD |
 | 药食同源通络 | 外泌体纳米递送增强生物利用度 | L3（体外/动物） | 抗炎饮食（多酚类食物） |
+
+### 10.4 CD4+T细胞免疫衰老评估（F轴/H轴交叉，v1.1新增）
+
+CD4+T细胞是免疫衰老的核心驱动因子，横跨F轴（正邪-炎症）和H轴（先天-肾精）。判定逻辑：
+
+```
+# CD4免疫衰老评估（交叉判定）
+if cd4_cd8_ratio < 1.0 or cd4_naive_ratio < 0.2:
+    # 免疫衰老信号 → F轴炎症加重 + H轴干细胞龛功能下降
+    candidates.append({
+        "pathway": "immunosenescence",
+        "axes": ["F", "H"],
+        "interventions": [
+            {"name": "热量限制/间歇性断食", "evidence": "L1", "mechanism": "CR→自噬增强→CD4+T细胞线粒体清除→免疫功能恢复"},
+            {"name": "规律有氧运动", "evidence": "L1", "mechanism": "运动→CD4 CTL维持→免疫监视功能"},
+            {"name": "D+Q饮食源模拟", "evidence": "L2", "mechanism": "槲皮素(食源)→mTOR抑制→CD4+T细胞向年轻表型分化"},
+        ],
+        "weight": 1.0 if inflammaging.score < 0.5 else 0.7,
+    })
+```
+
+**古籍映射**："正气存内，邪不可干"→CD4 CTL扩增=现代免疫监视的"正气"表现；"肾精亏虚"→CD4 naiveT细胞池萎缩=先天免疫储备下降。
+
+**关键约束**：
+- CD4/CD8比值和CD4 naive/Tm比例目前需实验室检测（Flow Cytometry），无消费级产品。
+- 通过代理指标推断免疫衰老状态：年龄>60 + 慢性炎症标记高 + 睡眠质量差 → 推测CD4免疫衰老风险。
+- 严禁宣称"检测免疫衰老"——只能说"支持免疫系统的自然防御能力"。
+
+### 10.5 BioWell GDV经脉光子评估（E轴硬件接口，v1.1新增）
+
+BioWell通过指尖光电发射成像（GDV）测量经脉能量状态，直接桥接中医经脉理论与现代光子物理学。
+
+```
+# BioWell经脉能量评估（E轴可选硬件）
+if biowell_scan.available:
+    # BioWell数据接入 → 脏腑经脉能量分布
+    organ_energy = biowell_scan.get_organ_energies()  # 各脏腑能量评分
+    stress_index = biowell_scan.get_stress_index()    # 自主神经平衡
+    entropy = biowell_scan.get_entropy()               # 系统组织度
+
+    # 与E轴（脏腑-神经内分泌）融合
+    if stress_index > threshold_high:
+        candidates.append({
+            "pathway": "neuroendocrine_hpa",
+            "axis": "E",
+            "evidence": "BioWell Stress Index > 高阈值",
+            "interventions": [
+                {"name": "冥想/呼吸训练", "mechanism": "调节自主神经→降低BioWell Stress Index"},
+                {"name": "规律作息/节律养生", "mechanism": "D轴昼夜节律→E轴HPA平衡"},
+            ],
+        })
+```
+
+**BioWell参数与HealthLens轴映射**：
+
+| BioWell参数 | 健康范围 | 映射轴 | 健康含义 |
+|---|---|---|---|
+| Area（光子面积） | 越大越好 | A/B | 整体功能容量、代谢活性 |
+| Intensity（光子强度） | 中等最佳 | B/C | 电子发射强度、细胞代谢活力 |
+| Stress Index | 越低越好 | D/E/G | 自主神经平衡（交感/副交感） |
+| Entropy Coefficient | 中等最佳 | 系统级 | 组织有序度/混沌度 |
+| Form Coefficient | 越高越好 | A/I | 发射规则性、系统协调性 |
+
+**关键约束**：
+- BioWell测量的是受激光电发射（非人体原生生物场），经脉映射基于中医理论+Empirical验证。
+- BioWell是手动设备，不适合连续监测——作为周期性评估工具（月度/季度扫描）。
+- 设备价格约$500-1000，属于个人可购买级别，适合HealthLens用户画像。
+- 输出中表述为"经脉能量状态评估"，严禁"诊断疾病"或"检测生物场"。
