@@ -9,7 +9,13 @@
 
 ## 项目状态
 
-**v0.8.2** — Phase 1 全面完成 + 中医古籍知识库集成
+**v0.9.0** — 产品化迭代完成
+
+- 前端 MVP：Vite + React，6 页面（仪表盘/评估/体质/报告/知识库/AI 对话）
+- 3 个 Seed Skill：古籍文本挖掘 + 融合推理 + 证据分级
+- LLM 增强：`USE_LLM=1` 时本地 Ollama qwen3.8 对个人化处方做语义润色
+- MCP Server：5 个工具暴露为 MCP 协议（JSON-RPC 模式可用）
+- CI 全启用：agent-lib-test + skills-test + lint-and-test + docker-build
 
 - 140+ 文件，25 张数据库表，75+ API 端点，15 个路由模块
 - 174 个测试全绿 (pytest-asyncio, 23s)
@@ -121,6 +127,163 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 | 健康目标 | `/api/v1/goals/*` | CRUD/进度/统计 |
 | 通知中心 | `/api/v1/notifications/*` | 列表/已读/删除 |
 | 用药依从性 | `/api/v1/adherence/*` | 计划/记录/统计 |
+| **智能体** | `/api/v1/agent/*` | **融合安全管线 / 四角色 Agent 团队** |
+
+## 智能体能力库（healthlens_agent）
+
+把 GOAI 榜单头部项目的可借鉴能力（MedAssist 前置红牌、LabGuard typed guard IR、
+Codenotary 运行时遥测、DataFlow-Agent 可复现 DAG、EyeAgent 多模态工具箱）落地为一个
+**无重型依赖、可独立测试**的 Python 包 `healthlens_agent/`。它直接接入真实融合引擎
+`app/lib/fusion_engine.py`，不依赖 FastAPI，可在本地/CI 中独立运行与测试。
+
+| 模块 | 能力 |
+|------|------|
+| `safety` | 安全闸门：前置红牌（医学急症拦截）+ 后置去医疗化/八轴红线/证据断链 |
+| `audit` | 运行时行为遥测：七类异常（敏感信息/越界/未授权外呼/递归失控/注入/异常工具/超额） |
+| `pipeline` | 融合安全管线：两道闸门 + 审计 接入真实融合引擎 |
+| `team` | 四角色 Agent：Planner/Executor/Critic/Referee |
+| `benchmark` | GOAI 七维度行为评测 + launch-risk score |
+| `flow` | 可复现融合 DAG pipeline |
+| `multimodal` | 多模态八轴倾向速判原型（舌/面/体态） |
+
+命令行：
+
+```bash
+python -m healthlens_agent                 # 运行全部演示
+python -m healthlens_agent pipeline         # 融合安全管线
+python -m healthlens_agent team             # 四角色 Agent 团队
+python -m healthlens_agent bench            # GOAI 七维评测 + launch-risk
+python -m healthlens_agent flow --input "最近疲劳怕冷" --gene mitochondrial:0.32
+python -m healthlens_agent probe --image-desc "舌淡红、苔薄白、面色萎黄"
+```
+
+HTTP 入口（已接入 FastAPI，`try/except` 守卫注册，能力不可用时自动跳过）：
+- `POST /api/v1/agent/fusion` — 融合安全管线
+- `POST /api/v1/agent/team` — 四角色 Agent 团队
+
+测试（不依赖 FastAPI，可在精简环境运行）：
+
+```bash
+pytest healthlens_agent/tests -v
+```
+
+## 前端（frontend/）
+
+Vite + React 构建的单页应用，接入后端 75+ API 端点。
+
+| 页面 | 路由 | 功能 |
+|------|------|------|
+| 仪表盘 | `/` | 总览/弱项轴/融合评分/慢病风险 |
+| 健康评估 | `/assess` | 症状输入 + 基因弱项 → 融合引擎 → 个性化建议 |
+| 中医体质 | `/tcm` | 8 题问卷 → 体质分析 + 建议 |
+| 健康报告 | `/reports` | 报告数据展示 |
+| 知识库 | `/knowledge` | 全文检索/食疗方/非药物疗法 |
+| AI 对话 | `/agent` | 四角色 Agent 团队对话界面 |
+
+```bash
+cd frontend
+npm install
+npm run dev          # 开发：http://localhost:3000（自动代理 /api 到后端）
+npm run build        # 生产构建 → frontend/dist/
+npm run preview      # 预览生产构建
+```
+
+## Skills 体系（skills/）
+
+借鉴 Hunter/AgentPit SKILL 架构（SKILL.md + run.py + test.py），3 个 Seed Skill：
+
+| Skill | 方法论 | 命令 |
+|-------|--------|------|
+| `tcm_text_mining` | 古籍文本→症状/治法/方药实体抽取+轴映射 | `python skills/tcm_text_mining/run.py --text "..."` |
+| `fusion_inference` | 古籍候选 ∩ 基因弱项→八轴评分+建议 | `python skills/fusion_inference/run.py --text "..." --gene "mitochondrial:0.32"` |
+| `evidence_grading` | L1/L2/L3 证据分级+置信度评分 | `python skills/evidence_grading/run.py --recs '[...]` |
+
+```bash
+python skills/scaffold.py list    # 列出所有 Skill
+python skills/scaffold.py test tcm_text_mining   # 测试 Skill
+```
+
+## MCP Server
+
+5 个工具通过 MCP 协议暴露，供外部 Agent/Copilot 调用：
+
+- `fusion_engine` — 八轴融合推理
+- `evidence_grade` — 证据分级 L1/L2/L3
+- `risk_assess` — 慢病风险评估
+- `tcm_constitution` — 中医体质分析
+- `knowledge_search` — 古籍知识库搜索
+
+```bash
+python -m healthlens_agent mcp    # 启动 MCP Server（JSON-RPC 模式）
+# 如需标准 MCP 协议：pip install mcp
+```
+
+## Skill 注册表 API
+
+通过 `healthlens_agent/skills.py` 将 `skills/` 目录下的所有 Skill 暴露为 API：
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/v1/skills` | GET | 列出所有 Skill 元信息 |
+| `/api/v1/skills/{name}` | GET | 获取单个 Skill 详情（SKILL.md 内容） |
+| `/api/v1/skills/{name}/run` | POST | 执行指定 Skill |
+| `/api/v1/skills/{name}/test` | POST | 运行 Skill 的 test.py |
+
+## 自动化管线 API
+
+对接 `auto-pipeline/scripts/phase_1~8` 的 8 阶段自动化管线：
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/v1/pipeline/phases` | GET | 列出所有管线阶段 |
+| `/api/v1/pipeline/status` | GET | 管线运行状态 |
+| `/api/v1/pipeline/phase/{id}/run` | POST | 执行单个阶段（支持 dry_run） |
+| `/api/v1/pipeline/run-all` | POST | 依次执行全部 8 阶段 |
+
+## 数据连接器
+
+5 个外部数据源连接器（Apple Health / 华为健康 / 小米运动健康 / Withings / 医院 LIS），
+统一抽象在 `app/connectors/`，通过 `app/api/connectors_public.py` 暴露。
+所有同步输出经过 `app/core/desensitize.py` 脱敏网关（mask/pseudonymize/anonymize 三级）。
+
+## 合规与同意
+
+`/api/v1/compliance/*` 端点覆盖：
+- 4 份政策（隐私/条款/数据处理/未成年人保护）的版本化管理
+- 用户同意记录与查询
+- 生产环境合规红线
+
+## 配置中心
+
+`data/healthlens_config.json` 集中管理所有可调参数：
+八轴定义与阈值 / 融合公式 / 风险阈值 / 安全红牌规则 / LLM 配置 / Skill 配置 / 审计配置。
+支持环境变量覆盖：`HL_CONFIG_SECTION_KEY=value`。
+
+## 数据库初始化
+
+```bash
+python tools/db_init.py --all       # 完整初始化（schema + seed + 案例扩展）
+python tools/db_init.py --cases 120 # 将验证案例从 24 扩展到 120
+```
+
+## LLM 增强
+
+`USE_LLM=1` 时，融合引擎调用本地 Ollama 模型对处方文本做个人化语义增强。失败静默回退到规则引擎。
+
+```bash
+USE_LLM=1 HEALTHLENS_LLM_MODEL=qwen3.8 python -m healthlens_agent pipeline
+```
+
+## CI
+
+`.github/workflows/ci.yml` 包含 4 个 job：
+
+| Job | 内容 |
+|-----|------|
+| `lint-and-test` | ruff + mypy + pytest tests/（全量后端） |
+| `docker-build` | Docker 镜像构建 |
+| `agent-lib-test` | ruff + pytest healthlens_agent/（无 FastAPI 依赖） |
+| `skills-test` | 3 个 Seed Skill 的 test.py |
 
 ## 安全特性
 
@@ -163,7 +326,7 @@ LOG_LEVEL=INFO
 ## 测试
 
 ```bash
-# 全量测试
+# 全量测试（需安装 FastAPI 等后端依赖）
 pytest tests/ -v
 
 # 带覆盖率
@@ -174,6 +337,9 @@ pytest tests/api/ -v
 
 # 仅引擎测试
 pytest tests/core/ -v
+
+# 智能体能力库测试（无需 FastAPI，精简环境即可运行）
+pytest healthlens_agent/tests -v
 ```
 
 ## 部署架构

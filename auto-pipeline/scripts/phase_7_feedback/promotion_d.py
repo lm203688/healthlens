@@ -10,15 +10,23 @@ D线：推广营销闭环
 - Referral：数据库 referral_events 表
 - Brand：社交媒体监控API
 """
-import sys
 import json
-import urllib.request
+import sys
 import urllib.error
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
-from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
+from state_manager import (
+    BASE_DIR,
+    complete_phase,
+    fail_phase,
+    get_state,
+    log,
+    save_state,
+    start_phase,
+)
 
 
 def _probe_seo_health():
@@ -49,7 +57,7 @@ def get_channel_metrics():
     其他渠道：当前为占位数据，需接入真实数据源
     """
     seo_health = _probe_seo_health()
-    
+
     return {
         "SEO": {
             "visits": 0, "signups": 0, "conversions": 0, "cost": 0,
@@ -86,12 +94,12 @@ def calculate_roi(channels):
         cost = data["cost"]
         signup_rate = round(signups / max(visits, 1) * 100, 1)
         cac = round(cost / max(signups, 1), 2) if signups > 0 else float("inf")
-        
+
         if cost == 0:
             efficiency = "free_high" if signup_rate > 2 else "free_low"
         else:
             efficiency = "paid_good" if cac < 50 else "paid_poor"
-        
+
         results[name] = {
             "visits": visits, "signups": signups, "cost": cost,
             "signup_rate": signup_rate, "cac": cac,
@@ -123,16 +131,16 @@ def run():
     phase = "promotion_d"
     try:
         start_phase(phase)
-        
+
         channels = get_channel_metrics()
         roi = calculate_roi(channels)
         actions = evaluate_channels(roi)
-        
+
         total_visits = sum(c["visits"] for c in channels.values())
         total_signups = sum(c["signups"] for c in channels.values())
         total_cost = sum(c["cost"] for c in channels.values())
         overall_cac = round(total_cost / max(total_signups, 1), 2)
-        
+
         state = get_state()
         state.setdefault("feedback_metrics", {})["promotion"] = {
             "checked_at": datetime.now().isoformat(),
@@ -144,7 +152,7 @@ def run():
             "channel_actions": len([a for a in actions if a["action"] in ["reduce_budget", "increase_effort"]])
         }
         save_state(state)
-        
+
         report = {
             "report_id": f"promotion_d_{datetime.now().strftime('%Y%m%d')}",
             "generated_at": datetime.now().isoformat(),
@@ -160,12 +168,12 @@ def run():
                 for a in actions if a["priority"] == "high"
             ]
         }
-        
+
         output_file = f"reports/analysis/{datetime.now().strftime('%Y-%m-%d')}_promotion_d.json"
         output_path = BASE_DIR / output_file
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
-        
+
         complete_phase(phase, output_file=output_file, items_processed=len(channels))
         log(f"D线推广分析完成: SEO健康度{channels['SEO'].get('health_rate', 0)}%, 总访问 {total_visits}, 注册 {total_signups}, CAC ¥{overall_cac}")
         return True

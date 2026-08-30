@@ -2,26 +2,40 @@
   "project_name": "HealthLens",
   "project_url": "https://healthlens.cc",
   "deployment": {
-    "_comment_incident_20260804": "重大发现：原 ssh_host=root@150.158.119.19 是 AIShield 项目的服务器，不是 HealthLens 的。该机器 nginx 只有 aishield 的 vhost，带 Host:healthlens.cc 直连会返回 AIShield 首页。HealthLens 实际从未部署到任何服务器。已将 ssh_host 置空，使部署阶段显式报「未配置」而不是静默指向他人服务器。",
-    "deploy_method": "scp",
-    "ssh_host": "",
-    "verified_at": null,
-    "known_foreign_hosts": {
-      "150.158.119.19": "AIShield (aishield.tools)"
-    },
-    "remote_content_path": "/opt/healthlens/web/static/knowledge",
-    "remote_sitemap_path": "/opt/healthlens/web/static/sitemap.xml",
+    "_comment_20260829_corrected": "2026-08-29 实测修正（推翻了下方 20260804 的结论）：150.158.119.19 是 HealthLens 自己的服务器，与 AIShield 同机共存，不是他人机器。后端已部署且健康——healthlens-web/worker/redis/db/minio 全部 Up 且 healthy；/etc/nginx/conf.d/api.healthlens.cc.conf 存在并反代 127.0.0.1:8000；容器内 /health 返回 {status:ok,version:0.18.1}；Celery 已连上 Redis。SSH 用户是 ubuntu（非 root），免密 sudo 可用，密钥 .workbuddy/cache/ecs_deploy_key。",
+    "_comment_incident_20260804": "【已过时，保留作历史记录】原判断认为 150.158.119.19 是 AIShield 的服务器、HealthLens 从未部署。实际是因为当时缺少 nginx vhost，请求落到了 aishield 的 server_name _ 兜底站，看起来像别人的站。vhost 补上后此结论不再成立。",
+    "deploy_method": "cf_pages",
+    "_comment_method": "前端是 Cloudflare Pages 静态站（healthlens.cc），知识页是 Pages 静态资源而非后端数据库内容：后端 /knowledge/{slug} 只对数据库里已有的 slug 返回 200，其余 404，由 _worker.js 回落到静态资源。所以真实发布通道是 build_site.py 构建 + wrangler pages deploy，不是 SCP 上传 ECS。旧的 remote_content_path=/opt/healthlens/web/static/knowledge 在服务器上不存在（实测 No such file or directory）。",
+    "cf_account_id": "8162aa3b2241c132e43a81f526d7f758",
+    "cf_tokens_file": ".workbuddy/cache/cf_tokens.json",
+    "pages_project": "healthlens",
+    "site_url": "https://healthlens.cc",
     "sitemap_url": "https://healthlens.cc/sitemap.xml",
-    "_comment_dry_run": "此前 config 里没有 dry_run 键，而代码用 .get('dry_run', True) 兜底，导致部署阶段永久 dry-run，从未真正上线过任何文件。现在显式声明。要真实部署请改为 false 并确保 ssh_host 已填且 SSH 免密可用。",
-    "dry_run": true,
+    "_comment_indexnow": "IndexNow 推送密钥（可选）。留空则部署后不做 IndexNow 通知，仅依赖 sitemap 被爬虫自然发现。",
+    "indexnow_key": "",
+    "ssh_host": "ubuntu@150.158.119.19",
+    "_comment_ssh": "SSH 用户是 ubuntu 不是 root（所有 .workbuddy/cache/ecs_*.py 都用 ubuntu；实测 root 认证被拒 Permission denied (publickey,password)）。密钥 workbuddy-deploy-hl（ED25519）已在本机可用。",
+    "verified_at": "2026-08-29",
+    "known_foreign_hosts": {},
+    "remote_sitemap_path": "/opt/healthlens/data/sitemap.xml",
+    "_comment_dry_run": "2026-08-29 已放开：SSH 可达、后端健康、CF Pages 令牌可用（两个 Pages 令牌均成功；另一令牌对该项目无权限，报 10000，已跳过）。同日前后已实测一次真实部署上线并回读校验通过。",
+    "dry_run": false,
     "verify_after_deploy": true,
     "rollback_on_verify_fail": true
   },
   "alerting": {
     "enabled": true,
     "cooldown_seconds": 14400,
-    "_comment": "告警通道：本地文件（必选）+ 控制台（醒目输出）。如需webhook，添加enabled=true的真实地址。",
-    "webhooks": []
+    "_comment": "告警通道：本地文件（必选，永不断）+ 控制台 + Webhook。webhooks 支持 kind=serverchan / wecom / dingtalk / generic，可配多条，按 min_level 过滤。",
+    "_comment_serverchan": "Server酱 API 域名是 sctapi.ftqq.com——注意 sct.ftqq.com 只是官网静态站，POST 到它会返回 405 Method Not Allowed。2026-08-29 起 url 里的 SendKey 改为 ${SERVERCHAN_SENDKEY} 环境变量展开（本仓库公开，密钥不入库）：从 https://sct.ftqq.com/sendkey 取到 Key 后写入 .workbuddy/cache/env.sh（已被 gitignore）并 export SERVERCHAN_SENDKEY=SCTxxx。注意用户 2026-08-29 首次提供的 Key 已被 sctapi 拒绝（code 40001 错误的Key），需重新获取。未配置时告警只落本地文件 auto-pipeline/alerts/ 和 ACTIVE_ALERTS.md。免费额度 5 条/天。",
+    "webhooks": [
+      {
+        "kind": "serverchan",
+        "url": "https://sctapi.ftqq.com/${SERVERCHAN_SENDKEY}.send",
+        "min_level": "WARN",
+        "enabled": true
+      }
+    ]
   },
   "database": {
     "_comment": "后端数据库连接。优先级：环境变量 DATABASE_URL > 本地Docker PostgreSQL > SQLite fallback。",
@@ -73,8 +87,8 @@
     "_comment": "数据库备份。mode: local_docker(本机 docker exec) / ssh(远程服务器) / auto(先试 ssh 再试 local)",
     "enabled": true,
     "mode": "auto",
-    "_comment_ssh_host": "同 deployment：原值 root@150.158.119.19 是 AIShield 的服务器，向它 pg_dump 只会拿到别人的库或直接失败。置空以强制显式报错。",
-    "ssh_host": "",
+    "_comment_ssh_host": "2026-08-29 已恢复：150.158.119.19 是 HealthLens 自己的服务器（与 AIShield 同机共存），上面的 healthlens-db 容器 Up 且 healthy，就是本项目的数据库。SSH 用户是 ubuntu。",
+    "ssh_host": "ubuntu@150.158.119.19",
     "db_container": "healthlens-db",
     "db_user": "healthlens",
     "db_name": "healthlens",

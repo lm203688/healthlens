@@ -1,0 +1,223 @@
+{
+  "report_id": "intel_2026-07-27",
+  "generated_at": "2026-07-27T17:04:40.554934",
+  "sources_checked": 3,
+  "items": [
+    {
+      "id": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "category": "tech_trend",
+      "summary": "越来越多的可穿戴设备厂商开始集成AI驱动的健康分析功能，包括睡眠质量深度分析、压力水平评估等。",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/trending/health-ai",
+          "relevance": 0.85
+        },
+        {
+          "name": "arXiv",
+          "url": "https://arxiv.org/search/?query=wearable+health+ai",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可增强睡眠修复追踪模块的AI分析能力",
+      "market_signals": {
+        "github_stars_growth": "+25%/month",
+        "startup_funding": "3家获投"
+      },
+      "technical_feasibility": 0.85,
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ]
+    },
+    {
+      "id": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "category": "academic",
+      "summary": "多项临床研究证实，综合生活方式干预（饮食+运动+睡眠）可使表观遗传年龄逆转2-5年。",
+      "sources": [
+        {
+          "name": "Nature Aging",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "为修复年龄和修复评分提供更坚实的学术依据",
+      "market_signals": {
+        "clinical_trials": "12项进行中",
+        "consumer_interest": "上升"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ]
+    },
+    {
+      "id": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "market",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "七麦数据",
+          "url": "",
+          "relevance": 0.75
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.9,
+      "tags": [
+        "竞品分析",
+        "市场格局",
+        "差异化"
+      ]
+    },
+    {
+      "id": "intel_004",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "tech_trend",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/",
+          "relevance": 0.7
+        },
+        {
+          "name": "市场研究",
+          "url": "",
+          "relevance": 0.65
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.6,
+      "tags": [
+        "PEMF",
+        "频率疗法",
+        "线粒体"
+      ]
+    },
+    {
+      "id": "intel_005",
+      "title": "肠道菌群检测与个性化营养推荐",
+      "category": "tech_trend",
+      "summary": "基于肠道菌群检测的个性化营养方案成为健康管理新热点，多家创业公司进入此领域。",
+      "sources": [
+        {
+          "name": "行业报告",
+          "url": "",
+          "relevance": 0.75
+        },
+        {
+          "name": "学术论文",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "肠道菌群是汇聚节点理论的重要组成部分",
+      "market_signals": {
+        "startups": "20+家",
+        "consumer_adoption": "早期"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "肠道菌群",
+        "个性化营养",
+        "微生物组"
+      ]
+    },
+    {
+      "id": "intel_006",
+      "title": "LLM驱动的健康助手用户体验研究",
+      "category": "tech_trend",
+      "summary": "大语言模型在健康咨询场景的应用日益广泛，但用户信任度和准确性仍是核心挑战。",
+      "sources": [
+        {
+          "name": "HuggingFace",
+          "url": "",
+          "relevance": 0.8
+        },
+        {
+          "name": "用户研究",
+          "url": "",
+          "relevance": 0.7
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "优化AI健康助手的回答质量和可信度",
+      "market_signals": {
+        "adoption_rate": "快速增长",
+        "trust_score": "中等"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "LLM",
+        "健康助手",
+        "用户体验"
+      ]
+    },
+    {
+      "id": "intel_007",
+      "title": "连续血糖监测(CGM)与代谢健康管理",
+      "category": "market",
+      "summary": "CGM设备价格下降推动代谢健康管理普及，从糖尿病人群延伸到健康人群。",
+      "sources": [
+        {
+          "name": "市场研究",
+          "url": "",
+          "relevance": 0.75
+        }
+      ],
+      "relevance_to_healthlens": "low",
+      "actionable_insight": "可作为数据来源拓展方向",
+      "market_signals": {
+        "price_drop": "50%/3年",
+        "consumer_market": "启动"
+      },
+      "technical_feasibility": 0.5,
+      "tags": [
+        "CGM",
+        "代谢健康",
+        "数据整合"
+      ]
+    }
+  ],
+  "category_breakdown": {
+    "tech_trend": 3,
+    "academic": 1,
+    "market": 2,
+    "other": 1
+  },
+  "top_trends": [
+    "AI驱动的健康分析成为标配",
+    "生活方式干预的临床验证加强",
+    "个性化和精准化趋势明显"
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "briefing_id": "briefing_20260803_0301",
+  "generated_at": "2026-08-03T03:01:46.476184",
+  "pipeline_id": "W30-2026",
+  "pipeline_status": "running_ops_health_f",
+  "summary": {
+    "total_tasks": 24,
+    "tasks_completed": 12,
+    "tasks_failed": 0,
+    "tasks_not_run": 12,
+    "reports_found": 23,
+    "manual_actions_count": 5,
+    "high_priority_count": 4
+  },
+  "task_results": {
+    "pipeline-a-collect": {
+      "name": "A线·情报收集",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:00",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:40.561986",
+      "output_file": "reports/intelligence/2026-07-27_intelligence_report.json"
+    },
+    "pipeline-a-analyze": {
+      "name": "A线·智能分析",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:05",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:40.684810",
+      "output_file": "reports/analysis/2026-07-27_analysis_report.json"
+    },
+    "pipeline-a-decide": {
+      "name": "A线·决策门禁",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:10",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:40.811019",
+      "output_file": "reports/analysis/2026-07-27_decision_report.json"
+    },
+    "pipeline-a-develop": {
+      "name": "A线·内容开发",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:15",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:40.938362",
+      "output_file": "reports/analysis/2026-07-27_development_report.json"
+    },
+    "pipeline-a-test": {
+      "name": "A线·质量测试",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:20",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:41.069139",
+      "output_file": "reports/analysis/2026-07-27_test_report.json"
+    },
+    "pipeline-a-deploy": {
+      "name": "A线·部署上架",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:25",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-07-27T17:04:41.197679",
+      "output_file": "reports/deployed/2026-07-27_deployment_report.json"
+    },
+    "feedback-a": {
+      "name": "A线·效果追踪反馈",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:30",
+      "line": "A",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:26.854965",
+      "output_file": "reports/analysis/2026-08-03_feedback_a.json"
+    },
+    "feedback-b": {
+      "name": "B线·用户转化闭环",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:35",
+      "line": "B",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:26.973468",
+      "output_file": "reports/analysis/2026-08-03_conversion_b.json"
+    },
+    "feedback-c": {
+      "name": "C线·数据资产闭环",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:40",
+      "line": "C",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:27.093581",
+      "output_file": "reports/analysis/2026-08-03_data_asset_c.json"
+    },
+    "feedback-d": {
+      "name": "D线·推广营销闭环",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:45",
+      "line": "D",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:27.209210",
+      "output_file": "reports/analysis/2026-08-03_promotion_d.json"
+    },
+    "feedback-e": {
+      "name": "E线·资金闭环",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:50",
+      "line": "E",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:31.818113",
+      "output_file": "reports/analysis/2026-08-03_finance_e.json"
+    },
+    "feedback-f": {
+      "name": "F线·项目运维闭环",
+      "system": "auto-pipeline",
+      "schedule": "每周一 03:55",
+      "line": "F",
+      "last_status": "completed",
+      "last_error": null,
+      "last_run": "2026-08-03T03:01:36.300796",
+      "output_file": "reports/analysis/2026-08-03_ops_health_f.json"
+    },
+    "seo-generate-conditions": {
+      "name": "SEO知识页面生成-病症类",
+      "system": "celery",
+      "schedule": "每周三 03:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "seo-generate-herbs": {
+      "name": "SEO知识页面生成-本草类",
+      "system": "celery",
+      "schedule": "每周六 03:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "seo-auto-publish": {
+      "name": "SEO自动审核发布",
+      "system": "celery",
+      "schedule": "每日 04:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "user-education-push": {
+      "name": "用户教育内容推送",
+      "system": "celery",
+      "schedule": "每周五 03:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "cleanup-expired-invites": {
+      "name": "过期邀请码清理",
+      "system": "celery",
+      "schedule": "每日 05:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "cleanup-old-analytics": {
+      "name": "过期分析数据清理",
+      "system": "celery",
+      "schedule": "每周日 05:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "reactivate-silent-users": {
+      "name": "沉默用户唤醒(3天)",
+      "system": "celery",
+      "schedule": "每日 06:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "reactivate-deep-silent": {
+      "name": "深度沉默用户唤醒(7天)",
+      "system": "celery",
+      "schedule": "每周二 06:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "acquisition-weekly-report": {
+      "name": "获客数据周报",
+      "system": "celery",
+      "schedule": "每周一 05:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "monthly-comprehensive-report": {
+      "name": "月度综合报告",
+      "system": "schedule",
+      "schedule": "每月1日 03:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "quarterly-strategy-report": {
+      "name": "季度策略报告",
+      "system": "schedule",
+      "schedule": "每季首月1日 04:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    },
+    "promotion-tech-tracking": {
+      "name": "推广技术深度追踪",
+      "system": "schedule",
+      "schedule": "每月15日 03:00",
+      "line": "-",
+      "last_status": "not_run",
+      "last_error": null,
+      "last_run": null,
+      "output_file": null
+    }
+  },
+  "line_metrics": {
+    "A_line_content": {
+      "pipeline_id": "W30-2026",
+      "status": "running_ops_health_f",
+      "phases_completed": 12,
+      "phases_failed": 0,
+      "approved_items": 3,
+      "watch_items": 3,
+      "deployed_items": 1,
+      "content_pipeline": {
+        "checked_at": "2026-08-03T03:01:26.847129",
+        "total_deployed": 2,
+        "success_rate": 50.0,
+        "top_performer": "表观遗传时钟与生活方式干预的临床验证",
+        "weight_adjustments": {}
+      }
+    },
+    "B_line_conversion": {
+      "checked_at": "2026-08-03T03:01:26.966353",
+      "weekly_active_rate": 42.9,
+      "d7_retention": 42.3,
+      "paid_conversion": 11.5,
+      "biggest_dropoff": {
+        "from": "viewed_plan",
+        "to": "purchased_points",
+        "dropoff_rate": 53.8,
+        "users_lost": 28
+      },
+      "plan_effectiveness": 0.72
+    },
+    "C_line_data": {
+      "checked_at": "2026-08-03T03:01:27.086551",
+      "total_records": 1063200,
+      "quality_issues": 0,
+      "estimated_value": 1807.44,
+      "freshness": 0.85
+    },
+    "D_line_promotion": {
+      "checked_at": "2026-08-03T03:01:27.201195",
+      "total_visits": 2380,
+      "total_signups": 105,
+      "overall_cac": 1.9,
+      "channel_actions": 1
+    },
+    "E_line_finance": {
+      "checked_at": "2026-08-03T03:01:31.808561",
+      "weekly_profit": -77.5,
+      "monthly_profit_est": -333.25,
+      "unit_economics": "negative",
+      "all_time_revenue": 0,
+      "alerts": 1,
+      "data_source": "db_error"
+    },
+    "F_line_ops": {
+      "checked_at": "2026-08-03T03:01:36.291233",
+      "overall": "needs_attention",
+      "endpoints_ok": 0,
+      "endpoints_error": 4,
+      "containers_unhealthy": 0,
+      "security_issues": 0,
+      "medical_terms_found": 0
+    }
+  },
+  "manual_actions": [
+    {
+      "priority": "high",
+      "line": "F",
+      "category": "端点异常",
+      "issue": "API健康 (https://healthlens.cc/health) 返回 530",
+      "action": "检查并修复 API健康 端点",
+      "auto_fixable": false
+    },
+    {
+      "priority": "high",
+      "line": "F",
+      "category": "端点异常",
+      "issue": "SEO内容 (https://healthlens.cc/llms.txt) 返回 530",
+      "action": "检查并修复 SEO内容 端点",
+      "auto_fixable": false
+    },
+    {
+      "priority": "high",
+      "line": "F",
+      "category": "端点异常",
+      "issue": "Robots (https://healthlens.cc/robots.txt) 返回 530",
+      "action": "检查并修复 Robots 端点",
+      "auto_fixable": false
+    },
+    {
+      "priority": "high",
+      "line": "F",
+      "category": "端点异常",
+      "issue": "Sitemap (https://healthlens.cc/sitemap.xml) 返回 530",
+      "action": "检查并修复 Sitemap 端点",
+      "auto_fixable": false
+    },
+    {
+      "priority": "critical",
+      "line": "E",
+      "category": "成本预警",
+      "issue": "真实收入为零：前端缺少购买积分页面，用户无法付费。需尽快上线购买入口。",
+      "action": "审查成本结构，优化支出",
+      "auto_fixable": false
+    }
+  ],
+  "recent_reports": [
+    {
+      "name": "2026-08-03_ops_health_f.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:36.293775"
+    },
+    {
+      "name": "2026-08-03_finance_e.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:31.811101"
+    },
+    {
+      "name": "2026-08-03_promotion_d.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:27.203713"
+    },
+    {
+      "name": "2026-08-03_data_asset_c.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:27.087552"
+    },
+    {
+      "name": "2026-08-03_conversion_b.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:26.968373"
+    },
+    {
+      "name": "2026-08-03_feedback_a.json",
+      "category": "analysis",
+      "modified": "2026-08-03T03:01:26.848638"
+    },
+    {
+      "name": "2026-07-30_conversion_b.json",
+      "category": "analysis",
+      "modified": "2026-07-30T08:16:25.559056"
+    },
+    {
+      "name": "2026-07-30_ops_health_f.json",
+      "category": "analysis",
+      "modified": "2026-07-30T08:16:01.653054"
+    },
+    {
+      "name": "2026-07-30_promotion_d.json",
+      "category": "analysis",
+      "modified": "2026-07-30T08:15:57.571553"
+    },
+    {
+      "name": "2026-07-30_data_asset_c.json",
+      "category": "analysis",
+      "modified": "2026-07-30T08:15:57.322013"
+    }
+  ]
+}

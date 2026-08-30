@@ -1,0 +1,86 @@
+{
+  "report_id": "conversion_b_20260727",
+  "generated_at": "2026-07-27T20:47:11.553630",
+  "user_metrics": {
+    "total_users": 156,
+    "new_users_week": 23,
+    "active_users_week": 67,
+    "retention_rate_d7": 42.3,
+    "retention_rate_d30": 28.1,
+    "paid_conversion_rate": 5.8,
+    "points_purchased_week": 12,
+    "health_reports_generated": 45,
+    "sleep_analysis_completed": 34,
+    "constitution_tested": 28,
+    "funnel": {
+      "registered": 156,
+      "completed_profile": 89,
+      "generated_report": 67,
+      "viewed_plan": 52,
+      "purchased_points": 9
+    }
+  },
+  "plan_effectiveness": {
+    "plans_generated": 52,
+    "plans_with_follow_up": 18,
+    "avg_improvement_score": 0.72,
+    "top_improving_category": "睡眠修复",
+    "improvement_by_category": {
+      "睡眠修复": {
+        "count": 22,
+        "avg_score": 0.78
+      },
+      "营养调理": {
+        "count": 15,
+        "avg_score": 0.71
+      },
+      "运动指导": {
+        "count": 10,
+        "avg_score": 0.65
+      },
+      "频率干预": {
+        "count": 5,
+        "avg_score": 0.69
+      }
+    }
+  },
+  "funnel_dropoffs": [
+    {
+      "from": "registered",
+      "to": "completed_profile",
+      "dropoff_rate": 42.9,
+      "users_lost": 67
+    },
+    {
+      "from": "completed_profile",
+      "to": "generated_report",
+      "dropoff_rate": 24.7,
+      "users_lost": 22
+    },
+    {
+      "from": "generated_report",
+      "to": "viewed_plan",
+      "dropoff_rate": 22.4,
+      "users_lost": 15
+    },
+    {
+      "from": "viewed_plan",
+      "to": "purchased_points",
+      "dropoff_rate": 82.7,
+      "users_lost": 43
+    }
+  ],
+  "biggest_dropoff": {
+    "from": "viewed_plan",
+    "to": "purchased_points",
+    "dropoff_rate": 82.7,
+    "users_lost": 43
+  },
+  "recommendations": [
+    {
+      "type": "funnel",
+      "priority": "high",
+      "action": "修复最大流失点: viewed_plan→purchased_points (82.7%流失)"
+    }
+  ]
+}

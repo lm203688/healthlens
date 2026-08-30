@@ -1,0 +1,74 @@
+{
+  "records": [
+    {
+      "timestamp": "2026-08-04T17:34:10.139416",
+      "rule": "目录护栏",
+      "key": "missing_dirs",
+      "success": true,
+      "detail": "created=['reports/decisions', 'runs']",
+      "attempt": 0
+    },
+    {
+      "timestamp": "2026-08-04T17:34:10.155795",
+      "rule": "状态完整性",
+      "key": "state_integrity",
+      "success": true,
+      "detail": "fixed=['run_history']",
+      "attempt": 0
+    },
+    {
+      "timestamp": "2026-08-04T17:34:10.177192",
+      "rule": "失败阶段复位",
+      "key": "failed_phase:ops_health_f",
+      "success": true,
+      "detail": "phase=ops_health_f prev_error=运维检查未通过: down (端点 0/4 正常)",
+      "attempt": 0
+    },
+    {
+      "timestamp": "2026-08-04T17:34:10.191490",
+      "rule": "失败任务自动重试",
+      "key": "failed_task:task_edu_001:test_failed",
+      "success": true,
+      "detail": "task_edu_001: test_failed -> pending_test",
+      "attempt": 0
+    },
+    {
+      "timestamp": "2026-08-04T17:41:01.206325",
+      "rule": "失败阶段复位",
+      "key": "failed_phase:ops_health_f",
+      "success": true,
+      "detail": "phase=ops_health_f prev_error=运维检查未通过: down (端点 0/4 正常)",
+      "attempt": 0
+    }
+  ],
+  "attempts": {
+    "missing_dirs": {
+      "count": 0,
+      "first_at": "2026-08-04T17:34:10.139410",
+      "last_at": "2026-08-04T17:34:10.139414",
+      "last_success": true,
+      "resolved_at": "2026-08-04T17:34:10.139415"
+    },
+    "state_integrity": {
+      "count": 0,
+      "first_at": "2026-08-04T17:34:10.155780",
+      "last_at": "2026-08-04T17:34:10.155791",
+      "last_success": true,
+      "resolved_at": "2026-08-04T17:34:10.155793"
+    },
+    "failed_phase:ops_health_f": {
+      "count": 0,
+      "first_at": "2026-08-04T17:34:10.177181",
+      "last_at": "2026-08-04T17:41:01.206322",
+      "last_success": true,
+      "resolved_at": "2026-08-04T17:41:01.206323"
+    },
+    "failed_task:task_edu_001:test_failed": {
+      "count": 0,
+      "first_at": "2026-08-04T17:34:10.191482",
+      "last_at": "2026-08-04T17:34:10.191488",
+      "last_success": true,
+      "resolved_at": "2026-08-04T17:34:10.191489"
+    }
+  }
+}

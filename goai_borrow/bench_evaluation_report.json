@@ -1,0 +1,59 @@
+{
+  "note": "维度评分不使用权重，仅为启发式自评骨架；真实评测需补 case 级测试集。",
+  "dimensions": [
+    {
+      "dimension": "场景价值与行业可复制性",
+      "score": 40,
+      "evidence": "八轴+六公理差异化壁垒；n=24 案例；计算验证（LAMP2↑4.2×等）已落地。",
+      "gap": "案例仅 24 条；未形成可被第三方复刻的方法包；缺用户价值量化证明。"
+    },
+    {
+      "dimension": "多Agent协同与自主闭环",
+      "score": 38,
+      "evidence": "SIIV 为数据闭环；融合引擎可跑通一次融合。",
+      "gap": "无显式四角色分离；审查与生成同源；无工具契约与引用溯源。"
+    },
+    {
+      "dimension": "Skill工程体系与生态复用",
+      "score": 20,
+      "evidence": "存在 tcm_safety 等脚本。",
+      "gap": "能力未 Skill 化（Markdown 方法+run.py+测试）；未暴露 MCP server。"
+    },
+    {
+      "dimension": "工程落地、运行验证与安全审计",
+      "score": 55,
+      "evidence": "engine_validation 可复现性 100%、收敛效度 85%；去医疗化红线存在。",
+      "gap": "缺前置红牌、运行时监控、去标识化、审计留痕（本次 gate/audit 已补骨架）。"
+    },
+    {
+      "dimension": "产品体验与Demo完成度",
+      "score": 50,
+      "evidence": "有可分享 HTML 样例报告与前端站点。",
+      "gap": "多模态（舌/面/体态）仅规划未落地；硬件闭环仅架构。"
+    },
+    {
+      "dimension": "技术实现深度与工程可复现性",
+      "score": 70,
+      "evidence": "融合引擎+计算验证 100% 可复现。",
+      "gap": "算子未模块化；无统一 pipeline 抽象（本次 healthlens_flow 草案已补）。"
+    },
+    {
+      "dimension": "安全/合规",
+      "score": 42,
+      "evidence": "去医疗化红线存在。",
+      "gap": "无前置红牌、去标识化、审计留痕、合规 RAG（对标 Aethelgard/MedAssist 最薄弱）。"
+    }
+  ],
+  "launch_risk": {
+    "gate_unsafe_rate": 0.6,
+    "audit_event_count": 6,
+    "audit_unsafe_rate": 0.75,
+    "launch_risk_score": 68,
+    "verdict": "需在上线前修复安全闸门与运行时监控（P0）"
+  },
+  "recommended_order": [
+    "P0 安全：agent_safety_gate + runtime_audit 并入 tools/ 并接入融合引擎",
+    "P1 多Agent：按 multi_agent_roles.md 落四角色 + 工具契约 + 引用溯源",
+    "P2 复现：healthlens_flow.py 封装 DAG pipeline；多模态见 multimodal_probe.md"
+  ]
+}

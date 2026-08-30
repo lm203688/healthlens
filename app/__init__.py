@@ -94,6 +94,46 @@ def create_app() -> FastAPI:
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
     app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
 
+    # 智能体能力路由（GOAI 借鉴落地）
+    try:
+        from app.api.agent import router as agent_router
+
+        app.include_router(agent_router)
+    except Exception as _agent_err:  # noqa: BLE001
+        logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
+
+    # Skill 注册表路由
+    try:
+        from app.api.skills_api import router as skills_router
+
+        app.include_router(skills_router, prefix="/api/v1", tags=["技能中心"])
+    except Exception as _e:  # noqa: BLE001
+        logger.warning(f"[SKILLS] 技能路由未加载: {_e}")
+
+    # 自动化管线路由
+    try:
+        from app.api.pipeline_api import router as pipeline_router
+
+        app.include_router(pipeline_router, prefix="/api/v1", tags=["自动化管线"])
+    except Exception as _e:  # noqa: BLE001
+        logger.warning(f"[PIPELINE] 管线路由未加载: {_e}")
+
+    # 合规与同意路由
+    try:
+        from app.api.compliance_api import router as compliance_router
+
+        app.include_router(compliance_router, prefix="/api/v1", tags=["合规与同意"])
+    except Exception as _e:  # noqa: BLE001
+        logger.warning(f"[COMPLIANCE] 合规路由未加载: {_e}")
+
+    # 报告生成路由（对接融合管线）
+    try:
+        from app.api.report_generator import router as report_gen_router
+
+        app.include_router(report_gen_router)
+    except Exception as _e:  # noqa: BLE001
+        logger.warning(f"[REPORT] 报告生成路由未加载: {_e}")
+
     # 健康检查端点（Docker HEALTHCHECK 使用）
     @app.get("/health")
     async def health_check():

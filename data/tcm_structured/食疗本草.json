@@ -1,0 +1,1993 @@
+{
+  "book": "食疗本草",
+  "author": "孟显",
+  "dynasty": "唐",
+  "source_file": "004-食疗本草.txt",
+  "method": "rule",
+  "entities": [
+    {
+      "type": "herb",
+      "name": "盐",
+      "property": null,
+      "efficacy": "一切气及香港脚∶取盐三升",
+      "source_quote": "内容：（一）蠼 尿疮∶盐三升，水一斗，煮取六升。以绵浸汤，淹疮上。〔证〕  （二）又，治一切气及香港脚∶取盐三升，蒸，候热分裹，近壁，脚踏之，令脚心热。〔  证",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石燕",
+      "property": null,
+      "efficacy": "法∶取石燕二十枚",
+      "source_quote": "内容：（一）在乳穴石洞中者，冬月采之，堪食。余月采者只堪治病，不堪食也。食如常法。  〔嘉·证〕  （二）又，治法∶取石燕二十枚，和五味炒令熟，以酒一斗，浸三日",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄精",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）饵黄精，能老不饥。其法∶可取瓮子去底，釜上安置令得，所盛黄精令满。密盖，  蒸之。令气溜，即曝之。第二遍蒸之亦如此。九蒸九曝。凡生时有一硕，熟有三、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘菊",
+      "property": "平",
+      "efficacy": "头风目眩",
+      "source_quote": "内容：其叶，正月采，可作羹；茎，五月五日采；花，九月九日采。并主头风目眩、泪出，去  烦热，利五脏。野生苦菊不堪用。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天门冬",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）补虚劳，治肺劳，止渴，去热风。可去皮心，入蜜煮之，食后服之。若曝干，入  蜜丸尤佳。〔证〕  （二）亦用洗面，甚佳。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地黄",
+      "property": "微寒",
+      "efficacy": null,
+      "source_quote": "内容：以少蜜煎，或浸食之，或煎汤，或入酒饮，并妙。生则寒，主齿痛，唾血，折伤。叶可  以羹。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薯蓣",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：治头疼，利丈夫，助阴力。和面作 ，则微动气，为不能制面毒也。熟煮和蜜，  或为汤煎，或为粉，并佳。干之入药更妙也。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白蒿",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）春初此蒿前诸草生。捣汁去热黄及心痛。其叶生 ，醋淹之为菹，甚益人。〔嘉  〕  （二）又，叶干为末，夏日暴水痢，以米饮和一匙，空腹服之。〔嘉〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "决明子",
+      "property": "平",
+      "efficacy": "肝家热毒瓦斯",
+      "source_quote": "内容：（一）叶∶主明目，利五脏，食之甚良。〔证〕  （二）子∶主肝家热毒瓦斯，风眼赤泪。每日取一匙， 去尘埃，空腹水吞之。百日后，  夜见物光也。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "生姜",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）去痰下气。多食少心智。八九月食，伤神。〔嘉·证〕  （二）除壮热，治转筋，心满。食之除鼻塞，去胸中臭气，通神明。〔心·证〕  （三）又，冷痢∶取椒烙",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苍耳",
+      "property": "温",
+      "efficacy": "一切风∶取嫩叶一石",
+      "source_quote": "内容：（一）主中风、伤寒头痛。〔嘉〕  （二）又，疔肿困重，生捣苍耳根、叶，和小儿尿绞取汁，冷服一升，日三度，甚验。  〔嘉〕  （三）拔疔肿根脚。〔证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葛根",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：蒸食之，消酒毒。其粉亦甚妙。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栝蒌",
+      "property": null,
+      "efficacy": "痈肿∶栝蒌根苦酒中熬燥",
+      "source_quote": "内容：（一）子∶下乳汁。〔证〕  （二）又，治痈肿∶栝蒌根苦酒中熬燥，捣筛之。苦酒和，涂纸上，摊贴。服金石人宜  用。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "燕子",
+      "property": "平",
+      "efficacy": "续五脏音声及气",
+      "source_quote": "内容：（一）上主利肠胃，令人能食。下三焦，除恶气。和子食更良。江北人多不识此物，即  南方人食之。〔卷·嘉〕  （二）又，主续五脏音声及气，使人足气力。〔卷·嘉",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "百合",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：主心急黄，（以百合）蒸过，蜜和食之。作粉尤佳。红花者名山丹，不堪食。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "艾叶",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）干者并煎者，（主）金疮，崩中，霍乱。止胎漏。春初采，为干饼子，入生姜煎  服，止泻痢。三月三日，可采作煎，甚治冷。若患冷气，取熟艾面裹作馄饨，可大如",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓟菜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）小蓟根∶主养气。取生根叶，捣取自然汁，服一盏，立佳。〔证〕  （二）又，取菜煮食之，除风热。〔证〕  （三）根主崩中。又，女子月候伤过，捣汁半升服之",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "恶食",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）根，作脯食之良。〔证〕  （二）热毒肿，捣根及叶封之。〔证〕  （三）杖疮、金疮，取叶贴之，永不畏风。〔证〕  （四）又瘫缓及丹石风毒，石热发毒。明",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海藻",
+      "property": null,
+      "efficacy": "起男子阴气",
+      "source_quote": "内容：（一）主起男子阴气，常食之，消男子 疾。南方人多食之，传于北人。北人食之，倍  生诸病，更不宜矣。〔心·嘉〕  （二）瘦人，不可食之。〔心 〕     <",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "昆布",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：下气，久服瘦人。无此疾者，不可食。海岛之人爱食，为无好菜，只食此物。服久，病  亦不生。遂传说其功于北人。北人食之，病皆生，是水土不宜尔。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫菜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：下热气，多食胀人。若热气塞咽喉，煎汁饮之。此是海中之物，味犹有毒性。凡是海中  菜，所以有损人矣。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "船底苔",
+      "property": null,
+      "efficacy": "五淋∶取一团",
+      "source_quote": "内容：冷，无毒。治鼻洪，吐血，淋疾∶以炙甘草并豉汁浓煎汤，旋呷。又，主五淋∶取一团  鸭子大，煮服之。又，水中细苔∶主天行病，心闷，捣绞汁服。〔嘉补〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干苔",
+      "property": "咸寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，寒（一云温）。主痔，杀虫，及霍乱呕吐不止，煮汁服之。又，心腹烦闷者，冷  水研如泥，饮之即止。又，发诸疮疥，下一切丹石，杀诸药毒。不可多食，令人痿黄",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "香",
+      "property": "温",
+      "efficacy": "卒肾气冲胁",
+      "source_quote": "内容：（一）（恶心）∶取 香华、叶煮服之。〔心〕  （二）国人重之，云有助阳道，用之未得其方法也。生捣茎叶汁一合，投热酒一合。服  之治卒肾气冲胁、如刀刺痛，喘",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荠",
+      "property": null,
+      "efficacy": "眼方中用",
+      "source_quote": "内容：丹石发动，取根食之尤良。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酱",
+      "property": "温",
+      "efficacy": "心腹中冷气",
+      "source_quote": "内容：散结气，治心腹中冷气。亦名土荜茇。岭南荜茇尤治胃气疾，巴蜀有之。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青蒿",
+      "property": "寒",
+      "efficacy": "恶疮瘢",
+      "source_quote": "内容：（一）益气长发，能轻身补中，不老明目，煞风毒。捣敷疮上，止血生肉。最早，春前  生，色白者是。自然香醋淹为菹，益人。治骨蒸，以小便渍一两宿，干，末为丸，甚",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菌子",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）发五脏风壅经脉，动痔病，令人昏昏多睡，背膊、四肢无力。〔嘉·证〕  （二）又，菌子有数般，槐树上生者良。野田中者，恐有毒，杀人。〔嘉·证〕  （三）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牵牛子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：多食稍冷，和山茱萸服之，去水病。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊蹄",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主痒，不宜多食。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菰菜、茭首",
+      "property": null,
+      "efficacy": "心胸中浮热风",
+      "source_quote": "内容：（一）菰菜∶利五脏邪气，酒 面赤，白癞 疡，目赤等，效。然滑中，不可多食。热  毒风气，卒心痛，可盐、醋煮食之。〔嘉〕  （二）若丹石热发，和鲫鱼煮作羹，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "竹",
+      "property": null,
+      "efficacy": "中风大热",
+      "source_quote": "内容：（一）蛔虫心痛，面青，口中沫出，临死∶取叶十斤，细切。以水三石三斗，煮如饧，  去滓。通寒温，空心服一升，虫即下。至重者再服，仍通宿勿食，来日平明服之。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘蕉",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：主黄胆。子∶生食大寒。主渴，润肺，发冷病。蒸熟曝之令口开，舂取人食之。性寒，  通血脉，填骨髓。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇莓",
+      "property": null,
+      "efficacy": "孩子口噤",
+      "source_quote": "内容：（一）主胸、胃热气，有蛇残不得食。〔证〕  （二）主孩子口噤，以汁灌口中，死亦再活。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦",
+      "property": "微寒",
+      "efficacy": null,
+      "source_quote": "内容：生食治漆疮。五月五日采，曝干作灰，敷面目、通身漆疮。不堪多食尔。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "槐实",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主邪气，产难，绝伤。〔证〕  （二）春初嫩叶亦可食，主瘾疹，牙齿诸风疼。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "枸杞",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）无毒。叶及子∶并坚筋能老，除风，补益筋骨，能益人，去虚劳。〔证〕  （二）根∶主去骨热，消渴。〔证〕  （三）叶和羊肉作羹，尤善益人。代茶法煮汁饮之",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "榆荚",
+      "property": "平",
+      "efficacy": "小儿痫疾",
+      "source_quote": "内容：（一）上疗小儿痫疾，（小便不利）。〔卷·证〕  （二）又方，患石淋、茎又暴赤肿者∶榆皮三两，熟捣，和三年米醋滓封茎上。日六七  遍易。〔卷·嘉·证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酸枣",
+      "property": "平",
+      "efficacy": "寒热结气",
+      "source_quote": "内容：主寒热结气，安五脏，疗不能眠。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木耳",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：无毒。利五脏，宣肠胃气拥、毒瓦斯，不可多食。惟益服丹石人。热发，和葱豉作羹。〔  嘉〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑",
+      "property": "微寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）桑椹∶性微寒。食之补五脏，耳目聪明，利关节，和经脉，通血气，益精神。〔心〕  （二）桑根白皮∶煮汁饮，利五脏。又入散用，下一切风气水气。〔嘉〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "吴茱萸",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）上主治心痛，下气，除咳逆，去脏中冷。能温脾气消食。〔卷·嘉〕  （二）又方，生树皮∶上牙疼痛痒等，立止。〔卷·嘉〕  （三）又，（患风瘙痒痛者），取",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "槟榔",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：多食发热，南人生食。闽中名橄榄子。所来北者，煮熟，熏干将来。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栀子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主喑哑，紫癜风，黄胆，积热心躁。〔证〕  （二）又方，治下鲜血，栀子仁烧成灰，水和一钱匕服之。量其大小多少服之。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芜荑",
+      "property": "平",
+      "efficacy": "治五内邪气",
+      "source_quote": "内容：（一）上主治五内邪气，散皮肤肢节间风气。能化食，去三虫，逐寸白，散腹中冷气〔卷  ·嘉·证〕  （二）又，患热疮，为末和猪脂涂，瘥。〔卷·嘉〕  （三）又",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茗",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）茗叶∶利大肠，去热解痰。煮取汁，用煮粥良。〔证〕  （二）又，茶主下气，除好睡，消宿食，当日成者良。蒸、捣经宿。用陈故者，即动风  发气。市人有用槐",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀椒·秦椒",
+      "property": "温",
+      "efficacy": "上气咳嗽",
+      "source_quote": "内容：（一）粒大者，主上气咳嗽，久风湿痹。〔证〕  （二）又，患齿痛，醋煎含之。〔嘉·证〕  （三）又，伤损成疮中风，以面裹作馄饨，灰中炮之，使熟断开口，封其疮",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓椒",
+      "property": null,
+      "efficacy": "贼风挛急",
+      "source_quote": "内容：主贼风挛急。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "椿",
+      "property": "温",
+      "efficacy": "小儿疳痢",
+      "source_quote": "内容：（一）动风，熏十二经脉、五脏六腑。多食令人神不清，血气微。〔嘉〕  （二）又，女子血崩及产后血不止，月信来多，可取东引细根一大握洗之，以水一大升  煮，分",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "樗",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主疳痢，杀蛔虫。又名臭椿。若和猪肉、热面频食，则中满，盖壅经脉也。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "郁李仁",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）气结者，酒服仁四十九粒，更泻，尤良。〔证〕  （二）又，破癖气，能下四肢水。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡椒",
+      "property": null,
+      "efficacy": "五脏风冷",
+      "source_quote": "内容：治五脏风冷，冷气心腹痛，吐清水，酒服之佳。亦宜汤服。若冷气，吞三七枚。〔证  〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橡实",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主止痢，不宜多食。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠李",
+      "property": "微寒",
+      "efficacy": "胀满谷胀",
+      "source_quote": "内容：（一）主腹胀满。其根有毒，煮浓汁含之治 齿。并疳虫蚀人脊骨者，可煮浓汁灌之食  。〔证〕  （二）其肉∶主胀满谷胀。和面作饼子，空心食之，少时当泻。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "枳",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：多食发蛔虫。昔有南人修舍用此，误有一片落在酒瓮中，其酒化为水味。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "子",
+      "property": "平",
+      "efficacy": "治五种痔",
+      "source_quote": "内容：（一）上主治五种痔，去三虫，杀鬼毒，恶疰。〔卷〕  （二）又，患寸白虫人，日食七颗，经七日满，其虫尽消作水即瘥。〔卷·证〕  （三）按经∶多食三升、二升佳",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藕",
+      "property": "寒",
+      "efficacy": "治霍乱后虚渴",
+      "source_quote": "内容：（一）上主补中焦，养神，益气力，除百病。久服轻身耐寒，不饥延年。〔卷〕  （二）生食则主治霍乱后虚渴、烦闷、不能食。长服生肌肉，令人心喜悦。〔卷·嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "莲子",
+      "property": "寒",
+      "efficacy": "治五脏不足",
+      "source_quote": "内容：（一）上主治五脏不足，伤中气绝，利益十二经脉、廿五络血气。生吃（微）动气，蒸  熟为  上。〔卷·心·嘉〕  （二）又方，（熟）去心，曝干为末，着蜡及蜜，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橘",
+      "property": "温",
+      "efficacy": "胸中瘕热逆气",
+      "source_quote": "内容：（一）（穣）∶止泄痢。食之，下食，开胸膈痰实结气。下气不如皮也。穣不可多食，止  气。性虽温，甚能止渴。〔心·嘉〕  （二）皮∶主胸中瘕热逆气。〔心〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柚",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味酸，不能食。可以起盘。〔心〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橙",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）去恶心，胃风∶取其皮和盐贮之。〔证〕  （二）又，瓤∶去恶气。和盐蜜细细食之。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干枣",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）主补津液，养脾气，强志。三年陈者核中仁∶主恶气、卒疰忤。〔心·嘉〕  （二）又，疗耳聋、鼻塞，不闻音声、香臭者∶取大枣十五枚，去皮核；蓖麻子三百颗，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "软枣",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：多食动风，令人病冷气，发咳嗽。〔卷·证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蒲桃",
+      "property": "平",
+      "efficacy": "肠间宿水",
+      "source_quote": "内容：（一）上益脏气，强志，疗肠间宿水，调中。〔卷·心〕  （二）按经∶不问土地，但取藤，收之酿酒，皆得美好。〔卷·嘉〕  （三）其子不宜多食，令人心卒烦闷，犹",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栗子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）生食治腰脚。蒸炒食之，令气拥，患风水气不宜食。〔嘉〕  （二）又，树皮∶主瘅疮毒。〔嘉〕  （三）谨按∶宜日中曝干，食即下气、补益。不尔犹有木气，不",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "覆盆子",
+      "property": "平",
+      "efficacy": "益气轻身",
+      "source_quote": "内容：上主益气轻身，令人发不白。其味甜、酸。五月麦田中得者良。采其子于烈日中晒之，  若天雨即烂，不堪收也。江东十月有悬钩子，稍小，异形。气味一同。然北地无悬钩",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芰实",
+      "property": "平",
+      "efficacy": "治安中焦",
+      "source_quote": "内容：（一）上主治安中焦，补脏腑气，令人不饥。仙家亦蒸熟曝干作末，和蜜食之休粮。〔卷  ·嘉〕  （二）凡水中之果，此物最发冷气，不能治众疾。（令人脏冷），损阴",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸡头子",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）主温，治风痹，腰脊强直，膝痛。补中焦，益精，强志意，耳目聪明。作粉食之，  甚好。此是长生之药。与莲实同食，令小儿不（能）长大，故知长服当亦驻年。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梅实",
+      "property": null,
+      "efficacy": "疟方多用之",
+      "source_quote": "内容：（一）食之除闷，安神。乌梅多食损齿。〔心·嘉〕  （二）又，刺在肉中，嚼白梅封之，刺即出。〔嘉〕  （三）又，大便不通，气奔欲死∶以乌梅十颗置汤中，须臾",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木瓜",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）上主治霍乱（呕 ），涩痹风气。〔卷·证〕  （二）又，顽痹人若吐逆下（利），病转筋不止者，（煮汁饮之甚食）。〔卷·证〕  （三）脚膝筋急痛，煮木瓜令",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "楂子",
+      "property": "平",
+      "efficacy": "霍乱转筋",
+      "source_quote": "内容：上多食损齿及损筋。唯治霍乱转筋，煮汁饮之。与木瓜功相似，而小者不如也。昔孔安  国不识，而谓（梨）之不藏（者）。今验其形小，况相似。江南将为果子，顿食之。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柿",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）主通鼻、耳气，补虚劳不足。〔心·嘉〕  （二）谨按∶干柿，浓肠胃，温中，健脾胃气，消宿血。〔心·嘉〕  （三）又，红柿∶补气，续经脉气。〔嘉〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芋",
+      "property": "平",
+      "efficacy": "宽缓肠胃",
+      "source_quote": "内容：（一）上主宽缓肠胃，去死肌，令脂肉悦泽。〔卷·心〕  （二）白净者无味，紫色者良，破气。煮汁饮之止渴。十月已后收之，曝干。冬蒸服则  不发病，余外不可服。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茨",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：下丹石，消风毒，除胸中实热气。可作粉食。明耳目，止渴，消疸黄。若先有冷气，不  可食。令人腹胀气满。小儿秋食，脐下当痛。〔嘉〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茨菰",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主消渴，下石淋。不可多食。吴人好啖之，令人患脚。〔心·嘉〕  （二）又，发香港脚，瘫缓风。损齿，紫黑色。令人失颜色，皮肉干燥。卒食之，令人呕  水。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "枇杷",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）利五脏，久食亦发热黄。〔心·嘉〕  （二）子∶食之润肺，热上焦。若和热炙肉及热面食之，令人患热毒黄病。〔心·嘉〕  （三）（叶）∶卒呕 不止、不欲食",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荔枝",
+      "property": "微温",
+      "efficacy": null,
+      "source_quote": "内容：食之通神益智，健气及颜色，多食则发热。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柑子",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）堪食之，其皮不任药用。初未霜时，亦酸。及得霜后，方即甜美。故名之曰甘。  〔心·证〕  （二）利肠胃热毒，下丹石，（止暴）渴。食多令人肺燥，冷中，发",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘蔗",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主补气，兼下气。不可共酒食，发痰。〔证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石蜜",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）上心腹胀热，口干渴。波斯者良。注少许于目中，除去热膜，明目。蜀川者为次。  今东吴亦有，并不如波斯。此皆是煎甘蔗汁及牛乳汁，煎则细臼耳。〔卷·嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "沙糖",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）上功体与石蜜同也。多食令人心痛。养三虫，消肌肉，损牙齿，发疳 。不可多  服之。〔卷·嘉·证〕  （二）又，不可与鲫鱼同食，成疳虫。〔卷·嘉〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桃人",
+      "property": "温",
+      "efficacy": "恶鬼邪气",
+      "source_quote": "内容：（一）杀三虫，止心痛。〔嘉〕  （二）又，女人阴中生疮，如虫咬、疼痛者，可生捣叶，绵裹内阴中，日三、四易，瘥。  亦煮汁洗之。今案∶煮皮洗之良。〔心·嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "樱桃",
+      "property": "热",
+      "efficacy": null,
+      "source_quote": "内容：（一）益气，多食无损。〔嘉〕  （二）又云，此名“樱”，非桃也。不可多食，令人发暗风。〔嘉〕  （三）温。多食有所损。令人好颜色，美志。此名“樱桃”，俗名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杏",
+      "property": "热",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：（一）主咳逆上气，金创，惊痫，心下烦热，风（气）头痛。〔心·证〕  （二）面 者，取人去皮，捣和鸡子白。夜卧涂面，明早以暖清酒洗之。〔嘉〕  （三）人患卒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石榴",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）实∶主谷利、泄精。〔心〕  （二）（东行根∶疗）疣虫白虫。〔卷〕  （三）按经∶久食损齿令黑。其皮炙令黄，捣为末，和枣肉为丸，（空腹）日服三十丸，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梨",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）除客热，止心烦。不可多食。〔心·嘉〕  （二）又，卒咳嗽，以冻梨一颗刺作五十孔，每孔中内以椒一粒。以面裹于热灰中煨，  令极熟，出停冷，去椒食之。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "林檎",
+      "property": "温",
+      "efficacy": "白虫蛔虫",
+      "source_quote": "内容：（一）主谷痢、泄精。东行根治白虫蛔虫。〔证〕  （二）主止消渴。好睡，不可多食。〔嘉·证〕  （三）又，林檎味苦涩、平，无毒。食之闭百脉。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "李",
+      "property": "平",
+      "efficacy": "女人卒赤",
+      "source_quote": "内容：（一）主女人卒赤、白下∶取李树东面皮，去外皮，炙令黄香。以水三升，煮汁去滓服  之，日再验。〔心·嘉〕  （二）谨按∶生李亦去骨节间劳热，不可多食之。临水",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊梅",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）上主（和）脏腑，调腹胃，除烦愦，消恶气，去痰实。〔卷·嘉·证〕  （二）（亦）不可多食，损人（齿及）筋（也），然（甚能）断下痢。〔卷·嘉·证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡桃",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）上（卒）不可多食，动痰（饮）。〔卷·心·嘉〕  （二）案经∶除去风，润脂肉，令人能食。不得多食之，计日月，渐渐服食。通经络气，  （润）血脉，黑人鬓",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藤梨",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：上主下丹石，利五脏。其熟时，收取瓤和蜜煎作煎。服之去烦热，止消渴。久食发冷气  ，损脾胃。〔卷·证〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "奈",
+      "property": null,
+      "efficacy": "补中 诸不足气",
+      "source_quote": "内容：益心气，主补中 诸不足气，和脾。卒患食后气不通，生捣汁服之。〔心·心 ·嘉〕     <目录>卷上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橄",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主河豚毒，（煮）汁服之。中此鱼肝、子毒，人立死，惟此木能解。出岭南山谷。大树  阔数围，实长寸许。其子先生者向下，后生者渐高。至八月熟，蜜藏极甜。〔嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麝香",
+      "property": null,
+      "efficacy": "一切恶气疰病",
+      "source_quote": "内容：（一）作末服之，辟诸毒热，煞蛇毒，除惊怪恍惚。蛮人常食，似獐肉而腥气。蛮人云  ∶食之不畏蛇毒故也。〔证〕  （二）脐中有香，除百病，治一切恶气疰病。研了",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "熊",
+      "property": null,
+      "efficacy": "风痹筋骨不仁",
+      "source_quote": "内容：（一）熊脂∶微寒，甘滑。冬中凝白时取之，作生，无以偕也。脂入拔白发膏中用，极  良。脂与猪脂相和燃灯，烟入人目中，令失光明。缘熊脂烟损人眼光。〔证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）牛者稼穑之资，不多屠杀。自死者，血脉已绝，骨髓已竭，不堪食。黄牛发药动  病，黑牛尤不可食。黑牛尿及屎，只入药。〔嘉〕  （二）又，头、蹄∶下热风，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛乳",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）患热风人宜服之。患冷气人不宜服之。〔嘉·证〕  （二）乌牛乳酪∶寒。主热毒，止渴，除胸中热。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊",
+      "property": null,
+      "efficacy": "鬼气并漏下恶血",
+      "source_quote": "内容：（一）角∶主惊邪，明目，辟鬼，安心益气。烧角作灰，治鬼气并漏下恶血。〔嘉·证〕  （二）羊肉∶温。主风眩瘦病，小儿惊痫，丈夫五劳七伤，脏气虚寒。河西羊最佳",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊乳",
+      "property": null,
+      "efficacy": "女子与男子中风",
+      "source_quote": "内容：（一）补肺肾气，和小肠。亦主消渴，治虚劳，益精气。合脂作羹食，补肾虚。〔证〕  （二）羊乳治卒心痛，可温服之。〔嘉〕  （三）亦主女子与男子中风。蚰蜒入耳",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酥",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）除胸中热，补五脏，利肠胃。〔嘉·证〕  （二）水牛酥功同，寒，与羊酪同功。羊酥真者胜牛酥。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酪",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：主热毒，止渴，除胃中热。患冷人勿食羊乳酪。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "醍醐",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：主风邪，通润骨髓。性冷利，乃酥之本精液也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乳腐",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：微寒。润五脏，利大小便，益十二经脉。微动气。细切如豆，面拌，醋浆水煮二十余沸  ，治赤白痢。小儿患，服之弥佳。〔嘉补〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）白马黑头，食令人癫。白马自死，食之害人。〔证〕  （二）肉∶冷，有小毒。主肠中热，除下气，长筋骨。〔嘉·证〕  （三）不与仓米同食，必卒得恶，十有九",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿",
+      "property": null,
+      "efficacy": "脚膝骨髓中疼痛",
+      "source_quote": "内容：（一）鹿茸∶主益气。不可以鼻嗅其茸，中有小白虫，视之不见，入人鼻必为虫颡，药  不及也。〔嘉〕  （二）鹿头肉∶主消渴，多梦梦见物。〔心·嘉〕  （三）又",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄明胶",
+      "property": null,
+      "efficacy": "咳嗽不差者",
+      "source_quote": "内容：（一）敷肿四边，中心留一孔子，其肿即头自开也。〔证〕  （二）治咳嗽不差者，黄明胶炙令半焦为末，每服一钱匕。人参末二钱匕，用薄豉汤一  钱八分，葱少许，入",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "犀角",
+      "property": null,
+      "efficacy": "卒中恶心痛",
+      "source_quote": "内容：（一）此只是山犀牛，未曾见人得水犀取其角。此两种者，功亦同也。其生角，寒。可  烧成灰，治赤痢，研为末，和水服之。〔证〕  （二）又，主卒中恶心痛，诸饮食",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "犬",
+      "property": null,
+      "efficacy": "恶疮痂痒",
+      "source_quote": "内容：（一）牡狗阴茎∶补髓。〔证〕  （二）犬肉∶益阳事，补血脉，浓肠胃，实下焦，填精髓。不可炙食，恐成消渴。但和  五味煮，空腹食之。不与蒜同食，必顿损人。若",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虎",
+      "property": null,
+      "efficacy": "小儿疳痢",
+      "source_quote": "内容：（一）肉∶食之入山，虎见有畏，辟三十六种精魅。〔嘉〕  （二）又，眼睛∶主疟病，辟恶，小儿热、惊悸。〔嘉〕  （三）胆∶主小儿疳痢，惊神不安，研水服之。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兔",
+      "property": null,
+      "efficacy": "丹石人上冲眼暗不见物",
+      "source_quote": "内容：（一）肝∶主明目，和决明子作丸服之。〔嘉〕  （二）又，主丹石人上冲眼暗不见物，可生食之，一如服羊子肝法。〔嘉〕  （三）兔头骨并同肉∶味酸。〔证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "狸",
+      "property": null,
+      "efficacy": "痔及 疮",
+      "source_quote": "内容：（一）骨∶主痔病。作羹 食之，不与酒同食。〔嘉〕  （二）其头烧作灰，和酒服二钱匕，主痔。〔嘉〕  （三）又，食野鸟肉中毒，狸骨灰服之瘥。〔嘉〕  （四）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豹",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）肉∶补益人。食之令人强筋骨，志性粗疏。食之即觉也，少时消即定。久食之，  终令人意气粗豪。唯令筋健，能耐寒暑。正月食之伤神。〔嘉·证〕  （二）脂∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "猪",
+      "property": "苦微寒",
+      "efficacy": "热闭血脉",
+      "source_quote": "内容：（一）肉∶味苦，微寒。压丹石，疗热闭血脉。虚人动风，不可久食。令人少子精，发  宿疹。主疗人肾虚。肉发痰，若患疟疾人切忌食，必再发。〔证〕  （二）肾∶主",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麋",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）肉∶益气补中，治腰脚。不与雉肉同食。〔嘉〕  （二）谨按∶肉多无功用。所食亦微补五脏不足气。多食令人弱房，发香港脚。〔嘉〕  （三）骨∶除虚劳至良。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "驴",
+      "property": null,
+      "efficacy": "积年耳聋",
+      "source_quote": "内容：（一）肉∶主风狂，忧愁不乐，能安心气。〔嘉〕  （二）又，头∶ 去毛，煮汁以渍曲酝酒，去大风。〔嘉〕  （三）又，生脂和生椒熟捣，绵裹塞耳中，治积年耳聋。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "狐",
+      "property": null,
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：（一）肉∶温。有小毒。主疮疥，补虚损，及女子阴痒绝产，小儿（阴）溃卵肿，煮炙  任食之。良。又主五脏邪气，服之便瘥。空心服之佳。〔嘉·证〕  （二）肠肚∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "獭",
+      "property": "寒",
+      "efficacy": "疰病相染",
+      "source_quote": "内容：（一）獭肝∶主疰病相染，一门悉患者，以肝一具，火炙，末以水和方寸匕服之，日再  服。〔嘉〕  （二）患咳嗽者，烧为灰，酒服之。〔证〕  （三）肉∶性寒，无",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "野猪",
+      "property": null,
+      "efficacy": "鬼疰痫病",
+      "source_quote": "内容：（一）三岁胆中有黄，（研）和水服之，主鬼疰痫病。〔嘉·证〕  （二）又，其肉∶主癫痫，补肌肤，令人虚肥。雌者肉美。（其冬月在林中食橡子），肉  色赤者，补",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豺",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）（豺皮）∶主疳痢，腹中诸疮，煮汁饮之。或烧灰和酒服之，其灰敷 齿疮。〔嘉  〕  （二）肉酸不可食，消人脂肉，损人神情。〔嘉〕  （三）头骨烧灰，和",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸡",
+      "property": null,
+      "efficacy": "除风寒湿痹",
+      "source_quote": "内容：（一）（丹雄鸡）∶主患白虎，可铺饭于患处，使鸡食之良。又取热粪封之取热，使伏于  患人床下。〔嘉〕  （二）其肝入补肾方中，用冠血和天雄四分，桂心二分，太",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹅",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）脂∶可合面脂。〔嘉〕  （二）肉∶性冷，不可多食。令人易霍乱。与服丹石人相宜。亦发痼疾。〔嘉〕  （三）卵∶温。补五脏，亦补中益气。多发痼疾。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "野鸭、鸭",
+      "property": null,
+      "efficacy": "补中益气",
+      "source_quote": "内容：（一）野鸭∶寒。主补中益气，消食。九月以后即中食，全胜家者。虽寒不动气，消十  二种虫，平胃气，调中轻身。〔心·嘉〕  （二）又，身上诸小热疮，多年不可者",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹧鸪",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：能补五脏，益心力，聪明。此鸟出南方，不可与竹笋同食，令人小腹胀。自死者，不可  食。一言此鸟天地之神，每月取一只飨至尊。所以自死者不可食也。〔嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雁",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）雁膏∶可合生发膏。仍治耳聋。〔嘉〕  （二）骨灰和泔洗头，长发。〔嘉〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雀",
+      "property": null,
+      "efficacy": "男子阴痿不起",
+      "source_quote": "内容：（一）其肉∶十月以后、正月以前食之，续五脏不足气，助阴道，益精髓，不可停息。  〔嘉〕  （二）粪∶和天雄、干姜为丸，令阴强。〔嘉〕  （三）脑∶涂冻疮。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "山鸡、野鸡",
+      "property": null,
+      "efficacy": "五脏气喘",
+      "source_quote": "内容：（一）山鸡∶主五脏气喘、不得息者。食之发五痔。和荞麦面食之，生肥虫。卵∶不与  葱同食，生寸白虫。〔嘉〕  （二）又，野鸡∶久食令人瘦。又九月至十二月食之",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹑",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）补五脏，益中续气，实筋骨，耐寒暑，消结气。〔心〕  （二）患痢人可和生姜煮食之。〔心〕  （三）又云，鹑肉不可共猪肉食之，令人多生疮。〔心〕  （四",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸱",
+      "property": null,
+      "efficacy": "头风目眩",
+      "source_quote": "内容：（一）头∶烧灰，主头风目眩，以饮服之。〔证〕  （二）肉∶食之，治癫痫疾。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸲鹆肉",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）主五痔，止血。〔证〕  （二）又，食法∶腊日采之，五味炙之，治老嗽。或作羹食之亦得。或捣为散，白蜜和  丸并得。治上件病，取腊月腊日得者良，有效。非",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "慈鸦",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主瘦病，咳嗽，骨蒸者，可和五味淹炙食之良。其大鸦不中食，肉涩，只能治病，  不宜常食也。〔证〕  （二）以目睛汁注眼中，则夜见神鬼。又“神通目法”中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸳鸯",
+      "property": null,
+      "efficacy": "夫妇不和",
+      "source_quote": "内容：（一）其肉∶主 疮，以清酒炙食之。食之则令人美丽。〔证〕  （二）又，主夫妇不和，作羹 ，私与食之，即立相怜爱也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜜",
+      "property": "微温",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：（一）主心腹邪气，诸惊痫，补五脏不足气。益中止痛，解毒。能除众病，和百药，养  脾气，除心烦闷，不能饮食。〔证〕  （二）治心肚痛，血刺腹痛及赤白痢，则生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡蛎",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）火上炙，令沸。去壳食之，甚美。令人细润肌肤，美颜色。〔心·嘉〕  （二）又，药家比来取左顾者，若食之，即不拣左右也。可长服之。海族之中，惟此物  最",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龟甲",
+      "property": "温",
+      "efficacy": "除温瘴气",
+      "source_quote": "内容：（一）味酸。主除温瘴气，风痹，身肿， 折。又，骨带入山林中，令人不迷路。其食  之法，一如鳖法也。其中黑色者，常啖蛇，不中食之。其壳亦不堪用。〔证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "魁蛤",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：润五脏，治消渴，开关节。服丹石人食之，使人免有疮肿及热毒所生也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳢鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）下大小便壅塞气。〔嘉〕  （二）又，作 ，与香港脚风气人食之，效。〔嘉〕  （三）又，以大者洗去泥，开肚，以胡椒末半两，切大蒜三两颗，内鱼腹中缝合，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鱼、",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：与 大约相似，主诸补益，无鳞，有毒，勿多食。赤目、赤须者并杀人也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲫鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）食之平胃气，调中，益五脏，和 作羹食良。〔嘉·证〕  （二）作 食之，断暴下痢。和蒜食之，有少热；和姜酱食之，有少冷。〔心·证〕  （三）又，夏月热",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳝鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：补五脏，逐十二风邪。患恶气人当作 ，空腹饱食，便以衣盖卧。少顷当汗出如白胶  ，汗从腰脚中出。候汗尽，暖五木汤浴，须慎风一日。更三、五日一服，并治湿风。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲤鱼",
+      "property": null,
+      "efficacy": "除目中赤及热毒痛",
+      "source_quote": "内容：（一）胆∶主除目中赤及热毒痛，点之良。〔证〕  （二）肉∶白煮食之，疗水肿脚满，下气。腹中有宿瘕不可食，害人。久服天门冬人，  亦不可食。〔嘉·证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲟鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）有毒。主血淋。可煮汁食之。其味虽美，而发诸药毒。〔证〕  （二） ∶世人虽重，尤不益人。服丹石人不可食，令人少气。发一切疮疥，动风气。  不与干笋同",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳖",
+      "property": null,
+      "efficacy": "妇人漏下",
+      "source_quote": "内容：（一）主妇人漏下，羸瘦。中春食之美，夏月有少腥气。〔嘉〕  （二）其甲∶岳州昌江者为上。赤足不可食，杀人。〔嘉〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蟹",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）足斑、目赤不可食，杀人。〔证〕  （二）主散诸热。（又堪）治胃气，理经脉，消食。〔嘉·证〕  （三）蟹脚中髓及脑，能续断筋骨。人取蟹脑髓，微熬之，令",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌贼鱼",
+      "property": null,
+      "efficacy": "眼中热泪",
+      "source_quote": "内容：（一）食之少有益髓。〔心〕  （二）骨∶主小儿、大人下痢，炙令黄，去皮细研成粉，粥中调服之食。〔证〕  （三）其骨能消目中一切浮翳。细研和蜜点之妙。〔嘉·",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳗鲡鱼",
+      "property": null,
+      "efficacy": "妇人带下百病",
+      "source_quote": "内容：（一）杀（诸）虫毒，干烧炙之令香。（末，空腹）食之。三五度即瘥。长服尤良。〔嘉·  证〕  （二）又，熏下部痔，虫尽死。患诸疮 及 疡风，长食之甚验。〔嘉",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼍",
+      "property": null,
+      "efficacy": "惊恐及小腹气疼",
+      "source_quote": "内容：疗惊恐及小腹气疼。〔嘉〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼋",
+      "property": "微温",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：（一）主五脏邪气，杀百虫蛊毒，消百药毒，续人筋。〔证〕  （二）膏∶摩风及恶疮。〔遗〕  （三）又，膏涂铁，摩之便明。淮南方术中有用处。〔遗·证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲛鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）补五脏。作 食之，亚于鲫鱼。作 食之并同。〔证〕  （二）又，如有大患喉闭，取胆汁和白矾灰，丸之如豆颗，绵裹内喉中。良久吐恶涎沫，  即喉咙开。腊月",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白鱼",
+      "property": null,
+      "efficacy": "肝家不足气",
+      "source_quote": "内容：（一）主肝家不足气，不堪多食，泥人心。虽不发病，终养 所食。〔嘉〕  （二）和豉作羹，一、两顿而已。新鲜者好食。若经宿者不堪食。（久食）令人腹冷生  诸疾",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳜鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：补劳，益脾胃。稍有毒。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青鱼",
+      "property": null,
+      "efficacy": "香港脚烦闷",
+      "source_quote": "内容：（一）主香港脚烦闷。又，和韭白煮食之，治香港脚脚弱、烦闷、益心力也。〔证〕  （二）又，头中有枕，取之蒸，令气通，曝干，状如琥珀。此物疗卒心痛，平水气。以",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石首鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：作干鲞，消宿食，主中恶，不堪鲜食。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "嘉鱼",
+      "property": "微温",
+      "efficacy": null,
+      "source_quote": "内容：常于崖石下孔中吃乳石沫，甚补益。微有毒。其味甚珍美也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲈鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）主安胎，补中。作 尤佳。〔证〕  （二）补五脏，益筋骨，和肠胃，治水气。多食宜人。作 犹良。〔嘉补〕  （三）又，曝干甚香美。虽有小毒，不至发病。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲎",
+      "property": "平",
+      "efficacy": "肠风泻血",
+      "source_quote": "内容：（一）微毒。治痔，杀虫。多食发嗽并疮癣。〔嘉补〕  （二）壳∶入香，发众香气。〔嘉补〕  （三）尾∶烧焦，治肠风泻血，并崩中带下及产后痢。〔嘉补〕  （四",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "时鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：补虚劳，稍发疳痼。〔证余〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄赖鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：一名 。醒酒。亦无鳞，不益人也。〔证余〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲚鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：发疥，不可多食。〔证余〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）有毒，不可食之。其肝毒杀人。缘腹中无胆，头中无鳃，故知害人。若中此毒及  鲈鱼毒者，便 芦根煮汁饮，解之。〔证余〕  （二）又，此鱼行水之次，或自触",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄鱼",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：有毒。发诸气病，不可多食。亦发疮疥，动风。不宜和荞麦同食，令人失音也。〔证余  〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲂鱼",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）调胃气，利五脏。和芥子酱食之，助肺气，去胃家风。〔证余〕  （二）消谷不化者，作 食，助脾气，令人能食。〔证余〕  （三）患疳痢者，不得食。作羹 食",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡鼠",
+      "property": null,
+      "efficacy": "小儿痫疾",
+      "source_quote": "内容：（一）主小儿痫疾、腹大贪食者∶可以黄泥裹烧之。细拣去骨，取肉和五味汁作羹与食  之。勿令食着骨，甚瘦人。〔嘉〕  （二）又，取腊月新死者一枚，油一大升，煎",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚌",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主大热，解酒毒，止渴，去眼赤。动冷热气。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "车螯",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（车螯）、蝤蝥类，并不可多食之。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚶",
+      "property": "温",
+      "efficacy": "心腹冷气",
+      "source_quote": "内容：（一）主心腹冷气，腰脊冷风。利五脏，健胃，令人能食。每食了，以饭压之。不尔令  人口干。〔嘉补〕  （二）又云，温中，消食，起阳。味最重。出海中，壳如瓦屋",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛏",
+      "property": "甘温",
+      "efficacy": "妇人产后虚损",
+      "source_quote": "内容：（一）味甘，温，无毒。补虚，主冷利。煮食之，主妇人产后虚损。生海泥中，长二三  寸，大如指，两头开。〔嘉补〕  （二）主胸中邪热、烦闷气。与服丹石人相宜。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "淡菜",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）补五脏，理腰香港脚，益阳事。能消食，除腹中冷气，消 癖气。亦可烧，令汁沸  出食之。多食令头闷、目暗，可微利即止。北人多不识，虽形状不典，而甚益人。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虾",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）无须及煮色白者，不可食。〔嘉补〕  （二）谨按∶小者生水田及沟渠中，有小毒。小儿患赤白游肿，捣碎敷之。〔嘉补〕  （三）动风发疮疥。（勿作 食之），",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚺蛇",
+      "property": null,
+      "efficacy": "皮肤间毒瓦斯",
+      "source_quote": "内容：（一）膏∶主皮肤间毒瓦斯。〔嘉·证〕  （二）肉∶主温疫气。可作 食之。如无此疾及四月勿食之。〔嘉·证〕  （三）胆∶主 疮 ，目肿痛，疳 。〔证〕  （",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇蜕皮",
+      "property": null,
+      "efficacy": "小儿一百二十种惊痫",
+      "source_quote": "内容：主去邪，明目。治小儿一百二十种惊痫，寒热，肠痔，蛊毒，诸 恶疮，安胎。熬用  之。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蝮蛇",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）（胆）∶主诸 。〔证〕  （二）肉∶疗癞，诸 。下结气，除蛊毒。如无此疾者，即不假食也。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "田螺",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：汁饮疗热、醒酒、压丹石。不可常食。〔证〕     <目录>卷中",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海月",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）主消痰，辟邪鬼毒。〔证〕  （二）以生椒酱调和食之良，能消诸食，使人易饥。〔证〕  （三）又，其物是水沫化之，煮时犹是水。入腹中之后，便令人不小便。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡麻",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）（胡麻）∶润五脏，主火灼。山田种，为四棱。土地有异，功力同。休粮人重之。  填骨髓，补虚气。〔证〕  （二）（青 ）∶生杵汁，沐头发良。牛伤热亦灌之",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白油麻",
+      "property": null,
+      "efficacy": "热毒甚良",
+      "source_quote": "内容：（一）大寒，无毒。治虚劳，滑肠胃，行风气，通血脉，去头浮风，润肌。食后生啖  一合，终身不辍。与乳母食，其孩子永不病生。若客热，可作饮汁服之。停久者，发霍",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麻",
+      "property": "微寒",
+      "efficacy": "大小便不通",
+      "source_quote": "内容：（一）治大小便不通，发落，破血，不饥，能寒。取汁煮粥，去五脏风，润肺，治关节  不通，发落，通血脉，治气。〔证〕  （二）青叶∶甚长发。〔证〕  （三）研",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "饴糖",
+      "property": null,
+      "efficacy": "打损瘀血",
+      "source_quote": "内容：（一）饧糖∶补虚，止渴，健脾胃气，去留血，补中。白者，以蔓菁汁煮，顿服之。〔嘉〕  （二）主吐血，健脾。凝强者为良。主打损瘀血，熬令焦，和酒服之，能下恶血",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大豆",
+      "property": "平",
+      "efficacy": "霍乱吐逆",
+      "source_quote": "内容：（一）主霍乱吐逆。〔心〕  （二）微寒。主中风脚弱，产后诸疾。若和甘草煮汤饮之，去一切热毒瓦斯。〔证〕  （三）善治风毒香港脚，煮食之，主心痛，筋挛，膝痛",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薏苡仁",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：去干湿香港脚，大验。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "赤小豆",
+      "property": null,
+      "efficacy": "香港脚及大腹水肿",
+      "source_quote": "内容：（一）和鲤鱼烂煮食之，甚治香港脚及大腹水肿。别有诸治，具在鱼条中。散气，去关节  烦热。令人心孔开，止小便数。绿、赤者并可食。〔证〕  （二）止痢。暴痢后",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青小豆",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：疗热中，消渴，止痢，下胀满。〔心〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酒",
+      "property": null,
+      "efficacy": "偏风中恶",
+      "source_quote": "内容：（一）味苦。主百邪毒，行百药。当酒卧，以扇扇，或中恶风。久饮伤神损寿。〔嘉〕  （二）谨按∶中恶疰杵，热暖姜酒一碗，服即止。〔嘉〕  （三）又，通脉，养脾",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粟米",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：陈者止痢，甚压丹石热。颗粒小者是。今人间多不识耳。其粱米粒粗大，随色别之。南  方多 田种之。极易舂，粒细，香美，少虚怯。只为灰中种之，又不锄治故也。得北",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秫米",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）其性平。能杀疮疥毒热。拥五脏气，动风，不可常食。北人往往有种者，代米作  酒耳。〔嘉〕  （二）又，生捣和鸡子白，敷毒肿良。〔嘉〕  （三）根∶煮作",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麦",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主轻身，补中。不动疾。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粳米",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）主益气，止烦（止）泄。其赤则粒大而香，不禁水停。其黄绿即实中。〔嘉〕  （二）又，水渍有味，益人。都大新熟者，动气。经再年者，亦发病。江南贮仓人皆多",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青粱米",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）以纯苦酒一斗渍之，三日出，百蒸百曝，好裹藏之。远行一餐，十日不饥。重  餐，四百九十日不饥。〔嘉〕  （二）又方，以米一斗，赤石脂三斤，合以水渍之，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白粱米",
+      "property": "微寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）患胃虚并呕吐食及水者，用米汁二合，生姜汁一合，和服之。〔心·嘉〕  （二）性微寒。除胸膈中客热，移易五脏气，续筋骨。此北人长食者是，亦堪作粉。〔心",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黍米",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）患鳖瘕者，以新熟赤黍米，淘取泔汁，生服一升，不过三两度愈。〔嘉〕  （二）谨按∶性寒，有少毒。不堪久服，昏五脏，令人好睡。仙家重此。作酒最胜余米。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "稷",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）益气，治诸热，补不足。〔心·嘉〕  （二）山东多食。服丹石人发热，食之热消也。发三十六种冷病气。八谷之中，最为下  苗。黍乃作酒，此乃作饭，用之殊途",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "小麦",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）养肝气，煮饮服之良。服之止渴。〔嘉·证〕  （二）又云∶面有热毒者，为多是陈 之色。〔嘉·证〕  （三）又，为磨中石末在内，所以有毒，但杵食之即良。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大麦",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）久食之，头发不白。和针沙、没石子等染发黑色。〔嘉〕  （二）暴食之，（亦稍似）令脚弱，为（下气及）腰肾间气故也。久服即好，甚宜人。〔心  ·嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "曲",
+      "property": null,
+      "efficacy": "脏腑中风气",
+      "source_quote": "内容：（一）味甘，大暖。疗脏腑中风气，调中下气，开胃消宿食。主霍乱，心膈气，痰逆。  除烦，破症结及补虚，去冷气，除肠胃中塞、不下食。令人有颜色。六月作者良。陈",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荞麦",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：（一）难消，动热风。不宜多食。〔心〕  （二）虽动诸病，犹压丹石。能练五脏滓秽，续精神。其叶可煮作菜食，甚利耳目，下  气。其 （茎）为灰，洗六畜疮疥及马",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豆",
+      "property": "微寒",
+      "efficacy": "霍乱吐痢不止",
+      "source_quote": "内容：（一）主呕逆，久食头不白。患冷气人勿食。〔证〕  （二）疗霍乱吐痢不止，末和醋服之，下气。〔嘉〕  （三）其叶治瘕，和醋煮。理转筋，叶汁醋服效。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豉",
+      "property": null,
+      "efficacy": "久盗汗患者",
+      "source_quote": "内容：（一）能治久盗汗患者，以二升微炒令香，清酒三升渍。满三日取汁，冷暖任人服之，  不差，更作三两剂即止。〔嘉〕  （二）陕府豉汁甚胜于常豉。以大豆为黄蒸，每",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "绿豆",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）诸食法，作饼炙食之佳。〔嘉〕  （二）谨按∶补益，和五脏，安精神，行十二经脉。此最为良。今人食，皆挞去皮，即  有  少拥气。若愈病，须和皮，故不可",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白豆",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：平，无毒。补五脏，益中，助十二经脉，调中，暖肠胃。叶∶利五脏，下气。嫩者可作  菜食。生食之亦妙，可常食。〔嘉补〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "醋",
+      "property": null,
+      "efficacy": "妇人产后血气运∶取美清醋",
+      "source_quote": "内容：（一）多食损人胃。消诸毒瓦斯，煞邪毒。能治妇人产后血气运∶取美清醋，热煎，稍稍  含之即愈。〔心·嘉〕  （二）又，人口有疮，以黄 皮醋渍，含之即愈。〔嘉",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "糯米",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）使人多睡。发风，动气，不可多食。〔嘉〕  （二）又，霍乱后吐逆不止。清水研一碗，饮之即止。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葵",
+      "property": null,
+      "efficacy": "疳疮生身面上",
+      "source_quote": "内容：（一）主疳疮生身面上、汁黄者∶可取根作灰，和猪脂涂之。〔嘉〕  （二）其性冷，若热食之，亦令人热闷。甚动风气。久服丹石人时吃一顿，佳也。〔心·嘉〕  （三",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苋",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）补气，除热。其子明目。九月霜后采之。〔嘉〕  （二）叶∶食亦动气，令人烦闷，冷中损腹。〔嘉·证〕  （三）不可与鳖肉同食，生鳖症。又取鳖甲如豆片大者",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡荽",
+      "property": "辛温",
+      "efficacy": "消谷能食",
+      "source_quote": "内容：（一）利五脏，补筋脉。主消谷能食。若食多，则令人多忘。〔心·证〕  （二）又，食着诸毒肉，吐、下血不止，顿 黄者∶取净胡荽子一升，煮使腹破，取汁  停冷，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "邪蒿",
+      "property": "辛温",
+      "efficacy": "胸膈中臭烂恶邪气",
+      "source_quote": "内容：味辛，温、平，无毒。似青蒿细软。主胸膈中臭烂恶邪气。利肠胃，通血脉，续不足气  。生食微动风气，作羹食良。不与胡荽同食，令人汗臭气。〔嘉补〕     <目",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "同蒿",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：主安心气，养脾胃，消水饮。又，动风气，熏人心，令人气满，不可多食。〔嘉补〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "罗勒",
+      "property": "辛温",
+      "efficacy": "齿根烂疮",
+      "source_quote": "内容：（一）味辛，温，微毒。调中消食，去恶气，消水气，宜生食。又，疗齿根烂疮，为灰  用甚良。不可过多食，壅关节，涩荣卫，令血脉不行。又，动风发香港脚。患 ，取",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石胡荽",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：无毒。通鼻气，利九窍，吐风痰，不任食。亦去翳，熟 内鼻中，翳自落。俗名“鹅不  食草”。〔嘉补〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓菁",
+      "property": "温",
+      "efficacy": "热毒风肿",
+      "source_quote": "内容：（一）消食，下气，治黄胆，利小便。根主消渴，治热毒风肿。食，令人气胀满。〔嘉  ·证〕  （二）其子∶九蒸九曝，捣为粉，服之长生。压油，涂头，能变蒜发。〔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "冬瓜",
+      "property": "寒",
+      "efficacy": "治小腹水鼓胀",
+      "source_quote": "内容：（一）上主治小腹水鼓胀。〔卷〕  （二）又，利小便，止消渴。〔卷〕  （三）又，其子∶主益气耐老，除心胸气满，消痰止烦。〔卷·嘉·证〕  （四）又，冬瓜子",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "濮瓜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：孟诜说∶肺热消渴，取濮瓜去皮，每食后嚼吃三二两，五七度良。〔证〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甜瓜",
+      "property": "寒",
+      "efficacy": "治身面四肢浮肿",
+      "source_quote": "内容：（一）上止渴，（益气），除烦热。多食令人阴下痒湿，生疮。〔卷·证〕  （二）又，发瘅黄，动宿冷病，患症瘕人不可食瓜。（若食之饱胀，入水自消。）〔卷·  心",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡瓜",
+      "property": "苦平",
+      "efficacy": "小儿闪癖∶一岁服一叶",
+      "source_quote": "内容：（一）不可多食，动风及寒热。又发 疟，兼积瘀血。〔卷·心〕  （二）案∶多食令人虚热上气，生百病，消人阴，发疮（疥），及发 气，及香港脚，损  血脉  。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "越瓜",
+      "property": "寒",
+      "efficacy": "治利阴阳",
+      "source_quote": "内容：（一）上主治利阴阳，益肠胃，止烦渴，不可久食，发痢。〔卷·心〕  （二）案∶此物动风。虽止渴，能发诸疮。令人虚，脚弱，虚不能行（立）。小儿夏月  不可与食",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芥",
+      "property": null,
+      "efficacy": "咳逆下气",
+      "source_quote": "内容：（一）主咳逆下气，明目，去头面风。大叶者良。煮食之亦动气，犹胜诸菜。生食发  丹石，不可多食。〔卷·心·嘉〕  （二）其子∶微熬研之，作酱香美，有辛气，能",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "萝卜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）利五脏，轻身益气。〔心·嘉〕  （二）根∶消食下气。甚利关节，除五脏中风，练五脏中恶气。服之令人白净肌细。〔心·嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菘菜",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）治消渴。又发诸风冷。（腹中冷病者不服。）有热者服之，亦不发病，即明其（菜）  性冷。《本草》云“温”，未解。〔心·证〕  （二）又，消食，亦少下气。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荏子",
+      "property": "温",
+      "efficacy": "咳逆下气",
+      "source_quote": "内容：（一）主咳逆下气。〔证〕  （二）其叶性温。用时捣之。治男子阴肿，生捣和醋封之。女人绵裹内，三、四易。〔嘉  ·证〕  （三）谨按∶子∶压作油用，亦少破气",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙葵",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主丁肿。患火丹疮，和土杵敷之尤良。〔证〕  （二）其子疗甚妙。其赤珠者名龙珠，久服变发，长黑。令人不老。〔心〕  （三）其味苦，皆 去汁食之。〔嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苜蓿",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）患疸黄人，取根生捣，绞汁服之良。〔嘉〕  （二）又，利五脏，轻身。洗去脾胃间邪气，诸恶热毒。少食好，多食当冷气入筋中，  即  瘦人。亦能轻身健人，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蕨",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）补五脏不足。气壅经络筋骨间，毒瓦斯。令人脚弱不能行。消阳事，缩玉茎。多食  令人发落，鼻塞，目暗。小儿不可食之，立行不得也。〔心·证〕  （二）又，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "翘摇",
+      "property": null,
+      "efficacy": "五种黄病∶生捣汁",
+      "source_quote": "内容：（一）疗五种黄病∶生捣汁，服一升，日二，瘥。〔证〕  （二）甚益人，和五脏，明耳目，去热风，令人轻健。长食不厌，煮熟吃，佳。若生吃，  令人吐水。〔证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓼子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：多食令人吐水。亦通五脏拥气，损阳气。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葱",
+      "property": "温",
+      "efficacy": "伤寒壮热",
+      "source_quote": "内容：（一）叶∶温。白∶平。主伤寒壮热、出汗；中风，面目浮肿，骨节头疼，损发鬓。  〔证〕  （二）葱白及须∶平。通气，主伤寒头痛。〔证〕  （三）又，治疮中有",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "韭",
+      "property": null,
+      "efficacy": "或至死∶可",
+      "source_quote": "内容：（一）冷气人，可煮，长服之。〔心〕  （二）热病后十日，不可食热韭，食之即发困。〔嘉〕  （三）又，胸痹，心中急痛如锥刺，不得俯仰，白汗出。或痛彻背上，不",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薤",
+      "property": null,
+      "efficacy": "诸疮中风水肿",
+      "source_quote": "内容：（一）轻身耐老。疗金疮、生肌肉∶生捣薤白，以火封之。更以火就炙，令热气彻疮中  ，干则易之。〔证〕  （二）疗诸疮中风水肿，生捣，热涂上，或煮之。〔嘉〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荆芥",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：（一）辟邪气，除劳，传送五脏不足气，助脾胃。多食薰人五脏神。通利血脉，发汗，  动渴疾。〔嘉·证〕  （二）又，杵为末，醋和封风毒肿上。〔证〕  （三）患",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）又，捣汁与时疾人服，瘥。〔嘉〕  （二）子∶煮半生，捣取汁，含，治小儿热。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫苏",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：除寒热，治冷气。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸡苏",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）一名水苏。熟捣生叶，绵裹塞耳，疗聋。〔嘉〕  （二）又，头风目眩者，以清酒煮汁一升服。产后中风，服之弥佳。〔嘉〕  （三）可烧作灰汁及以煮汁洗头，令",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薄荷",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：解劳。与薤相宜。发汗，通利关节。杵汁服，去心脏风热。〔证〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦荻梨",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）于生菜中最香美，甚破气。〔嘉〕  （二）又，末之，和酒服，疗卒心痛，悒悒，塞满气。〔嘉〕  （三）又，子∶末以和醋封肿气，日三易。〔嘉〕     <",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瓠子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）上主治消渴。患恶疮，患香港脚虚肿者，不得食之，加甚。〔卷·嘉〕  （二）案经∶治热风，及服丹石人始可食之。除此，一切人不可食也。患冷气人食之，  加",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大蒜",
+      "property": "热",
+      "efficacy": null,
+      "source_quote": "内容：（一）除风，杀虫、毒瓦斯。〔心·证〕  （二）久服损眼伤肝。治蛇咬疮，取蒜去皮一升，捣以小便一升，煮三、四沸。通人即  入渍损处，从夕至暮。初被咬未肿，速",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "小蒜",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）主霍乱，消谷，治胃温中，除邪气。五月五日采者上。〔证〕  （二）又，去诸虫毒、丁肿、毒疮，甚良。不可常食。〔嘉·证〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡葱",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）主消谷，能食。久食之，令人多忘。根∶发痼疾。〔证〕  （二）又，食着诸毒肉，吐血不止，痿黄悴者∶取子一升洗，煮使破，取汁停冷。服  半升，日一服，夜",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水芹",
+      "property": "寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）（食之）养神益力，令人肥健。杀石药毒。〔心·嘉·证〕  （二）置酒酱中香美。〔嘉〕  （三）于醋中食之，损人齿，黑色。〔心 ·嘉〕  （四）生黑滑地",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马齿苋",
+      "property": null,
+      "efficacy": "三十六种风",
+      "source_quote": "内容：（一）延年益寿，明目。〔证〕  （二）又，主马毒疮，以水煮，冷服一升，并涂疮上。〔嘉〕  （三）患湿癣白秃，取马齿膏涂之。若烧灰敷之，亦良。〔嘉·证〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "落苏",
+      "property": "平",
+      "efficacy": null,
+      "source_quote": "内容：（一）主寒热，五脏劳。不可多食。动气，亦发痼疾。熟者少食之，无畏。患冷人不可  食，发痼疾。〔嘉·证〕  （二）又，根∶主冻脚疮，煮汤浸之。〔证〕  （三",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蘩蒌",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）不用令人长食之，恐血尽。或云∶ 蒌即藤也，人恐白软草是。〔证〕  （二）又方，（治隐轸疮），捣蘩蒌封上。〔心〕  （三）煮作羹食之，甚益人。〔心 〕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白苣",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：（一）主补筋力。〔心〕  （二）利五脏，开胸膈拥塞气，通经脉，养筋骨，令人齿白净，聪明，少睡。可常常食  之。有小冷气人食之，虽亦觉腹冷，终不损人。〔心",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "落葵",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）其子悦泽人面，药中可用之。〔嘉〕  （二）其子令人面鲜华可爱。取蒸，烈日中曝干。按去皮，取人细研，和白蜜敷之，甚  验。〔嘉·证〕  （三）食此菜后",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "堇菜",
+      "property": null,
+      "efficacy": "寒热鼠",
+      "source_quote": "内容：（一）味苦。主寒热鼠 ，瘰 生疮，结核聚气。下瘀血。〔证〕  （二）久食，除心烦热，令人身重懈惰。又令人多睡，只可一两顿而已。〔嘉〕  （三）又，捣敷热肿",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蕺菜",
+      "property": "温",
+      "efficacy": null,
+      "source_quote": "内容：小儿食之，便觉脚痛，三岁不行。久食之，发虚弱，损阳气，消精髓，不可食。〔心  ·嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马芹子",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：和酱食诸味良。根及叶不堪食。卒心痛∶子作末，醋服。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芸苔",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：（一）若先患腰膝，不可多食，必加极。〔嘉〕  （二）又，极损阳气，发口疮，齿痛。〔嘉〕  （三）又，能生腹中诸虫。道家特忌。〔嘉〕     <目录>卷下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雍菜",
+      "property": "甘平",
+      "efficacy": "解野葛毒",
+      "source_quote": "内容：（一）味甘，平，无毒。主解野葛毒，煮食之。亦生捣服之。岭南种之。蔓生，花白，  堪为菜。云南人先食雍菜，后食野葛，二物相伏，自然无苦。〔嘉补〕  （二）又",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菠",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：冷，微毒。利五脏，通肠胃热，解酒毒。服丹石人食之佳。北人食肉面即平，南人食鱼  鳖水米即冷。不可多食，冷大小肠。久食令人脚弱不能行。发腰痛，不与蛆鱼同食。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿角菜",
+      "property": null,
+      "efficacy": "小儿骨蒸热劳",
+      "source_quote": "内容：大寒，无毒，微毒。下热风气，疗小儿骨蒸热劳。丈夫不可久食，发痼疾，损经络血气  ，令人脚冷痹，损腰肾，少颜色。服丹石人食之，下石力也。出海州，登、莱沂、密",
+      "evidence_level": "high"
+    }
+  ]
+}

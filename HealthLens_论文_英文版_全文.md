@@ -16,9 +16,9 @@
 
 **Background**: Traditional medicine (exemplified by Chinese medicine) has accumulated millennia of experiential knowledge on homeostatic regulation, whereas modern aging biology has identified measurable homeostatic pathways (autophagy, mitochondrial biogenesis, senescent-cell clearance, circadian rhythm). The two knowledge systems have long run in parallel, lacking a computable, verifiable unifying framework.
 
-**Objective**: We propose the Integrated Steady-State Biology Framework (ISSBF), which axiomatically maps classical constructs (qi, blood, zang-fu, yin-yang, zheng-xie, shen) onto eight measurable steady-state biology axes, and establishes a fusion rule of classical candidate intersected with individual genetic weakness pathway together with a Sense-Infer-Intervene-Verify (SIIV) closed loop.
+**Objective**: We propose the Integrated Steady-State Biology Framework (ISSBF), which axiomatically maps classical constructs (qi, blood, zang-fu, yin-yang, zheng-xie, shen) onto ten measurable steady-state biology axes, and establishes a fusion rule of classical candidate intersected with individual genetic weakness pathway together with a Sense-Infer-Intervene-Verify (SIIV) closed loop.
 
-**Methods**: (1) Six paradigm axioms constrain the framework; (2) an eight-axis mapping is constructed (A: gasification/autophagy, B: qi-blood/mitochondria, C: luo-network/stasis-clearance, D: yin-yang/circadian, E: zang-fu/neuroendocrine, F: zheng-xie/inflammation, G: shen/affect, H: congenital/epi-clock); (3) a real-world case evidence base (n=29; L1=8, L2=9, L3=12) anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validation (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.
+**Methods**: (1) Six paradigm axioms constrain the framework; (2) a ten-axis mapping is constructed (A: gasification/autophagy, B: qi-blood/mitochondria, C: luo-network/stasis-clearance, D: yin-yang/circadian, E: zang-fu/neuroendocrine, F: zheng-xie/inflammation, G: shen/affect, H: congenital/epi-clock, I: exosome intercellular signaling, J: regenerative medicine/iPSC); (3) a real-world case evidence base (n=29; L1=8, L2=9, L3=12) anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validation (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.
 
 **Results**: The framework anchors each axis to modern mechanisms and human evidence (e.g., 4-week fasting raised LAMP2 4.2-fold and LC3B 1.9-fold; dasatinib plus quercetin reduced senescent cells by 35% in a first-in-human pilot and improved gait speed in a 240-person Phase II trial; 16:8 time-restricted eating reduced hepatic fat by 25.8% in a 333-person randomized controlled trial). Computational validation showed 100% reproducibility, 100% weakness-profile coverage (90% with L1-grade evidence), zero personalized recommendations for control profiles, and 85% convergent validity with traditional-medicine domain expectations.
 
@@ -34,7 +34,7 @@ Global aging has made healthspan extension a central medical goal. Modern aging 
 
 The two systems exhibit structural complementarity: traditional medicine supplies the experiential priors of when and for which constitution to regulate what, while modern biology supplies the mechanistic evidence that regulation indeed changed which measurable pathway. Yet they have long lacked a unified computable language -- classical constructs are mostly not directly measurable, and modern pathways are mostly divorced from individual-constitution context.
 
-This paper proposes the ISSBF to: (1) axiomatically map core classical constructs onto eight measurable steady-state biology axes; (2) realize personalized weighting via a fusion rule of classical candidate intersected with individual genetic/omics weakness; (3) validate directional correctness with a real-world human evidence base; (4) achieve continuous verification through the SIIV loop and hardware interfaces. We observe three red lines: mechanisms must anchor to measurable pathways (no empty phrases such as "repair cells"), classical texts are not molecular evidence, and non-pharmacological does not mean risk-free.
+This paper proposes the ISSBF to: (1) axiomatically map core classical constructs onto ten measurable steady-state biology axes; (2) realize personalized weighting via a fusion rule of classical candidate intersected with individual genetic/omics weakness; (3) validate directional correctness with a real-world human evidence base; (4) achieve continuous verification through the SIIV loop and hardware interfaces. We observe three red lines: mechanisms must anchor to measurable pathways (no empty phrases such as "repair cells"), classical texts are not molecular evidence, and non-pharmacological does not mean risk-free.
 
 ---
 
@@ -51,9 +51,9 @@ The framework is constrained by six inviolable axioms:
 
 ---
 
-## 3. Eight Steady-State Biology Axes
+## 3. Ten Steady-State Biology Axes
 
-Each axis maps a classical construct onto a modern measurable pathway and anchors evidence:
+Each axis maps a classical construct onto a modern measurable pathway and anchors evidence (Figure 1):
 
 | Axis | Classical construct | Modern pathway | Representative evidence |
 |---|---|---|---|
@@ -65,6 +65,8 @@ Each axis maps a classical construct onto a modern measurable pathway and anchor
 | **F: Zheng-xie-Inflammation** | zheng-xie / damp-heat | Low-grade inflammation + CD4+T-cell immunosenescence | Fasting: IL-6 and TNF-alpha decreased [1]; CD4-Eomes+ cells modulate tissue senescence (Nature Aging 2025) |
 | **G: Shen-Affect** | shen / affect | HRV (RMSSD), EEG | Meditation: EEG alpha increased, HRV increased [12] |
 | **H: Congenital-Kidney-essence** | congenital / kidney-essence | Epigenetic clock + CD4 CTL expansion (longevity) | FMD 3 cycles: biological age reduced 2.5 years [3]; CD4 CTL expansion in centenarians (Cell Reports 2026) |
+| **I: Exosome intercellular signaling** | qi-blood circulation / luo-network communication | Exosome/miRNA cargo, CFTR-mediated vesicle release | Exercise-induced circulating exosomes increased 2-3-fold [19,20]; cancer-detection cfRNA via GeneLLM [24] |
+| **J: Regenerative medicine** | kidney-essence / prenatal qi | iPSC reprogramming, cellular rejuvenation | mRNA-LNP delivery of Oct4/Sox2/Klf4 reduces senescent-cell burden (UPenn 2025); siRNA-RIVER trial: HSC rejuvenation (Phase I) [24] |
 
 **Mapping philosophy**: Classical constructs are not proven equal to modern pathways; they are projected as experiential priors onto axes, then upgraded or vetoed by modern mechanisms and human evidence.
 
@@ -116,7 +118,7 @@ To demonstrate that the fusion rule is a computable, auditable method, we conduc
 | Convergent validity vs. traditional-medicine domain expectations | 85% |
 | Contraindication exclusion (weak F+D plus pregnancy) | 1 entry (CASE-017) |
 
-**Axis activation distribution** (hits per weakness profile): A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3 -- all eight axes were activated, with no axis collapse.
+**Axis activation distribution** (hits per weakness profile): A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3 -- all initial eight axes were activated, with no axis collapse. (Axes I and J were added after initial validation and require independent computational validation.)
 
 **Evidence-grade distribution** (personalized recommendation pool, n=119): L1=47 (39%), L2=46 (39%), L3=26 (22%) -- approximately 80% supported by human or RCT-level (L1 plus L2) evidence.
 
@@ -131,7 +133,7 @@ To demonstrate that the fusion rule is a computable, auditable method, we conduc
 ```
 Sense   <- wearable HRV/sleep, CGM postprandial drift, BCI/EEG
    |
-Infer   <- eight-axis homeostasis scoring + genetic-weakness fusion
+Infer   <- ten-axis homeostasis scoring + genetic-weakness fusion
    |
 Intervene <- non-pharmacological suggestions (daoyin, fasting, food-as-medicine, rhythm, affect)
    |
@@ -148,8 +150,10 @@ This loop turns the theory from a text hypothesis into a measurable, falsifiable
 - **vs Hormesis theory**: The framework writes the hormetic inverted-U into axiom A5, avoiding the more-is-better fallacy.
 - **vs Systems-biology Chinese medicine** [3,4]: ISSBF maps luo/phlegm-stasis to axis C (senolytics) and adds a quantifiable closed-loop verification layer, descending from formula-level to individual-executable micro-interventions.
 - **vs Chronobiology**: Axis D anchors regular routine and light avoidance to the measurable melatonin-SCN loop.
+- **vs AI drug discovery (C2S-Scale/CellType)** [23]: C2S-Scale performs conditional reasoning -- drugs are effective only in specific biological contexts. ISSBF applies the same conditional-reasoning method to non-pharmacological interventions: classical candidates are weighted only when they match a user's genetic weakness profile. Both reject one-size-fits-all and require biological context for efficacy.
+- **vs Genomic language models (GeneLLM/BioFord)** [24]: GeneLLM processes raw cfRNA as language tokens, discovering pseudo-biomarkers without genome annotation. BioFord treats the laboratory as programmable AI infrastructure. ISSBF borrows this insight: classical texts are treated as "traditional-medicine language tokens," ten-axis mapping is the translation layer between classical and modern biology, and the SIIV loop is a learnable experimental flywheel.
 
-**Novelty statement**: The core increments are (1) a computable mapping from classical constructs to eight axes, (2) an intersection fusion of classical candidate and genetic weakness, (3) the SIIV closed loop, and (4) a unified definition of hardware data interfaces. The framework offers a meta-framework for integration and prioritization; it does not claim any mechanism beyond known biology.
+**Novelty statement**: The core increments are (1) a computable mapping from classical constructs to ten axes, (2) an intersection fusion of classical candidate and genetic weakness, (3) the SIIV closed loop, and (4) a unified definition of hardware data interfaces. The framework offers a meta-framework for integration and prioritization; it does not claim any mechanism beyond known biology.
 
 ---
 
@@ -166,7 +170,7 @@ This loop turns the theory from a text hypothesis into a measurable, falsifiable
 
 ## 10. Conclusion
 
-ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating East and West, classical and modern, experience and technology. It projects classical experience onto modern measurable pathways through six axioms and eight axes, validates directional correctness with a real-world human evidence base, and achieves continuous verification through the SIIV loop and hardware interfaces. The in-silico computational validation shows that the fusion judgement is a reproducible, specific, high-coverage, and auditable method. As a decision-support framework, it can become a research foundation for personalized non-pharmacological intervention; its overall efficacy awaits prospective validation.
+ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating East and West, classical and modern, experience and technology. It projects classical experience onto modern measurable pathways through six axioms and ten axes, validates directional correctness with a real-world human evidence base, and achieves continuous verification through the SIIV loop and hardware interfaces. The in-silico computational validation shows that the fusion judgement is a reproducible, specific, high-coverage, and auditable method. As a decision-support framework, it can become a research foundation for personalized non-pharmacological intervention; its overall efficacy awaits prospective validation.
 
 ---
 
@@ -215,6 +219,10 @@ ISSBF provides a computable, verifiable, non-medical theoretical skeleton for in
 [21] Nature Aging 2025. CD4 T cells acquire Eomesodermin to modulate cellular senescence and aging. doi:10.1038/s43587-025-00953-8
 
 [22] Cell Reports 2026. CD4 CTLs in supercentenarians: Signs of adaptive expansion in healthy aging. doi:10.1016/j.celrep.2026.117728
+
+[23] Cai Y, et al. C2S-Scale: a single-cell foundation model for conditional virtual screening. arXiv:2508.12855. 2025.
+
+[24] Jindu Life Sciences. GeneLLM: a foundation model for cancer detection using cell-free RNA sequencing. Nat Commun. 2026. Available at: https://huggingface.co/Bilford-Lab/GeneLLM
 
 ---
 

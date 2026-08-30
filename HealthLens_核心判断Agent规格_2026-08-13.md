@@ -291,3 +291,68 @@ if biowell_scan.available:
 - BioWell是手动设备，不适合连续监测——作为周期性评估工具（月度/季度扫描）。
 - 设备价格约$500-1000，属于个人可购买级别，适合HealthLens用户画像。
 - 输出中表述为"经脉能量状态评估"，严禁"诊断疾病"或"检测生物场"。
+
+### 10.6 C2S-Scale条件推理验证层（v1.1新增）
+
+C2S-Scale（Google DeepMind+Yale）用单细胞基础模型做4000+药物的双上下文虚拟筛选——药物有效性取决于细胞类型和生物状态。HealthLens借鉴此方法论：古籍候选干预只在匹配的基因弱项背景下才有效。
+
+```
+# C2S-Scale条件推理同构验证
+def validate_classical_candidate(classical_candidate, genetic_profile):
+    """
+    C2S-Scale启示：干预有效性取决于生物上下文。
+    古籍候选 × 基因弱项 = 条件推理
+    """
+    # 1. 古籍候选的通路映射
+    pathway = map_classical_to_pathway(classical_candidate)
+    # 2. 用户基因弱项的通路得分
+    user_score = genetic_profile.pathway_scores[pathway]
+    # 3. 条件判定：只有用户该通路偏弱时，候选才有效
+    if user_score < 0.5:
+        return {"valid": True, "weight": 1.0 - user_score}  # 弱项越弱，权重越高
+    else:
+        return {"valid": False, "reason": "pathway_not_weak"}
+```
+
+**HealthLens与C2S-Scale的方法论同构**：
+
+| 维度 | C2S-Scale | HealthLens |
+|------|-----------|-----------|
+| 条件输入 | 细胞类型+生物状态 | 基因弱项+古籍候选 |
+| 筛选对象 | 4000+药物 | 30+古籍干预 |
+| 推理方式 | 虚拟筛选→条件有效 | 融合判定→条件推荐 |
+| 共同原则 | 不在所有上下文中普适 | 只在匹配的生物背景下推荐 |
+
+**关键约束**：
+- C2S-Scale是药物发现工具，HealthLens是非用药干预框架——方法论借鉴，不做药物推荐。
+- 条件推理的验证需独立RCT，当前仅做逻辑层面的同构论证。
+
+### 10.7 GeneLLM cfRNA检测增强层（v1.1新增）
+
+GeneLLM（Bilford Lab/Jindu Life Sciences）将cfRNA原始测序数据作为token处理，无需基因组注释即可发现癌症相关"伪生物标志物"（pseudo-biomarkers）。其核心洞察：RNA序列本身就是语言，Transformer可以理解细胞的"语言行为"。
+
+**对HealthLens的增强路径**：
+
+```
+# GeneLLM启发的cfRNA检测增强
+if cfrna_data.available:
+    # GeneLLM处理cfRNA原始数据 → 发现伪生物标志物
+    pseudo_biomarkers = geneLLM.detect(cfrna_raw_reads)
+    # 与HealthLens十轴映射
+    axis_scores = map_biomarkers_to_axes(pseudo_biomarkers)
+    # 增强外泌体通路（I轴）的检测精度
+    exosome_enhanced = fuse(consumer_chip_scores, axis_scores.exosome)
+```
+
+**HealthLens与GeneLLM/BioFord的协同**：
+
+| 组件 | 功能 | 对HealthLens的价值 |
+|------|------|-------------------|
+| GeneLLM | cfRNA→伪生物标志物 | 增强I轴外泌体检测，无需基因组注释 |
+| Gene Universe | AI驱动实验验证平台 | 为HealthLens推荐提供实验验证参考 |
+| BioFord | 实验室即代码 | 未来可接入实验室自动化，实现推荐→验证闭环 |
+
+**关键约束**：
+- GeneLLM（158.63GB）为研究级模型，当前不适合消费端部署——作为后台增强引擎。
+- cfRNA检测需专业实验室（NGS测序），无消费级产品——通过代理指标推断外泌体通路状态。
+- BioFord实验室自动化属于前沿概念，HealthLens暂不接入，仅作为方法论参考。

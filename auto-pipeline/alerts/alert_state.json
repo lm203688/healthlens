@@ -1,0 +1,61 @@
+{
+  "active": {
+    "ops:ssh_unreachable": {
+      "title": "无法连接服务器查看容器状态",
+      "level": "WARN",
+      "first_seen": "2026-08-04T14:30:37.945494",
+      "last_seen": "2026-08-28T23:37:15.384931",
+      "count": 8,
+      "last_notified_unix": 1787931375.068931
+    },
+    "watchdog:critical": {
+      "title": "看门狗发现 3 项严重问题",
+      "level": "CRITICAL",
+      "first_seen": "2026-08-04T17:33:16.436718",
+      "last_seen": "2026-08-28T23:27:10.910136",
+      "count": 7,
+      "last_notified_unix": 1787930712.5377731
+    },
+    "watchdog:warn": {
+      "title": "看门狗发现 14 项警告",
+      "level": "WARN",
+      "first_seen": "2026-08-04T17:33:16.438699",
+      "last_seen": "2026-08-28T23:27:10.913609",
+      "count": 7,
+      "last_notified_unix": 1787930712.5470998
+    },
+    "backup:failed": {
+      "title": "数据库备份失败",
+      "level": "CRITICAL",
+      "first_seen": "2026-08-04T17:33:36.683358",
+      "last_seen": "2026-08-04T17:33:36.683358",
+      "count": 1,
+      "last_notified_unix": 1785836016.6833577
+    },
+    "scheduler:feedback_failed": {
+      "title": "2/6 条反馈闭环失败",
+      "level": "WARN",
+      "first_seen": "2026-08-04T17:37:35.660687",
+      "last_seen": "2026-08-04T17:37:35.660687",
+      "count": 1,
+      "last_notified_unix": 1785836255.6606865
+    },
+    "scheduler:run_failed": {
+      "title": "流水线运行失败: 2 项",
+      "level": "CRITICAL",
+      "first_seen": "2026-08-04T17:37:35.709714",
+      "last_seen": "2026-08-04T17:37:35.709714",
+      "count": 1,
+      "last_notified_unix": 1785836255.7097132
+    },
+    "ops:bad_deploy_target": {
+      "title": "部署目标配置有误",
+      "level": "CRITICAL",
+      "first_seen": "2026-08-04T17:40:02.340644",
+      "last_seen": "2026-08-28T23:37:15.394913",
+      "count": 3,
+      "last_notified_unix": 1787931375.0820649
+    }
+  },
+  "history_count": 34
+}

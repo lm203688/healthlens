@@ -1,0 +1,76 @@
+{
+  "report_id": "data_asset_c_20260804",
+  "generated_at": "2026-08-04T17:34:10.754225",
+  "sources": [
+    {
+      "name": "UniProt",
+      "type": "protein",
+      "total_records": 250000,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    },
+    {
+      "name": "ClinVar",
+      "type": "variant",
+      "total_records": 180000,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    },
+    {
+      "name": "KEGG",
+      "type": "pathway",
+      "total_records": 85000,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    },
+    {
+      "name": "dbSNP",
+      "type": "snp",
+      "total_records": 500000,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    },
+    {
+      "name": "TCMKnowledge",
+      "type": "tcm",
+      "total_records": 45000,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    },
+    {
+      "name": "UserData",
+      "type": "user_derived",
+      "total_records": 3200,
+      "last_sync": "2026-08-04",
+      "status": "current"
+    }
+  ],
+  "quality_issues": [],
+  "needs_sync": [],
+  "value_estimate": {
+    "total_records": 1063200,
+    "avg_value_per_record": 0.002,
+    "freshness_score": 0.85,
+    "estimated_value_cny": 1807.44,
+    "breakdown": {
+      "UniProt": 250000,
+      "ClinVar": 180000,
+      "KEGG": 85000,
+      "dbSNP": 500000,
+      "TCMKnowledge": 45000,
+      "UserData": 3200
+    }
+  },
+  "actions_needed": [
+    {
+      "source": "all",
+      "action": "weekly_dedup_check",
+      "priority": "medium"
+    },
+    {
+      "source": "all",
+      "action": "integrity_check",
+      "priority": "medium"
+    }
+  ]
+}

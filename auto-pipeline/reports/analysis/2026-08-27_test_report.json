@@ -1,0 +1,231 @@
+{
+  "report_id": "test_2026-08-27",
+  "generated_at": "2026-08-27T16:27:37.022014",
+  "summary": {
+    "total": 6,
+    "passed": 5,
+    "failed": 1,
+    "warnings": 0,
+    "pass_rate": "83.3%"
+  },
+  "check_categories": {
+    "medical_terms": 6,
+    "schema_markup": 5,
+    "word_count": 5
+  },
+  "results": [
+    {
+      "task_id": "task_seo_001",
+      "title": "repowise-dev/repowise",
+      "type": "seo_knowledge_page",
+      "status": "passed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "schema_markup": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 1,
+          "issues": []
+        },
+        "word_count": {
+          "status": "pass",
+          "count": 915,
+          "message": "OK"
+        },
+        "seo_basics": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_002",
+      "title": "CodeWithCJ/SparkyFitness",
+      "type": "seo_knowledge_page",
+      "status": "passed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "schema_markup": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 1,
+          "issues": []
+        },
+        "word_count": {
+          "status": "pass",
+          "count": 900,
+          "message": "OK"
+        },
+        "seo_basics": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_003",
+      "title": "qixing-jk/all-api-hub",
+      "type": "seo_knowledge_page",
+      "status": "passed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "schema_markup": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 1,
+          "issues": []
+        },
+        "word_count": {
+          "status": "pass",
+          "count": 941,
+          "message": "OK"
+        },
+        "seo_basics": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_004",
+      "title": "the-momentum/open-wearables",
+      "type": "seo_knowledge_page",
+      "status": "passed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "schema_markup": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 1,
+          "issues": []
+        },
+        "word_count": {
+          "status": "pass",
+          "count": 928,
+          "message": "OK"
+        },
+        "seo_basics": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_005",
+      "title": "thetahealth/mirobody",
+      "type": "seo_knowledge_page",
+      "status": "passed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "schema_markup": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 1,
+          "issues": []
+        },
+        "word_count": {
+          "status": "pass",
+          "count": 899,
+          "message": "OK"
+        },
+        "seo_basics": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        }
+      }
+    },
+    {
+      "task_id": "task_edu_006",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "type": "user_education",
+      "status": "failed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 0,
+          "issues": []
+        },
+        "word_count": {
+          "status": "fail",
+          "count": 377,
+          "message": "字数不足: 377/800"
+        }
+      }
+    }
+  ],
+  "failed_items": [
+    {
+      "task_id": "task_edu_006",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "type": "user_education",
+      "status": "failed",
+      "checks": {
+        "medical_terms": {
+          "status": "pass",
+          "issues_found": 0,
+          "details": []
+        },
+        "links": {
+          "status": "pass",
+          "valid_links": 0,
+          "issues": []
+        },
+        "word_count": {
+          "status": "fail",
+          "count": 377,
+          "message": "字数不足: 377/800"
+        }
+      }
+    }
+  ]
+}

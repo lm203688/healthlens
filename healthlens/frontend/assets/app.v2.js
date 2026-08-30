@@ -1011,9 +1011,15 @@
       if (target === 'login') {
         loginForm.classList.add('active');
         registerForm.classList.remove('active');
+        phoneForm.classList.remove('active');
+      } else if (target === 'phone') {
+        loginForm.classList.remove('active');
+        registerForm.classList.remove('active');
+        phoneForm.classList.add('active');
       } else {
         loginForm.classList.remove('active');
         registerForm.classList.add('active');
+        phoneForm.classList.remove('active');
       }
     });
   });

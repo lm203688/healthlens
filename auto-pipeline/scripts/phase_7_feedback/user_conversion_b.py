@@ -4,13 +4,21 @@ B线：用户转化闭环
 计算留存率、转化率、方案效果评分
 输出：conversion_funnel.json + 回写用户活跃度指标
 """
-import sys
 import json
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
-from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
+from state_manager import (
+    BASE_DIR,
+    complete_phase,
+    fail_phase,
+    get_state,
+    log,
+    save_state,
+    start_phase,
+)
 
 DB_URL_FALLBACK = "postgresql://healthlens:healthlens@localhost:5432/healthlens"
 
@@ -22,7 +30,7 @@ def _get_db_url():
     if url:
         return url
     try:
-        with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
+        with open(BASE_DIR / "config.json", encoding="utf-8") as f:
             cfg = json.load(f)
         url = cfg.get("database", {}).get("url", "")
         if url:
@@ -190,17 +198,17 @@ def run():
     phase = "user_conversion_b"
     try:
         start_phase(phase)
-        
+
         # 获取用户指标（优先真实数据，降级到零值占位）
         metrics = get_user_metrics_from_db() or get_user_metrics_fallback()
         plan_effect = analyze_plan_effectiveness()
-        
+
         funnel = metrics.get("funnel", {})
         dropoffs = calculate_funnel_dropoffs(funnel)
-        
+
         # 找出最大流失点
         max_dropoff = max(dropoffs, key=lambda x: x["dropoff_rate"]) if dropoffs else None
-        
+
         state = get_state()
         state.setdefault("feedback_metrics", {})["user_conversion"] = {
             "checked_at": datetime.now().isoformat(),
@@ -212,7 +220,7 @@ def run():
             "plan_effectiveness": plan_effect["avg_improvement_score"]
         }
         save_state(state)
-        
+
         report = {
             "report_id": f"conversion_b_{datetime.now().strftime('%Y%m%d')}",
             "generated_at": datetime.now().isoformat(),
@@ -223,12 +231,12 @@ def run():
             "biggest_dropoff": max_dropoff,
             "recommendations": _generate_recommendations(metrics, plan_effect, max_dropoff)
         }
-        
+
         output_file = f"reports/analysis/{datetime.now().strftime('%Y-%m-%d')}_conversion_b.json"
         output_path = BASE_DIR / output_file
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
-        
+
         complete_phase(phase, output_file=output_file, items_processed=len(dropoffs))
         log(f"B线转化分析完成 (数据源={metrics.get('data_source')}): 7日留存 {metrics['retention_rate_d7']}%, 付费转化 {metrics['paid_conversion_rate']}%")
         return True

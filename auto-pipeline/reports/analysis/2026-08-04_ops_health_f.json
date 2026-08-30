@@ -1,0 +1,89 @@
+{
+  "report_id": "ops_f_20260804",
+  "generated_at": "2026-08-04T17:40:02.360965",
+  "overall_status": "down",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "error",
+      "http_code": 530,
+      "error": "HTTP 530",
+      "latency_ms": 613
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "error",
+      "http_code": 530,
+      "error": "HTTP 530",
+      "latency_ms": 619
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "error",
+      "http_code": 530,
+      "error": "HTTP 530",
+      "latency_ms": 720
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "error",
+      "http_code": 530,
+      "error": "HTTP 530",
+      "latency_ms": 598
+    }
+  ],
+  "server_reachable": false,
+  "server_unreachable_reason": "SSH 失败 (exit 255): root@150.158.119.19: Permission denied (publickey,password).",
+  "containers": [],
+  "security_issues": [],
+  "medical_terms": [],
+  "site_identity": [
+    {
+      "path": "/",
+      "status": "unreachable",
+      "detail": "无法获取内容: HTTP Error 530: <none>"
+    },
+    {
+      "path": "/robots.txt",
+      "status": "unreachable",
+      "detail": "无法获取内容: HTTP Error 530: <none>"
+    }
+  ],
+  "deploy_target_issues": [
+    {
+      "level": "critical",
+      "item": "部署目标未配置",
+      "detail": "deployment.ssh_host = ''，无法执行任何真实部署。"
+    }
+  ],
+  "actions_needed": [
+    {
+      "action": "修复端点: API健康 (530)",
+      "severity": "critical"
+    },
+    {
+      "action": "修复端点: Robots (530)",
+      "severity": "critical"
+    },
+    {
+      "action": "修复端点: Sitemap (530)",
+      "severity": "critical"
+    },
+    {
+      "action": "修复端点: SEO内容 (530)",
+      "severity": "critical"
+    },
+    {
+      "action": "恢复服务器连通性: SSH 失败 (exit 255): root@150.158.119.19: Permission denied (publickey,password).",
+      "severity": "high"
+    },
+    {
+      "action": "部署目标: 部署目标未配置 — deployment.ssh_host = ''，无法执行任何真实部署。",
+      "severity": "critical"
+    }
+  ]
+}

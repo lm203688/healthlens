@@ -25,9 +25,10 @@ import json
 import re
 import shutil
 import sys
-import paramiko
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import paramiko
 
 CST = timezone(timedelta(hours=8))
 ROOT = Path(__file__).resolve().parents[3]          # .../healthlens
@@ -131,8 +132,16 @@ def build():
     log("HealthLens 静态站点构建")
     log("=" * 64)
 
-    if DIST.exists():
-        shutil.rmtree(DIST)
+    # 禁止批量清空输出目录。
+    # 此前是 shutil.rmtree(DIST)：dist 常见 60+ 文件，会触发本环境 safe-delete
+    # 护栏（>50 文件/turn）使构建直接中止；且「先全删再重建」在任何环境都是
+    # 高风险操作——构建中途失败会留下空站。现改为构建到一次性空目录，
+    # 旧产物保留，由调用方显式清理。
+    if DIST.exists() and any(DIST.iterdir()):
+        log(f"[ERROR] 输出目录非空，中止构建以避免覆盖/批量删除: {DIST}")
+        log("        请指定一个空目录，如: --out auto-pipeline/dist_build_20260829")
+        log("=" * 64)
+        return 1
     (DIST / "knowledge").mkdir(parents=True, exist_ok=True)
 
     errors = []
@@ -177,6 +186,18 @@ def build():
         log(f"  _worker.js            {worker_src.stat().st_size // 1024} KB（整合路由；Direct Upload 下替代 functions/ 使其真正运行）")
     else:
         log("  [WARN] 无 _worker.js（Direct Upload 模式 functions 不被编译，需改用 Git 构建或补 _worker.js）")
+
+    # ---------- 1c-bis. React SPA 产品入口（frontend/ -> dist/app/） ----------
+    # 根路径 / 保留给内容型 GEO 首页（SEO 主资产），SPA 挂载在 /app/ 子路径。
+    # 对应 _worker.js 的第 3b 条路由（/app/** 回退到 /app/index.html）。
+    spa_dist = ROOT / "frontend" / "dist"
+    if spa_dist.is_dir() and (spa_dist / "index.html").is_file():
+        shutil.copytree(spa_dist, DIST / "app", dirs_exist_ok=True)
+        _files = [f for f in (DIST / "app").rglob("*") if f.is_file()]
+        _size = sum(f.stat().st_size for f in _files)
+        log(f"  app/                  {len(_files)} 个文件 / {_size // 1024} KB（React SPA，入口 /app/）")
+    else:
+        log(f"  [WARN] 无 React SPA 产物: {spa_dist}（/app/ 不可用；先在 frontend/ 跑 npm run build）")
 
     # ---------- 1d. 信任/法务静态页（隐私/条款/免责/安全/关于/联系/更新日志/帮助/API） ----------
     # 独立 HTML，由 _worker.js 的 serveStatic(path+".html") 直接命中 /privacy 等，不依赖 SPA。
@@ -406,5 +427,27 @@ Last-Updated: {today}
     return 0
 
 
+def set_out_dir(p: Path) -> None:
+    """切换输出目录（供命令行 --out 与自动一次性目录使用）。"""
+    global DIST
+    DIST = p
+
+
 if __name__ == "__main__":
+    import argparse
+
+    ap = argparse.ArgumentParser(description="HealthLens 静态站点构建")
+    ap.add_argument(
+        "--out", default=None,
+        help="输出目录。留空默认 auto-pipeline/dist；若其非空则自动改用一次性目录 dist_build_<ts>",
+    )
+    args = ap.parse_args()
+
+    if args.out:
+        set_out_dir(Path(args.out))
+    elif DIST.exists() and any(DIST.iterdir()):
+        # dist 已有产物时自动切到一次性目录：既不覆盖旧产物，也绕开批量删除。
+        set_out_dir(PIPELINE / f"dist_build_{datetime.now(CST).strftime('%Y%m%d_%H%M%S')}")
+        log(f"dist 非空，改用一次性输出目录: {DIST}")
+
     sys.exit(build())

@@ -1,0 +1,29 @@
+{
+  "n_profiles": 22,
+  "n_case": 20,
+  "n_control": 2,
+  "determinism_mismatch": 0,
+  "determinism_rate": 1.0,
+  "mean_personalized_case": 6.35,
+  "mean_personalized_control": 0.0,
+  "coverage_any_personalized": 1.0,
+  "coverage_L1": 0.9,
+  "axis_activation": {
+    "A": 4,
+    "B": 5,
+    "C": 4,
+    "D": 5,
+    "E": 3,
+    "F": 5,
+    "G": 4,
+    "H": 3
+  },
+  "evidence_dist_personalized": {
+    "L1": 54,
+    "L2": 50,
+    "L3": 23
+  },
+  "evidence_total_personalized": 127,
+  "convergent_validity_rate": 0.848,
+  "contra_excluded_count": 1
+}

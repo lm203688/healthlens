@@ -1,0 +1,89 @@
+{
+  "report_id": "deploy_2026-08-27",
+  "generated_at": "2026-08-27T16:27:37.495033",
+  "summary": {
+    "total_items": 5,
+    "deployed": 5,
+    "failed": 0,
+    "new_urls": [
+      {
+        "loc": "https://healthlens.cc/knowledge/repowise-devrepowise",
+        "lastmod": "2026-08-27",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      },
+      {
+        "loc": "https://healthlens.cc/knowledge/codewithcjsparkyfitness",
+        "lastmod": "2026-08-27",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      },
+      {
+        "loc": "https://healthlens.cc/knowledge/qixing-jkall-api-hub",
+        "lastmod": "2026-08-27",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      },
+      {
+        "loc": "https://healthlens.cc/knowledge/the-momentumopen-wearables",
+        "lastmod": "2026-08-27",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      },
+      {
+        "loc": "https://healthlens.cc/knowledge/thetahealthmirobody",
+        "lastmod": "2026-08-27",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      }
+    ]
+  },
+  "seo_summary": {
+    "new_pages": 5,
+    "expected_impact": "预计1-2周内开始获得搜索引擎流量",
+    "target_keywords": 0,
+    "recommendation": "持续监控Google Search Console和百度统计数据"
+  },
+  "deployments": [
+    {
+      "task_id": "task_seo_001",
+      "file": "content/generated/repowise-devrepowise.html",
+      "status": "deployed",
+      "remote_path": "/opt/healthlens/web/static/knowledge/repowise-devrepowise.html",
+      "note": "dry-run"
+    },
+    {
+      "task_id": "task_seo_002",
+      "file": "content/generated/codewithcjsparkyfitness.html",
+      "status": "deployed",
+      "remote_path": "/opt/healthlens/web/static/knowledge/codewithcjsparkyfitness.html",
+      "note": "dry-run"
+    },
+    {
+      "task_id": "task_seo_003",
+      "file": "content/generated/qixing-jkall-api-hub.html",
+      "status": "deployed",
+      "remote_path": "/opt/healthlens/web/static/knowledge/qixing-jkall-api-hub.html",
+      "note": "dry-run"
+    },
+    {
+      "task_id": "task_seo_004",
+      "file": "content/generated/the-momentumopen-wearables.html",
+      "status": "deployed",
+      "remote_path": "/opt/healthlens/web/static/knowledge/the-momentumopen-wearables.html",
+      "note": "dry-run"
+    },
+    {
+      "task_id": "task_seo_005",
+      "file": "content/generated/thetahealthmirobody.html",
+      "status": "deployed",
+      "remote_path": "/opt/healthlens/web/static/knowledge/thetahealthmirobody.html",
+      "note": "dry-run"
+    }
+  ],
+  "next_steps": [
+    "监控搜索引擎索引状态",
+    "跟踪新页面的流量表现",
+    "根据效果优化内容策略"
+  ]
+}

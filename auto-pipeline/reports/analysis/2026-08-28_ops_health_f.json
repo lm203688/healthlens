@@ -1,0 +1,88 @@
+{
+  "report_id": "ops_f_20260828",
+  "generated_at": "2026-08-28T23:37:15.413250",
+  "overall_status": "down",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 2397
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 2997
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 1088
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 1139
+    }
+  ],
+  "server_reachable": false,
+  "server_unreachable_reason": "未配置 ssh_host，无法远程检查容器状态",
+  "containers": [],
+  "security_issues": [],
+  "medical_terms": [
+    {
+      "term": "诊断",
+      "file": "frontend/index.html",
+      "count": 1
+    },
+    {
+      "term": "处方",
+      "file": "frontend/index.html",
+      "count": 2
+    }
+  ],
+  "site_identity": [
+    {
+      "path": "/",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    },
+    {
+      "path": "/robots.txt",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    }
+  ],
+  "deploy_target_issues": [
+    {
+      "level": "critical",
+      "item": "部署目标未配置",
+      "detail": "deployment.ssh_host = ''，无法执行任何真实部署。"
+    }
+  ],
+  "actions_needed": [
+    {
+      "action": "恢复服务器连通性: 未配置 ssh_host，无法远程检查容器状态",
+      "severity": "high"
+    },
+    {
+      "action": "部署目标: 部署目标未配置 — deployment.ssh_host = ''，无法执行任何真实部署。",
+      "severity": "critical"
+    },
+    {
+      "action": "医疗用语: 替换'诊断'(1处)",
+      "severity": "medium"
+    },
+    {
+      "action": "医疗用语: 替换'处方'(2处)",
+      "severity": "medium"
+    }
+  ]
+}

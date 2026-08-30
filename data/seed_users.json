@@ -1,0 +1,38 @@
+[
+  {
+    "name": "张明",
+    "age": 35,
+    "gender": "M",
+    "pathways": {
+      "mitochondrial": 0.32,
+      "circadian": 0.41
+    }
+  },
+  {
+    "name": "李丽",
+    "age": 28,
+    "gender": "F",
+    "pathways": {
+      "inflammation": 0.28,
+      "autophagy": 0.45
+    }
+  },
+  {
+    "name": "王伟",
+    "age": 52,
+    "gender": "M",
+    "pathways": {
+      "senolytics": 0.22,
+      "epigenetic_clock": 0.35
+    }
+  },
+  {
+    "name": "赵芳",
+    "age": 45,
+    "gender": "F",
+    "pathways": {
+      "HPA": 0.3,
+      "serotonin": 0.38
+    }
+  }
+]

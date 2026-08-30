@@ -15,7 +15,6 @@ import json
 import os
 import sqlite3
 import sys
-from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
@@ -31,7 +30,7 @@ def get_db_url():
     if url:
         return url
     try:
-        with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
+        with open(BASE_DIR / "config.json", encoding="utf-8") as f:
             cfg = json.load(f)
         url = cfg.get("database", {}).get("url", "")
         if url:
@@ -239,5 +238,5 @@ if __name__ == "__main__":
     elif cmd == "migrate":
         log("迁移：当前使用 CREATE IF NOT EXISTS，无需额外迁移步骤")
     else:
-        print(f"用法: python db_setup.py [init|check|migrate]")
+        print("用法: python db_setup.py [init|check|migrate]")
         sys.exit(1)

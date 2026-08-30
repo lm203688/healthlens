@@ -1,0 +1,145 @@
+{
+  "report_id": "decision_2026-07-27",
+  "generated_at": "2026-07-27T17:04:40.804482",
+  "summary": {
+    "new_approved": 3,
+    "total_approved": 3,
+    "watch_count": 3,
+    "rejected_count": 1,
+    "tasks_created": 3
+  },
+  "high_priority_tasks": [
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ],
+      "target_word_count": 2000
+    }
+  ],
+  "all_tasks": [
+    {
+      "task_id": "task_edu_001",
+      "type": "user_education",
+      "based_on_item": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "priority": "medium",
+      "status": "queued",
+      "tags": [
+        "竞品分析",
+        "市场格局",
+        "差异化"
+      ],
+      "target_word_count": 1200
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ],
+      "target_word_count": 2000
+    }
+  ],
+  "decisions": [
+    {
+      "item_id": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "score": 79.7,
+      "decision": "approved",
+      "rationale": "综合评分 79.7 ≥ 70",
+      "assigned_tasks": [
+        "task_edu_001"
+      ]
+    },
+    {
+      "item_id": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "score": 79.2,
+      "decision": "approved",
+      "rationale": "综合评分 79.2 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_002"
+      ]
+    },
+    {
+      "item_id": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "score": 78.2,
+      "decision": "approved",
+      "rationale": "综合评分 78.2 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_003"
+      ]
+    },
+    {
+      "item_id": "intel_006",
+      "title": "LLM驱动的健康助手用户体验研究",
+      "score": 66.7,
+      "decision": "watch",
+      "rationale": "评分 66.7 介于观察区间"
+    },
+    {
+      "item_id": "intel_005",
+      "title": "肠道菌群检测与个性化营养推荐",
+      "score": 65.7,
+      "decision": "watch",
+      "rationale": "评分 65.7 介于观察区间"
+    },
+    {
+      "item_id": "intel_004",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "score": 64.7,
+      "decision": "watch",
+      "rationale": "评分 64.7 介于观察区间"
+    },
+    {
+      "item_id": "intel_007",
+      "title": "连续血糖监测(CGM)与代谢健康管理",
+      "score": 41.3,
+      "decision": "reject",
+      "rationale": "评分 41.3 低于阈值"
+    }
+  ]
+}

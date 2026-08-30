@@ -1,0 +1,329 @@
+{
+  "report_id": "decision_2026-08-27",
+  "generated_at": "2026-08-27T16:27:36.137965",
+  "summary": {
+    "new_approved": 8,
+    "total_approved": 11,
+    "watch_count": 12,
+    "rejected_count": 1,
+    "tasks_created": 6
+  },
+  "high_priority_tasks": [
+    {
+      "task_id": "task_seo_001",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_004",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_005",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ],
+      "target_word_count": 2000
+    }
+  ],
+  "all_tasks": [
+    {
+      "task_id": "task_seo_001",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_004",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_seo_005",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "priority": "high",
+      "status": "queued",
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ],
+      "target_word_count": 2000
+    },
+    {
+      "task_id": "task_edu_006",
+      "type": "user_education",
+      "based_on_item": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "priority": "medium",
+      "status": "queued",
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "target_word_count": 1200
+    }
+  ],
+  "decisions": [
+    {
+      "item_id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_001"
+      ]
+    },
+    {
+      "item_id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_002"
+      ]
+    },
+    {
+      "item_id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_003"
+      ]
+    },
+    {
+      "item_id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_004"
+      ]
+    },
+    {
+      "item_id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": [
+        "task_seo_005"
+      ]
+    },
+    {
+      "item_id": "gh_44771262",
+      "title": "microsoft/HealthClinic.biz",
+      "score": 78.7,
+      "decision": "approved",
+      "rationale": "综合评分 78.7 ≥ 70",
+      "assigned_tasks": []
+    },
+    {
+      "item_id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "score": 71.2,
+      "decision": "approved",
+      "rationale": "综合评分 71.2 ≥ 70",
+      "assigned_tasks": [
+        "task_edu_006"
+      ]
+    },
+    {
+      "item_id": "arx_02341",
+      "title": "FRAME: separating sampling variation from representational cause in medical imaging fairness",
+      "score": 70.4,
+      "decision": "approved",
+      "rationale": "综合评分 70.4 ≥ 70",
+      "assigned_tasks": []
+    },
+    {
+      "item_id": "pm_42649103",
+      "title": "Multi-Dimensional Barriers for Work Productivity and Possible Solutions to Overcome Presenteeism in Young-Onset Diabetes: A Mixed-Methods Study.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42648907",
+      "title": "Proteomic landscape of pan-tissue neuroendocrine carcinomas defines subtype-specific functional architectures, biomarkers and therapeutic targets.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42648887",
+      "title": "Interaction of genetic susceptibility and sunlight exposure on primary open-angle glaucoma risk and progression.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42648725",
+      "title": "Beyond Virtual Glucose Monitoring: Interpreting a Complex Multicomponent Intervention.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42648678",
+      "title": "Cellulose- and lignin-based smart hydrogels for barrier-adaptive delivery of fragile biotherapeutics: Molecular design, activity preservation, and tra",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "arx_47889",
+      "title": "Planetary Prediction Engine: Autonomous Geospatial Prediction via Intelligent Data Selection and Foundation Model Embeddings",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_78710",
+      "title": "CardioFusion-AI: Robust ECG--PPG Fusion for Multimodal Physiological Monitoring Under Signal Degradation",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_25658",
+      "title": "Why ML-based cough models do not generalize: a systematic cross-dataset evaluation for tuberculosis screening",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_62859",
+      "title": "Large Language Model Few-Shot Prompting with Dilemma Training Outperforms Human Surrogates in Predicting Patient Preferences",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    }
+  ]
+}

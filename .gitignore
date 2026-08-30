@@ -18,6 +18,24 @@ secrets.json
 credentials.json
 
 # ============================================================
+# Agent 工作区 —— 含真实密钥，严禁入库
+# .workbuddy/cache/ 内有：
+#   ecs_deploy_key          ECS 部署私钥（ED25519，免密 sudo）
+#   ecs_deploy_key.pub
+#   cf_tokens.json / .txt   Cloudflare Pages 令牌（可部署 healthlens 项目）
+# 2026-08-29 实测这些目录此前并未被 .gitignore 覆盖，
+# git add -A 会把密钥直接推上 GitHub（删文件也删不掉历史），故在此显式拦截。
+# ============================================================
+.workbuddy/
+.wrangler/
+.opencode/
+
+# 一次性构建目录：phase_6 每次构建生成 dist_build_<ts>，可随时重建，不入库
+auto-pipeline/dist_build*/
+# 部署转正后的回滚快照（cf_pages_deploy.py 的 promote() 生成，仅保留最近 3 份）
+auto-pipeline/dist_prev*/
+
+# ============================================================
 # 大体积资产：不进仓库（中医语料 247MB，且自带独立 .git）
 # 需要时从原始来源单独同步，不占用 GitHub 配额
 # ============================================================

@@ -1,0 +1,50 @@
+{
+  "report_id": "decision_2026-08-28",
+  "generated_at": "2026-08-28T23:19:51.753277",
+  "summary": {
+    "new_approved": 0,
+    "total_approved": 11,
+    "watch_count": 17,
+    "rejected_count": 1,
+    "tasks_created": 0
+  },
+  "high_priority_tasks": [],
+  "all_tasks": [],
+  "decisions": [
+    {
+      "item_id": "pm_42659555",
+      "title": "[Electroclinical recognition of SCN2A, SCN8A, KCNQ2, and KCNQ3 pathogenic variants].",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42659477",
+      "title": "E-health literacy and health system distrust: exploring a nonlinear association in a cross-sectional study.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42659028",
+      "title": "European Society of Cardiology (ESC) Core Curriculum for the Cardiologist: 2026 update.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42658889",
+      "title": "Co-producing access to care with young people living in Zambia through digital and vending machine-enabled innovation in sexual and reproductive healt",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42658841",
+      "title": "Methodological insights and clinical outcomes in ALS and FTLD: lessons from the SPIN cohort.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    }
+  ]
+}

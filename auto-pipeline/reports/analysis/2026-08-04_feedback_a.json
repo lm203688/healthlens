@@ -1,0 +1,36 @@
+{
+  "report_id": "feedback_a_20260804",
+  "generated_at": "2026-08-04T17:34:10.533855",
+  "success_rate": 50.0,
+  "feedback_count": 2,
+  "adjustments_made": false,
+  "adjustments": {},
+  "feedback_details": [
+    {
+      "slug": "可穿戴设备与ai健康分析的融合趋势",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "deployed_days": 7,
+      "metrics": {
+        "google_indexed": true,
+        "impressions": 358,
+        "clicks": 40,
+        "avg_position": 26,
+        "ctr": 11.2
+      },
+      "performance": "above_average"
+    },
+    {
+      "slug": "表观遗传时钟与生活方式干预的临床验证",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "deployed_days": 7,
+      "metrics": {
+        "google_indexed": true,
+        "impressions": 370,
+        "clicks": 32,
+        "avg_position": 18,
+        "ctr": 8.6
+      },
+      "performance": "below_average"
+    }
+  ]
+}

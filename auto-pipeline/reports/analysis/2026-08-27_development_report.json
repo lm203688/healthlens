@@ -1,0 +1,107 @@
+{
+  "report_id": "develop_2026-08-27",
+  "generated_at": "2026-08-27T16:27:36.521261",
+  "total_tasks": 6,
+  "completed_tasks": 6,
+  "failed_tasks": 0,
+  "items": [
+    {
+      "task_id": "task_seo_001",
+      "type": "seo_knowledge_page",
+      "title": "repowise-dev/repowise",
+      "slug": "repowise-devrepowise",
+      "word_count": 2893,
+      "content_file": "content/generated/repowise-devrepowise.html",
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "status": "generated"
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "title": "CodeWithCJ/SparkyFitness",
+      "slug": "codewithcjsparkyfitness",
+      "word_count": 2936,
+      "content_file": "content/generated/codewithcjsparkyfitness.html",
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "status": "generated"
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "title": "qixing-jk/all-api-hub",
+      "slug": "qixing-jkall-api-hub",
+      "word_count": 2877,
+      "content_file": "content/generated/qixing-jkall-api-hub.html",
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "status": "generated"
+    },
+    {
+      "task_id": "task_seo_004",
+      "type": "seo_knowledge_page",
+      "title": "the-momentum/open-wearables",
+      "slug": "the-momentumopen-wearables",
+      "word_count": 2973,
+      "content_file": "content/generated/the-momentumopen-wearables.html",
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "status": "generated"
+    },
+    {
+      "task_id": "task_seo_005",
+      "type": "seo_knowledge_page",
+      "title": "thetahealth/mirobody",
+      "slug": "thetahealthmirobody",
+      "word_count": 2860,
+      "content_file": "content/generated/thetahealthmirobody.html",
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ],
+      "status": "generated"
+    },
+    {
+      "task_id": "task_edu_006",
+      "type": "user_education",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+      "word_count": 1095,
+      "content_file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "status": "generated"
+    }
+  ],
+  "summary": {
+    "seo_articles": 5,
+    "education_articles": 1,
+    "total_word_count": 15634
+  }
+}

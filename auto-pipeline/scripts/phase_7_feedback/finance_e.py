@@ -4,14 +4,22 @@ E线：资金闭环
 从数据库读取真实订单数据，不再使用模拟数据
 输出：finance_report.json
 """
-import sys
-import json
 import asyncio
+import json
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
-from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
+from state_manager import (
+    BASE_DIR,
+    complete_phase,
+    fail_phase,
+    get_state,
+    log,
+    save_state,
+    start_phase,
+)
 
 DB_URL_FALLBACK = "postgresql://healthlens:healthlens@localhost:5432/healthlens"
 
@@ -23,7 +31,7 @@ def _get_db_url():
     if url:
         return url
     try:
-        with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
+        with open(BASE_DIR / "config.json", encoding="utf-8") as f:
             cfg = json.load(f)
         url = cfg.get("database", {}).get("url", "")
         if url:

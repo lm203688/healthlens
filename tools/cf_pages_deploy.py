@@ -27,6 +27,7 @@ import sys
 import shutil
 import subprocess
 import argparse
+from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NODE = "C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe"
@@ -40,16 +41,50 @@ BUILD_SCRIPT = os.path.join(
 PY = sys.executable
 
 
-def build(dist: str):
-    print("[build] 构建静态产物 ...")
-    r = subprocess.run([PY, BUILD_SCRIPT], cwd=ROOT)
+def build() -> str:
+    """构建到全新的一次性目录，并返回该目录的真实路径。
+
+    为什么必须显式指定 --out：build_site.py 在 auto-pipeline/dist 非空时会
+    自动改用一次性输出目录；若调用方仍按硬编码的 dist 去部署，就会把上一版
+    陈旧产物再上传一遍 —— 新产物永远无法上线（此前长期如此）。
+    """
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    out = os.path.join(ROOT, "auto-pipeline", f"dist_build_{ts}")
+    print(f"[build] 构建静态产物 -> {out}")
+    r = subprocess.run([PY, BUILD_SCRIPT, "--out", out], cwd=ROOT)
     if r.returncode != 0:
         print("❌ 构建失败，中止部署")
         sys.exit(r.returncode)
-    if not os.path.isdir(dist):
-        print(f"❌ 构建产物目录不存在: {dist}")
+    if not os.path.isdir(out):
+        print(f"❌ 构建产物目录不存在: {out}")
         sys.exit(2)
-    print(f"[build] OK -> {dist}")
+    n = sum(len(files) for _, _, files in os.walk(out))
+    print(f"[build] OK -> {out}（{n} 个文件）")
+    return out
+
+
+def promote(out: str):
+    """部署成功后把新产物转正为 auto-pipeline/dist，并清理历史目录。
+
+    用 rename 而非删除：既避免误删已上线产物的风险，也让回滚随时可行。
+    """
+    ap = os.path.join(ROOT, "auto-pipeline")
+    final = os.path.join(ap, "dist")
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    try:
+        if os.path.isdir(final):
+            os.rename(final, os.path.join(ap, f"dist_prev_{ts}"))
+        os.rename(out, final)
+        print(f"[promote] 新产物已转正 -> {final}")
+    except OSError as e:
+        print(f"[promote][WARN] 转正失败（部署已成功，可手动处理）: {e}")
+        return
+    for prefix in ("dist_build_", "dist_prev_"):
+        olds = sorted(
+            [d for d in os.listdir(ap) if d.startswith(prefix)], reverse=True
+        )
+        for d in olds[3:]:
+            shutil.rmtree(os.path.join(ap, d), ignore_errors=True)
 
 
 def deploy(account_id: str, token: str, project: str, dist: str):
@@ -92,8 +127,12 @@ def main():
         sys.exit(2)
 
     if not args.no_build:
-        build(args.dist)
-    deploy(args.account_id, args.token, args.project, args.dist)
+        dist = build()
+    else:
+        dist = args.dist
+    deploy(args.account_id, args.token, args.project, dist)
+    if not args.no_build:
+        promote(dist)
 
 
 if __name__ == "__main__":

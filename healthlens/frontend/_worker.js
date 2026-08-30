@@ -169,6 +169,25 @@ export default {
     if (path.startsWith("/api/")) {
       return proxy(request, env, url);
     }
+    // 3b. /app/** —— React SPA 产品入口（构建自 frontend/，vite base=/app/）
+    // 关键：路由回退必须指向 /app/index.html。若退回根 index.html，
+    // Pages 的 SPA 回退会把内容型 GEO 首页顶到 /app/* 上（产品白屏 + SEO 串页）。
+    if (path === "/app" || path.startsWith("/app/")) {
+      const direct = await env.ASSETS.fetch(request);
+      if (direct && direct.status < 400) {
+        const ct = direct.headers.get("content-type") || "";
+        // 只信任真正的静态资源；任何 HTML 一律交给 SPA 壳，避免 Pages 回退污染
+        if (!ct.includes("text/html")) return direct;
+      }
+      const shell = await env.ASSETS.fetch(new Request(url.origin + "/app/index.html"));
+      if (shell && shell.status < 400) {
+        return new Response(shell.body, {
+          status: 200,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        });
+      }
+      return json(503, { success: false, message: "SPA 产物缺失：请先构建 frontend/ 并重新部署。" });
+    }
     // 4. SEO 动态页前缀：静态 .html 优先、缺失再代理后端
     // 说明：Cloudflare Pages 对未命中的路径会做 SPA 回退（返回首页 index.html 且 status=200），
     // 直接 proxy 后端时后端也会对未知 slug 返回 SPA 壳，二者都会把我们的静态知识页顶替成首页。

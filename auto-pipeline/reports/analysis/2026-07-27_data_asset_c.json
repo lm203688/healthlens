@@ -1,0 +1,102 @@
+{
+  "report_id": "data_asset_c_20260727",
+  "generated_at": "2026-07-27T20:47:11.682779",
+  "sources": [
+    {
+      "name": "UniProt",
+      "type": "protein",
+      "total_records": 250000,
+      "last_sync": "2026-07-25",
+      "status": "current"
+    },
+    {
+      "name": "ClinVar",
+      "type": "variant",
+      "total_records": 180000,
+      "last_sync": "2026-07-25",
+      "status": "current"
+    },
+    {
+      "name": "KEGG",
+      "type": "pathway",
+      "total_records": 85000,
+      "last_sync": "2026-07-20",
+      "status": "needs_update"
+    },
+    {
+      "name": "dbSNP",
+      "type": "snp",
+      "total_records": 500000,
+      "last_sync": "2026-07-22",
+      "status": "needs_update"
+    },
+    {
+      "name": "TCMKnowledge",
+      "type": "tcm",
+      "total_records": 45000,
+      "last_sync": "2026-07-26",
+      "status": "current"
+    },
+    {
+      "name": "UserData",
+      "type": "user_derived",
+      "total_records": 3200,
+      "last_sync": "2026-07-27",
+      "status": "current"
+    }
+  ],
+  "quality_issues": [
+    {
+      "source": "KEGG",
+      "issue": "outdated",
+      "days_since_sync": 7,
+      "severity": "medium"
+    },
+    {
+      "source": "dbSNP",
+      "issue": "outdated",
+      "days_since_sync": 5,
+      "severity": "medium"
+    }
+  ],
+  "needs_sync": [
+    "KEGG",
+    "dbSNP"
+  ],
+  "value_estimate": {
+    "total_records": 1063200,
+    "avg_value_per_record": 0.002,
+    "freshness_score": 0.85,
+    "estimated_value_cny": 1807.44,
+    "breakdown": {
+      "UniProt": 250000,
+      "ClinVar": 180000,
+      "KEGG": 85000,
+      "dbSNP": 500000,
+      "TCMKnowledge": 45000,
+      "UserData": 3200
+    }
+  },
+  "actions_needed": [
+    {
+      "source": "KEGG",
+      "action": "trigger_incremental_sync",
+      "priority": "high"
+    },
+    {
+      "source": "dbSNP",
+      "action": "trigger_incremental_sync",
+      "priority": "high"
+    },
+    {
+      "source": "all",
+      "action": "weekly_dedup_check",
+      "priority": "medium"
+    },
+    {
+      "source": "all",
+      "action": "integrity_check",
+      "priority": "medium"
+    }
+  ]
+}

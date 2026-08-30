@@ -4,7 +4,8 @@
 # ============================================================
 
 .PHONY: help dev test lint build up down migrate seed \
-        prod-up prod-down prod-deploy logs ps clean
+        prod-up prod-down prod-deploy logs ps clean \
+        test-agent agent-lint
 
 # Default target
 help: ## Show this help
@@ -34,6 +35,18 @@ lint: ## Run linters
 fmt: ## Auto-format code
 	ruff format app/ tests/
 	ruff check --fix app/ tests/
+
+# ----------------------------------------------------------
+# Agent 能力库（healthlens_agent，不依赖 FastAPI）
+# ----------------------------------------------------------
+test-agent: ## Run healthlens_agent tests (no FastAPI needed)
+	python -m pytest healthlens_agent/tests -v
+
+agent-lint: ## Lint the agent library
+	ruff check healthlens_agent
+
+agent-demo: ## Run all healthlens_agent demos
+	python -m healthlens_agent all
 
 # ----------------------------------------------------------
 # Docker (Development)

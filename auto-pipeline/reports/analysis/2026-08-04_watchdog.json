@@ -1,0 +1,54 @@
+{
+  "checked_at": "2026-08-04T17:33:36.195845",
+  "total_findings": 9,
+  "critical": 2,
+  "warn": 7,
+  "findings": [
+    {
+      "severity": "warn",
+      "item": "流水线运行记录",
+      "detail": "从未有过带记录的完整运行。若这是首次部署可忽略，否则说明调度从未真正执行。"
+    },
+    {
+      "severity": "warn",
+      "item": "content_pipeline 数据陈旧",
+      "detail": "距上次更新 38.5 小时（默认阈值 30h）。"
+    },
+    {
+      "severity": "warn",
+      "item": "user_conversion 数据陈旧",
+      "detail": "距上次更新 38.5 小时（默认阈值 30h）。"
+    },
+    {
+      "severity": "warn",
+      "item": "data_asset 数据陈旧",
+      "detail": "距上次更新 38.5 小时（默认阈值 30h）。"
+    },
+    {
+      "severity": "warn",
+      "item": "promotion 数据陈旧",
+      "detail": "距上次更新 38.5 小时（默认阈值 30h）。"
+    },
+    {
+      "severity": "warn",
+      "item": "finance 数据陈旧",
+      "detail": "距上次更新 38.5 小时（默认阈值 30h）。"
+    },
+    {
+      "severity": "critical",
+      "item": "从未备份",
+      "detail": "系统中不存在任何成功备份记录。健康检测数据一旦丢失不可恢复。"
+    },
+    {
+      "severity": "warn",
+      "item": "Beat 心跳文件不存在",
+      "detail": "未找到 heartbeat.json。若后端尚未部署 beat 服务属预期；若已部署，说明 beat 或 worker 未正常工作。查找路径: ['C:\\\\Users\\\\xing\\\\Desktop\\\\healthlens\\\\healthlens\\\\data\\\\heartbeat.json', '\\\\app\\\\data\\\\heartbeat.json']"
+    },
+    {
+      "severity": "critical",
+      "item": "站点端点异常 4/4",
+      "detail": "https://healthlens.cc/health(530); https://healthlens.cc/robots.txt(530); https://healthlens.cc/sitemap.xml(530); https://healthlens.cc/llms.txt(530)"
+    }
+  ],
+  "verdict": "critical"
+}

@@ -19,18 +19,25 @@
 4. **裸 except 吞异常**：check_docker_containers 用 `except:` 吞掉一切，
    连 KeyboardInterrupt 都吃掉，且无法区分「SSH 不通」和「代码写错了」。
 """
-import sys
 import json
-import socket
 import subprocess
+import sys
 import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "core"))
-from state_manager import get_state, save_state, BASE_DIR, log, start_phase, complete_phase, fail_phase
-from alerting import send_alert, resolve_alert, LEVEL_WARN, LEVEL_CRITICAL
+from alerting import LEVEL_CRITICAL, LEVEL_WARN, resolve_alert, send_alert
+from state_manager import (
+    BASE_DIR,
+    complete_phase,
+    fail_phase,
+    get_state,
+    log,
+    save_state,
+    start_phase,
+)
 
 ALERT_KEY_ENDPOINTS = "ops:endpoints_down"
 ALERT_KEY_CONTAINERS = "ops:containers_unhealthy"
@@ -39,7 +46,7 @@ ALERT_KEY_SECURITY = "ops:security_issues"
 
 def _load_config() -> dict:
     try:
-        with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
+        with open(BASE_DIR / "config.json", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         log(f"读取 config.json 失败: {e}", level="ERROR")
@@ -81,7 +88,7 @@ def check_server_health(config):
                 "error": f"HTTP {e.code}",
                 "latency_ms": int((datetime.now() - started).total_seconds() * 1000),
             })
-        except (urllib.error.URLError, socket.timeout, TimeoutError) as e:
+        except (urllib.error.URLError, TimeoutError) as e:
             checks.append({
                 "name": name, "url": url, "status": "error", "http_code": 0,
                 "error": f"连接失败: {str(e)[:120]}",
@@ -177,7 +184,7 @@ def check_security():
     gitignore_path = BASE_DIR.parent / "healthlens" / ".gitignore"
     if gitignore_path.exists():
         try:
-            with open(gitignore_path, "r", encoding="utf-8", errors="ignore") as f:
+            with open(gitignore_path, encoding="utf-8", errors="ignore") as f:
                 content = f.read()
             if ".env" not in content:
                 issues.append({"severity": "critical", "issue": ".env 未在 .gitignore 中"})
@@ -242,20 +249,88 @@ def check_docker_containers(config):
 
 
 def check_medical_terms():
-    """扫描前端代码中的高风险医疗用语（合规护栏）"""
+    """扫描前端代码中的高风险医疗用语（合规护栏）。
+
+    覆盖两处，消除监控盲区：
+      1. 当前活跃前端 frontend/src/（Vite + React，真正面向用户的代码）。
+         此前仅扫描历史文件，导致这部分从未被检查。
+      2. 历史前端 healthlens/frontend/index.html（若仍在线上则继续监控）。
+    """
     risky_terms = ["治愈", "根治", "特效", "诊断", "处方"]
+    # 免责/否定语境：如"不提供医疗诊断、治疗或处方服务"是合规必需要件，
+    # 若一并报警会形成噪音，长期将淹没真实风险（"狼来了"效应）。
+    negation_cues = [
+        "不提供", "不构成", "不是", "并非", "不能", "无法", "非医疗",
+        "免责", "不作为", "不具备", "请勿", "不得", "不应", "不可",
+        # 以下为站内实际使用的去医疗化表述，缺一即产生大量误报
+        "不替代", "而非", "不能下", "零处方", "0 处方", "避免", "排除",
+    ]
+    window = 40
+
     findings = []
-    frontend_path = BASE_DIR.parent / "healthlens" / "frontend" / "index.html"
-    if frontend_path.exists():
+
+    def _scan_file(path: Path, label: str, tier: str) -> None:
         try:
-            with open(frontend_path, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-            for term in risky_terms:
-                count = content.count(term)
-                if count:
-                    findings.append({"term": term, "file": "frontend/index.html", "count": count})
+            content = path.read_text(encoding="utf-8", errors="ignore")
         except Exception as e:
-            log(f"医疗用语扫描失败: {e}", level="WARN")
+            log(f"医疗用语扫描失败 {label}: {e}", level="WARN")
+            return
+        for term in risky_terms:
+            risk_hits = 0
+            total = 0
+            start = 0
+            while True:
+                idx = content.find(term, start)
+                if idx == -1:
+                    break
+                total += 1
+                start = idx + len(term)
+
+                # 排除合法复合词："处方药"是标准医药名词，提及并不违规
+                if content[idx:idx + len(term) + 1] == f"{term}药":
+                    continue
+
+                ctx = content[max(0, idx - window): idx + len(term) + window]
+                # 排除批判性引用（如 ❌ "基因检测=定制处方" 实为否定该说法）
+                critique_marks = ["❌", "✗", "✘", "错误", "误区", "伪"]
+                # 出现在免责/否定语境中属合规要件，不计为风险
+                if any(cue in ctx for cue in negation_cues):
+                    continue
+                if any(mark in ctx for mark in critique_marks):
+                    continue
+
+                risk_hits += 1
+
+            if risk_hits:
+                findings.append({
+                    "term": term,
+                    "file": label,
+                    "count": risk_hits,
+                    "total_occurrences": total,
+                    # online=线上产物（最高优先级）source=活跃源码 legacy=历史文件
+                    "tier": tier,
+                    "is_active_frontend": label.startswith("frontend/src/"),
+                })
+
+    def _scan_tree(root: Path, label_prefix: str, pattern: str, tier: str) -> None:
+        if not root.exists():
+            return
+        for path in sorted(root.rglob(pattern)):
+            _scan_file(path, f"{label_prefix}/{path.relative_to(root).as_posix()}", tier)
+
+    # 优先级 1：线上产物 auto-pipeline/dist/（CF Pages 实际托管，真正面向用户）。
+    # 此前完全未扫描，是最大的监控盲区。
+    _scan_tree(BASE_DIR / "dist", "auto-pipeline/dist", "*.html", "online")
+
+    # 优先级 2：当前活跃前端源码 frontend/src/
+    _scan_tree(BASE_DIR.parent / "frontend" / "src", "frontend/src", "*.jsx", "source")
+    _scan_tree(BASE_DIR.parent / "frontend" / "src", "frontend/src", "*.js", "source")
+
+    # 优先级 3：历史前端文件（多为死代码，保留以感知遗留风险）
+    legacy_path = BASE_DIR.parent / "healthlens" / "frontend" / "index.html"
+    if legacy_path.exists():
+        _scan_file(legacy_path, "healthlens/frontend/index.html", "legacy")
+
     return findings
 
 
