@@ -1,0 +1,105 @@
+{
+  "report_id": "data_asset_c_20260830",
+  "generated_at": "2026-08-30T18:00:02.462798",
+  "data_source": "real_api_probe",
+  "sources": [
+    {
+      "name": "KEGG",
+      "type": "pathway",
+      "total_records": 0,
+      "last_sync": "2026-08-30",
+      "status": "unknown",
+      "detail": "API 响应异常"
+    },
+    {
+      "name": "UniProt",
+      "type": "protein",
+      "total_records": 0,
+      "last_sync": "2026-08-30",
+      "status": "unknown"
+    },
+    {
+      "name": "ClinVar",
+      "type": "variant",
+      "total_records": 4560228,
+      "last_sync": "2026-08-30",
+      "status": "current"
+    },
+    {
+      "name": "dbSNP",
+      "type": "snp",
+      "total_records": 1197210835,
+      "last_sync": "2026-08-30",
+      "status": "current"
+    },
+    {
+      "name": "TCMKnowledge",
+      "type": "tcm",
+      "total_records": 0,
+      "last_sync": "N/A",
+      "status": "local_only",
+      "detail": "本地知识库，需单独同步"
+    },
+    {
+      "name": "UserData",
+      "type": "user_derived",
+      "total_records": 0,
+      "last_sync": "N/A",
+      "status": "runtime_only",
+      "detail": "运行时生成，无独立同步"
+    }
+  ],
+  "quality_issues": [
+    {
+      "source": "KEGG",
+      "issue": "status_unknown",
+      "detail": "API 响应异常",
+      "severity": "medium"
+    },
+    {
+      "source": "UniProt",
+      "issue": "status_unknown",
+      "detail": "无法确认状态",
+      "severity": "medium"
+    },
+    {
+      "source": "TCMKnowledge",
+      "issue": "not_external",
+      "detail": "本地知识库，需单独同步",
+      "severity": "low"
+    },
+    {
+      "source": "UserData",
+      "issue": "not_external",
+      "detail": "运行时生成，无独立同步",
+      "severity": "low"
+    }
+  ],
+  "needs_sync": [],
+  "value_estimate": {
+    "total_records": 1201771063,
+    "avg_value_per_record": 0.002,
+    "freshness_score": 0.5,
+    "estimated_value_cny": 1201771.06,
+    "breakdown": {
+      "KEGG": 0,
+      "UniProt": 0,
+      "ClinVar": 4560228,
+      "dbSNP": 1197210835,
+      "TCMKnowledge": 0,
+      "UserData": 0
+    }
+  },
+  "actions_needed": [
+    {
+      "source": "all",
+      "action": "weekly_dedup_check",
+      "priority": "medium"
+    },
+    {
+      "source": "all",
+      "action": "integrity_check",
+      "priority": "medium"
+    }
+  ]
+}
