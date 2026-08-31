@@ -1,35 +1,36 @@
 {
   "report_id": "ops_f_20260831",
-  "generated_at": "2026-08-31T16:21:17.267167",
+  "generated_at": "2026-08-31T21:36:27.468404",
   "overall_status": "needs_attention",
   "endpoint_checks": [
     {
       "name": "API健康",
       "url": "https://healthlens.cc/health",
-      "status": "ok",
-      "http_code": 200,
-      "latency_ms": 148
+      "status": "error",
+      "http_code": 404,
+      "error": "HTTP 404",
+      "latency_ms": 245
     },
     {
       "name": "Robots",
       "url": "https://healthlens.cc/robots.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 96
+      "latency_ms": 38
     },
     {
       "name": "Sitemap",
       "url": "https://healthlens.cc/sitemap.xml",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 542
+      "latency_ms": 231
     },
     {
       "name": "SEO内容",
       "url": "https://healthlens.cc/llms.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 104
+      "latency_ms": 110
     }
   ],
   "server_reachable": false,
@@ -56,6 +57,10 @@
   ],
   "deploy_target_issues": [],
   "actions_needed": [
+    {
+      "action": "修复端点: API健康 (404)",
+      "severity": "critical"
+    },
     {
       "action": "恢复服务器连通性: SSH 失败 (exit 255): ubuntu@150.158.119.19: Permission denied (publickey,password).",
       "severity": "high"
