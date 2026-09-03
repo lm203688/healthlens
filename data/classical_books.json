@@ -1,0 +1,5610 @@
+[
+ {
+  "title": "神农本草经",
+  "author": "孙星衍",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "000-神农本草经.txt"
+ },
+ {
+  "title": "吴普本草",
+  "author": "吴普",
+  "dynasty": "魏晋",
+  "year_text": "公元420年—589",
+  "category": "本草",
+  "source_file": "001-吴普本草.txt"
+ },
+ {
+  "title": "本草经集注",
+  "author": "陶弘景",
+  "dynasty": "南朝·梁",
+  "year_text": "公元502-557年",
+  "category": "本草",
+  "source_file": "002-本草经集注.txt"
+ },
+ {
+  "title": "新修本草",
+  "author": "苏敬等20余人编写",
+  "dynasty": "唐",
+  "year_text": "公元659年",
+  "category": "本草",
+  "source_file": "003-新修本草.txt"
+ },
+ {
+  "title": "食疗本草",
+  "author": "孟显",
+  "dynasty": "唐",
+  "year_text": "公元618-907年",
+  "category": "食疗",
+  "source_file": "004-食疗本草.txt"
+ },
+ {
+  "title": "海药本草",
+  "author": "李珣",
+  "dynasty": "五代",
+  "year_text": "公元907-960年",
+  "category": "本草",
+  "source_file": "005-海药本草.txt"
+ },
+ {
+  "title": "本草图经",
+  "author": "苏颂",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "本草",
+  "source_file": "006-本草图经.txt"
+ },
+ {
+  "title": "本草衍义",
+  "author": "寇宗奭",
+  "dynasty": "宋·政和六年",
+  "year_text": "公元1116年",
+  "category": "本草",
+  "source_file": "007-本草衍义.txt"
+ },
+ {
+  "title": "汤液本草",
+  "author": "王好古",
+  "dynasty": "元",
+  "year_text": "公元1298年",
+  "category": "本草",
+  "source_file": "008-汤液本草.txt"
+ },
+ {
+  "title": "饮膳正要",
+  "author": "忽思慧",
+  "dynasty": "元",
+  "year_text": "公元1314-1320年",
+  "category": "食疗",
+  "source_file": "009-饮膳正要.txt"
+ },
+ {
+  "title": "滇南本草",
+  "author": "兰茂",
+  "dynasty": "明",
+  "year_text": "公元1396-1476年",
+  "category": "本草",
+  "source_file": "010-滇南本草.txt"
+ },
+ {
+  "title": "本草品汇精要",
+  "author": "王好古",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "本草",
+  "source_file": "011-本草品汇精要.txt"
+ },
+ {
+  "title": "本草蒙筌",
+  "author": "陈嘉谟",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "本草",
+  "source_file": "012-本草蒙筌.txt"
+ },
+ {
+  "title": "本草纲目",
+  "author": "李时珍",
+  "dynasty": "明·万历六年",
+  "year_text": "公元1578年",
+  "category": "本草",
+  "source_file": "013-本草纲目.txt"
+ },
+ {
+  "title": "本草乘雅半偈",
+  "author": "卢之颐",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "本草",
+  "source_file": "014-本草乘雅半偈.txt"
+ },
+ {
+  "title": "本草征要",
+  "author": "李中梓",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "本草",
+  "source_file": "015-本草征要.txt"
+ },
+ {
+  "title": "本草易读",
+  "author": "汪讱庵",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "016-本草易读.txt"
+ },
+ {
+  "title": "本草新编",
+  "author": "陈士铎",
+  "dynasty": "清·公元1644-1911年",
+  "year_text": null,
+  "category": "本草",
+  "source_file": "017-本草新编.txt"
+ },
+ {
+  "title": "本草备要",
+  "author": "汪昂",
+  "dynasty": "清·公元1644-1911年",
+  "year_text": null,
+  "category": "本草",
+  "source_file": "018-本草备要.txt"
+ },
+ {
+  "title": "本经逢原",
+  "author": "张璐",
+  "dynasty": "清",
+  "year_text": "公元1617－1700年",
+  "category": "综合",
+  "source_file": "019-本经逢原.txt"
+ },
+ {
+  "title": "本草经解",
+  "author": "叶桂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "020-本草经解.txt"
+ },
+ {
+  "title": "本草从新",
+  "author": "吴仪洛",
+  "dynasty": "清·公元1644-1911年",
+  "year_text": null,
+  "category": "本草",
+  "source_file": "021-本草从新.txt"
+ },
+ {
+  "title": "神农本草经百种录",
+  "author": "徐大椿",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "022-神农本草经百种录.txt"
+ },
+ {
+  "title": "本草纲目拾遗",
+  "author": "赵学敏",
+  "dynasty": "清",
+  "year_text": "公元1765年",
+  "category": "本草",
+  "source_file": "023-本草纲目拾遗.txt"
+ },
+ {
+  "title": "本草崇原",
+  "author": "着者张志聪殁而书未成，后由弟子高世栻续成",
+  "dynasty": "清·康熙十三年",
+  "year_text": "公元1674年",
+  "category": "本草",
+  "source_file": "024-本草崇原.txt"
+ },
+ {
+  "title": "本草求真",
+  "author": "黄宫绣",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "025-本草求真.txt"
+ },
+ {
+  "title": "神农本草经读",
+  "author": "陈修园",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "026-神农本草经读.txt"
+ },
+ {
+  "title": "本草述钩元",
+  "author": "杨时泰",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "027-本草述钩元.txt"
+ },
+ {
+  "title": "食鉴本草",
+  "author": "宁原",
+  "dynasty": null,
+  "year_text": null,
+  "category": "食疗",
+  "source_file": "028-食鉴本草.txt"
+ },
+ {
+  "title": "本草思辨录",
+  "author": "周岩",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "029-本草思辨录.txt"
+ },
+ {
+  "title": "本草纲目别名录",
+  "author": "李时珍",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "本草",
+  "source_file": "030-本草纲目别名录.txt"
+ },
+ {
+  "title": "本草便读",
+  "author": "张秉成",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "031-本草便读.txt"
+ },
+ {
+  "title": "本草撮要",
+  "author": "陈其瑞",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "032-本草撮要.txt"
+ },
+ {
+  "title": "本草问答",
+  "author": "唐宗海",
+  "dynasty": "清",
+  "year_text": "公元1862-1918年",
+  "category": "本草",
+  "source_file": "033-本草问答.txt"
+ },
+ {
+  "title": "神农本草经赞",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "本草",
+  "source_file": "034-神农本草经赞.txt"
+ },
+ {
+  "title": "本草择要纲目",
+  "author": "蒋介繁",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "035-本草择要纲目.txt"
+ },
+ {
+  "title": "得配本草",
+  "author": "严西亭",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "036-得配本草.txt"
+ },
+ {
+  "title": "本草害利",
+  "author": "凌奂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "037-本草害利.txt"
+ },
+ {
+  "title": "本草分经",
+  "author": "姚澜",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "本草",
+  "source_file": "038-本草分经.txt"
+ },
+ {
+  "title": "雷公炮炙论",
+  "author": "刘宋、雷学所着",
+  "dynasty": "南北朝",
+  "year_text": "公元420-581年",
+  "category": "本草",
+  "source_file": "039-雷公炮炙论.txt"
+ },
+ {
+  "title": "炮炙全书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "本草",
+  "source_file": "040-炮炙全书.txt"
+ },
+ {
+  "title": "炮炙大法",
+  "author": "缪希雍",
+  "dynasty": "明",
+  "year_text": "公元1622年",
+  "category": "本草",
+  "source_file": "041-炮炙大法.txt"
+ },
+ {
+  "title": "雷公炮制药性解",
+  "author": "李士材",
+  "dynasty": "明",
+  "year_text": "公元1588～1655年",
+  "category": "本草",
+  "source_file": "042-雷公炮制药性解.txt"
+ },
+ {
+  "title": "濒湖炮炙法",
+  "author": "刘宋、雷学所着",
+  "dynasty": "南北朝",
+  "year_text": "公元420-581年",
+  "category": "本草",
+  "source_file": "043-濒湖炮炙法.txt"
+ },
+ {
+  "title": "要药分剂",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "044-要药分剂.txt"
+ },
+ {
+  "title": "珍珠囊补遗药性赋",
+  "author": "李东垣",
+  "dynasty": "元",
+  "year_text": "公元1271年—1368年",
+  "category": "本草",
+  "source_file": "045-珍珠囊补遗药性赋.txt"
+ },
+ {
+  "title": "药鉴",
+  "author": "杜文燮",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "046-药鉴.txt"
+ },
+ {
+  "title": "药征",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "047-药征.txt"
+ },
+ {
+  "title": "思考中医",
+  "author": "刘力红",
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "048-思考中医.txt"
+ },
+ {
+  "title": "五十二病方",
+  "author": null,
+  "dynasty": "西汉",
+  "year_text": "公元前206年-公元8年",
+  "category": "综合",
+  "source_file": "049-五十二病方.txt"
+ },
+ {
+  "title": "名医别录",
+  "author": "陶弘景",
+  "dynasty": "魏晋",
+  "year_text": "公元220-450年",
+  "category": "综合",
+  "source_file": "050-名医别录.txt"
+ },
+ {
+  "title": "千金翼方",
+  "author": "孙思邈",
+  "dynasty": "唐·开耀二年",
+  "year_text": "公元682年",
+  "category": "方剂",
+  "source_file": "051-千金翼方.txt"
+ },
+ {
+  "title": "孙真人海上方",
+  "author": "孙思邈",
+  "dynasty": "唐",
+  "year_text": "公元618-907年",
+  "category": "综合",
+  "source_file": "052-孙真人海上方.txt"
+ },
+ {
+  "title": "外台秘要",
+  "author": "王焘",
+  "dynasty": "唐·天宝十一年",
+  "year_text": "公元752年",
+  "category": "综合",
+  "source_file": "053-外台秘要.txt"
+ },
+ {
+  "title": "医心方",
+  "author": "日本、丹波康赖",
+  "dynasty": "北宋",
+  "year_text": "公元984年",
+  "category": "综合",
+  "source_file": "054-医心方.txt"
+ },
+ {
+  "title": "太平圣惠方",
+  "author": "王怀隐、陈昭遇等",
+  "dynasty": "宋·淳化三年",
+  "year_text": "公元992年",
+  "category": "综合",
+  "source_file": "055-太平圣惠方.txt"
+ },
+ {
+  "title": "苏沈良方",
+  "author": "沈括及苏轼撰",
+  "dynasty": "北宋",
+  "year_text": "公元960-1127年",
+  "category": "方剂",
+  "source_file": "056-苏沈良方.txt"
+ },
+ {
+  "title": "博济方",
+  "author": "王衮",
+  "dynasty": "宋·庆历七年",
+  "year_text": "公元1047年",
+  "category": "综合",
+  "source_file": "057-博济方.txt"
+ },
+ {
+  "title": "史载之方",
+  "author": "史堪",
+  "dynasty": "宋",
+  "year_text": "公元1127-1279年",
+  "category": "综合",
+  "source_file": "058-史载之方.txt"
+ },
+ {
+  "title": "太平惠民和剂局方",
+  "author": "太平惠民和剂局所",
+  "dynasty": "初刊于宋·元丰年间",
+  "year_text": "公元1078年-1085年",
+  "category": "方剂",
+  "source_file": "059-太平惠民和剂局方.txt"
+ },
+ {
+  "title": "圣济总录",
+  "author": "由政府组织编写",
+  "dynasty": "宋·徽宗",
+  "year_text": "公元1111-1117年",
+  "category": "综合",
+  "source_file": "060-圣济总录.txt"
+ },
+ {
+  "title": "鸡峰普济方",
+  "author": "张锐",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "方剂",
+  "source_file": "061-鸡峰普济方.txt"
+ },
+ {
+  "title": "洪氏集验方",
+  "author": "洪遵",
+  "dynasty": "宋·干道五年",
+  "year_text": "公元1170年",
+  "category": "方剂",
+  "source_file": "062-洪氏集验方.txt"
+ },
+ {
+  "title": "杨氏家藏方",
+  "author": "杨倓",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "综合",
+  "source_file": "063-杨氏家藏方.txt"
+ },
+ {
+  "title": "千金宝要",
+  "author": "孙思邈",
+  "dynasty": "唐",
+  "year_text": "公元618年－公元907年",
+  "category": "方剂",
+  "source_file": "064-千金宝要.txt"
+ },
+ {
+  "title": "卫生易简方",
+  "author": "胡荧",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "065-卫生易简方.txt"
+ },
+ {
+  "title": "全生指迷方",
+  "author": "王贶",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "综合",
+  "source_file": "066-全生指迷方.txt"
+ },
+ {
+  "title": "仁斋直指方论（附补遗）",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "067-仁斋直指方论（附补遗）.txt"
+ },
+ {
+  "title": "瑞竹堂经验方",
+  "author": "沙图穆秀克",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "方剂",
+  "source_file": "068-瑞竹堂经验方.txt"
+ },
+ {
+  "title": "世医得效方",
+  "author": "危亦林",
+  "dynasty": "天历元年",
+  "year_text": "公元1328年-1337年",
+  "category": "综合",
+  "source_file": "069-世医得效方.txt"
+ },
+ {
+  "title": "奇效良方",
+  "author": "董宿",
+  "dynasty": "明·成化六年",
+  "year_text": "公元1470年",
+  "category": "方剂",
+  "source_file": "070-奇效良方.txt"
+ },
+ {
+  "title": "医方集宜",
+  "author": "丁毅",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "方剂",
+  "source_file": "071-医方集宜.txt"
+ },
+ {
+  "title": "医方考",
+  "author": "吴昆",
+  "dynasty": "明代",
+  "year_text": "公元1584年",
+  "category": "方剂",
+  "source_file": "072-医方考.txt"
+ },
+ {
+  "title": "增广和剂局方药性总论",
+  "author": "佚名",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "本草",
+  "source_file": "073-增广和剂局方药性总论.txt"
+ },
+ {
+  "title": "普济方",
+  "author": "朱梓",
+  "dynasty": "明·永乐四年",
+  "year_text": "公元1406年",
+  "category": "方剂",
+  "source_file": "074-普济方.txt"
+ },
+ {
+  "title": "肘后备急方",
+  "author": "葛洪",
+  "dynasty": "东晋",
+  "year_text": "公元317-420年",
+  "category": "综合",
+  "source_file": "075-肘后备急方.txt"
+ },
+ {
+  "title": "普济本事方",
+  "author": "许叔微",
+  "dynasty": "南宋",
+  "year_text": "公元1132年",
+  "category": "方剂",
+  "source_file": "076-普济本事方.txt"
+ },
+ {
+  "title": "严氏济生方",
+  "author": "严用和",
+  "dynasty": "宋·宝元",
+  "year_text": "公元1253年",
+  "category": "综合",
+  "source_file": "077-严氏济生方.txt"
+ },
+ {
+  "title": "药征续编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "078-药征续编.txt"
+ },
+ {
+  "title": "仁术便览",
+  "author": "张洁",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "079-仁术便览.txt"
+ },
+ {
+  "title": "中医之钥",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "080-中医之钥.txt"
+ },
+ {
+  "title": "祖剂",
+  "author": "施沛",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "081-祖剂.txt"
+ },
+ {
+  "title": "古今名医方论",
+  "author": "罗美。",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "082-古今名医方论.txt"
+ },
+ {
+  "title": "种福堂公选良方",
+  "author": "叶桂原着、华岫云编",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "083-种福堂公选良方.txt"
+ },
+ {
+  "title": "汤头歌诀",
+  "author": "汪昂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "084-汤头歌诀.txt"
+ },
+ {
+  "title": "急救便方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "085-急救便方.txt"
+ },
+ {
+  "title": "奇方类编",
+  "author": "吴世昌",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "方剂",
+  "source_file": "086-奇方类编.txt"
+ },
+ {
+  "title": "医方集解",
+  "author": "汪昂",
+  "dynasty": "清",
+  "year_text": "公元1682年",
+  "category": "方剂",
+  "source_file": "087-医方集解.txt"
+ },
+ {
+  "title": "绛雪园古方选注",
+  "author": "王子接",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "088-绛雪园古方选注.txt"
+ },
+ {
+  "title": "医方论",
+  "author": "费伯雄",
+  "dynasty": "清",
+  "year_text": "公元1865年",
+  "category": "方剂",
+  "source_file": "089-医方论.txt"
+ },
+ {
+  "title": "串雅内外编",
+  "author": "赵学敏",
+  "dynasty": "清",
+  "year_text": "公元1759年",
+  "category": "综合",
+  "source_file": "090-串雅内外编.txt"
+ },
+ {
+  "title": "成方切用",
+  "author": "吴仪洛",
+  "dynasty": "清",
+  "year_text": "公元1761年",
+  "category": "综合",
+  "source_file": "091-成方切用.txt"
+ },
+ {
+  "title": "时方妙用",
+  "author": "陈念祖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "092-时方妙用.txt"
+ },
+ {
+  "title": "时方歌括",
+  "author": "陈修园",
+  "dynasty": "清",
+  "year_text": "公元1801年",
+  "category": "综合",
+  "source_file": "093-时方歌括.txt"
+ },
+ {
+  "title": "长沙方歌括",
+  "author": "陈念祖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "094-长沙方歌括.txt"
+ },
+ {
+  "title": "金匮方歌括",
+  "author": "陈念祖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "095-金匮方歌括.txt"
+ },
+ {
+  "title": "医方证治汇编歌诀",
+  "author": "王泰林",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "096-医方证治汇编歌诀.txt"
+ },
+ {
+  "title": "验方新编",
+  "author": "鲍相璈",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "097-验方新编.txt"
+ },
+ {
+  "title": "十剂表",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "098-十剂表.txt"
+ },
+ {
+  "title": "经验丹方汇编",
+  "author": "钱峻",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "099-经验丹方汇编.txt"
+ },
+ {
+  "title": "桂林古本伤寒杂病论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "100-桂林古本伤寒杂病论.txt"
+ },
+ {
+  "title": "药性切用",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "本草",
+  "source_file": "101-药性切用.txt"
+ },
+ {
+  "title": "退思集类方歌注",
+  "author": "王泰林",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "102-退思集类方歌注.txt"
+ },
+ {
+  "title": "华佗神方",
+  "author": "华佗",
+  "dynasty": "汉",
+  "year_text": "公元前206年-公元8年",
+  "category": "综合",
+  "source_file": "103-华佗神方.txt"
+ },
+ {
+  "title": "集验方",
+  "author": "洪氏",
+  "dynasty": "宋",
+  "year_text": "公元960年—1279年",
+  "category": "方剂",
+  "source_file": "104-集验方.txt"
+ },
+ {
+  "title": "大小诸证方论",
+  "author": "傅青主",
+  "dynasty": "明末清初",
+  "year_text": "公元１６０７──公元１６８４年",
+  "category": "方剂",
+  "source_file": "105-大小诸证方论.txt"
+ },
+ {
+  "title": "奇效简便良方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "106-奇效简便良方.txt"
+ },
+ {
+  "title": "神仙济世良方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "107-神仙济世良方.txt"
+ },
+ {
+  "title": "是斋百一选方",
+  "author": "王璆原",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "综合",
+  "source_file": "108-是斋百一选方.txt"
+ },
+ {
+  "title": "小品方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "109-小品方.txt"
+ },
+ {
+  "title": "惠直堂经验方",
+  "author": "陶承熹",
+  "dynasty": "清·公元1644-1911年",
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "110-惠直堂经验方.txt"
+ },
+ {
+  "title": "绛囊撮要",
+  "author": "云川道人",
+  "dynasty": "清",
+  "year_text": "公元1644年-1911年",
+  "category": "综合",
+  "source_file": "111-绛囊撮要.txt"
+ },
+ {
+  "title": "经验奇方",
+  "author": "刘一明",
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "112-经验奇方.txt"
+ },
+ {
+  "title": "古方汇精",
+  "author": "爱虚老人",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "113-古方汇精.txt"
+ },
+ {
+  "title": "外治寿世方",
+  "author": "邹存检",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "养生",
+  "source_file": "114-外治寿世方.txt"
+ },
+ {
+  "title": "文堂集验方",
+  "author": "罗浮山人",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "方剂",
+  "source_file": "115-文堂集验方.txt"
+ },
+ {
+  "title": "回生集",
+  "author": "陈杰",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "116-回生集.txt"
+ },
+ {
+  "title": "本草简要方",
+  "author": "张宗祥",
+  "dynasty": "现代",
+  "year_text": "公元1938年",
+  "category": "本草",
+  "source_file": "117-本草简要方.txt"
+ },
+ {
+  "title": "增订医方歌诀",
+  "author": "王泰林",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "118-增订医方歌诀.txt"
+ },
+ {
+  "title": "济世神验良方",
+  "author": "佚名",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "119-济世神验良方.txt"
+ },
+ {
+  "title": "伤寒恒论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "120-伤寒恒论.txt"
+ },
+ {
+  "title": "医方歌括",
+  "author": "王泰林",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "121-医方歌括.txt"
+ },
+ {
+  "title": "医方简义",
+  "author": "王清源",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "122-医方简义.txt"
+ },
+ {
+  "title": "女科切要",
+  "author": "吴道源",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "123-女科切要.txt"
+ },
+ {
+  "title": "傅青主女科歌括",
+  "author": "傅山",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "专科",
+  "source_file": "124-傅青主女科歌括.txt"
+ },
+ {
+  "title": "产宝",
+  "author": "咎段",
+  "dynasty": "唐",
+  "year_text": "公元618-907年",
+  "category": "综合",
+  "source_file": "125-产宝.txt"
+ },
+ {
+  "title": "女科百问",
+  "author": "宋仲甫",
+  "dynasty": "南宋",
+  "year_text": "公元420-479年",
+  "category": "专科",
+  "source_file": "126-女科百问.txt"
+ },
+ {
+  "title": "钱氏秘传产科方书名试验录",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "127-钱氏秘传产科方书名试验录.txt"
+ },
+ {
+  "title": "妇人大全良方",
+  "author": "陈自明",
+  "dynasty": "南宋·嘉熙元年",
+  "year_text": "公元1237年",
+  "category": "方剂",
+  "source_file": "128-妇人大全良方.txt"
+ },
+ {
+  "title": "沈氏女科辑要",
+  "author": "沈又彭",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "129-沈氏女科辑要.txt"
+ },
+ {
+  "title": "济生集",
+  "author": null,
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "130-济生集.txt"
+ },
+ {
+  "title": "婴童百问",
+  "author": "鲁伯嗣",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "131-婴童百问.txt"
+ },
+ {
+  "title": "女科证治准绳",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368──公元1644年",
+  "category": "专科",
+  "source_file": "132-女科证治准绳.txt"
+ },
+ {
+  "title": "小儿药证直诀",
+  "author": "钱乙",
+  "dynasty": "宋",
+  "year_text": "公元1032～ll13年",
+  "category": "综合",
+  "source_file": "133-小儿药证直诀.txt"
+ },
+ {
+  "title": "幼科切要",
+  "author": "王锡鑫",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "134-幼科切要.txt"
+ },
+ {
+  "title": "婴儿论",
+  "author": "周士祢",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "135-婴儿论.txt"
+ },
+ {
+  "title": "活幼心书",
+  "author": "曹世荣",
+  "dynasty": "元",
+  "year_text": "公元1252-1332年",
+  "category": "综合",
+  "source_file": "136-活幼心书.txt"
+ },
+ {
+  "title": "儿科要略",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "137-儿科要略.txt"
+ },
+ {
+  "title": "儿科萃精",
+  "author": "陈守真",
+  "dynasty": "民国",
+  "year_text": "公元1930年",
+  "category": "专科",
+  "source_file": "138-儿科萃精.txt"
+ },
+ {
+  "title": "痧疹辑要",
+  "author": "叶霖",
+  "dynasty": null,
+  "year_text": "不详",
+  "category": "综合",
+  "source_file": "139-痧疹辑要.txt"
+ },
+ {
+  "title": "小儿推拿广意",
+  "author": "熊应雄",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "140-小儿推拿广意.txt"
+ },
+ {
+  "title": "幼科证治准绳",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "141-幼科证治准绳.txt"
+ },
+ {
+  "title": "女科旨要",
+  "author": "雪岩禅师",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "142-女科旨要.txt"
+ },
+ {
+  "title": "女科折衷纂要",
+  "author": "凌德",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "143-女科折衷纂要.txt"
+ },
+ {
+  "title": "女科指要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "144-女科指要.txt"
+ },
+ {
+  "title": "女科指掌",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "145-女科指掌.txt"
+ },
+ {
+  "title": "女科要旨",
+  "author": "陈念祖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "146-女科要旨.txt"
+ },
+ {
+  "title": "女科秘旨",
+  "author": "轮印禅师",
+  "dynasty": "清",
+  "year_text": "公元1771──公元1711年",
+  "category": "专科",
+  "source_file": "147-女科秘旨.txt"
+ },
+ {
+  "title": "女科秘要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "148-女科秘要.txt"
+ },
+ {
+  "title": "女科经纶",
+  "author": "萧埙",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "149-女科经纶.txt"
+ },
+ {
+  "title": "女科精要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "150-女科精要.txt"
+ },
+ {
+  "title": "女科撮要",
+  "author": "薛立斋",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "151-女科撮要.txt"
+ },
+ {
+  "title": "小儿痘疹方论",
+  "author": "陈文中",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "专科",
+  "source_file": "152-小儿痘疹方论.txt"
+ },
+ {
+  "title": "小儿卫生总微论方",
+  "author": "不详",
+  "dynasty": "宋",
+  "year_text": "公元1158年",
+  "category": "综合",
+  "source_file": "153-小儿卫生总微论方.txt"
+ },
+ {
+  "title": "内府秘传经验女科",
+  "author": "龚廷贤",
+  "dynasty": "明",
+  "year_text": "公元1716年",
+  "category": "专科",
+  "source_file": "154-内府秘传经验女科.txt"
+ },
+ {
+  "title": "幼幼集成",
+  "author": "陈复正",
+  "dynasty": "清",
+  "year_text": "公元1750年",
+  "category": "综合",
+  "source_file": "155-幼幼集成.txt"
+ },
+ {
+  "title": "幼幼新书",
+  "author": "刘昉",
+  "dynasty": "宋",
+  "year_text": "公元1150年",
+  "category": "综合",
+  "source_file": "156-幼幼新书.txt"
+ },
+ {
+  "title": "幼科心法要诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "157-幼科心法要诀.txt"
+ },
+ {
+  "title": "幼科折衷",
+  "author": "秦景明",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "158-幼科折衷.txt"
+ },
+ {
+  "title": "幼科指南",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "159-幼科指南.txt"
+ },
+ {
+  "title": "幼科推拿秘书",
+  "author": "骆如龙",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "160-幼科推拿秘书.txt"
+ },
+ {
+  "title": "幼科发挥",
+  "author": "万全",
+  "dynasty": "明",
+  "year_text": "公元1549 年",
+  "category": "专科",
+  "source_file": "161-幼科发挥.txt"
+ },
+ {
+  "title": "幼科概论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "162-幼科概论.txt"
+ },
+ {
+  "title": "幼科类萃",
+  "author": "王銮",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "163-幼科类萃.txt"
+ },
+ {
+  "title": "幼科铁镜",
+  "author": "夏禹铸",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "164-幼科铁镜.txt"
+ },
+ {
+  "title": "竹泉生女科集要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "165-竹泉生女科集要.txt"
+ },
+ {
+  "title": "儿科醒",
+  "author": "芝屿樵客",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "166-儿科醒.txt"
+ },
+ {
+  "title": "保幼新编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "167-保幼新编.txt"
+ },
+ {
+  "title": "保婴撮要",
+  "author": "薛铠",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "168-保婴撮要.txt"
+ },
+ {
+  "title": "活幼口议",
+  "author": "曾世荣",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "169-活幼口议.txt"
+ },
+ {
+  "title": "胎产心法",
+  "author": "闵纯玺",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "170-胎产心法.txt"
+ },
+ {
+  "title": "胎产指南",
+  "author": "张曜孙",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "171-胎产指南.txt"
+ },
+ {
+  "title": "胎产秘书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "172-胎产秘书.txt"
+ },
+ {
+  "title": "家传女科经验摘奇",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "173-家传女科经验摘奇.txt"
+ },
+ {
+  "title": "妇人规",
+  "author": "攻介宾",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "174-妇人规.txt"
+ },
+ {
+  "title": "妇科心法要诀",
+  "author": "吴谦等",
+  "dynasty": "清·乾隆",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "175-妇科心法要诀.txt"
+ },
+ {
+  "title": "妇科秘方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "176-妇科秘方.txt"
+ },
+ {
+  "title": "妇科秘书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "177-妇科秘书.txt"
+ },
+ {
+  "title": "妇科问答",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "178-妇科问答.txt"
+ },
+ {
+  "title": "专治麻痧初编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "179-专治麻痧初编.txt"
+ },
+ {
+  "title": "张氏妇科",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "180-张氏妇科.txt"
+ },
+ {
+  "title": "产鉴",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "181-产鉴.txt"
+ },
+ {
+  "title": "陈氏幼科秘诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "182-陈氏幼科秘诀.txt"
+ },
+ {
+  "title": "麻科活人全书",
+  "author": "谢玉琼恩",
+  "dynasty": "清",
+  "year_text": "公元1748年",
+  "category": "综合",
+  "source_file": "183-麻科活人全书.txt"
+ },
+ {
+  "title": "麻疹备要方论",
+  "author": "吴砚丞",
+  "dynasty": "清",
+  "year_text": "公元1853年",
+  "category": "方剂",
+  "source_file": "184-麻疹备要方论.txt"
+ },
+ {
+  "title": "麻疹阐注",
+  "author": "张霞溪",
+  "dynasty": "清",
+  "year_text": "公元1840年",
+  "category": "综合",
+  "source_file": "185-麻疹阐注.txt"
+ },
+ {
+  "title": "痘疹心法要诀",
+  "author": "吴谦等",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "专科",
+  "source_file": "186-痘疹心法要诀.txt"
+ },
+ {
+  "title": "评注产科心法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "187-评注产科心法.txt"
+ },
+ {
+  "title": "慈幼便览",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "188-慈幼便览.txt"
+ },
+ {
+  "title": "慈幼新书",
+  "author": "程云鹏",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "189-慈幼新书.txt"
+ },
+ {
+  "title": "毓麟验方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "190-毓麟验方.txt"
+ },
+ {
+  "title": "经验麻科",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "191-经验麻科.txt"
+ },
+ {
+  "title": "达生编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "192-达生编.txt"
+ },
+ {
+  "title": "盘珠集胎产症治",
+  "author": "单南山",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "193-盘珠集胎产症治.txt"
+ },
+ {
+  "title": "竹林女科证治",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "194-竹林女科证治.txt"
+ },
+ {
+  "title": "原要论",
+  "author": "袁氏（佚名）",
+  "dynasty": "清",
+  "year_text": "公元1828年",
+  "category": "综合",
+  "source_file": "195-原要论.txt"
+ },
+ {
+  "title": "产后十八论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "196-产后十八论.txt"
+ },
+ {
+  "title": "脚气治法总要",
+  "author": "董汲",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "综合",
+  "source_file": "197-脚气治法总要.txt"
+ },
+ {
+  "title": "济阴纲目",
+  "author": "武之望",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "198-济阴纲目.txt"
+ },
+ {
+  "title": "卫生家宝产科备要",
+  "author": "朱端章",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "专科",
+  "source_file": "199-卫生家宝产科备要.txt"
+ },
+ {
+  "title": "邯郸遗稿",
+  "author": "赵献可",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "200-邯郸遗稿.txt"
+ },
+ {
+  "title": "鬻婴提要说",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "201-鬻婴提要说.txt"
+ },
+ {
+  "title": "颅囟经",
+  "author": "佚名",
+  "dynasty": "东汉",
+  "year_text": "公元25-220年",
+  "category": "综合",
+  "source_file": "202-颅囟经.txt"
+ },
+ {
+  "title": "婴童类萃",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "203-婴童类萃.txt"
+ },
+ {
+  "title": "医林改错",
+  "author": "王清任",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "204-医林改错.txt"
+ },
+ {
+  "title": "金匮翼",
+  "author": "尤怡",
+  "dynasty": "清",
+  "year_text": "公元1768年",
+  "category": "医经",
+  "source_file": "205-金匮翼.txt"
+ },
+ {
+  "title": "养老奉亲书",
+  "author": "陈直",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "综合",
+  "source_file": "206-养老奉亲书.txt"
+ },
+ {
+  "title": "医门法律",
+  "author": "喻昌",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "207-医门法律.txt"
+ },
+ {
+  "title": "笔花医镜",
+  "author": "江涵暾",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "208-笔花医镜.txt"
+ },
+ {
+  "title": "血证论",
+  "author": "唐容川",
+  "dynasty": "清",
+  "year_text": "公元1884年",
+  "category": "综合",
+  "source_file": "209-血证论.txt"
+ },
+ {
+  "title": "外科精义",
+  "author": "齐德之",
+  "dynasty": "元",
+  "year_text": "公元1271～1368年",
+  "category": "专科",
+  "source_file": "210-外科精义.txt"
+ },
+ {
+  "title": "立斋外科发挥",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "211-立斋外科发挥.txt"
+ },
+ {
+  "title": "外科枢要",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "212-外科枢要.txt"
+ },
+ {
+  "title": "杂病心法要诀",
+  "author": "吴谦等",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "213-杂病心法要诀.txt"
+ },
+ {
+  "title": "跌损妙方",
+  "author": "异远真人",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "214-跌损妙方.txt"
+ },
+ {
+  "title": "杂病广要",
+  "author": "日本·丹波元坚撰",
+  "dynasty": "清",
+  "year_text": "公元1853年",
+  "category": "综合",
+  "source_file": "215-杂病广要.txt"
+ },
+ {
+  "title": "江氏伤科学",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "216-江氏伤科学.txt"
+ },
+ {
+  "title": "伤科大成",
+  "author": "赵濂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "217-伤科大成.txt"
+ },
+ {
+  "title": "跌打秘方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "218-跌打秘方.txt"
+ },
+ {
+  "title": "跌打损伤方",
+  "author": "杨成博",
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "219-跌打损伤方.txt"
+ },
+ {
+  "title": "外科集验方",
+  "author": "赵宜真",
+  "dynasty": "明·洪武戊午年",
+  "year_text": "公元1378年",
+  "category": "专科",
+  "source_file": "220-外科集验方.txt"
+ },
+ {
+  "title": "余无言",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "221-余无言.txt"
+ },
+ {
+  "title": "跌打损伤回生集",
+  "author": "胡青昆",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "222-跌打损伤回生集.txt"
+ },
+ {
+  "title": "疡医大全",
+  "author": "顾世澄",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "223-疡医大全.txt"
+ },
+ {
+  "title": "傅青主男科重编考释",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "224-傅青主男科重编考释.txt"
+ },
+ {
+  "title": "疡科心得集",
+  "author": "高秉钧",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "225-疡科心得集.txt"
+ },
+ {
+  "title": "外科大成",
+  "author": "祁坤",
+  "dynasty": "清",
+  "year_text": "公元1665年",
+  "category": "专科",
+  "source_file": "226-外科大成.txt"
+ },
+ {
+  "title": "阴证略例",
+  "author": "王好古",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "227-阴证略例.txt"
+ },
+ {
+  "title": "发背对口治诀论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "228-发背对口治诀论.txt"
+ },
+ {
+  "title": "集验背疽方",
+  "author": "李迅",
+  "dynasty": "宋·庆元二年",
+  "year_text": "公元1196年",
+  "category": "综合",
+  "source_file": "229-集验背疽方.txt"
+ },
+ {
+  "title": "外科正宗",
+  "author": "陈实功",
+  "dynasty": "明",
+  "year_text": "公元1617年",
+  "category": "专科",
+  "source_file": "230-外科正宗.txt"
+ },
+ {
+  "title": "中风论",
+  "author": "熊笏",
+  "dynasty": "清·嘉庆",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "231-中风论.txt"
+ },
+ {
+  "title": "内外伤辨",
+  "author": "李杲",
+  "dynasty": "金",
+  "year_text": "公元1115-1234年",
+  "category": "综合",
+  "source_file": "232-内外伤辨.txt"
+ },
+ {
+  "title": "内科摘要",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "233-内科摘要.txt"
+ },
+ {
+  "title": "少林真传伤科秘方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "234-少林真传伤科秘方.txt"
+ },
+ {
+  "title": "仙授理伤续断秘方",
+  "author": "蔺道人",
+  "dynasty": "唐代",
+  "year_text": "公元618-907年",
+  "category": "综合",
+  "source_file": "235-仙授理伤续断秘方.txt"
+ },
+ {
+  "title": "外科十三方考",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "236-外科十三方考.txt"
+ },
+ {
+  "title": "外科心法要诀",
+  "author": "吴谦等",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "专科",
+  "source_file": "237-外科心法要诀.txt"
+ },
+ {
+  "title": "外科方外奇方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "238-外科方外奇方.txt"
+ },
+ {
+  "title": "外科全生集",
+  "author": "王洪绪",
+  "dynasty": "清",
+  "year_text": "公元1740年",
+  "category": "专科",
+  "source_file": "239-外科全生集.txt"
+ },
+ {
+  "title": "外科启玄",
+  "author": "申斗垣",
+  "dynasty": "明",
+  "year_text": "公元1604年",
+  "category": "专科",
+  "source_file": "240-外科启玄.txt"
+ },
+ {
+  "title": "外科理例",
+  "author": "汪机",
+  "dynasty": "明·嘉靖二年",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "241-外科理例.txt"
+ },
+ {
+  "title": "外科传薪集",
+  "author": "马培之",
+  "dynasty": "清",
+  "year_text": "公元1912-1949年",
+  "category": "专科",
+  "source_file": "242-外科传薪集.txt"
+ },
+ {
+  "title": "外科精要",
+  "author": "陈自明",
+  "dynasty": "宋",
+  "year_text": "公元1263年",
+  "category": "专科",
+  "source_file": "243-外科精要.txt"
+ },
+ {
+  "title": "外科选要",
+  "author": "徐直銈",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "244-外科选要.txt"
+ },
+ {
+  "title": "外科医镜",
+  "author": "高思敬",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "245-外科医镜.txt"
+ },
+ {
+  "title": "正骨心法要旨",
+  "author": "吴谦等",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "综合",
+  "source_file": "246-正骨心法要旨.txt"
+ },
+ {
+  "title": "正体类要",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1529年",
+  "category": "综合",
+  "source_file": "247-正体类要.txt"
+ },
+ {
+  "title": "何氏虚劳心传",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "248-何氏虚劳心传.txt"
+ },
+ {
+  "title": "周慎斋遗书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "249-周慎斋遗书.txt"
+ },
+ {
+  "title": "奇经八脉考",
+  "author": "李时珍",
+  "dynasty": "明·万历五年",
+  "year_text": "公元1577年",
+  "category": "综合",
+  "source_file": "250-奇经八脉考.txt"
+ },
+ {
+  "title": "金疮秘传禁方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "251-金疮秘传禁方.txt"
+ },
+ {
+  "title": "金疮跌打接骨药性秘书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "本草",
+  "source_file": "252-金疮跌打接骨药性秘书.txt"
+ },
+ {
+  "title": "青囊秘诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "253-青囊秘诀.txt"
+ },
+ {
+  "title": "急救良方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "254-急救良方.txt"
+ },
+ {
+  "title": "急救广生集",
+  "author": "程鹏程",
+  "dynasty": "清",
+  "year_text": "公元1805年",
+  "category": "综合",
+  "source_file": "255-急救广生集.txt"
+ },
+ {
+  "title": "订正太素脉秘诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "256-订正太素脉秘诀.txt"
+ },
+ {
+  "title": "症因脉治",
+  "author": "朱丹溪",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "257-症因脉治.txt"
+ },
+ {
+  "title": "秘传外科方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "258-秘传外科方.txt"
+ },
+ {
+  "title": "秘传刘伯温家藏接骨金疮禁方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "259-秘传刘伯温家藏接骨金疮禁方.txt"
+ },
+ {
+  "title": "脉症治方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "260-脉症治方.txt"
+ },
+ {
+  "title": "脉确",
+  "author": "黄琳述",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "261-脉确.txt"
+ },
+ {
+  "title": "接骨手法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "262-接骨手法.txt"
+ },
+ {
+  "title": "救伤秘旨",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "263-救伤秘旨.txt"
+ },
+ {
+  "title": "理虚元鉴",
+  "author": "汪绮石",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "264-理虚元鉴.txt"
+ },
+ {
+  "title": "虚损启微",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "265-虚损启微.txt"
+ },
+ {
+  "title": "诊脉三十二辨",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "266-诊脉三十二辨.txt"
+ },
+ {
+  "title": "伤科方书",
+  "author": "江考卿",
+  "dynasty": "清",
+  "year_text": "公元1840年",
+  "category": "专科",
+  "source_file": "267-伤科方书.txt"
+ },
+ {
+  "title": "伤科汇纂",
+  "author": "胡廷光",
+  "dynasty": "清",
+  "year_text": "公元1808年",
+  "category": "专科",
+  "source_file": "268-伤科汇纂.txt"
+ },
+ {
+  "title": "伤科补要",
+  "author": "钱潢",
+  "dynasty": "清",
+  "year_text": "公元1808年",
+  "category": "专科",
+  "source_file": "269-伤科补要.txt"
+ },
+ {
+  "title": "慎柔五书",
+  "author": "胡慎柔",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "270-慎柔五书.txt"
+ },
+ {
+  "title": "杨成博先生遗留穴道秘书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "271-杨成博先生遗留穴道秘书.txt"
+ },
+ {
+  "title": "痰火点雪",
+  "author": "龚居中",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "272-痰火点雪.txt"
+ },
+ {
+  "title": "万氏秘传外科心法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "273-万氏秘传外科心法.txt"
+ },
+ {
+  "title": "解围元薮",
+  "author": "沈之问",
+  "dynasty": "明",
+  "year_text": "公元1550年",
+  "category": "综合",
+  "source_file": "274-解围元薮.txt"
+ },
+ {
+  "title": "刘涓子鬼遗方",
+  "author": "龚庆宣",
+  "dynasty": "南齐",
+  "year_text": "公元479-502年",
+  "category": "综合",
+  "source_file": "275-刘涓子鬼遗方.txt"
+ },
+ {
+  "title": "疯门全书",
+  "author": "肖晓亭",
+  "dynasty": "清",
+  "year_text": "公元1836年",
+  "category": "综合",
+  "source_file": "276-疯门全书.txt"
+ },
+ {
+  "title": "医略",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "277-医略.txt"
+ },
+ {
+  "title": "增订十药神书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "278-增订十药神书.txt"
+ },
+ {
+  "title": "疠疡机要",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "279-疠疡机要.txt"
+ },
+ {
+  "title": "医学从众录",
+  "author": "陈修园",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "280-医学从众录.txt"
+ },
+ {
+  "title": "疡科纲要",
+  "author": "张山雷",
+  "dynasty": "民国初年",
+  "year_text": "公元1912-至今",
+  "category": "综合",
+  "source_file": "281-疡科纲要.txt"
+ },
+ {
+  "title": "医门补要",
+  "author": "赵濂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "282-医门补要.txt"
+ },
+ {
+  "title": "医源",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "283-医源.txt"
+ },
+ {
+  "title": "仙传外科集验方",
+  "author": "赵宜真",
+  "dynasty": "元末明初",
+  "year_text": "公元1382年",
+  "category": "专科",
+  "source_file": "284-仙传外科集验方.txt"
+ },
+ {
+  "title": "外科十法",
+  "author": "朱世杰",
+  "dynasty": "清",
+  "year_text": "公元1644～1911年",
+  "category": "专科",
+  "source_file": "285-外科十法.txt"
+ },
+ {
+  "title": "脉诀乳海",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "诊法",
+  "source_file": "286-脉诀乳海.txt"
+ },
+ {
+  "title": "脉诀考证",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "诊法",
+  "source_file": "287-脉诀考证.txt"
+ },
+ {
+  "title": "痰疠法门",
+  "author": "李子毅",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "288-痰疠法门.txt"
+ },
+ {
+  "title": "证治汇补",
+  "author": "李用粹",
+  "dynasty": "清",
+  "year_text": "公元1687年",
+  "category": "综合",
+  "source_file": "289-证治汇补.txt"
+ },
+ {
+  "title": "外科证治全书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "290-外科证治全书.txt"
+ },
+ {
+  "title": "眼科秘诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "291-眼科秘诀.txt"
+ },
+ {
+  "title": "银海精微",
+  "author": "孙思邈",
+  "dynasty": "唐",
+  "year_text": "公元682年",
+  "category": "综合",
+  "source_file": "292-银海精微.txt"
+ },
+ {
+  "title": "审视瑶函",
+  "author": "傅仁宇",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "293-审视瑶函.txt"
+ },
+ {
+  "title": "目经大成",
+  "author": "黄庭镜草成此书，此后四易其稿，但未付梓。弟子邓学礼得悉此书后于嘉庆十年刊行",
+  "dynasty": "清·乾隆六年",
+  "year_text": "公元1741年",
+  "category": "综合",
+  "source_file": "294-目经大成.txt"
+ },
+ {
+  "title": "针灸大全",
+  "author": "徐凤",
+  "dynasty": "明·正统四年",
+  "year_text": "公元1439 年",
+  "category": "针灸",
+  "source_file": "295-针灸大全.txt"
+ },
+ {
+  "title": "扁鹊神应针灸玉龙经",
+  "author": "王国瑞",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "针灸",
+  "source_file": "296-扁鹊神应针灸玉龙经.txt"
+ },
+ {
+  "title": "针灸易学",
+  "author": "李守先",
+  "dynasty": "清·嘉庆三年",
+  "year_text": "公元1798年",
+  "category": "针灸",
+  "source_file": "297-针灸易学.txt"
+ },
+ {
+  "title": "针灸聚英",
+  "author": "高武",
+  "dynasty": "明·嘉靖八年",
+  "year_text": "公元1529年",
+  "category": "针灸",
+  "source_file": "298-针灸聚英.txt"
+ },
+ {
+  "title": "针灸大成",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "299-针灸大成.txt"
+ },
+ {
+  "title": "针灸逢源",
+  "author": "李学川",
+  "dynasty": "清·嘉庆二十年",
+  "year_text": "公元1815年",
+  "category": "针灸",
+  "source_file": "300-针灸逢源.txt"
+ },
+ {
+  "title": "针灸甲乙经",
+  "author": "皇甫谧",
+  "dynasty": "晋",
+  "year_text": "公元256年",
+  "category": "针灸",
+  "source_file": "301-针灸甲乙经.txt"
+ },
+ {
+  "title": "针经节要",
+  "author": "杜思敬",
+  "dynasty": "元",
+  "year_text": "公元1315年",
+  "category": "针灸",
+  "source_file": "302-针经节要.txt"
+ },
+ {
+  "title": "李翰卿",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "303-李翰卿.txt"
+ },
+ {
+  "title": "杨敬斋针灸全书",
+  "author": "陈言",
+  "dynasty": "明·万历十九年",
+  "year_text": "公元1591年",
+  "category": "针灸",
+  "source_file": "304-杨敬斋针灸全书.txt"
+ },
+ {
+  "title": "宋本备急灸法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "305-宋本备急灸法.txt"
+ },
+ {
+  "title": "刺灸心法要诀",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "综合",
+  "source_file": "306-刺灸心法要诀.txt"
+ },
+ {
+  "title": "一草亭目科全书",
+  "author": "邓苑",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "307-一草亭目科全书.txt"
+ },
+ {
+  "title": "口齿类要",
+  "author": "薛己",
+  "dynasty": "明",
+  "year_text": "公元1528年",
+  "category": "专科",
+  "source_file": "308-口齿类要.txt"
+ },
+ {
+  "title": "子午流注针经",
+  "author": "何若愚撰、阎明广注",
+  "dynasty": "金",
+  "year_text": "撰年不详",
+  "category": "针灸",
+  "source_file": "309-子午流注针经.txt"
+ },
+ {
+  "title": "子午流注说难",
+  "author": "吴棹仙",
+  "dynasty": "近代",
+  "year_text": "公元1956年",
+  "category": "综合",
+  "source_file": "310-子午流注说难.txt"
+ },
+ {
+  "title": "尤氏喉科秘书",
+  "author": "王士雄",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "311-尤氏喉科秘书.txt"
+ },
+ {
+  "title": "尤氏喉症指南",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "312-尤氏喉症指南.txt"
+ },
+ {
+  "title": "白喉全生集",
+  "author": "李纪方",
+  "dynasty": "清",
+  "year_text": "公元1882年",
+  "category": "综合",
+  "source_file": "313-白喉全生集.txt"
+ },
+ {
+  "title": "白喉条辨",
+  "author": "陈葆善",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "314-白喉条辨.txt"
+ },
+ {
+  "title": "银海指南",
+  "author": "顾锡",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "315-银海指南.txt"
+ },
+ {
+  "title": "普济方·针灸",
+  "author": "朱梓",
+  "dynasty": "明·永乐四年",
+  "year_text": "公元1406年",
+  "category": "针灸",
+  "source_file": "316-普济方·针灸.txt"
+ },
+ {
+  "title": "灸法秘传",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "317-灸法秘传.txt"
+ },
+ {
+  "title": "走马急疳真方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "318-走马急疳真方.txt"
+ },
+ {
+  "title": "明目至宝",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "319-明目至宝.txt"
+ },
+ {
+  "title": "金针秘传",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "320-金针秘传.txt"
+ },
+ {
+  "title": "灵药秘方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "321-灵药秘方.txt"
+ },
+ {
+  "title": "重订囊秘喉书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "322-重订囊秘喉书.txt"
+ },
+ {
+  "title": "重楼玉钥",
+  "author": "郑梅涧",
+  "dynasty": "清·乾隆年间",
+  "year_text": "公元1838年",
+  "category": "综合",
+  "source_file": "323-重楼玉钥.txt"
+ },
+ {
+  "title": "重楼玉钥续编",
+  "author": "方成培",
+  "dynasty": "清",
+  "year_text": "公元1838年",
+  "category": "综合",
+  "source_file": "324-重楼玉钥续编.txt"
+ },
+ {
+  "title": "原机启微",
+  "author": "倪维德",
+  "dynasty": "元",
+  "year_text": "公元1370年",
+  "category": "综合",
+  "source_file": "325-原机启微.txt"
+ },
+ {
+  "title": "神灸经纶",
+  "author": "吴亦鼎",
+  "dynasty": "清·咸丰六年",
+  "year_text": "公元1851年",
+  "category": "综合",
+  "source_file": "326-神灸经纶.txt"
+ },
+ {
+  "title": "神应经",
+  "author": "陈会撰、刘瑾补辑",
+  "dynasty": "明·洪熙元年",
+  "year_text": "公元1425年",
+  "category": "综合",
+  "source_file": "327-神应经.txt"
+ },
+ {
+  "title": "秘传眼科龙木论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "328-秘传眼科龙木论.txt"
+ },
+ {
+  "title": "针灸神书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "329-针灸神书.txt"
+ },
+ {
+  "title": "针灸素难要旨",
+  "author": "高武",
+  "dynasty": "明·嘉靖十六年",
+  "year_text": "公元1537年",
+  "category": "针灸",
+  "source_file": "330-针灸素难要旨.txt"
+ },
+ {
+  "title": "针灸问对",
+  "author": "汪机",
+  "dynasty": "明",
+  "year_text": "嘉靖九年·公元1530年",
+  "category": "针灸",
+  "source_file": "331-针灸问对.txt"
+ },
+ {
+  "title": "针灸集成",
+  "author": "廖润鸿",
+  "dynasty": "清·同治十三年",
+  "year_text": "公元1874年",
+  "category": "针灸",
+  "source_file": "332-针灸集成.txt"
+ },
+ {
+  "title": "针灸资生经",
+  "author": "王执中",
+  "dynasty": "南宋·嘉定十二年",
+  "year_text": "公元1220年",
+  "category": "针灸",
+  "source_file": "333-针灸资生经.txt"
+ },
+ {
+  "title": "针经指南",
+  "author": "窦汉卿",
+  "dynasty": "元·元贞元年",
+  "year_text": "公元1295年",
+  "category": "针灸",
+  "source_file": "334-针经指南.txt"
+ },
+ {
+  "title": "巢氏病源补养宣导法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "335-巢氏病源补养宣导法.txt"
+ },
+ {
+  "title": "推拿抉微",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "336-推拿抉微.txt"
+ },
+ {
+  "title": "理瀹骈文",
+  "author": "吴师机",
+  "dynasty": "清",
+  "year_text": "公元1864年",
+  "category": "综合",
+  "source_file": "337-理瀹骈文.txt"
+ },
+ {
+  "title": "异授眼科",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "338-异授眼科.txt"
+ },
+ {
+  "title": "眼科心法要诀",
+  "author": "吴谦等",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "专科",
+  "source_file": "339-眼科心法要诀.txt"
+ },
+ {
+  "title": "眼科阐微",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "340-眼科阐微.txt"
+ },
+ {
+  "title": "喉舌备要秘旨",
+  "author": "佚名",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "341-喉舌备要秘旨.txt"
+ },
+ {
+  "title": "喉科指掌",
+  "author": "张宗良",
+  "dynasty": "清",
+  "year_text": "公元1757年",
+  "category": "专科",
+  "source_file": "342-喉科指掌.txt"
+ },
+ {
+  "title": "喉科秘诀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "343-喉科秘诀.txt"
+ },
+ {
+  "title": "喉科集腋",
+  "author": "沈青芝",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "344-喉科集腋.txt"
+ },
+ {
+  "title": "焦氏喉科枕秘",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "345-焦氏喉科枕秘.txt"
+ },
+ {
+  "title": "黄帝明堂灸经",
+  "author": "不详",
+  "dynasty": "唐代",
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "346-黄帝明堂灸经.txt"
+ },
+ {
+  "title": "经穴汇解",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "347-经穴汇解.txt"
+ },
+ {
+  "title": "经络全书",
+  "author": "沈子禄、徐师曾撰",
+  "dynasty": "明·万历四年",
+  "year_text": "公元1576年",
+  "category": "综合",
+  "source_file": "348-经络全书.txt"
+ },
+ {
+  "title": "经络考",
+  "author": "张三锡",
+  "dynasty": "明·万历三十七年",
+  "year_text": "公元1609年",
+  "category": "综合",
+  "source_file": "349-经络考.txt"
+ },
+ {
+  "title": "经络汇编",
+  "author": "翟良",
+  "dynasty": "明·崇祯元年",
+  "year_text": "公元1628年",
+  "category": "综合",
+  "source_file": "350-经络汇编.txt"
+ },
+ {
+  "title": "包氏喉证家宝",
+  "author": "包三述",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "351-包氏喉证家宝.txt"
+ },
+ {
+  "title": "炙膏肓腧穴法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "352-炙膏肓腧穴法.txt"
+ },
+ {
+  "title": "凌门传授铜人指穴",
+  "author": "不详",
+  "dynasty": "清·康熙前",
+  "year_text": "公元1644-1911年",
+  "category": "针灸",
+  "source_file": "353-凌门传授铜人指穴.txt"
+ },
+ {
+  "title": "厘正按摩要术",
+  "author": "张振鉴",
+  "dynasty": "清",
+  "year_text": null,
+  "category": "综合",
+  "source_file": "354-厘正按摩要术.txt"
+ },
+ {
+  "title": "灵枢经脉翼",
+  "author": "夏英",
+  "dynasty": "明·弘治十年",
+  "year_text": "公元1497年",
+  "category": "医经",
+  "source_file": "355-灵枢经脉翼.txt"
+ },
+ {
+  "title": "广嗣要语",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "356-广嗣要语.txt"
+ },
+ {
+  "title": "局方发挥",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "357-局方发挥.txt"
+ },
+ {
+  "title": "西方子明堂灸经",
+  "author": "不详",
+  "dynasty": "元·至正末年",
+  "year_text": "公元1368年",
+  "category": "针灸",
+  "source_file": "358-西方子明堂灸经.txt"
+ },
+ {
+  "title": "友渔斋医话",
+  "author": "黄凯钧",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "359-友渔斋医话.txt"
+ },
+ {
+  "title": "徐批叶天士晚年方案真本",
+  "author": "叶天士",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "360-徐批叶天士晚年方案真本.txt"
+ },
+ {
+  "title": "吴鞠通医案",
+  "author": "吴鞠通",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "361-吴鞠通医案.txt"
+ },
+ {
+  "title": "冷庐医话",
+  "author": "陆以湉",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "362-冷庐医话.txt"
+ },
+ {
+  "title": "柳洲医话",
+  "author": "魏之琇",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "363-柳洲医话.txt"
+ },
+ {
+  "title": "医贯",
+  "author": "赵献可",
+  "dynasty": "明",
+  "year_text": "公元1687年",
+  "category": "综合",
+  "source_file": "364-医贯.txt"
+ },
+ {
+  "title": "古今医案按",
+  "author": "俞震篡",
+  "dynasty": "清",
+  "year_text": "公元1778年",
+  "category": "方剂",
+  "source_file": "365-古今医案按.txt"
+ },
+ {
+  "title": "侣山堂类辩",
+  "author": "张志聪",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "366-侣山堂类辩.txt"
+ },
+ {
+  "title": "临证指南医案",
+  "author": "叶桂",
+  "dynasty": "清",
+  "year_text": "公元1746年",
+  "category": "方剂",
+  "source_file": "367-临证指南医案.txt"
+ },
+ {
+  "title": "存存斋医话稿",
+  "author": "赵晴",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "方剂",
+  "source_file": "368-存存斋医话稿.txt"
+ },
+ {
+  "title": "丹溪治法心要",
+  "author": "朱震亨、",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "369-丹溪治法心要.txt"
+ },
+ {
+  "title": "医经溯洄集",
+  "author": "王履",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "370-医经溯洄集.txt"
+ },
+ {
+  "title": "叶天士医案精华",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "371-叶天士医案精华.txt"
+ },
+ {
+  "title": "一得集",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "372-一得集.txt"
+ },
+ {
+  "title": "丁甘仁医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "373-丁甘仁医案.txt"
+ },
+ {
+  "title": "三家医案合刻",
+  "author": "吴金寿",
+  "dynasty": "清",
+  "year_text": "公元1831年",
+  "category": "方剂",
+  "source_file": "374-三家医案合刻.txt"
+ },
+ {
+  "title": "上池杂说",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "375-上池杂说.txt"
+ },
+ {
+  "title": "也是山人医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "376-也是山人医案.txt"
+ },
+ {
+  "title": "客尘医话",
+  "author": "讦寿乔",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "377-客尘医话.txt"
+ },
+ {
+  "title": "王氏医案绎注",
+  "author": "任锡庚",
+  "dynasty": "清",
+  "year_text": "公元1644年",
+  "category": "方剂",
+  "source_file": "378-王氏医案绎注.txt"
+ },
+ {
+  "title": "市隐庐医学杂着",
+  "author": "王严士",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "379-市隐庐医学杂着.txt"
+ },
+ {
+  "title": "未刻本叶氏医案",
+  "author": "叶天士",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "380-未刻本叶氏医案.txt"
+ },
+ {
+  "title": "先哲医话",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "381-先哲医话.txt"
+ },
+ {
+  "title": "回春录",
+  "author": "王士维",
+  "dynasty": "清",
+  "year_text": "公元1824年-1857年",
+  "category": "综合",
+  "source_file": "382-回春录.txt"
+ },
+ {
+  "title": "何澹安医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "383-何澹安医案.txt"
+ },
+ {
+  "title": "吴医汇讲",
+  "author": "唐大烈",
+  "dynasty": "清",
+  "year_text": "公元1792-1801年",
+  "category": "综合",
+  "source_file": "384-吴医汇讲.txt"
+ },
+ {
+  "title": "奇症汇",
+  "author": "沈源",
+  "dynasty": "清",
+  "year_text": "公元1786年",
+  "category": "综合",
+  "source_file": "385-奇症汇.txt"
+ },
+ {
+  "title": "知医必辨",
+  "author": "李冠仙",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "386-知医必辨.txt"
+ },
+ {
+  "title": "肯堂医论",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1602年",
+  "category": "综合",
+  "source_file": "387-肯堂医论.txt"
+ },
+ {
+  "title": "花韵楼医案",
+  "author": "顾德华",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "388-花韵楼医案.txt"
+ },
+ {
+  "title": "证治心传",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "389-证治心传.txt"
+ },
+ {
+  "title": "辨证汇编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "390-辨证汇编.txt"
+ },
+ {
+  "title": "眉寿堂方案选存",
+  "author": "叶天士",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "391-眉寿堂方案选存.txt"
+ },
+ {
+  "title": "研经言",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "392-研经言.txt"
+ },
+ {
+  "title": "重订灵兰要览",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "393-重订灵兰要览.txt"
+ },
+ {
+  "title": "重庆堂随笔",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "394-重庆堂随笔.txt"
+ },
+ {
+  "title": "凌临灵方",
+  "author": "凌晓五",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "395-凌临灵方.txt"
+ },
+ {
+  "title": "孙文垣医案",
+  "author": "孙一奎",
+  "dynasty": "清",
+  "year_text": "公元1522~1619年",
+  "category": "方剂",
+  "source_file": "396-孙文垣医案.txt"
+ },
+ {
+  "title": "塘医话",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "397-塘医话.txt"
+ },
+ {
+  "title": "马培之医案",
+  "author": "马培之",
+  "dynasty": "清",
+  "year_text": "公元1893年",
+  "category": "方剂",
+  "source_file": "398-马培之医案.txt"
+ },
+ {
+  "title": "张聿青医案",
+  "author": "张聿青",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "方剂",
+  "source_file": "399-张聿青医案.txt"
+ },
+ {
+  "title": "张畹香医案",
+  "author": "张畹香",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "400-张畹香医案.txt"
+ },
+ {
+  "title": "曹仁伯医案论",
+  "author": "曹存心",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "方剂",
+  "source_file": "401-曹仁伯医案论.txt"
+ },
+ {
+  "title": "热病衡正",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "402-热病衡正.txt"
+ },
+ {
+  "title": "寓意草",
+  "author": "喻昌",
+  "dynasty": "清",
+  "year_text": "公元1645年",
+  "category": "综合",
+  "source_file": "403-寓意草.txt"
+ },
+ {
+  "title": "程杏轩医案",
+  "author": "程杏轩",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "404-程杏轩医案.txt"
+ },
+ {
+  "title": "慎疾刍言",
+  "author": "徐大椿",
+  "dynasty": "清",
+  "year_text": "公元1767年",
+  "category": "综合",
+  "source_file": "405-慎疾刍言.txt"
+ },
+ {
+  "title": "叶选医衡",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "406-叶选医衡.txt"
+ },
+ {
+  "title": "对山医话",
+  "author": "毛对山",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "407-对山医话.txt"
+ },
+ {
+  "title": "质疑录",
+  "author": "张介宾",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "408-质疑录.txt"
+ },
+ {
+  "title": "丛桂草堂医案",
+  "author": "袁焯",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "409-丛桂草堂医案.txt"
+ },
+ {
+  "title": "归砚录",
+  "author": "王士雄",
+  "dynasty": "清",
+  "year_text": "公元1861",
+  "category": "综合",
+  "source_file": "410-归砚录.txt"
+ },
+ {
+  "title": "医原",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "411-医原.txt"
+ },
+ {
+  "title": "医暇卮言",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "412-医暇卮言.txt"
+ },
+ {
+  "title": "医学课儿策",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "413-医学课儿策.txt"
+ },
+ {
+  "title": "医学读书记",
+  "author": "尤怡",
+  "dynasty": "清",
+  "year_text": "公元1729年",
+  "category": "综合",
+  "source_file": "414-医学读书记.txt"
+ },
+ {
+  "title": "医医医",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "415-医医医.txt"
+ },
+ {
+  "title": "续名医类案",
+  "author": "魏之琇",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "416-续名医类案.txt"
+ },
+ {
+  "title": "读医随笔",
+  "author": "周学海",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "417-读医随笔.txt"
+ },
+ {
+  "title": "医学源流论",
+  "author": "徐大椿",
+  "dynasty": "清·乾隆二十二年",
+  "year_text": "公元1757年",
+  "category": "综合",
+  "source_file": "418-医学源流论.txt"
+ },
+ {
+  "title": "王旭高临证医案",
+  "author": "王旭高",
+  "dynasty": "清",
+  "year_text": "公元1644年",
+  "category": "方剂",
+  "source_file": "419-王旭高临证医案.txt"
+ },
+ {
+  "title": "邵兰荪医案",
+  "author": "邵兰荪",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "方剂",
+  "source_file": "420-邵兰荪医案.txt"
+ },
+ {
+  "title": "八十一难经",
+  "author": "秦越人扁鹊",
+  "dynasty": "西汉末",
+  "year_text": "公元前206年-公元8年",
+  "category": "医经",
+  "source_file": "421-八十一难经.txt"
+ },
+ {
+  "title": "内经博议",
+  "author": "罗美",
+  "dynasty": "清",
+  "year_text": "公元1675年",
+  "category": "医经",
+  "source_file": "422-内经博议.txt"
+ },
+ {
+  "title": "素问六气玄珠密语",
+  "author": "王冰",
+  "dynasty": "唐",
+  "year_text": "公元618-907年",
+  "category": "医经",
+  "source_file": "423-素问六气玄珠密语.txt"
+ },
+ {
+  "title": "医经读",
+  "author": "沈又彭",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "424-医经读.txt"
+ },
+ {
+  "title": "医经原旨",
+  "author": "薛雪",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "425-医经原旨.txt"
+ },
+ {
+  "title": "素问玄机原病式",
+  "author": "刘完素",
+  "dynasty": "金",
+  "year_text": "公元1188年",
+  "category": "医经",
+  "source_file": "426-素问玄机原病式.txt"
+ },
+ {
+  "title": "类经",
+  "author": "张介宾",
+  "dynasty": "明·天启四年",
+  "year_text": "公元1624年",
+  "category": "综合",
+  "source_file": "427-类经.txt"
+ },
+ {
+  "title": "类经图翼",
+  "author": "张介宾",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "428-类经图翼.txt"
+ },
+ {
+  "title": "内经知要",
+  "author": "李中梓",
+  "dynasty": "宋",
+  "year_text": "公元1264年",
+  "category": "医经",
+  "source_file": "429-内经知要.txt"
+ },
+ {
+  "title": "黄帝内经素问集注",
+  "author": "张志聪",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "430-黄帝内经素问集注.txt"
+ },
+ {
+  "title": "黄帝内经灵枢集注",
+  "author": "张志聪",
+  "dynasty": "清",
+  "year_text": "公元1672年",
+  "category": "医经",
+  "source_file": "431-黄帝内经灵枢集注.txt"
+ },
+ {
+  "title": "素问病机气宜保命集",
+  "author": "刘完素",
+  "dynasty": "金",
+  "year_text": "公元1188年",
+  "category": "医经",
+  "source_file": "432-素问病机气宜保命集.txt"
+ },
+ {
+  "title": "六因条辨",
+  "author": "陆子贤",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "433-六因条辨.txt"
+ },
+ {
+  "title": "素问灵枢类纂约注",
+  "author": "汪琥辨",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "434-素问灵枢类纂约注.txt"
+ },
+ {
+  "title": "黄帝素问直解",
+  "author": "高士宗",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "435-黄帝素问直解.txt"
+ },
+ {
+  "title": "素问经注节解",
+  "author": "姚止庵",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "436-素问经注节解.txt"
+ },
+ {
+  "title": "黄帝内经素问",
+  "author": "王冰次",
+  "dynasty": "唐",
+  "year_text": "公元762年",
+  "category": "医经",
+  "source_file": "437-黄帝内经素问.txt"
+ },
+ {
+  "title": "黄帝内经素问校义",
+  "author": "胡澍学",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "438-黄帝内经素问校义.txt"
+ },
+ {
+  "title": "黄帝内经太素",
+  "author": "杨上善",
+  "dynasty": "唐",
+  "year_text": "公元618-907年",
+  "category": "医经",
+  "source_file": "439-黄帝内经太素.txt"
+ },
+ {
+  "title": "中西汇通医经精义",
+  "author": "唐宗海着",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "440-中西汇通医经精义.txt"
+ },
+ {
+  "title": "内经评文",
+  "author": "周学海",
+  "dynasty": "清",
+  "year_text": "公元1896年",
+  "category": "医经",
+  "source_file": "441-内经评文.txt"
+ },
+ {
+  "title": "内经药瀹",
+  "author": "张骥",
+  "dynasty": "清",
+  "year_text": "公元1675年",
+  "category": "医经",
+  "source_file": "442-内经药瀹.txt"
+ },
+ {
+  "title": "医效秘传",
+  "author": "叶桂述吴金寿校",
+  "dynasty": "清",
+  "year_text": "公元1831年",
+  "category": "综合",
+  "source_file": "443-医效秘传.txt"
+ },
+ {
+  "title": "读素问钞",
+  "author": "滑寿",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "医经",
+  "source_file": "444-读素问钞.txt"
+ },
+ {
+  "title": "灵素节注类编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "445-灵素节注类编.txt"
+ },
+ {
+  "title": "古本难经阐注",
+  "author": "丁锦",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "446-古本难经阐注.txt"
+ },
+ {
+  "title": "难经正义",
+  "author": "叶霖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "447-难经正义.txt"
+ },
+ {
+  "title": "素问识",
+  "author": "日本人、丹波元珍",
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "448-素问识.txt"
+ },
+ {
+  "title": "灵枢识",
+  "author": "日本人，丹波元珍",
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "449-灵枢识.txt"
+ },
+ {
+  "title": "难经经释",
+  "author": "徐灵胎",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "450-难经经释.txt"
+ },
+ {
+  "title": "黄帝内经素问遗篇",
+  "author": "编撰人不详",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "医经",
+  "source_file": "451-黄帝内经素问遗篇.txt"
+ },
+ {
+  "title": "素问要旨论",
+  "author": "刘完素",
+  "dynasty": "金",
+  "year_text": "公元1115-1234年",
+  "category": "医经",
+  "source_file": "452-素问要旨论.txt"
+ },
+ {
+  "title": "黄帝素问宣明论方",
+  "author": "刘完素",
+  "dynasty": "金",
+  "year_text": "公元1115-1234年",
+  "category": "医经",
+  "source_file": "453-黄帝素问宣明论方.txt"
+ },
+ {
+  "title": "难经集注",
+  "author": "王九思",
+  "dynasty": "明",
+  "year_text": "公元1505年",
+  "category": "医经",
+  "source_file": "454-难经集注.txt"
+ },
+ {
+  "title": "难经古义",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "455-难经古义.txt"
+ },
+ {
+  "title": "万氏秘传片玉心书",
+  "author": "李子毅",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "456-万氏秘传片玉心书.txt"
+ },
+ {
+  "title": "伤寒论",
+  "author": "张仲景",
+  "dynasty": "东汉",
+  "year_text": "公元25-220年",
+  "category": "医经",
+  "source_file": "457-伤寒论.txt"
+ },
+ {
+  "title": "伤寒捷诀",
+  "author": "严则庵纂辑、裘庆元辑",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "458-伤寒捷诀.txt"
+ },
+ {
+  "title": "伤寒总病论",
+  "author": "庞安石",
+  "dynasty": "宋",
+  "year_text": "公元1100年",
+  "category": "医经",
+  "source_file": "459-伤寒总病论.txt"
+ },
+ {
+  "title": "类证活人书",
+  "author": "朱肱",
+  "dynasty": "宋",
+  "year_text": "公元960-1127年",
+  "category": "综合",
+  "source_file": "460-类证活人书.txt"
+ },
+ {
+  "title": "注解伤寒论",
+  "author": "成无己",
+  "dynasty": "金",
+  "year_text": "公元1144年",
+  "category": "医经",
+  "source_file": "461-注解伤寒论.txt"
+ },
+ {
+  "title": "伤寒九十论",
+  "author": "许叔微述",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "医经",
+  "source_file": "462-伤寒九十论.txt"
+ },
+ {
+  "title": "伤寒百证歌",
+  "author": "许叔微述",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "医经",
+  "source_file": "463-伤寒百证歌.txt"
+ },
+ {
+  "title": "伤寒发微论",
+  "author": "许叔微述",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "医经",
+  "source_file": "464-伤寒发微论.txt"
+ },
+ {
+  "title": "伤寒明理论",
+  "author": "成无己",
+  "dynasty": "宋",
+  "year_text": "公元1142年",
+  "category": "医经",
+  "source_file": "465-伤寒明理论.txt"
+ },
+ {
+  "title": "仲景伤寒补亡论",
+  "author": "郭雍",
+  "dynasty": "宋",
+  "year_text": "公元1181年",
+  "category": "医经",
+  "source_file": "466-仲景伤寒补亡论.txt"
+ },
+ {
+  "title": "伤寒寻源",
+  "author": "吕震名",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "467-伤寒寻源.txt"
+ },
+ {
+  "title": "伤寒直格",
+  "author": null,
+  "dynasty": "金",
+  "year_text": "公元1127年—1279年",
+  "category": "医经",
+  "source_file": "468-伤寒直格.txt"
+ },
+ {
+  "title": "伤寒标本心法类萃",
+  "author": "刘完素",
+  "dynasty": "金",
+  "year_text": "公元1115-1234年",
+  "category": "医经",
+  "source_file": "469-伤寒标本心法类萃.txt"
+ },
+ {
+  "title": "伤寒六书",
+  "author": "陶华",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "医经",
+  "source_file": "470-伤寒六书.txt"
+ },
+ {
+  "title": "伤寒论条辨",
+  "author": "方有执",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "医经",
+  "source_file": "471-伤寒论条辨.txt"
+ },
+ {
+  "title": "张卿子伤寒论",
+  "author": "张卿子",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "472-张卿子伤寒论.txt"
+ },
+ {
+  "title": "伤寒证治准绳",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "医经",
+  "source_file": "473-伤寒证治准绳.txt"
+ },
+ {
+  "title": "伤寒论注",
+  "author": "柯琴",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "474-伤寒论注.txt"
+ },
+ {
+  "title": "重订通俗伤寒论",
+  "author": "俞根撰，近代徐荣斋重订。",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "475-重订通俗伤寒论.txt"
+ },
+ {
+  "title": "伤寒溯源集",
+  "author": "钱潢",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "476-伤寒溯源集.txt"
+ },
+ {
+  "title": "伤寒括要",
+  "author": "李中梓",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "医经",
+  "source_file": "477-伤寒括要.txt"
+ },
+ {
+  "title": "伤寒缵论",
+  "author": "张璐",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "478-伤寒缵论.txt"
+ },
+ {
+  "title": "伤寒贯珠集",
+  "author": "尤怡",
+  "dynasty": "清",
+  "year_text": "公元1729年",
+  "category": "医经",
+  "source_file": "479-伤寒贯珠集.txt"
+ },
+ {
+  "title": "伤寒法祖",
+  "author": "任越庵",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "医经",
+  "source_file": "480-伤寒法祖.txt"
+ },
+ {
+  "title": "伤寒大白",
+  "author": "高世栻",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "481-伤寒大白.txt"
+ },
+ {
+  "title": "伤寒悬解",
+  "author": "黄元御",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "482-伤寒悬解.txt"
+ },
+ {
+  "title": "伤寒论类方",
+  "author": "徐灵胎",
+  "dynasty": "清",
+  "year_text": "公元1759年",
+  "category": "医经",
+  "source_file": "483-伤寒论类方.txt"
+ },
+ {
+  "title": "伤寒论辩证广注",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "484-伤寒论辩证广注.txt"
+ },
+ {
+  "title": "伤寒论辑义",
+  "author": "日本人、丹波元珍着",
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "485-伤寒论辑义.txt"
+ },
+ {
+  "title": "伤寒医诀串解",
+  "author": "陈念祖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "486-伤寒医诀串解.txt"
+ },
+ {
+  "title": "伤寒审证表",
+  "author": null,
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "487-伤寒审证表.txt"
+ },
+ {
+  "title": "伤寒补例",
+  "author": "周学海",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "488-伤寒补例.txt"
+ },
+ {
+  "title": "敖氏伤寒金镜录",
+  "author": "杜本",
+  "dynasty": "元",
+  "year_text": "公元1341年",
+  "category": "医经",
+  "source_file": "489-敖氏伤寒金镜录.txt"
+ },
+ {
+  "title": "伤寒舌鉴",
+  "author": "张登",
+  "dynasty": "清·康熙戊申年",
+  "year_text": "公元1668年",
+  "category": "医经",
+  "source_file": "490-伤寒舌鉴.txt"
+ },
+ {
+  "title": "增订叶评伤暑全书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "491-增订叶评伤暑全书.txt"
+ },
+ {
+  "title": "伤寒论翼",
+  "author": "柯琴",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "492-伤寒论翼.txt"
+ },
+ {
+  "title": "伤寒附翼",
+  "author": "柯琴",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "493-伤寒附翼.txt"
+ },
+ {
+  "title": "伤寒指掌",
+  "author": "吴坤安",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "494-伤寒指掌.txt"
+ },
+ {
+  "title": "中寒论辩证广注",
+  "author": "丹波元胤",
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "495-中寒论辩证广注.txt"
+ },
+ {
+  "title": "河间伤寒心要",
+  "author": "镏洪",
+  "dynasty": "金",
+  "year_text": "公元1127年—1279年",
+  "category": "医经",
+  "source_file": "496-河间伤寒心要.txt"
+ },
+ {
+  "title": "刘河间伤寒医鉴",
+  "author": "马宗素",
+  "dynasty": "元代",
+  "year_text": "公元1271年—1368年",
+  "category": "医经",
+  "source_file": "497-刘河间伤寒医鉴.txt"
+ },
+ {
+  "title": "金匮要略浅注",
+  "author": "陈修园",
+  "dynasty": "汉",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "498-金匮要略浅注.txt"
+ },
+ {
+  "title": "金匮要略方论",
+  "author": "张仲景",
+  "dynasty": "汉",
+  "year_text": "公元219年",
+  "category": "医经",
+  "source_file": "499-金匮要略方论.txt"
+ },
+ {
+  "title": "金匮要略心典",
+  "author": "尤怡",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "500-金匮要略心典.txt"
+ },
+ {
+  "title": "金匮玉函经二注",
+  "author": "周扬俊",
+  "dynasty": "清",
+  "year_text": "公元1687年",
+  "category": "医经",
+  "source_file": "501-金匮玉函经二注.txt"
+ },
+ {
+  "title": "金匮玉函要略述义",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "502-金匮玉函要略述义.txt"
+ },
+ {
+  "title": "脉诀",
+  "author": "崔嘉彦",
+  "dynasty": "宋",
+  "year_text": "公元1189年",
+  "category": "诊法",
+  "source_file": "503-脉诀.txt"
+ },
+ {
+  "title": "脉经",
+  "author": "王叔和",
+  "dynasty": "西晋",
+  "year_text": "公元280年",
+  "category": "诊法",
+  "source_file": "504-脉经.txt"
+ },
+ {
+  "title": "诊家枢要",
+  "author": "滑寿",
+  "dynasty": "元",
+  "year_text": "公元1359年",
+  "category": "诊法",
+  "source_file": "505-诊家枢要.txt"
+ },
+ {
+  "title": "濒湖脉学",
+  "author": "李时珍",
+  "dynasty": "明·嘉靖四十三年",
+  "year_text": "公元1564年",
+  "category": "诊法",
+  "source_file": "506-濒湖脉学.txt"
+ },
+ {
+  "title": "诊家正眼",
+  "author": "李中梓",
+  "dynasty": "明",
+  "year_text": "公元1642年",
+  "category": "诊法",
+  "source_file": "507-诊家正眼.txt"
+ },
+ {
+  "title": "三指禅",
+  "author": "周学霆",
+  "dynasty": "清",
+  "year_text": "公元1872年",
+  "category": "综合",
+  "source_file": "508-三指禅.txt"
+ },
+ {
+  "title": "湿热病篇",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "509-湿热病篇.txt"
+ },
+ {
+  "title": "形色外诊简摩",
+  "author": "周学海",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "510-形色外诊简摩.txt"
+ },
+ {
+  "title": "金匮玉函要略辑义",
+  "author": "元简",
+  "dynasty": "清",
+  "year_text": "公元1806年",
+  "category": "医经",
+  "source_file": "511-金匮玉函要略辑义.txt"
+ },
+ {
+  "title": "脉理求真",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "512-脉理求真.txt"
+ },
+ {
+  "title": "脉诀刊误",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "诊法",
+  "source_file": "513-脉诀刊误.txt"
+ },
+ {
+  "title": "脉诀汇辨",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "诊法",
+  "source_file": "514-脉诀汇辨.txt"
+ },
+ {
+  "title": "高注金匮要略",
+  "author": "高学山",
+  "dynasty": "清",
+  "year_text": "公元1872年",
+  "category": "医经",
+  "source_file": "515-高注金匮要略.txt"
+ },
+ {
+  "title": "临症验舌法",
+  "author": "杨云峰",
+  "dynasty": "清",
+  "year_text": "公元1917年",
+  "category": "综合",
+  "source_file": "516-临症验舌法.txt"
+ },
+ {
+  "title": "望诊遵经",
+  "author": "汪宏",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "诊法",
+  "source_file": "517-望诊遵经.txt"
+ },
+ {
+  "title": "诊宗三昧",
+  "author": "张璐",
+  "dynasty": "清",
+  "year_text": "公元1689年",
+  "category": "综合",
+  "source_file": "518-诊宗三昧.txt"
+ },
+ {
+  "title": "医灯续焰",
+  "author": "潘楫",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "519-医灯续焰.txt"
+ },
+ {
+  "title": "察病指南",
+  "author": "施桂堂",
+  "dynasty": "宋",
+  "year_text": "公元960年—1279年",
+  "category": "综合",
+  "source_file": "520-察病指南.txt"
+ },
+ {
+  "title": "察舌辨症新法",
+  "author": "刘恒瑞",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "521-察舌辨症新法.txt"
+ },
+ {
+  "title": "温疫论",
+  "author": "吴又可",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "522-温疫论.txt"
+ },
+ {
+  "title": "千金食治",
+  "author": "孙思邈",
+  "dynasty": "唐",
+  "year_text": "公元618年－公元907年",
+  "category": "食疗",
+  "source_file": "523-千金食治.txt"
+ },
+ {
+  "title": "温热暑疫全书",
+  "author": "周扬俊",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "524-温热暑疫全书.txt"
+ },
+ {
+  "title": "疫疹一得",
+  "author": "余霖",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "525-疫疹一得.txt"
+ },
+ {
+  "title": "温病条辨",
+  "author": "吴鞠通",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "526-温病条辨.txt"
+ },
+ {
+  "title": "温热逢源",
+  "author": "柳宝诒",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "527-温热逢源.txt"
+ },
+ {
+  "title": "时病论",
+  "author": "雷丰",
+  "dynasty": "清",
+  "year_text": "公元1882年",
+  "category": "综合",
+  "source_file": "528-时病论.txt"
+ },
+ {
+  "title": "温病指南",
+  "author": "高秉钧",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "529-温病指南.txt"
+ },
+ {
+  "title": "女丹合编选注",
+  "author": "贺龙骧",
+  "dynasty": "清",
+  "year_text": "公元1644──公元1911年",
+  "category": "综合",
+  "source_file": "530-女丹合编选注.txt"
+ },
+ {
+  "title": "运气要诀",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "531-运气要诀.txt"
+ },
+ {
+  "title": "备急千金要方",
+  "author": "孙思邈",
+  "dynasty": "唐·永微三年",
+  "year_text": "公元652年",
+  "category": "方剂",
+  "source_file": "532-备急千金要方.txt"
+ },
+ {
+  "title": "食疗方",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "食疗",
+  "source_file": "533-食疗方.txt"
+ },
+ {
+  "title": "心医集",
+  "author": "祝登元",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "534-心医集.txt"
+ },
+ {
+  "title": "西池集",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "535-西池集.txt"
+ },
+ {
+  "title": "性命要旨",
+  "author": "汪东亭",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "综合",
+  "source_file": "536-性命要旨.txt"
+ },
+ {
+  "title": "松峰说疫",
+  "author": "刘松峰",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "综合",
+  "source_file": "537-松峰说疫.txt"
+ },
+ {
+  "title": "寿世传真",
+  "author": "徐文弼",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "养生",
+  "source_file": "538-寿世传真.txt"
+ },
+ {
+  "title": "陆地仙经",
+  "author": "马齐",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "综合",
+  "source_file": "539-陆地仙经.txt"
+ },
+ {
+  "title": "宁坤秘笈",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "540-宁坤秘笈.txt"
+ },
+ {
+  "title": "温病正宗",
+  "author": "王德宣",
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "541-温病正宗.txt"
+ },
+ {
+  "title": "寿世保元",
+  "author": "龚廷贤",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "养生",
+  "source_file": "542-寿世保元.txt"
+ },
+ {
+  "title": "温热经纬",
+  "author": "王士雄",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "543-温热经纬.txt"
+ },
+ {
+  "title": "温热论",
+  "author": "叶桂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "544-温热论.txt"
+ },
+ {
+  "title": "达摩洗髓易筋经",
+  "author": "项杨惠吴德华张鉴若曹江",
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "545-达摩洗髓易筋经.txt"
+ },
+ {
+  "title": "广瘟疫论",
+  "author": "吴又可",
+  "dynasty": "明·崇祯末年",
+  "year_text": "公元1641年",
+  "category": "医经",
+  "source_file": "546-广瘟疫论.txt"
+ },
+ {
+  "title": "养生秘旨",
+  "author": "马齐",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "养生",
+  "source_file": "547-养生秘旨.txt"
+ },
+ {
+  "title": "养生导引法",
+  "author": "胡文焕",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "养生",
+  "source_file": "548-养生导引法.txt"
+ },
+ {
+  "title": "重订广温热论",
+  "author": "何廉臣",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "549-重订广温热论.txt"
+ },
+ {
+  "title": "养生导引秘籍",
+  "author": "胡文焕",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "养生",
+  "source_file": "550-养生导引秘籍.txt"
+ },
+ {
+  "title": "随息居重订霍乱论",
+  "author": "王士雄",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "551-随息居重订霍乱论.txt"
+ },
+ {
+  "title": "修昆仑证验",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "552-修昆仑证验.txt"
+ },
+ {
+  "title": "寿世青编",
+  "author": "尤乘",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "养生",
+  "source_file": "553-寿世青编.txt"
+ },
+ {
+  "title": "养生类要",
+  "author": "吴正伦",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "养生",
+  "source_file": "554-养生类要.txt"
+ },
+ {
+  "title": "饮食须知",
+  "author": "贾铭",
+  "dynasty": "元代",
+  "year_text": "公元1271年—1368年",
+  "category": "综合",
+  "source_file": "555-饮食须知.txt"
+ },
+ {
+  "title": "瘴疟指南",
+  "author": "郑全望",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "556-瘴疟指南.txt"
+ },
+ {
+  "title": "华氏中藏经",
+  "author": "华佗",
+  "dynasty": "东汉",
+  "year_text": "公元25—220年",
+  "category": "综合",
+  "source_file": "557-华氏中藏经.txt"
+ },
+ {
+  "title": "三因极一病证方论",
+  "author": "陈言",
+  "dynasty": "宋",
+  "year_text": "公元1174年",
+  "category": "方剂",
+  "source_file": "558-三因极一病证方论.txt"
+ },
+ {
+  "title": "扁鹊心书",
+  "author": "窦材",
+  "dynasty": "宋",
+  "year_text": "公元1127年—1279年",
+  "category": "综合",
+  "source_file": "559-扁鹊心书.txt"
+ },
+ {
+  "title": "玉机微义",
+  "author": "徐彦纯",
+  "dynasty": "元明",
+  "year_text": "公元1271-1644年",
+  "category": "综合",
+  "source_file": "560-玉机微义.txt"
+ },
+ {
+  "title": "明医指掌",
+  "author": "皇甫中",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "综合",
+  "source_file": "561-明医指掌.txt"
+ },
+ {
+  "title": "明医杂着",
+  "author": "王纶",
+  "dynasty": "明",
+  "year_text": "公元1502年-1549年",
+  "category": "综合",
+  "source_file": "562-明医杂着.txt"
+ },
+ {
+  "title": "此事难知",
+  "author": "王好古",
+  "dynasty": "元",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "563-此事难知.txt"
+ },
+ {
+  "title": "金匮钩玄",
+  "author": "朱震亨",
+  "dynasty": "元",
+  "year_text": "公元1358年",
+  "category": "医经",
+  "source_file": "564-金匮钩玄.txt"
+ },
+ {
+  "title": "卫生宝鉴",
+  "author": "罗天益",
+  "dynasty": "元",
+  "year_text": "公元1343年",
+  "category": "综合",
+  "source_file": "565-卫生宝鉴.txt"
+ },
+ {
+  "title": "校注医醇剩义",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "566-校注医醇剩义.txt"
+ },
+ {
+  "title": "脉因证治",
+  "author": "朱丹溪",
+  "dynasty": "清",
+  "year_text": "公元1279-1368年",
+  "category": "综合",
+  "source_file": "567-脉因证治.txt"
+ },
+ {
+  "title": "杂病治例",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "568-杂病治例.txt"
+ },
+ {
+  "title": "秘传证治要诀及类方",
+  "author": "戴思恭",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "569-秘传证治要诀及类方.txt"
+ },
+ {
+  "title": "丹溪心法",
+  "author": "朱震亨、戴思恭",
+  "dynasty": "元末明初",
+  "year_text": "公元1347年",
+  "category": "综合",
+  "source_file": "570-丹溪心法.txt"
+ },
+ {
+  "title": "诸病源候论",
+  "author": "巢元方",
+  "dynasty": "隋",
+  "year_text": "公元614年",
+  "category": "综合",
+  "source_file": "571-诸病源候论.txt"
+ },
+ {
+  "title": "儒门事亲",
+  "author": "张从正",
+  "dynasty": "金",
+  "year_text": "公元1127年—1279年",
+  "category": "综合",
+  "source_file": "572-儒门事亲.txt"
+ },
+ {
+  "title": "古今医鉴",
+  "author": "龚信",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "573-古今医鉴.txt"
+ },
+ {
+  "title": "医说",
+  "author": "张杲",
+  "dynasty": "南宋",
+  "year_text": "公元1127-1279年",
+  "category": "综合",
+  "source_file": "574-医说.txt"
+ },
+ {
+  "title": "医宗金鉴",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "综合",
+  "source_file": "575-医宗金鉴.txt"
+ },
+ {
+  "title": "医经国小",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "576-医经国小.txt"
+ },
+ {
+  "title": "医学入门",
+  "author": "李橚",
+  "dynasty": "明",
+  "year_text": "公元1575年",
+  "category": "综合",
+  "source_file": "577-医学入门.txt"
+ },
+ {
+  "title": "医学启源",
+  "author": "张元素",
+  "dynasty": "金",
+  "year_text": "公元1127-1279年",
+  "category": "综合",
+  "source_file": "578-医学启源.txt"
+ },
+ {
+  "title": "医学纲目",
+  "author": "楼英",
+  "dynasty": "明",
+  "year_text": "公元1565年",
+  "category": "综合",
+  "source_file": "579-医学纲目.txt"
+ },
+ {
+  "title": "医垒元戎",
+  "author": "王好古",
+  "dynasty": "元",
+  "year_text": "公元1271-1368年",
+  "category": "综合",
+  "source_file": "580-医垒元戎.txt"
+ },
+ {
+  "title": "兰室秘藏",
+  "author": "李东垣",
+  "dynasty": "金元间",
+  "year_text": "公元1115-1368年",
+  "category": "综合",
+  "source_file": "581-兰室秘藏.txt"
+ },
+ {
+  "title": "韩氏医通",
+  "author": "韩懋",
+  "dynasty": "明",
+  "year_text": "公元1522年",
+  "category": "综合",
+  "source_file": "582-韩氏医通.txt"
+ },
+ {
+  "title": "医学正传",
+  "author": "虞传",
+  "dynasty": "明",
+  "year_text": "公元1515年",
+  "category": "综合",
+  "source_file": "583-医学正传.txt"
+ },
+ {
+  "title": "医学衷中参西录",
+  "author": "张锡纯",
+  "dynasty": "清",
+  "year_text": "公元1909年",
+  "category": "综合",
+  "source_file": "584-医学衷中参西录.txt"
+ },
+ {
+  "title": "卫济宝书",
+  "author": "东轩居士",
+  "dynasty": "宋",
+  "year_text": "公元960年—1279年",
+  "category": "综合",
+  "source_file": "585-卫济宝书.txt"
+ },
+ {
+  "title": "三消论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "586-三消论.txt"
+ },
+ {
+  "title": "石室秘录",
+  "author": "陈士铎",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "587-石室秘录.txt"
+ },
+ {
+  "title": "丹溪手镜",
+  "author": "朱丹溪",
+  "dynasty": "元",
+  "year_text": "公元１２８１—１３５８年",
+  "category": "综合",
+  "source_file": "588-丹溪手镜.txt"
+ },
+ {
+  "title": "古今名医汇粹",
+  "author": "罗美",
+  "dynasty": "清",
+  "year_text": "公元1644年－公元1911年",
+  "category": "综合",
+  "source_file": "589-古今名医汇粹.txt"
+ },
+ {
+  "title": "轩岐救正论",
+  "author": "萧京",
+  "dynasty": "明",
+  "year_text": "公元1644年",
+  "category": "综合",
+  "source_file": "590-轩岐救正论.txt"
+ },
+ {
+  "title": "痧胀玉衡",
+  "author": "郭士遂",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "591-痧胀玉衡.txt"
+ },
+ {
+  "title": "医学三字经",
+  "author": "陈修园",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "592-医学三字经.txt"
+ },
+ {
+  "title": "辨证录",
+  "author": "陈士铎",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "593-辨证录.txt"
+ },
+ {
+  "title": "医学指归",
+  "author": "赵术堂",
+  "dynasty": "清",
+  "year_text": "公元1851年",
+  "category": "综合",
+  "source_file": "594-医学指归.txt"
+ },
+ {
+  "title": "医学实在易",
+  "author": "陈修园",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "595-医学实在易.txt"
+ },
+ {
+  "title": "医学摘粹",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "596-医学摘粹.txt"
+ },
+ {
+  "title": "冯氏锦囊秘录",
+  "author": "冯楚瞻",
+  "dynasty": "清代",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "597-冯氏锦囊秘录.txt"
+ },
+ {
+  "title": "简明医彀",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "598-简明医彀.txt"
+ },
+ {
+  "title": "医述",
+  "author": "程杏轩",
+  "dynasty": "元",
+  "year_text": "公元1314年",
+  "category": "综合",
+  "source_file": "599-医述.txt"
+ },
+ {
+  "title": "辨症玉函",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "600-辨症玉函.txt"
+ },
+ {
+  "title": "医学心悟",
+  "author": "程国彭",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "601-医学心悟.txt"
+ },
+ {
+  "title": "类证治裁",
+  "author": "林佩琴",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "602-类证治裁.txt"
+ },
+ {
+  "title": "医碥",
+  "author": "何梦瑶",
+  "dynasty": "清",
+  "year_text": "公元1751年",
+  "category": "综合",
+  "source_file": "603-医碥.txt"
+ },
+ {
+  "title": "医学真传",
+  "author": "高秉钧",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "604-医学真传.txt"
+ },
+ {
+  "title": "张氏医通",
+  "author": "张璐",
+  "dynasty": "清·康熙三十四年",
+  "year_text": "公元1695年",
+  "category": "综合",
+  "source_file": "605-张氏医通.txt"
+ },
+ {
+  "title": "中国医籍考",
+  "author": "丹波元胤",
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "606-中国医籍考.txt"
+ },
+ {
+  "title": "脉象统类",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "607-脉象统类.txt"
+ },
+ {
+  "title": "丹台玉案",
+  "author": "孙文胤",
+  "dynasty": "明",
+  "year_text": "公元1637",
+  "category": "综合",
+  "source_file": "608-丹台玉案.txt"
+ },
+ {
+  "title": "伤寒论纲目",
+  "author": "沈金鳌",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "609-伤寒论纲目.txt"
+ },
+ {
+  "title": "幼科释谜",
+  "author": "沈金鳌",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "610-幼科释谜.txt"
+ },
+ {
+  "title": "妇科玉尺",
+  "author": "沈金鳌",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "611-妇科玉尺.txt"
+ },
+ {
+  "title": "古今医彻",
+  "author": "怀远",
+  "dynasty": "清",
+  "year_text": "公元1644年－公元1911年",
+  "category": "综合",
+  "source_file": "612-古今医彻.txt"
+ },
+ {
+  "title": "药症忌宜",
+  "author": "陈三山",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "613-药症忌宜.txt"
+ },
+ {
+  "title": "脾胃论",
+  "author": "李东垣",
+  "dynasty": "金元",
+  "year_text": "公元1249年[公元年起] 11249",
+  "category": "综合",
+  "source_file": "614-脾胃论.txt"
+ },
+ {
+  "title": "外经微言",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "615-外经微言.txt"
+ },
+ {
+  "title": "洗冤集录",
+  "author": "宋慈",
+  "dynasty": "宋",
+  "year_text": "公元1247-1249年",
+  "category": "综合",
+  "source_file": "616-洗冤集录.txt"
+ },
+ {
+  "title": "古今医统大全",
+  "author": "徐春甫",
+  "dynasty": "明",
+  "year_text": "公元1556年",
+  "category": "综合",
+  "source_file": "617-古今医统大全.txt"
+ },
+ {
+  "title": "格致余论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "618-格致余论.txt"
+ },
+ {
+  "title": "验方家秘",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "619-验方家秘.txt"
+ },
+ {
+  "title": "推求师意",
+  "author": "戴思恭",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "综合",
+  "source_file": "620-推求师意.txt"
+ },
+ {
+  "title": "褚氏遗书",
+  "author": "褚澄",
+  "dynasty": "南齐",
+  "year_text": "公元420年—589年",
+  "category": "综合",
+  "source_file": "621-褚氏遗书.txt"
+ },
+ {
+  "title": "诸病主病诗",
+  "author": "东轩居士",
+  "dynasty": "宋",
+  "year_text": "公元960年—1279年",
+  "category": "综合",
+  "source_file": "622-诸脉主病诗.txt"
+ },
+ {
+  "title": "医旨绪余",
+  "author": "孙一奎",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "623-医旨绪余.txt"
+ },
+ {
+  "title": "医宗己任编",
+  "author": "高鼓峰",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "624-医宗己任编.txt"
+ },
+ {
+  "title": "医学妙谛",
+  "author": "何其伟",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "625-医学妙谛.txt"
+ },
+ {
+  "title": "医学见能",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "626-医学见能.txt"
+ },
+ {
+  "title": "顾松园医镜",
+  "author": "顾靖远",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "627-顾松园医镜.txt"
+ },
+ {
+  "title": "医医小草",
+  "author": "宝辉",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "628-医医小草.txt"
+ },
+ {
+  "title": "眼科奇书",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "专科",
+  "source_file": "629-眼科奇书.txt"
+ },
+ {
+  "title": "医学传灯",
+  "author": "陈歧",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "综合",
+  "source_file": "630-医学传灯.txt"
+ },
+ {
+  "title": "医法圆通",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "631-医法圆通.txt"
+ },
+ {
+  "title": "证治准绳·类方",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "632-证治准绳·类方.txt"
+ },
+ {
+  "title": "证治准绳·伤寒",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "医经",
+  "source_file": "633-证治准绳·伤寒.txt"
+ },
+ {
+  "title": "幼科种痘心法要旨",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "专科",
+  "source_file": "634-幼科种痘心法要旨.txt"
+ },
+ {
+  "title": "证治准绳·幼科",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368年—1644年",
+  "category": "专科",
+  "source_file": "635-证治准绳·幼科.txt"
+ },
+ {
+  "title": "证治准绳·女科",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "636-证治准绳·女科.txt"
+ },
+ {
+  "title": "景岳全书",
+  "author": "张介宾",
+  "dynasty": "明",
+  "year_text": "公元1640年",
+  "category": "综合",
+  "source_file": "637-景岳全书.txt"
+ },
+ {
+  "title": "订正仲景全书伤寒论注",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1742年",
+  "category": "医经",
+  "source_file": "638-订正仲景全书伤寒论注.txt"
+ },
+ {
+  "title": "删补名医方论",
+  "author": "吴谦",
+  "dynasty": "清",
+  "year_text": "公元1644-1911年",
+  "category": "方剂",
+  "source_file": "639-删补名医方论.txt"
+ },
+ {
+  "title": "宜麟策",
+  "author": "佚 名",
+  "dynasty": "清",
+  "year_text": "公元1644年—1911年",
+  "category": "综合",
+  "source_file": "640-宜麟策.txt"
+ },
+ {
+  "title": "医理真传",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "641-医理真传.txt"
+ },
+ {
+  "title": "订正仲景全书金匮要略注",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "642-订正仲景全书金匮要略注.txt"
+ },
+ {
+  "title": "证治准绳·疡医",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "专科",
+  "source_file": "643-证治准绳·疡医.txt"
+ },
+ {
+  "title": "证治准绳·杂病",
+  "author": "王肯堂",
+  "dynasty": "明",
+  "year_text": "公元1368-1644年",
+  "category": "综合",
+  "source_file": "644-证治准绳·杂病.txt"
+ },
+ {
+  "title": "证类本草",
+  "author": "唐慎微",
+  "dynasty": "宋",
+  "year_text": "公元960-1279年",
+  "category": "本草",
+  "source_file": "645-证类本草.txt"
+ },
+ {
+  "title": "伤寒心法要诀",
+  "author": "吴谦",
+  "dynasty": "清朝",
+  "year_text": "公元1644-1911年",
+  "category": "医经",
+  "source_file": "646-伤寒心法要诀.txt"
+ },
+ {
+  "title": "万病回春",
+  "author": "龚廷贤",
+  "dynasty": "明",
+  "year_text": "公元1615年",
+  "category": "综合",
+  "source_file": "647-万病回春.txt"
+ },
+ {
+  "title": "医津一筏",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "648-医津一筏.txt"
+ },
+ {
+  "title": "续医说",
+  "author": "俞弁",
+  "dynasty": "明",
+  "year_text": "公元1545年",
+  "category": "综合",
+  "source_file": "649-续医说.txt"
+ },
+ {
+  "title": "医脉摘要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "650-医脉摘要.txt"
+ },
+ {
+  "title": "十二經補瀉溫涼引經藥歌",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "651-十二經補瀉溫涼引經藥歌.txt"
+ },
+ {
+  "title": "三时伏气外感篇",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "652-三时伏气外感篇.txt"
+ },
+ {
+  "title": "辅行诀脏腑用药法要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "653-辅行诀脏腑用药法要.txt"
+ },
+ {
+  "title": "伤寒辨要笺记",
+  "author": "程门雪",
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "654-伤寒辨要笺记.txt"
+ },
+ {
+  "title": "评琴书屋医略",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "655-评琴书屋医略.txt"
+ },
+ {
+  "title": "类证普济本事方续集",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "656-类证普济本事方续集.txt"
+ },
+ {
+  "title": "澄空民间中医学精髓论",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "657-澄空民间中医学精髓论.txt"
+ },
+ {
+  "title": "医学传心录",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "658-医学传心录.txt"
+ },
+ {
+  "title": "民间草药药性赋",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "本草",
+  "source_file": "659-民间草药药性赋.txt"
+ },
+ {
+  "title": "程门雪遗稿",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "660-程门雪遗稿.txt"
+ },
+ {
+  "title": "七十二症辨治方法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "661-七十二症辨治方法.txt"
+ },
+ {
+  "title": "仿寓意草",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "662-仿寓意草.txt"
+ },
+ {
+  "title": "洄溪医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "663-洄溪医案.txt"
+ },
+ {
+  "title": "许氏医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "664-许氏医案.txt"
+ },
+ {
+  "title": "医病简要",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "665-医病简要.txt"
+ },
+ {
+  "title": "一瓢医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "666-一瓢医案.txt"
+ },
+ {
+  "title": "医验随笔",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "667-医验随笔.txt"
+ },
+ {
+  "title": "玉台新案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "668-玉台新案.txt"
+ },
+ {
+  "title": "名师垂教",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "669-名师垂教.txt"
+ },
+ {
+  "title": "陈友芝医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "670-陈友芝医案.txt"
+ },
+ {
+  "title": "范中林六经辨证医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "671-范中林六经辨证医案.txt"
+ },
+ {
+  "title": "经方实验录",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "672-经方实验录.txt"
+ },
+ {
+  "title": "旧德堂医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "673-旧德堂医案.txt"
+ },
+ {
+  "title": "吴佩衡医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "674-吴佩衡医案.txt"
+ },
+ {
+  "title": "姚贞白医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "675-姚贞白医案.txt"
+ },
+ {
+  "title": "医学经验录·医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "676-医学经验录·医案.txt"
+ },
+ {
+  "title": "诊余举隅录",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "677-诊余举隅录.txt"
+ },
+ {
+  "title": "醉花窗医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "678-醉花窗医案.txt"
+ },
+ {
+  "title": "章次公医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "679-章次公医案.txt"
+ },
+ {
+  "title": "增补评注柳选医案",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "680-增补评注柳选医案.txt"
+ },
+ {
+  "title": "赵绍琴临证验案精选上",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "681-赵绍琴临证验案精选上.txt"
+ },
+ {
+  "title": "戴丽三医疗经验选",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "682-戴丽三医疗经验选.txt"
+ },
+ {
+  "title": "近现代名医验案类编",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "683-近现代名医验案类编.txt"
+ },
+ {
+  "title": "三十年临证经验集",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "684-三十年临证经验集.txt"
+ },
+ {
+  "title": "复泰草堂医论选",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "685-复泰草堂医论选.txt"
+ },
+ {
+  "title": "中医临证经验与方法",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "686-中医临证经验与方法.txt"
+ },
+ {
+  "title": "经穴秘密",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "687-经穴秘密.txt"
+ },
+ {
+  "title": "十四经发挥",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "688-十四经发挥.txt"
+ },
+ {
+  "title": "百家针灸歌赋",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "针灸",
+  "source_file": "689-百家针灸歌赋.txt"
+ },
+ {
+  "title": "黄帝内经十二经脉秘与应用",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "医经",
+  "source_file": "690-黄帝内经十二经脉秘与应用.txt"
+ },
+ {
+  "title": "中国民间刺血术（节选）",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "691-中国民间刺血术（节选）.txt"
+ },
+ {
+  "title": "鲙残篇",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "692-鲙残篇.txt"
+ },
+ {
+  "title": "景景医话",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "693-景景医话.txt"
+ },
+ {
+  "title": "推逢寤语 医林琐语",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "694-推逢寤语 医林琐语.txt"
+ },
+ {
+  "title": "医中一得 医医十病",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "695-医中一得 医医十病.txt"
+ },
+ {
+  "title": "士谔医话",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "696-士谔医话.txt"
+ },
+ {
+  "title": "止园医话",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "方剂",
+  "source_file": "697-止园医话.txt"
+ },
+ {
+  "title": "脉诀阐微 脉学阐微",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "诊法",
+  "source_file": "698-脉诀阐微 脉学阐微.txt"
+ },
+ {
+  "title": "名老中医之路",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "699-名老中医之路.txt"
+ },
+ {
+  "title": ".李培生老中医经验集",
+  "author": null,
+  "dynasty": null,
+  "year_text": null,
+  "category": "综合",
+  "source_file": "700.李培生老中医经验集.txt"
+ }
+]
