@@ -78,8 +78,10 @@ async def register(request: Request, body: RegisterInput, db: AsyncSession = Dep
 @router.post("/login", response_model=dict)
 @conditional_limit("5/minute")
 async def login(request: Request, body: LoginInput, db: AsyncSession = Depends(get_db)):
-    """用户登录：验证密码，返回 JWT Token"""
-    result = await db.execute(select(User).where(User.email == body.email))
+    """用户登录：支持邮箱或手机号 + 密码，返回 JWT Token"""
+    result = await db.execute(
+        select(User).where((User.email == body.account) | (User.phone == body.account))
+    )
     user = result.scalar_one_or_none()
     if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(

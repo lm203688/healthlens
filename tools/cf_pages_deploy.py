@@ -30,7 +30,7 @@ import argparse
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NODE = "C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe"
+NODE = os.environ.get("NODE_EXE", "C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe")
 WRANGLER_JS = (
     os.environ.get("WRANGLER_JS")
     or "C:/Users/xing/.workbuddy/binaries/node/workspace/node_modules/wrangler/bin/wrangler.js"

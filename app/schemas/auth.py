@@ -44,10 +44,24 @@ class RegisterInput(BaseModel):
 
 
 class LoginInput(BaseModel):
-    """用户登录输入"""
+    """用户登录输入（支持邮箱或手机号）"""
 
-    email: EmailStr
+    account: str  # 邮箱或手机号
     password: str
+
+    @field_validator("account")
+    @classmethod
+    def validate_account(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("请输入邮箱或手机号")
+        if "@" in v:
+            if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", v):
+                raise ValueError("邮箱格式不正确")
+        else:
+            if not re.match(r"^1[3-9]\d{9}$", v):
+                raise ValueError("手机号格式不正确（应为 1[3-9] 开头的 11 位号码）")
+        return v
 
 
 class RefreshInput(BaseModel):

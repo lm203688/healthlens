@@ -251,7 +251,7 @@ async def list_classical_books(
     books = result.scalars().all()
 
     count_result = await db.execute(count_query)
-    total = count_result.scalar() or 701  # fallback to known count
+    total = count_result.scalar() or 0  # 无结果时返回 0，避免展示虚假计数
 
     data = []
     for book in books:
