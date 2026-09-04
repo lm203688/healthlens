@@ -1,0 +1,76 @@
+{
+  "report_id": "finance_e_20260904",
+  "generated_at": "2026-09-04T03:48:03.470127",
+  "data_source": "db_unavailable",
+  "real_revenue_data": {
+    "data_source": "db_unavailable",
+    "weekly": {
+      "revenue": 0,
+      "paid_orders": 0,
+      "paying_users": 0,
+      "new_users": 0,
+      "mock_test_orders": 0
+    },
+    "all_time": {
+      "revenue": 0,
+      "paid_orders": 0,
+      "paying_users": 0
+    },
+    "total_users": 0,
+    "package_distribution": []
+  },
+  "unit_economics": {
+    "weekly_revenue": 0,
+    "weekly_cost": 77.5,
+    "weekly_profit": -77.5,
+    "monthly_revenue_est": 0.0,
+    "monthly_cost_est": 333.25,
+    "monthly_profit_est": -333.25,
+    "arpu_paying": 0,
+    "arpu_all": 0,
+    "unit_economics": "negative",
+    "all_time_revenue": 0,
+    "all_time_paid_orders": 0
+  },
+  "costs_detail": {
+    "server_tencent_cloud": {
+      "amount": 65,
+      "type": "fixed_monthly",
+      "plan": "2核2G轻量"
+    },
+    "domain_ssl": {
+      "amount": 0,
+      "type": "free",
+      "provider": "Cloudflare"
+    },
+    "api_calls": {
+      "amount": 12.5,
+      "type": "variable",
+      "usage": "3500 calls"
+    },
+    "storage": {
+      "amount": 0,
+      "type": "free_within_limit"
+    }
+  },
+  "alerts": [
+    {
+      "type": "zero_revenue",
+      "message": "真实收入为零：前端缺少购买积分页面，用户无法付费。需尽快上线购买入口。",
+      "severity": "critical"
+    }
+  ],
+  "infrastructure_needs": [
+    {
+      "resource": "ssl_certificate",
+      "status": "Cloudflare免费",
+      "next_check": "2026-10-27",
+      "note": "域名备案后需迁移到自有证书"
+    }
+  ],
+  "recommendations": [
+    "紧急：前端缺少购买积分页面，用户无法付费，需立即上线购买入口",
+    "确认虎皮椒支付通道端到端可用（选套餐→扫码→回调→积分到账）",
+    "在用户消耗免费积分后触发购买引导"
+  ]
+}
