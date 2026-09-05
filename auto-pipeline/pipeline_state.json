@@ -66,24 +66,24 @@
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-09-05T15:03:28.758606",
-      "completed_at": "2026-09-05T15:03:28.761827",
+      "started_at": "2026-09-05T17:29:40.307013",
+      "completed_at": "2026-09-05T17:29:40.310501",
       "output_file": null,
       "items_processed": 0,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-09-05T15:03:28.792258",
-      "completed_at": "2026-09-05T15:03:28.797323",
+      "started_at": "2026-09-05T17:29:40.343265",
+      "completed_at": "2026-09-05T17:29:40.357433",
       "output_file": "reports/analysis/2026-09-05_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-09-05T15:03:28.846368",
-      "completed_at": "2026-09-05T15:03:31.351416",
+      "started_at": "2026-09-05T17:29:40.459072",
+      "completed_at": "2026-09-05T17:29:43.850309",
       "output_file": "reports/analysis/2026-09-05_data_asset_c.json",
       "items_processed": 6,
       "error": null,
@@ -91,16 +91,16 @@
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-09-05T15:03:31.440955",
-      "completed_at": "2026-09-05T15:03:32.615741",
+      "started_at": "2026-09-05T17:29:44.028414",
+      "completed_at": "2026-09-05T17:29:45.256570",
       "output_file": "reports/analysis/2026-09-05_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-09-05T15:03:33.380889",
-      "completed_at": "2026-09-05T15:03:33.386071",
+      "started_at": "2026-09-05T17:29:46.184244",
+      "completed_at": "2026-09-05T17:29:46.190047",
       "output_file": "reports/analysis/2026-09-05_finance_e.json",
       "items_processed": 1,
       "error": null,
@@ -108,8 +108,8 @@
     },
     "ops_health_f": {
       "status": "failed",
-      "started_at": "2026-09-05T15:05:10.659315",
-      "completed_at": "2026-09-05T15:05:12.711965",
+      "started_at": "2026-09-05T17:31:22.698967",
+      "completed_at": "2026-09-05T17:31:26.112287",
       "output_file": "reports/analysis/2026-08-03_ops_health_f.json",
       "items_processed": 5,
       "error": "运维检查未通过: needs_attention (端点 4/4 正常)"
@@ -1624,7 +1624,7 @@
       "weight_adjustments": {}
     },
     "user_conversion": {
-      "checked_at": "2026-09-05T15:03:28.794864",
+      "checked_at": "2026-09-05T17:29:40.346074",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -1633,7 +1633,7 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-09-05T15:03:31.248297",
+      "checked_at": "2026-09-05T17:29:43.844417",
       "total_records": 1201771088,
       "quality_issues": 4,
       "estimated_value": 1201771.09,
@@ -1641,7 +1641,7 @@
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-09-05T15:03:32.596296",
+      "checked_at": "2026-09-05T17:29:45.142500",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -1650,7 +1650,7 @@
       "channel_actions": 0
     },
     "ops_health": {
-      "checked_at": "2026-09-05T15:05:12.709498",
+      "checked_at": "2026-09-05T17:31:26.109599",
       "overall": "needs_attention",
       "endpoints_ok": 4,
       "endpoints_error": 0,
@@ -1660,7 +1660,7 @@
       "medical_terms_found": 0
     },
     "finance": {
-      "checked_at": "2026-09-05T15:03:33.383797",
+      "checked_at": "2026-09-05T17:29:46.187514",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
@@ -1955,6 +1955,13 @@
       "run_id": "run_20260905_150328",
       "started_at": "2026-09-05T15:03:28.651759",
       "finished_at": "2026-09-05T15:05:13.477650",
+      "verdict": "FAILED",
+      "failed_count": 1
+    },
+    {
+      "run_id": "run_20260905_172940",
+      "started_at": "2026-09-05T17:29:40.188220",
+      "finished_at": "2026-09-05T17:31:26.947396",
       "verdict": "FAILED",
       "failed_count": 1
     }
