@@ -1,0 +1,50 @@
+{
+  "report_id": "conversion_b_20260905",
+  "generated_at": "2026-09-05T03:46:18.321151",
+  "data_source": "mock_zero",
+  "user_metrics": {
+    "total_users": 0,
+    "new_users_week": 0,
+    "active_users_week": 0,
+    "retention_rate_d7": 0,
+    "retention_rate_d30": 0,
+    "paid_conversion_rate": 0,
+    "points_purchased_week": 0,
+    "health_reports_generated": 0,
+    "funnel": {
+      "registered": 0,
+      "completed_profile": 0,
+      "generated_report": 0,
+      "viewed_plan": 0,
+      "purchased_points": 0
+    },
+    "data_source": "mock_zero"
+  },
+  "plan_effectiveness": {
+    "plans_generated": 0,
+    "plans_with_follow_up": 0,
+    "avg_improvement_score": 0,
+    "top_improving_category": null,
+    "improvement_by_category": {},
+    "data_source": "placeholder"
+  },
+  "funnel_dropoffs": [],
+  "biggest_dropoff": null,
+  "recommendations": [
+    {
+      "type": "retention",
+      "priority": "high",
+      "action": "优化新用户引导流程，增加首日价值感知"
+    },
+    {
+      "type": "monetization",
+      "priority": "high",
+      "action": "优化积分套餐定价和购买体验"
+    },
+    {
+      "type": "plan_quality",
+      "priority": "medium",
+      "action": "优化个性化方案生成算法"
+    }
+  ]
+}
