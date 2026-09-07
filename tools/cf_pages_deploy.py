@@ -87,6 +87,42 @@ def promote(out: str):
             shutil.rmtree(os.path.join(ap, d), ignore_errors=True)
 
 
+def assert_artifact_ready(dist: str, allow_missing_spa: bool = False) -> None:
+    """部署前硬校验产物完整性，避免残缺产物覆盖线上正常版本。
+
+    【2026-08-31 事故】build_site.py 曾在 frontend/dist 缺失时只打 WARN 就继续，
+    上线的产物没有 app/ 目录 → /app/ 请求被 Pages 的 SPA 回退顶替成 GEO 首页，
+    用户看到 React 应用"消失"。另一次是用 --no-build 直接部署旧 dist，把
+    旧三 Tab 登录页又覆盖回线上。两次都是"部署脚本没有把关"。
+
+    这里作为最后防线：无论走哪条路径（构建/跳过构建/手动指定 --dist），
+    只要产物缺 app/index.html 就中止，除非显式传 --allow-missing-spa。
+    """
+    problems = []
+    if not os.path.isdir(dist):
+        problems.append(f"产物目录不存在: {dist}")
+    else:
+        if not os.path.isfile(os.path.join(dist, "app", "index.html")):
+            problems.append(
+                f"缺少 SPA 入口 {os.path.join(dist, 'app', 'index.html')} —— "
+                f"/app/ 将被 Pages 回退成 GEO 首页，React 应用等于下线"
+            )
+        if not os.path.isfile(os.path.join(dist, "index.html")):
+            problems.append(f"缺少站点首页 {os.path.join(dist, 'index.html')}")
+
+    if problems and not allow_missing_spa:
+        print("❌ 产物校验未通过，已中止部署（防止残缺产物覆盖线上）：")
+        for p in problems:
+            print(f"     - {p}")
+        print("   修复：先跑 npm run build 生成 frontend/dist，再去掉 --no-build 重新部署")
+        print("   若确需忽略（例如故意下线 SPA），加 --allow-missing-spa")
+        sys.exit(3)
+    if problems and allow_missing_spa:
+        print("[preflight][WARN] 产物不完整但已显式放行 --allow-missing-spa：")
+        for p in problems:
+            print(f"     - {p}")
+
+
 def deploy(account_id: str, token: str, project: str, dist: str):
     if not os.path.isfile(WRANGLER_JS):
         print(f"❌ 找不到 wrangler: {WRANGLER_JS}\n   请先在隔离工作区安装: "
@@ -117,6 +153,8 @@ def main():
     ap.add_argument("--project", default="healthlens")
     ap.add_argument("--dist", default=os.path.join(ROOT, "auto-pipeline", "dist"))
     ap.add_argument("--no-build", action="store_true", help="跳过构建步骤")
+    ap.add_argument("--allow-missing-spa", action="store_true",
+                    help="放行缺少 app/ 的残缺产物（默认中止，防覆盖线上）")
     args = ap.parse_args()
 
     if not args.account_id:
@@ -130,6 +168,7 @@ def main():
         dist = build()
     else:
         dist = args.dist
+    assert_artifact_ready(dist, allow_missing_spa=args.allow_missing_spa)
     deploy(args.account_id, args.token, args.project, dist)
     if not args.no_build:
         promote(dist)

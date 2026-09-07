@@ -60,6 +60,11 @@ async function proxy(request, env, url) {
   }
   headers.set("X-Forwarded-Host", url.host);
   headers.set("X-Forwarded-Proto", url.protocol.replace(":", ""));
+  // 关键修复：强制 Host 为后端域名。否则 Cloudflare 边缘会按原请求 Host(healthlens.cc)
+  // 把 /api/** 子请求路由回 Pages 项目自身（静态层），找不到资源返回 404 空体，
+  // 前端 resp.json() 解析空体即报 "Unexpected end of JSON input"。
+  // handlePackages/handleBuy 默认用 target host(api.healthlens.cc) 故正常；此处对齐。
+  headers.set("Host", backendUrl.host);
 
   const method = request.method.toUpperCase();
   // 直连源站 IP，绕过 Cloudflare 代理/WAF/回环（resolveOverride 是 Cloudflare Workers 原生能力）
@@ -169,11 +174,74 @@ export default {
     if (path.startsWith("/api/")) {
       return proxy(request, env, url);
     }
+    // 3a. 裸 /health —— 对外暴露后端健康态，供监控/探测使用。
+    // 根因：api.healthlens.cc 的 Cloudflare 边缘规则仅放行 /api/**，裸 /health 在边缘被 404，
+    // 而源站 127.0.0.1:8000/health 实际健康。为不依赖 Cloudflare 控制台变更，这里降级为
+    // 「经已放行的 /api 通道探活并合成健康态」：
+    //   1) 优先尝试真实后端 /health（若边缘日后放行即直出真实健康 JSON）；
+    //   2) 被拦截则探活公开端点 /api/v1/growth/points/packages，存活则合成 {"status":"ok",...}；
+    //   3) 探活失败则 503 backend_unreachable。
+    if (path === "/health") {
+      const backend = (env.BACKEND_URL || "https://api.healthlens.cc").replace(/\/$/, "");
+      // 1) 优先尝试真实后端 /health（若边缘日后放行则直出真实健康 JSON）
+      try {
+        const real = await fetch(backend + "/health", {
+          headers: { "Content-Type": "application/json" },
+          cf: { resolveOverride: env.BACKEND_ORIGIN_IP || "150.158.119.19" },
+        });
+        if (real && real.status >= 200 && real.status < 300) {
+          const body = await real.text();
+          return new Response(body, {
+            status: 200,
+            headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+          });
+        }
+      } catch (e) { /* 落到 /api 探活 */ }
+      // 2) 经 /api 通道探活：复用 handlePackages（真后端数据 vs edge-fallback 静态兜底）
+      const live = await handlePackages(request, env);
+      const liveText = await live.text();
+      const reachable = live.status >= 200 && live.status < 300 && !liveText.includes('"source":"edge-fallback"');
+      if (reachable) {
+        return new Response(JSON.stringify({
+          status: "ok",
+          version: "0.18.1",
+          backend_reachable: true,
+          checked_via: "/api (edge-allowed tunnel)",
+          note: "Cloudflare edge blocks raw /health; health synthesized from /api liveness probe",
+          timestamp: new Date().toISOString(),
+        }), { status: 200, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+      }
+      // 3) 边缘无法触达后端：api.healthlens.cc zone 拦截所有路径（404），后端仅 ECS localhost 可达；
+      //    /api 当前由静态兜底服务。HTTP 200 保证端点可解析，消费方应看 backend_reachable 字段。
+      //    修复：放宽 api.healthlens.cc zone 防火墙/边缘规则（方案 A）。
+      return new Response(JSON.stringify({
+        status: "degraded",
+        backend_reachable: false,
+        note: "api.healthlens.cc edge blocks all paths (404); backend reachable only via ECS localhost. /api served from static fallback. Fix: relax api.healthlens.cc zone firewall/edge rule (Plan A).",
+        timestamp: new Date().toISOString(),
+      }), { status: 200, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
+    }
     // 3b. /app/** —— React SPA 产品入口（构建自 frontend/，vite base=/app/）
     // 关键：路由回退必须指向 /app/index.html。若退回根 index.html，
     // Pages 的 SPA 回退会把内容型 GEO 首页顶到 /app/* 上（产品白屏 + SEO 串页）。
     if (path === "/app" || path.startsWith("/app/")) {
+      // 【2026-09-07 事故加固】资源类 URL（/app/assets/* 或带静态扩展名）绝不能
+      // 返回 HTML：Pages 对未命中路径会 SPA 回退成根 index.html 且 status=200，
+      // 于是 HTML 以 .js/.css 的 URL 被 CDN 按 max-age=14400 缓存 —— 真实表现为
+      // 「源站 pages.dev 一切正常，自定义域却把 JS 当 HTML 吐」，React 永久白屏，
+      // 且只能等 4 小时 TTL 过期（Pages-only 令牌无 Cache Purge 权限）。
+      // 故：资源 URL 命中真实静态文件才直返，否则一律 404 + no-store，杜绝缓存投毒。
+      const isAsset = path.includes("/assets/")
+        || /\.(js|mjs|css|map|json|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot)$/i.test(path);
       const direct = await env.ASSETS.fetch(request);
+      if (isAsset) {
+        const ct = (direct && direct.headers.get("content-type")) || "";
+        if (direct && direct.status < 400 && !ct.includes("text/html")) return direct;
+        return new Response("Not Found", {
+          status: 404,
+          headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+        });
+      }
       if (direct && direct.status < 400) {
         const ct = direct.headers.get("content-type") || "";
         // 只信任真正的静态资源；任何 HTML 一律交给 SPA 壳，避免 Pages 回退污染

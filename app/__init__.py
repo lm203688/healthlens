@@ -22,6 +22,19 @@ async def lifespan(app: FastAPI):
             logger.critical("生产环境检测到不安全密钥配置，拒绝启动。请在 .env 中设置安全的密钥值。")
             raise SystemExit(1)
 
+    # 验证码通道状态（启动即可见，避免"默默跑在 mock 模式"）
+    logger.info(
+        f"[OTP] ENV={settings.ENV} | provider={settings.SMS_PROVIDER} | "
+        f"sms_ready={settings.sms_ready} | email_ready={settings.email_ready} | "
+        f"dev_return_code={settings.SMS_DEV_RETURN_CODE} | "
+        f"guard_blocked={settings.otp_guard_blocked}"
+    )
+    if not settings.otp_channel_live:
+        logger.warning(
+            "[OTP] 无任何真实验证码通道（短信/邮箱均未配置）；"
+            "当前仅能走 mock 回显。生产环境请配置 ALIYUN_SMS_* / TENCENT_SMS_* / SMTP_*。"
+        )
+
     # 初始化日志配置
     from app.utils.logging_config import setup_logging
     setup_logging()
@@ -137,7 +150,20 @@ def create_app() -> FastAPI:
     # 健康检查端点（Docker HEALTHCHECK 使用）
     @app.get("/health")
     async def health_check():
-        return {"status": "ok", "version": settings.APP_VERSION}
+        return {
+            "status": "ok",
+            "version": settings.APP_VERSION,
+            "env": settings.ENV,
+            "auth": {
+                # 验证码通道是否真的能发出去（sms_ready or email_ready）
+                "otp_live": settings.otp_channel_live,
+                "otp_sms": settings.sms_ready,
+                "otp_email": settings.email_ready,
+                "otp_guard_blocked": settings.otp_guard_blocked,
+                # False 表示正在用 mock 假验证码，不能对外提供登录
+                "otp_channel_configured": settings.otp_channel_live or not settings.is_production,
+            },
+        }
 
     @app.get("/metrics")
     async def metrics():
@@ -163,4 +189,12 @@ def create_app() -> FastAPI:
 
     return app
 
+
 app = create_app()
+
+
+def get_app() -> FastAPI:
+    """uvicorn / 容器入口（启动命令 `uvicorn app.main:app --workers 4` 经
+    app/main.py 调用）。返回已构建的应用实例而非每次新建，避免多 worker 下
+    重复构造导致 lifespan 跑多遍。"""
+    return app

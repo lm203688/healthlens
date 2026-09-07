@@ -64,6 +64,41 @@ class LoginInput(BaseModel):
         return v
 
 
+class OtpSendInput(BaseModel):
+    """获取验证码输入（手机号或邮箱，登录与注册合一）"""
+
+    account: str
+
+    @field_validator("account")
+    @classmethod
+    def validate_account(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("请输入手机号或邮箱")
+        if "@" in v:
+            if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", v):
+                raise ValueError("邮箱格式不正确")
+        else:
+            if not re.match(r"^1[3-9]\d{9}$", v):
+                raise ValueError("手机号格式不正确（应为 1[3-9] 开头的 11 位号码）")
+        return v
+
+
+class OtpVerifyInput(BaseModel):
+    """验证码校验输入"""
+
+    account: str
+    code: str
+
+    @field_validator("code")
+    @classmethod
+    def validate_code(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v.isdigit():
+            raise ValueError("验证码应为数字")
+        return v
+
+
 class RefreshInput(BaseModel):
     """刷新 Token 输入"""
 

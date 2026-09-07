@@ -2,6 +2,10 @@
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api/v1';
 
+// SPA 部署在 /app/ 子路径下（见 vite.config.js base），登录页是 /app/login 而非 /login。
+// 写死 '/login' 会跳到域名根的 GEO 首页，用户会以为"退出后跑到别的地方去了"。
+const APP_BASE = import.meta.env.BASE_URL || '/app/';
+
 async function request(path, options = {}) {
   const token = localStorage.getItem('token');
   const headers = { 'Content-Type': 'application/json', ...options.headers };
@@ -11,7 +15,7 @@ async function request(path, options = {}) {
   if (resp.status === 401) {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
-    window.location.href = '/login';
+    window.location.href = `${APP_BASE}login`;
   }
   return resp;
 }
@@ -22,6 +26,10 @@ export const api = {
   register: (body) => request('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
   refresh:  (body) => request('/auth/refresh',  { method: 'POST', body: JSON.stringify(body) }),
   me:       ()    => request('/auth/me'),
+
+  /* ===== 验证码登录（登录与注册合一）===== */
+  otpSend:   (body) => request('/auth/otp/send',   { method: 'POST', body: JSON.stringify(body) }),
+  otpVerify: (body) => request('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
 
   /* ===== 健康评估（Agent 融合管线）===== */
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
