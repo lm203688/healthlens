@@ -287,6 +287,36 @@ class PGxEngine:
         logger.info(f"PGx analysis: {len(results)} genes interpreted from {len(variants)} variants")
         return results
 
+    async def analyze_user_genome_enriched(self, variants: list[dict]) -> list[dict]:
+        """在本地解读基础上叠加实时 CPIC 指南等级 (Phase 2)。
+
+        离线/限流/导入失败时静默回退到本地规则, 不改变主流程语义。
+        开关建议: 由调用方在 settings 中控制是否启用 (默认本地规则)。
+        """
+        results = await self.analyze_user_genome(variants)
+        try:
+            try:
+                from app.core.clinpgx_client import enrich_gene_drugs
+            except ImportError:
+                from .clinpgx_client import enrich_gene_drugs  # type: ignore
+
+            for r in results:
+                gene = r.get("gene")
+                genotype = r.get("genotype", "")
+                base = self.interpret_genotype(gene, genotype)
+                if not base:
+                    continue
+                enriched = await enrich_gene_drugs(gene, base.drug_recommendations)
+                r["drug_recommendations"] = enriched
+                r["drug_count"] = len(enriched)
+                r["top_drugs"] = [d["drug_name"] for d in enriched[:3]]
+                r["guidelines_attached"] = any(
+                    "cpic_level" in d for d in enriched
+                )
+        except Exception as e:  # 离线/导入失败 → 保持本地结果
+            logger.warning(f"PGx live guideline enrichment skipped: {e}")
+        return results
+
     def get_drug_interactions(self, gene_results: list[dict]) -> list[dict]:
         """获取药物-基因相互作用摘要"""
         interactions = []
