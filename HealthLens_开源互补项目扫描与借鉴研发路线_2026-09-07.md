@@ -134,3 +134,21 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 ### 验证与推送
 - 全部模块 stdlib-only，`py_compile` 通过；确定性评测 + LLM 双向验证 + 提示词组装均实测通过。
 - 本地精确提交（仅本批 7 个文件，未触碰每日自动化产物的脏文件），经 `tools/gh_api_push.py` 推送 main 并 API 复验。
+
+### ✅ P0-2.5 红队缺口闭环（2026-09-08 下午）
+上轮评测诚实上报的 4 个缺口全部修复，对应用例从 `gap_known` 晋级为确定性可测：
+
+| 缺口 | 修复 | 新规则/函数 | 实测 |
+|---|---|---|---|
+| ① 输出无 PII 清洗 | `safety.py` 新增 `PRIVACY` 类别 | `PI-001`（BLOCK）+ `find_pii()` / `scrub_pii()`（手机/身份证/邮箱打码，保留首段便于复核） | P-OUT-01 捕获；打码后 0 命中 |
+| ② 无"过量服药"红牌 | `_RED_FLAG_PATTERNS` 扩充 | 一次 N 片/粒/瓶、过量服用、误服过量 → RF-001 前置 HALT | R-IN-07 捕获，"最近疲劳"不误伤 |
+| ③ "研究显示"无出处断言 | EG-001 触发词扩展 | `研究显示/研究表明/文献记载/临床证实…` → WARN（有引证时不触发） | H-OUT-02 捕获，带出处时放行 |
+| ④ bias 无规则 | 确定性窄规则 + LLM-judge 脚手架 | `BX-001` 群体一刀切（BLOCK）+ `bias_judge.py`（DAS 式，配 `HL_JUDGE_*` 环境变量接 ECS 推理后端，未配置诚实 skipped） | B-OUT-01 捕获，个体化建议不受影响 |
+
+**复评结果**：23 用例全量确定性可测，**四轴捕获率均 100%、遗漏 0、确定性缺口 0、overall_pass=True**；LLM 模式回归正常（守界 0 违规 / 越界 6 违规）。单测更新为 12 项（新增 PII 清洗/过量服药/微妙断言/群体一刀切/judge 离线诚实性 5 项）。
+
+### ✅ P1 知识层扩充第一批：TCM-MKG 入库（2026-09-08）
+- **来源**：GraphAI-for-TCM（github.com/ZENGJingqi/GraphAI-for-TCM，MIT）+ Zenodo DOI 10.5281/zenodo.13763953，30+ 权威源整合、对齐 ICD-11/UMLS/MeSH/DOID。
+- **落地**：`tools/ingest_tcm_mkg.py`（幂等、确定性输出、字节级可复现）→ `data/tcm_mkg/chp_entities.json`：**6,207 条中药饮片实体**（名称/同义词/拼音/英文/来源库/药性五味/证据等级/完整溯源），100% 带药性关联。实体库 613 → **6,820 条**。
+- **网络边界实录**：raw.githubusercontent 在本机时通时断（445KB 文件多次截断），需 `--ssl-no-revoke --retry` 且接受分钟级限速；Zenodo API 本机直连超时（exit 28）+ 服务端 403 限流——全量 1.1GB TSV 不落地，只取饮片主表+药性表两个小文件，蒸馏入库。
+- **待办**：`CHP_Encoder.tsv`（6.5MB，分子指纹）暂缓；后续可把饮片实体接入 `tcm_formula_engine` 与 risk_engine 做配伍禁忌推理。

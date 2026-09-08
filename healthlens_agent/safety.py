@@ -26,6 +26,8 @@ class GuardCategory(StrEnum):
     DEMEDICALIZE = "demedicalize"  # 去医疗化红线（不得诊断/开方/替代就医）
     AXIS_REDLINE = "axis_redline"  # 八轴稳态红线（不得承诺治愈/逆转）
     EVIDENCE_GRADE = "evidence_grade"  # 证据分级（L1-L3 不可越级断言）
+    PRIVACY = "privacy"  # 隐私红线（输出不得含 PII；借鉴 llm-healthcare-threat-modeling 输出 PII 清洗）
+    BIAS = "bias"  # 偏见红线（不得对群体作一刀切歧视性断言；深层偏见仍需 LLM judge）
 
 
 class Severity(StrEnum):
@@ -105,6 +107,10 @@ _RED_FLAG_PATTERNS = [
     ("意识丧失|昏迷|晕厥", "可能为神经系统急症"),
     ("自杀|自残|不想活", "可能为心理急症"),
     ("抽搐|惊厥", "可能为神经/代谢急症"),
+    (
+        r"一次\s*(吃了?|服用了?|吞了?)\s*\d+\s*(片|粒|颗|瓶)|过量服[用食药]|误服过量|吞了整瓶",
+        "可能为急性药物过量/中毒",
+    ),
 ]
 
 _DEMEDICALIZE_PATTERNS = [
@@ -117,6 +123,21 @@ _DEMEDICALIZE_PATTERNS = [
 _AXIS_REDLINE_PATTERNS = [
     ("逆转衰老|永生|长生", "八轴不得擅自承诺逆转先天/衰老"),
     ("100%有效|包好|绝对安全", "不得作绝对化疗效承诺"),
+]
+
+# PII 输出红线（借鉴 llm-healthcare-threat-modeling 第四阶段「输出 PII 清洗」）：
+# 移动手机号 / 18 位身份证 / 邮箱。命中即 BLOCK，且提供 scrub_pii 做打码清洗。
+_PII_PATTERNS = [
+    (r"(?<!\d)1[3-9]\d{9}(?!\d)", "手机号"),
+    (r"(?<!\d)\d{17}[\dXx](?!\d)", "身份证号"),
+    (r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", "邮箱"),
+]
+
+_BIAS_PATTERNS = [
+    (
+        r"老年人?普遍不适合|老人都(不适合|不宜|不用)|女性天生不适合|男性(不需要|不适合)调理|年轻人不需要调理",
+        "不得对人口学群体作一刀切断言",
+    ),
 ]
 
 
@@ -136,6 +157,39 @@ def _make_pattern_finder(patterns):
 _redflag_find = _make_pattern_finder(_RED_FLAG_PATTERNS)
 _demed_find = _make_pattern_finder(_DEMEDICALIZE_PATTERNS)
 _axis_find = _make_pattern_finder(_AXIS_REDLINE_PATTERNS)
+_bias_find = _make_pattern_finder(_BIAS_PATTERNS)
+_pii_compiled = [(re.compile(p), name) for p, name in _PII_PATTERNS]
+
+
+def find_pii(text: str) -> list[tuple[str, str]]:
+    """返回命中的 PII 列表 [(原文, 类型)]，供清洗与审计使用。"""
+    hits: list[tuple[str, str]] = []
+    for rx, name in _pii_compiled:
+        for m in rx.finditer(text):
+            hits.append((m.group(0), name))
+    return hits
+
+
+def scrub_pii(text: str) -> tuple[str, int]:
+    """输出 PII 清洗器：将手机号/身份证/邮箱打码为掩码。返回 (清洗后文本, 清洗条数)。
+
+    打码保留首尾少量字符以便人工复核，其余以 * 代替（PII 最小化原则）。
+    """
+    count = 0
+    out = text
+    for rx, name in _pii_compiled:
+        def _mask(m: re.Match) -> str:
+            nonlocal count
+            count += 1
+            s = m.group(0)
+            if name == "邮箱":
+                local, _, dom = s.partition("@")
+                head = local[:2]
+                return f"{head}***@{dom}"
+            keep = 3 if name == "手机号" else 4
+            return s[:keep] + "*" * max(len(s) - keep - 2, 3) + s[-2:]
+        out = rx.sub(_mask, out)
+    return out, count
 
 
 def build_rules() -> list[GuardRule]:
@@ -182,6 +236,33 @@ def build_rules() -> list[GuardRule]:
             )
         )
 
+    # 4) 隐私红线（生成后，BLOCK）：输出不得携带 PII（PI-001）
+    rules.append(
+        GuardRule(
+            id="PI-001",
+            category=GuardCategory.PRIVACY,
+            severity=Severity.BLOCK,
+            description="输出不得包含手机号/身份证号/邮箱等个人身份信息",
+            matcher=lambda t: bool(find_pii(t)),
+            message="输出包含个人身份信息（PII），违反隐私红线。",
+            suggestion="用 scrub_pii() 打码后再输出；确需记录请走用户授权的加密存储通道。",
+        )
+    )
+
+    # 5) 偏见红线（生成后，BLOCK）：群体一刀切断言（BX-001；深层偏见仍需 LLM judge）
+    for i, (pat, desc) in enumerate(_BIAS_PATTERNS):
+        rules.append(
+            GuardRule(
+                id=f"BX-{i + 1:03d}",
+                category=GuardCategory.BIAS,
+                severity=Severity.BLOCK,
+                description=desc,
+                matcher=lambda t, p=pat: re.search(p, t, re.IGNORECASE) is not None,
+                message="输出对人口学群体作一刀切断言，违反公平性红线。",
+                suggestion="改写为个体化评估表述，不做群体性概括。",
+            )
+        )
+
     return rules
 
 
@@ -217,13 +298,19 @@ def pre_gate(user_input: str) -> GateResult:
 
 
 def post_gate(generated: str, cited_evidence: list[str] | None = None) -> GateResult:
-    """生成后闸门：拦截去医疗化违反、八轴红线击穿、证据断链。"""
+    """生成后闸门：拦截去医疗化违反、八轴红线击穿、证据断链、PII 泄漏、群体一刀切。"""
     findings: list[Finding] = []
     for rule in RULES:
         if rule.category == GuardCategory.RED_FLAG:
             continue
         if rule.check(generated):
-            snippet = _demed_find(generated) or _axis_find(generated) or generated
+            snippet = (
+                _demed_find(generated)
+                or _axis_find(generated)
+                or _bias_find(generated)
+                or (find_pii(generated)[0][0] if find_pii(generated) else None)
+                or generated
+            )
             findings.append(
                 Finding(
                     rule.id,
@@ -234,8 +321,12 @@ def post_gate(generated: str, cited_evidence: list[str] | None = None) -> GateRe
                     rule.suggestion,
                 )
             )
-    # 证据断链检查：声明有证据但引用为空 → EVIDENCE_GRADE 警告
-    if cited_evidence is not None and len(cited_evidence) == 0 and "依据" in generated:
+    # 证据断链检查：声明有依据但引用为空 → EVIDENCE_GRADE 警告
+    # EG-001 触发词扩展：除「依据」外，覆盖「研究显示/研究表明/文献记载/临床证实」类
+    # 无出处断言（红队 H-OUT-02 缺口修复）。
+    _claim_rx = re.compile(r"研究显示|研究表明|研究证明|文献记载|临床证实|临床证明")
+    has_claim = "依据" in generated or bool(_claim_rx.search(generated))
+    if cited_evidence is not None and len(cited_evidence) == 0 and has_claim:
         findings.append(
             Finding(
                 "EG-001",
