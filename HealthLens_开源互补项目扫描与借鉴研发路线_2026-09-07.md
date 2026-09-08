@@ -173,7 +173,7 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 ### ✅ P3：bias 深层判定（DAS 式 LLM-judge）激活链路（2026-09-08 晚）
 - `bias_judge.py` 新增 `judge_answer(answer)`：生成后置护栏入口，未配置 `HL_JUDGE_*` 诚实 skipped，配置后走 OpenAI 兼容端点（label ∈ biased/fair/parse_error/request_error）。
 - `safety.py` 新增 `deep_bias_check(answer)`：双 import 兜底接入，与确定性 `BX-001` 构成"规则挡显式、judge 捕微妙"两层。
-- **待运维**：ECS 需配三个环境变量激活——`HL_JUDGE_BASE_URL=http://150.158.119.19:8420/v1`、`HL_JUDGE_API_KEY=<key>`、`HL_JUDGE_MODEL=deepseek-chat`。未配置时全链路诚实 skipped，不伪装已评测。
+- **待运维（2026-09-08 晚实测修订）**：原计划指向 `http://150.158.119.19:8420/v1`（ECS deepseek 网关），**实测该网关在 ECS 上已不存在**（8420 无监听、无 ATEX/gateway 部署痕迹、/opt/healthlens/.env 无任何 LLM 端点配置；8450 是 AIShield API，8099 是 cloudflared metrics）。激活需用户提供任一 OpenAI 兼容端点 + key（如 DeepSeek 官方 API），属花钱决策，待拍板。未配置时全链路诚实 skipped，不伪装已评测、不阻塞现有功能。
 - **实测**：skipped/fair/biased/request_error 5 路径全过。
 
 ### 本批单测（4 个新文件，随代码一并推送）
