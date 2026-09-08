@@ -1,6 +1,6 @@
 {
   "report_id": "ops_f_20260908",
-  "generated_at": "2026-09-08T21:21:57.030745",
+  "generated_at": "2026-09-08T23:36:01.107981",
   "overall_status": "needs_attention",
   "endpoint_checks": [
     {
@@ -8,28 +8,28 @@
       "url": "https://healthlens.cc/health",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 531
+      "latency_ms": 356
     },
     {
       "name": "Robots",
       "url": "https://healthlens.cc/robots.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 133
+      "latency_ms": 93
     },
     {
       "name": "Sitemap",
       "url": "https://healthlens.cc/sitemap.xml",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 388
+      "latency_ms": 272
     },
     {
       "name": "SEO内容",
       "url": "https://healthlens.cc/llms.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 152
+      "latency_ms": 119
     }
   ],
   "server_reachable": false,
