@@ -152,3 +152,30 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 - **落地**：`tools/ingest_tcm_mkg.py`（幂等、确定性输出、字节级可复现）→ `data/tcm_mkg/chp_entities.json`：**6,207 条中药饮片实体**（名称/同义词/拼音/英文/来源库/药性五味/证据等级/完整溯源），100% 带药性关联。实体库 613 → **6,820 条**。
 - **网络边界实录**：raw.githubusercontent 在本机时通时断（445KB 文件多次截断），需 `--ssl-no-revoke --retry` 且接受分钟级限速；Zenodo API 本机直连超时（exit 28）+ 服务端 403 限流——全量 1.1GB TSV 不落地，只取饮片主表+药性表两个小文件，蒸馏入库。
 - **待办**：`CHP_Encoder.tsv`（6.5MB，分子指纹）暂缓；后续可把饮片实体接入 `tcm_formula_engine` 与 risk_engine 做配伍禁忌推理。
+
+### ✅ P1 续：6,207 条 CHP 饮片接入配伍禁忌推理（2026-09-08 晚）
+上一节"待办"兑现。三个模块串联成完整安全链：
+
+1. **`app/core/tcm_safety.py`（新建，线上后端版）** — 自研确定性护栏，规则取自《神农本草经》《本草经集注》：
+   - 十八反（17 对）+ 十九畏（9 对）+ 妊娠禁忌（禁用/慎用两级）+ 中西药相互作用（抗凝/降压/降糖/地高辛/镇静/MAOI/利尿/免疫抑制 8 类）；
+   - `HERB_SYNONYMS` 别名归一 42 经典 → CHP 广度增强至 **87 条**（防御式载入，仅并入命中经典 canonical 的别名，绝不改变既有语义）；
+   - `check_safety(herbs, formulas, medications, pregnancy) -> SafetyReport`，分级 high/moderate/low，`to_dict()` 直接并入报告，不删方案只做风险提示（去医疗化合规边界）。
+2. **`app/core/tcm_engine.py`** — 新增 `_extract_herb_names()`（剥"加"前缀与剂量）+ `_attach_safety()`，方剂输出自动挂 `formula["safety"]`。
+3. **`app/core/tcm_formula_engine.py`** — CHP 6,207 饮片并入药材库（db=6,208，策展 15 味优先去重）；英文药性映射（Warm therapeutic→温…）；`get_herb_info()` 支持别名归一+模糊匹配；新增 `check_compatibility()` 配伍推理入口。
+- **实测**：离线 harness 33/33 全过（含"甘草+海藻拦截、人参+白术+茯苓放行、阿尔泰多榔菊 性=温/归肺经"等断言）。
+
+### ✅ P2：PhenoAge 生物学年龄借鉴 — 八轴"代谢-炎症轴"量化（2026-09-08 晚）
+- **借鉴**：PhenoAge（Levine 2018, epigenetic clock）的"多生物标志物→年龄偏移"范式。
+- **边界声明**：真实 PhenoAge 依赖 DNAm CpG 甲基化，HealthLens 不采集、不伪造组学数据 → 落地为**透明体检指标代理**（wellness proxy），`not_clinical=True` 硬标注。
+- **落地**：`app/core/bioage_engine.py` — 8 项标志物（空腹血糖/HbA1c/hs-CRP/腰围/HDL/甘油三酯/收缩压/BMI）按公开临床阈值给年龄偏移与轴扣分；`AXIS_KEY="metabolic_inflammatory"` 供融合引擎引用为第八轴新维度。
+- **实测**：健康画像(40岁)→bio_age=40.0/轴分100；全异常画像→bio_age 显著偏老/轴分触底 0；指标全缺失不崩溃。
+
+### ✅ P3：bias 深层判定（DAS 式 LLM-judge）激活链路（2026-09-08 晚）
+- `bias_judge.py` 新增 `judge_answer(answer)`：生成后置护栏入口，未配置 `HL_JUDGE_*` 诚实 skipped，配置后走 OpenAI 兼容端点（label ∈ biased/fair/parse_error/request_error）。
+- `safety.py` 新增 `deep_bias_check(answer)`：双 import 兜底接入，与确定性 `BX-001` 构成"规则挡显式、judge 捕微妙"两层。
+- **待运维**：ECS 需配三个环境变量激活——`HL_JUDGE_BASE_URL=http://150.158.119.19:8420/v1`、`HL_JUDGE_API_KEY=<key>`、`HL_JUDGE_MODEL=deepseek-chat`。未配置时全链路诚实 skipped，不伪装已评测。
+- **实测**：skipped/fair/biased/request_error 5 路径全过。
+
+### 本批单测（4 个新文件，随代码一并推送）
+- `tests/core/test_tcm_safety.py`（10 项）、`tests/core/test_bioage_engine.py`（6 项）、`tests/core/test_tcm_formula_engine_chp.py`（7 项）、`tests/agent/test_safety_bias.py`（6 项）。
+- 本地验证方式：无 venv，用 stub 包注册（绕过 `app/__init__` 的 fastapi 链）+ loguru stub 离线跑全部断言 33/33 通过；CI 用标准 pytest。

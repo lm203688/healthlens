@@ -3,6 +3,42 @@ Phase 1: 基于中华中医药学会标准的九种体质辨识
 Phase 2: 知识图谱推理 + 大模型辅助
 """
 from dataclasses import dataclass
+import re
+
+from app.core.tcm_safety import check_safety
+
+
+def _extract_herb_names(items: list[str] | None) -> list[str]:
+    """从组成/加减项中抽取药材名。
+
+    - 剥离「加」前缀（如「加 海藻 9g」→「海藻」）
+    - 剥离剂量与单位（如「甘草 3g」「桃仁 12克」→「甘草」「桃仁」）
+    防御式：空串/纯剂量直接跳过，确保「加」不会作为药材名进入校验。
+    """
+    names: list[str] = []
+    for it in (items or []):
+        if not it:
+            continue
+        s = it.strip()
+        s = re.sub(r"^加\s*", "", s)  # 剥「加」前缀
+        s = re.sub(r"[\d]+(\.\d+)?\s*(g|克|钱|两|片|枚)?\s*$", "", s).strip()
+        if s:
+            names.append(s)
+    return names
+
+
+def _attach_safety(formula: dict) -> dict:
+    """把安全护栏结果挂到方剂 dict 上（field: safety）。
+
+    输入: formula = {"composition": ["甘草 3g"], "extra_herbs": ["加 海藻 9g"]}
+    输出: 同 dict，新增 formula["safety"] = SafetyReport.to_dict()
+    """
+    comp = _extract_herb_names(formula.get("composition"))
+    extra = _extract_herb_names(formula.get("extra_herbs"))
+    herbs = comp + extra
+    report = check_safety(herbs=herbs)
+    formula["safety"] = report.to_dict()
+    return formula
 
 
 # 九种体质标准问卷维度和评分

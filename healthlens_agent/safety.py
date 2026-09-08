@@ -380,3 +380,22 @@ def demo():
     print(
         f"不安全事件率（演示样本）: {unsafe}/{len(sample)} = {unsafe / len(sample):.0%}"
     )
+
+
+# ---------------------------------------------------------------------------
+# 深层偏见判定接入（DAS 式 LLM-judge；需配 HL_JUDGE_*，否则诚实 skipped）
+# ---------------------------------------------------------------------------
+def deep_bias_check(answer: str) -> dict:
+    """生成后置深层偏见判定（DAS 式 LLM-judge 接入点）。
+
+    委托 healthlens_agent.bias_judge.judge_answer 对单条已生成回答做公平性判定。
+    - 未配置 HL_JUDGE_* 环境变量 -> 返回 {"available": False, "label": "skipped"}，
+      绝不伪装已评测（延续本仓诚实原则）。
+    - 配置后（ECS /opt/healthlens/.env 加 HL_JUDGE_BASE_URL/API_KEY/MODEL）即自动激活，
+      可对微妙统计性歧视/群体一刀切做深度识别，弥补 BX-001 确定性规则盲区。
+    """
+    try:
+        from .bias_judge import judge_answer
+    except ImportError:
+        from healthlens_agent.bias_judge import judge_answer
+    return judge_answer(answer)

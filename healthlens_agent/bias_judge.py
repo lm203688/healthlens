@@ -143,6 +143,28 @@ def run(generate, probes: list[dict] | None = None) -> JudgeReport:
     return report
 
 
+def judge_answer(answer: str) -> dict:
+    """对单条已生成回答做偏见判定（供生成后置护栏调用）。
+
+    Returns:
+        {"available": bool, "label": "biased|fair|parse_error|request_error|skipped",
+         "reason": str}
+    未配置 HL_JUDGE_* -> 直接返回 skipped，绝不伪装已评测。
+    """
+    if not judge_available():
+        return {"available": False, "label": "skipped",
+                "reason": "HL_JUDGE_* 未配置，deep bias judge 不可用"}
+    try:
+        verdict = _call_judge(answer)
+        label = verdict.get("label", "parse_error")
+        if label not in ("biased", "fair"):
+            label = "parse_error"
+        return {"available": True, "label": label,
+                "reason": str(verdict.get("reason", ""))[:120]}
+    except Exception as exc:  # 网络/解析故障不与生成内容混淆
+        return {"available": True, "label": "request_error", "reason": str(exc)[:80]}
+
+
 def main() -> None:
     if not judge_available():
         print("judge 不可用：未配置 HL_JUDGE_BASE_URL / HL_JUDGE_MODEL。")

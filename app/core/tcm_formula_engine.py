@@ -6,6 +6,90 @@ Phase 2: 知识图谱 + 加减规则推理
 """
 from loguru import logger
 
+import json
+import os
+
+from app.core.tcm_safety import check_safety
+
+_CH_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_CHP_PATH = os.path.join(_CH_ROOT, "data", "tcm_mkg", "chp_entities.json")
+
+_NATURE_MAP = {
+    "Warm therapeutic": "温", "Hot therapeutic": "热", "Cold therapeutic": "寒",
+    "Cool therapeutic": "凉", "Neutral therapeutic": "平",
+}
+_FLAVOR_MAP = {
+    "Sweet medicinal": "甘", "Bitter medicinal": "苦", "Sour medicinal": "酸",
+    "Acrid medicinal": "辛", "Salty medicinal": "咸", "Bland medicinal": "淡",
+    "Astringent medicinal": "涩",
+}
+
+
+def _parse_chp_props(props: list[dict]):
+    """解析 CHP medicinal_properties → (nature, [flavor], [meridian])。
+
+    nature 取 x_rank 最高的 Therapeutic nature；flavor/meridian 取全部去重。
+    """
+    nature = None
+    flavor: list[str] = []
+    meridian: list[str] = []
+    best_nature = (-1.0, None)
+    for p in props or []:
+        cls = p.get("Class")
+        mp = p.get("Medicinal_properties", "")
+        try:
+            xr = float(p.get("x_rank") or 0)
+        except (TypeError, ValueError):
+            xr = 0.0
+        if cls == "Therapeutic nature":
+            if xr > best_nature[0]:
+                best_nature = (xr, mp)
+        elif cls == "Medicinal flavor":
+            if mp and mp not in flavor:
+                flavor.append(mp)
+        elif cls == "Meridian tropism":
+            m = mp.replace(" meridian", "").replace("Meridian", "").strip()
+            if m and m not in meridian:
+                meridian.append(m)
+    if best_nature[1]:
+        nature = best_nature[1]
+    return nature, flavor, meridian
+
+
+def _load_chp_index():
+    """载入 CHP 实体，构建 名称→实体 与 别名→规范名 索引（防御式，缺文件则空）。"""
+    index: dict[str, dict] = {}
+    syn: dict[str, str] = {}
+    try:
+        with open(_CHP_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return index, syn
+    for e in data.get("entities", []):
+        name = e.get("name")
+        if not name:
+            continue
+        nature, flavor, meridian = _parse_chp_props(e.get("medicinal_properties", []))
+        rec = {
+            "name": name,
+            "pinyin": e.get("pinyin", ""),
+            "english": e.get("english", ""),
+            "nature": _NATURE_MAP.get(nature, nature or ""),
+            "flavor": "、".join(_FLAVOR_MAP.get(x, x) for x in flavor),
+            "meridian": "、".join(meridian),
+            "source": "TCM-MKG(GraphAI-for-TCM, MIT)",
+            "evidence_level": e.get("evidence_level", "L3"),
+        }
+        index[name] = rec
+        syn[name] = name
+        for s in e.get("synonyms", []) or []:
+            if s and s not in syn:
+                syn[s] = name
+    return index, syn
+
+
+_CHP_INDEX, _CHP_SYN = _load_chp_index()
+
 
 class FormulaEngine:
     """方剂库搜索引擎"""
@@ -114,6 +198,21 @@ class FormulaEngine:
                     "dosage": "6-12g", "contraindications": "外感实热、脾虚泄泻忌用",
                 },
             }
+        # 合并 CHP 6207 饮片实体（开源蒸馏，MIT）：已策展 15 味优先，其余补 CHP 药性
+        for name, rec in _CHP_INDEX.items():
+            if name in cls._herb_database:
+                continue
+            cls._herb_database[name] = {
+                "pinyin": rec.get("pinyin", ""),
+                "nature": rec.get("nature", ""),
+                "flavor": rec.get("flavor", ""),
+                "meridian": rec.get("meridian", ""),
+                "effect": "",
+                "dosage": "",
+                "contraindications": "",
+                "source": rec.get("source", ""),
+                "evidence_level": rec.get("evidence_level", "L3"),
+            }
         return cls._herb_database
 
     def search_library(self, keyword: str, source: str | None = None) -> list[dict]:
@@ -147,42 +246,64 @@ class FormulaEngine:
         return results
 
     def get_herb_info(self, herb_name: str) -> dict | None:
-        """获取中药详情
+        """获取中药详情（覆盖策展 15 味 + CHP 6207 饮片）
 
         Args:
-            herb_name: 中药名称
+            herb_name: 中药名称或别名
         """
         database = self._get_herb_database()
 
         herb = database.get(herb_name)
         if herb:
-            return {
-                "name": herb_name,
-                "pinyin": herb["pinyin"],
-                "nature": herb["nature"],
-                "flavor": herb["flavor"],
-                "meridian_tropism": herb["meridian"],
-                "effect": herb["effect"],
-                "dosage": herb["dosage"],
-                "contraindications": herb["contraindications"],
-            }
+            return self._herb_to_info(herb_name, herb)
+
+        # CHP 别名归一
+        canon = _CHP_SYN.get(herb_name)
+        if canon and canon in database:
+            return self._herb_to_info(canon, database[canon])
 
         # 模糊匹配
         for name, info in database.items():
             if herb_name in name or name in herb_name:
-                return {
-                    "name": name,
-                    "pinyin": info["pinyin"],
-                    "nature": info["nature"],
-                    "flavor": info["flavor"],
-                    "meridian_tropism": info["meridian"],
-                    "effect": info["effect"],
-                    "dosage": info["dosage"],
-                    "contraindications": info["contraindications"],
-                }
+                return self._herb_to_info(name, info)
 
         logger.warning(f"Herb not found: {herb_name}")
         return None
+
+    @staticmethod
+    def _herb_to_info(name: str, herb: dict) -> dict:
+        return {
+            "name": name,
+            "pinyin": herb.get("pinyin", ""),
+            "nature": herb.get("nature", ""),
+            "flavor": herb.get("flavor", ""),
+            "meridian_tropism": herb.get("meridian", ""),
+            "effect": herb.get("effect", ""),
+            "dosage": herb.get("dosage", ""),
+            "contraindications": herb.get("contraindications", ""),
+            "source": herb.get("source", ""),
+            "evidence_level": herb.get("evidence_level", ""),
+        }
+
+    def check_compatibility(self, herb_names: list[str]) -> dict:
+        """配伍禁忌推理：委托 tcm_safety 检查十八反/十九畏/中西药相互作用。
+
+        输入药材名先经 CHP 别名归一，再走经典规则引擎。返回结构化结果：
+        {herbs_checked, safe, report}。report 为 tcm_safety.SafetyReport.to_dict()。
+        """
+        herbs = []
+        for h in herb_names or []:
+            h = (h or "").strip()
+            if not h:
+                continue
+            canon = _CHP_SYN.get(h, h)  # CHP 别名 → 规范名
+            herbs.append(canon)
+        report = check_safety(herbs=herbs)
+        return {
+            "herbs_checked": herbs,
+            "safe": not report.has_blocking(),
+            "report": report.to_dict(),
+        }
 
     def list_all_herbs(self) -> list[dict]:
         """列出所有已知中药"""
