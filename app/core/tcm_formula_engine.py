@@ -285,8 +285,13 @@ class FormulaEngine:
             "evidence_level": herb.get("evidence_level", ""),
         }
 
-    def check_compatibility(self, herb_names: list[str]) -> dict:
-        """配伍禁忌推理：委托 tcm_safety 检查十八反/十九畏/中西药相互作用。
+    def check_compatibility(
+        self,
+        herb_names: list[str] | None = None,
+        medications: list[str] | None = None,
+        foods: list[str] | None = None,
+    ) -> dict:
+        """配伍禁忌推理：委托 tcm_safety 检查十八反/十九畏/中西药/药-草-食相互作用。
 
         输入药材名先经 CHP 别名归一，再走经典规则引擎。返回结构化结果：
         {herbs_checked, safe, report}。report 为 tcm_safety.SafetyReport.to_dict()。
@@ -298,7 +303,7 @@ class FormulaEngine:
                 continue
             canon = _CHP_SYN.get(h, h)  # CHP 别名 → 规范名
             herbs.append(canon)
-        report = check_safety(herbs=herbs)
+        report = check_safety(herbs=herbs, medications=medications, foods=foods)
         return {
             "herbs_checked": herbs,
             "safe": not report.has_blocking(),

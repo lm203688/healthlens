@@ -161,6 +161,22 @@ _bias_find = _make_pattern_finder(_BIAS_PATTERNS)
 _pii_compiled = [(re.compile(p), name) for p, name in _PII_PATTERNS]
 
 
+# 分诊升级（橙色级）：非急症但应尽快就医（P2-2，借鉴症状检查器「分诊外壳」）。
+# 仅取紧急度识别与升级话术，绝不借鉴其诊断内核（与去医疗化红线冲突）。
+_ORANGE_TRIAGE = [
+    (r"持续(发热|发烧).{0,6}(3|三|四|五|多)天|反复(发热|发烧)|高烧.{0,4}不退", "持续/反复发热"),
+    (r"体重.{0,6}(骤降|暴瘦|明显下降)|不明原因.{0,4}消瘦|短期.{0,4}暴瘦", "不明原因体重下降"),
+    (r"反复头晕|经常头晕|持续头晕|站起来.{0,4}发黑", "反复头晕"),
+    (r"持续呕吐|频繁呕吐|吃啥吐啥|吃什么吐什么", "持续呕吐"),
+    (r"牙龈出血.{0,4}不止|鼻出血.{0,4}不止|皮下.{0,4}瘀斑|反复牙龈出血", "反复出血倾向"),
+    (r"皮疹.{0,4}(伴|合并|加)(发热|发烧)|全身.{0,4}皮疹|皮疹.{0,4}蔓延", "皮疹伴发热"),
+    (r"伤口.{0,4}(化脓|红肿热痛|感染)|刀口.{0,4}流脓", "伤口感染迹象"),
+    (r"慢性疼痛.{0,4}加重|疼痛.{0,4}越来越重|夜里痛醒", "疼痛加重"),
+    (r"吞咽困难|吞咽.{0,4}疼痛|吞东西.{0,4}卡", "吞咽困难"),
+    (r"尿.{0,4}带血|血尿|尿中.{0,4}有血", "血尿"),
+]
+
+
 def find_pii(text: str) -> list[tuple[str, str]]:
     """返回命中的 PII 列表 [(原文, 类型)]，供清洗与审计使用。"""
     hits: list[tuple[str, str]] = []
@@ -274,8 +290,48 @@ RULES = build_rules()
 # ---------------------------------------------------------------------------
 
 
+def triage_urgency(text: str) -> dict:
+    """分诊紧急度分级（P2-2）：借鉴症状检查器「分诊外壳」，仅取紧急度识别与升级话术，
+    绝不借鉴其诊断内核（与去医疗化红线冲突）。
+
+    分级：
+      - red    ：医学急症（命中 RED_FLAG），需立即 120 / 急诊；
+      - orange ：非急症但应尽快（24–48h）由执业医师评估；
+      - green  ：常规稳态建议即可。
+
+    Returns: {level, needs_emergency, escalation_lines, matched_symptom}
+    """
+    red = _redflag_find(text)
+    if red:
+        return {
+            "level": "red",
+            "needs_emergency": True,
+            "escalation_lines": [
+                "请立即联系急救（120）或前往最近急诊；本工具不处理急症。",
+            ],
+            "matched_symptom": red,
+        }
+    for rx, label in _ORANGE_TRIAGE:
+        if re.search(rx, text, re.IGNORECASE):
+            return {
+                "level": "orange",
+                "needs_emergency": False,
+                "escalation_lines": [
+                    f"检测到「{label}」等信号，建议尽快（24–48 小时内）由执业医师评估。",
+                    "以上为稳态健康管理信息，不构成医学诊断或治疗建议。",
+                ],
+                "matched_symptom": label,
+            }
+    return {
+        "level": "green",
+        "needs_emergency": False,
+        "escalation_lines": [],
+        "matched_symptom": None,
+    }
+
+
 def pre_gate(user_input: str) -> GateResult:
-    """生成前闸门：拦截医学急症等高危诉求（MedAssist 前置红牌）。"""
+    """生成前闸门：拦截医学急症（红牌 HALT）+ 分诊升级（橙牌 caution）。"""
     findings: list[Finding] = []
     for rule in RULES:
         if rule.category != GuardCategory.RED_FLAG:
@@ -292,8 +348,29 @@ def pre_gate(user_input: str) -> GateResult:
                     rule.suggestion,
                 )
             )
+
+    # 橙色级分诊升级（非急症但应尽快就医）：仅追加 caution，不阻断主流程
+    if not findings:
+        tri = triage_urgency(user_input)
+        if tri["level"] == "orange":
+            findings.append(
+                Finding(
+                    "TRI-ORANGE",
+                    GuardCategory.RED_FLAG,
+                    Severity.WARN,
+                    tri["matched_symptom"] or user_input,
+                    "检测到应尽快就医的分诊信号，建议升级到就医指引。",
+                    tri["escalation_lines"][0] if tri["escalation_lines"] else "",
+                )
+            )
+
     if findings:
-        return GateResult(passed=False, level="halt", findings=findings)
+        has_halt = any(f.severity == Severity.HALT for f in findings)
+        return GateResult(
+            passed=not has_halt,
+            level="halt" if has_halt else "caution",
+            findings=findings,
+        )
     return GateResult(passed=True, level="none", findings=[])
 
 
@@ -380,6 +457,11 @@ def demo():
     print(
         f"不安全事件率（演示样本）: {unsafe}/{len(sample)} = {unsafe / len(sample):.0%}"
     )
+
+    print("\n=== 分诊紧急度分级演示（P2-2）===")
+    for t in ["我最近持续发烧四天了", "帮我看看最近容易疲劳怎么调理", "我突然半身不遂"]:
+        tri = triage_urgency(t)
+        print(f"  [{tri['level']}] {t} -> {tri['escalation_lines'] or '常规建议'}")
 
 
 # ---------------------------------------------------------------------------

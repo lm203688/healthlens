@@ -179,3 +179,41 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 ### 本批单测（4 个新文件，随代码一并推送）
 - `tests/core/test_tcm_safety.py`（10 项）、`tests/core/test_bioage_engine.py`（6 项）、`tests/core/test_tcm_formula_engine_chp.py`（7 项）、`tests/agent/test_safety_bias.py`（6 项）。
 - 本地验证方式：无 venv，用 stub 包注册（绕过 `app/__init__` 的 fastapi 链）+ loguru stub 离线跑全部断言 33/33 通过；CI 用标准 pytest。
+
+### ✅ P1-2：药-草-食三联相互作用（2026-09-09，借鉴 DHFI-C 本体思路）
+- **`app/core/tcm_safety.py` 扩展**：新增第五类安全校验——药-草-食三联相互作用。
+  - `FOOD_DRUG_INTERACTIONS`（食物×西药类别）：葡萄柚×抗凝药/降压药/环孢素/他汀（CYP3A4，high）、高维K食物×华法林（拮抗）、牛奶×四环素（螯合）、浓茶×铁剂（鞣酸）、酒精×降糖/镇静/头孢/降压药；
+  - `FOOD_HERB_INTERACTIONS`（食物×中药）：萝卜×人参（破气）、浓茶×人参、高盐×甘草（水钠潴留）、辛辣×附子/肉桂（助热）——多为传统理论，标注「非临床结论」；
+  - `FOOD_SYNONYMS` + `classify_food()`：口语食物归一到 canonical；`_DRUG_NAME_TO_CLASS` 扩充他汀/铁剂/四环素/头孢甲硝唑四类以支持食物×药匹配。
+  - `check_safety(...)` 新增 `foods` 参数；`SafetyFinding.kind="food_interaction"`。
+- **`app/core/tcm_formula_engine.py`**：`check_compatibility(herb_names, medications, foods)` 透传 foods 到 `tcm_safety`，统一安全入口。
+- **本地验证**：offline harness 15/15 全过（含葡萄柚×华法林 high、酒×二甲双胍 high、萝卜×人参 low、咸菜×甘草 moderate、苹果无假阳、classify_food 归一）。
+
+### ✅ P2-2：症状检查器分诊紧急度闸门（2026-09-09，仅取分诊外壳）
+- **`healthlens_agent/safety.py`** 新增可执行分诊分级，与 RED_FLAG 前置闸门合一：
+  - `_ORANGE_TRIAGE`（10 条橙色级模式：持续发热>3天/不明体重下降/反复头晕/持续呕吐/反复出血/皮疹伴热/伤口感染/疼痛加重/吞咽困难/血尿）；
+  - `triage_urgency(text) -> {level: red|orange|green, needs_emergency, escalation_lines, matched_symptom}`：red→120/急诊、orange→24–48h 就医、green→常规建议；
+  - `pre_gate()` 增强：急症仍 `halt`（红色优先），非急症分诊信号给 `caution`（TRI-ORANGE，不阻断主流程）。
+- **诚实边界**：仅借鉴症状检查器的「紧急度识别 + 升级话术」，**绝不借鉴其诊断内核**（与去医疗化红线冲突）。
+- **单测**：`tests/agent/test_safety_triage.py`（5 项）：red/orange/green 分级 + pre_gate 橙 caution 不阻断 + 红仍 halt。
+- `demo()` 已含分诊演示（orange/green/red 三例）。
+
+### ✅ 知识层对齐报告（二期交付物，2026-09-09）
+- `docs/tcm_knowledge_alignment.md`：记录 TCM-MKG 6,207 饮片与 613 实体库 / `tcm_formula_engine` / `tcm_safety` 对接点、诚实边界（机制假说非临床、不伪造组学、去医疗化）、已知缺口（CHP_Encoder 分子指纹暂缓、risk_engine 未直消费食交互）、验证口径。
+- 与扫描报告 Section 四「二期交付物：知识层对齐报告」对齐闭环。
+
+### 路线图收口状态（截至 2026-09-09）
+| 优先级 | 状态 | 备注 |
+|---|---|---|
+| P0-1 ClinPGx | ✅ | ECS 外网复验仍为信息缺口（需出网可达） |
+| P0-2 护栏提示词 + 红队 | ✅ | |
+| P0-2.5 红队缺口闭环 | ✅ | |
+| P1 CHP 入库 | ✅ | 6,207 饮片 |
+| P1 续 配伍禁忌 | ✅ | |
+| **P1-2 药-草-食** | ✅ | 本轮新增 |
+| P2 PhenoAge 轴 | ✅ | engine 已落地 |
+| **P2-2 分诊闸门** | ✅ | 本轮新增 |
+| P3 bias LLM-judge | ⚠️ | 代码完成；激活待用户提供 OpenAI 兼容端点+key（ECS 8420 网关实测不存在） |
+| 知识层对齐报告 | ✅ | 本轮新增 |
+| 八轴前端展示 | ⬜ | 需前端构建，列为下一 sprint（engine 已就绪） |
+| ClinPGx ECS 外网实测 | ⬜ | 信息缺口，需 ECS 出网可达后复验 |

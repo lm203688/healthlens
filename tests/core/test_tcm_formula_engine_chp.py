@@ -50,3 +50,24 @@ def test_syn_index_consistency():
     """别名索引与实际实体名一致。"""
     for canon in _CHP_SYN.values():
         assert canon in _CHP_INDEX
+
+
+def test_check_compatibility_food_drug():
+    """药-草-食三联（P1-2）：葡萄柚 × 华法林 经 check_compatibility 拦截。"""
+    res = FormulaEngine().check_compatibility(
+        herb_names=[], medications=["华法林"], foods=["葡萄柚"]
+    )
+    assert res["report"]["count"] >= 1
+    assert any(
+        f["kind"] == "food_interaction" for f in res["report"]["findings"]
+    )
+
+
+def test_check_compatibility_food_herb():
+    """药-草-食三联（P1-2）：萝卜 × 人参 经 check_compatibility 提示。"""
+    res = FormulaEngine().check_compatibility(
+        herb_names=["人参"], foods=["萝卜"]
+    )
+    assert any(
+        f["kind"] == "food_interaction" for f in res["report"]["findings"]
+    )

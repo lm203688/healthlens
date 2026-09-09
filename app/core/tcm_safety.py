@@ -1,12 +1,14 @@
 """中医安全护栏引擎（线上后端版）
 ================================
 
-覆盖三类必须前置的安全校验，直接消解法域/专家/监管对「食疗/方剂推荐」的第一攻击点：
+覆盖四类必须前置的安全校验，直接消解法域/专家/监管对「食疗/方剂推荐」的第一攻击点：
 
 1. **配伍禁忌（十八反 / 十九畏）** —— 药材与药材同方时的经典禁忌。
 2. **妊娠禁忌** —— 孕期禁用/慎用药材。
 3. **中西药相互作用** —— 在服西药（抗凝/降压/降糖/地高辛/镇静/MAOI…）与中药的
    已知相互作用，给出风险等级与机制说明（可配置，便于持续补全）。
+4. **药-草-食三联相互作用（借鉴 DHFI-C 本体思路）** —— 食物与西药、食物与中药的
+   已知相互作用（如葡萄柚×抗凝药、牛奶×四环素、萝卜×人参），给出风险等级。
 
 所有规则为确定性数据 + 规范化别名匹配，零外部依赖、可单测、可解释。
 诊断/方剂推荐输出前必须调用 `check_safety`，将告警并入报告，且不删除原方案，
@@ -186,6 +188,86 @@ _DRUG_NAME_TO_CLASS = {
     "司来吉兰": "单胺氧化酶抑制剂/MAOI", "maoi": "单胺氧化酶抑制剂/MAOI",
     "呋塞米": "利尿剂", "氢氯噻嗪": "利尿剂", "利尿剂": "利尿剂",
     "环孢素": "环孢素/免疫抑制剂", "cyclosporin": "环孢素/免疫抑制剂",
+    # 药-草-食三联相互作用补充类别
+    "他汀": "降脂药/他汀", "阿托伐他汀": "降脂药/他汀", "辛伐他汀": "降脂药/他汀",
+    "瑞舒伐他汀": "降脂药/他汀", "洛伐他汀": "降脂药/他汀",
+    "铁": "铁剂", "铁剂": "铁剂", "硫酸亚铁": "铁剂", "ferrous": "铁剂",
+    "四环素": "抗生素/四环素", "喹诺酮": "抗生素/四环素", "左氧氟沙星": "抗生素/四环素",
+    "环丙沙星": "抗生素/四环素", "多西环素": "抗生素/四环素", "米诺环素": "抗生素/四环素",
+    "头孢": "头孢/甲硝唑", "头孢克肟": "头孢/甲硝唑", "头孢呋辛": "头孢/甲硝唑",
+    "甲硝唑": "头孢/甲硝唑", "metronidazole": "头孢/甲硝唑",
+}
+
+
+# ---------------------------------------------------------------------------
+# 5. 药-草-食三联相互作用（借鉴 DHFI-C 本体思路：food × drug / food × herb）
+#    确定性证据级规则；机制多属文献/传统理论，输出须标注非临床结论。
+# ---------------------------------------------------------------------------
+# 食物名 → canonical（用户口语化食物归一到可匹配的标准名）
+FOOD_SYNONYMS: dict[str, str] = {
+    "葡萄柚": "葡萄柚", "西柚": "葡萄柚", "柚子": "葡萄柚",
+    "菠菜": "高维K食物", "西兰花": "高维K食物", "纳豆": "高维K食物",
+    "羽衣甘蓝": "高维K食物", "甘蓝": "高维K食物",
+    "牛奶": "牛奶/乳制品", "乳制品": "牛奶/乳制品", "酸奶": "牛奶/乳制品",
+    "奶酪": "牛奶/乳制品", "钙片": "牛奶/乳制品", "钙": "牛奶/乳制品",
+    "茶": "茶/浓茶", "浓茶": "茶/浓茶", "绿茶": "茶/浓茶", "红茶": "茶/浓茶",
+    "咖啡": "茶/浓茶",
+    "酒": "酒精", "酒精": "酒精", "白酒": "酒精", "啤酒": "酒精", "红酒": "酒精",
+    "萝卜": "萝卜", "白萝卜": "萝卜",
+    "辛辣": "辣椒/辛辣", "辣椒": "辣椒/辛辣", "麻辣": "辣椒/辛辣", "花椒": "辣椒/辛辣",
+    "高盐": "高盐食物", "咸菜": "高盐食物", "腌制品": "高盐食物",
+}
+
+
+def classify_food(name: str) -> str | None:
+    """把用户输入的食物名归一到 canonical；无命中返回 None。"""
+    n = (name or "").strip().lower()
+    for k, v in FOOD_SYNONYMS.items():
+        if k.lower() in n:
+            return v
+    return None
+
+
+# 食物 × 西药类别：[(西药类别, 机制, 等级)]
+FOOD_DRUG_INTERACTIONS: dict[str, list[tuple[str, str, Severity]]] = {
+    "葡萄柚": [
+        ("抗凝药/华法林", "葡萄柚抑制 CYP3A4，升高华法林血药浓度、增加出血风险", "high"),
+        ("降压药", "葡萄柚升高钙拮抗剂（如硝苯地平）血药浓度，致低血压", "high"),
+        ("环孢素/免疫抑制剂", "葡萄柚升高环孢素血药浓度，增加肾毒性", "high"),
+        ("降脂药/他汀", "葡萄柚抑制代谢，增加他汀肌病/横纹肌溶解风险", "high"),
+    ],
+    "高维K食物": [
+        ("抗凝药/华法林", "高维生素K食物拮抗华法林抗凝效果，INR 波动", "moderate"),
+    ],
+    "牛奶/乳制品": [
+        ("抗生素/四环素", "钙螯合四环素/喹诺酮，显著降低抗菌药物吸收", "moderate"),
+    ],
+    "茶/浓茶": [
+        ("铁剂", "鞣酸与铁结合，抑制铁剂吸收", "moderate"),
+    ],
+    "酒精": [
+        ("降糖药/胰岛素/磺脲类", "酒精诱发迟发性低血糖，风险高", "high"),
+        ("镇静催眠药/苯二氮䓬", "酒精叠加中枢抑制，呼吸抑制风险", "high"),
+        ("头孢/甲硝唑", "双硫仑样反应（面红、心悸、呕吐）", "high"),
+        ("降压药", "酒精致血压波动/体位性低血压", "low"),
+    ],
+}
+
+# 食物 × 中药（canonical）：[(药材 canonical, 机制, 等级)]；多为传统理论，标注假说级
+FOOD_HERB_INTERACTIONS: dict[str, list[tuple[str, str, Severity]]] = {
+    "萝卜": [
+        ("人参", "萝卜破气，传统理论认为削弱人参补气效力", "low"),
+    ],
+    "茶/浓茶": [
+        ("人参", "鞣酸/茶碱影响人参皂苷类吸收（传统理论）", "low"),
+    ],
+    "高盐食物": [
+        ("甘草", "高盐叠加甘草水钠潴留，升高血压", "moderate"),
+    ],
+    "辣椒/辛辣": [
+        ("附子", "辛辣助热，传统理论认为加剧温热药燥性", "low"),
+        ("肉桂", "辛辣助热，传统理论认为加剧温热药燥性", "low"),
+    ],
 }
 
 
@@ -250,6 +332,7 @@ def check_safety(
     herbs: list[str] | None = None,
     formulas: list[list[str]] | None = None,
     medications: list[str] | None = None,
+    foods: list[str] | None = None,
     pregnancy: bool = False,
 ) -> SafetyReport:
     """统一安全入口。
@@ -258,6 +341,7 @@ def check_safety(
         herbs: 单味药材/食物列表（含推荐食疗方的组成）。
         formulas: 复方组成列表，如 [["附子","干姜","甘草"], ...]。
         medications: 用户正在服用的西药名/类名。
+        foods: 用户日常/同服食物（药-草-食三联相互作用校验）。
         pregnancy: 是否孕期。
     Returns:
         SafetyReport（含分级与处置建议）。
@@ -265,6 +349,7 @@ def check_safety(
     report = SafetyReport()
     herbs = [norm(h) for h in (herbs or []) if h]
     formulas = [[norm(h) for h in f] for f in (formulas or [])]
+    foods = [classify_food(f) or (f or "").strip() for f in (foods or []) if f]
 
     # 1. 配伍禁忌：逐对检查十八反/十九畏
     all_herb_sets = [set(herbs)] + [set(f) for f in formulas]
@@ -308,6 +393,35 @@ def check_safety(
                             detail=f"妊娠{level}：{h}",
                         )
                     )
+
+    # 4. 药-草-食三联相互作用
+    for food in foods:
+        # 4a. 食物 × 西药
+        for drug_cls, mechanism, sev in FOOD_DRUG_INTERACTIONS.get(food, []):
+            hit_med = None
+            for med in medications or []:
+                if classify_drug(med) == drug_cls:
+                    hit_med = med
+                    break
+            if hit_med:
+                report.add(
+                    SafetyFinding(
+                        kind="food_interaction",
+                        severity=sev,
+                        detail=f"食物[{food}] 与西药[{hit_med}]：{mechanism}（机制假说，非临床结论）",
+                    )
+                )
+        # 4b. 食物 × 中药
+        for herb, mechanism, sev in FOOD_HERB_INTERACTIONS.get(food, []):
+            present = herb in herbs or any(herb in f for f in formulas)
+            if present:
+                report.add(
+                    SafetyFinding(
+                        kind="food_interaction",
+                        severity=sev,
+                        detail=f"食物[{food}] 与中药[{herb}]：{mechanism}（传统理论，非临床结论）",
+                    )
+                )
 
     return report
 

@@ -9,6 +9,7 @@ from app.core.tcm_safety import (
     norm,
     HERB_SYNONYMS,
     classify_drug,
+    classify_food,
 )
 
 
@@ -77,3 +78,51 @@ def test_report_shape():
     d = r.to_dict()
     assert "level" in d and "findings" in d and "has_high_risk" in d
     assert r.source == "tcm_safety"
+
+
+# ---------------------------------------------------------------------------
+# 药-草-食三联相互作用（P1-2，借鉴 DHFI-C 本体思路）
+# ---------------------------------------------------------------------------
+def test_food_drug_grapefruit_warfarin():
+    """葡萄柚 × 华法林：CYP3A4 抑制升高 INR，high。"""
+    r = check_safety(foods=["葡萄柚"], medications=["华法林"])
+    assert any(
+        f.kind == "food_interaction" and f.severity == "high" for f in r.findings
+    )
+
+
+def test_food_drug_alcohol_sulfonylurea():
+    """酒精 × 磺脲类降糖药：迟发性低血糖，high。"""
+    r = check_safety(foods=["酒"], medications=["二甲双胍"])
+    assert any(
+        f.kind == "food_interaction" and f.severity == "high" for f in r.findings
+    )
+
+
+def test_food_herb_radish_ginseng():
+    """萝卜 × 人参：传统理论破气，low（非临床结论）。"""
+    r = check_safety(herbs=["人参"], foods=["萝卜"])
+    assert any(
+        f.kind == "food_interaction" and f.severity == "low" for f in r.findings
+    )
+
+
+def test_food_herb_salt_licorice():
+    """高盐食物 × 甘草：加重水钠潴留，moderate。"""
+    r = check_safety(herbs=["甘草"], foods=["咸菜"])
+    assert any(
+        f.kind == "food_interaction" and f.severity == "moderate" for f in r.findings
+    )
+
+
+def test_food_interaction_clean_no_false_positive():
+    """无相关食物/药物组合不应误报 food_interaction。"""
+    r = check_safety(herbs=["人参", "白术"], foods=["苹果"])
+    assert not any(f.kind == "food_interaction" for f in r.findings)
+
+
+def test_classify_food():
+    """食物名归一到 canonical。"""
+    assert classify_food("西柚") == "葡萄柚"
+    assert classify_food("牛奶") == "牛奶/乳制品"
+    assert classify_food("unknown-food-xyz") is None
