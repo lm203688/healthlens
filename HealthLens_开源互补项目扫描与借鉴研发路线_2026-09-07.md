@@ -202,7 +202,24 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 - `docs/tcm_knowledge_alignment.md`：记录 TCM-MKG 6,207 饮片与 613 实体库 / `tcm_formula_engine` / `tcm_safety` 对接点、诚实边界（机制假说非临床、不伪造组学、去医疗化）、已知缺口（CHP_Encoder 分子指纹暂缓、risk_engine 未直消费食交互）、验证口径。
 - 与扫描报告 Section 四「二期交付物：知识层对齐报告」对齐闭环。
 
-### 路线图收口状态（截至 2026-09-09）
+### ✅ 三期 P2-1：PhenoAge 代谢-炎症轴接入八轴模型 + API 暴露（2026-09-10）
+上一轮 P2 只产出了独立 `bioage_engine.py`，**未接入八轴融合引擎、也无 API 消费者**（实测 `grep` 全仓仅其自身测试引用）。本轮补齐链路：
+
+1. **`app/lib/fusion_engine.py` v0.3 → v0.4**：
+   - `UserProfile` 新增 `chrono_age` / `is_male` / `biomarkers` 三字段；
+   - `recommend()` 用体检指标调 `BioAgeEngine.assess()` 得 `axis_score`（0-100）；
+   - **轴位映射（假说级，非临床）**：代谢-炎症轴 → 既有八轴 `F`（正邪-炎症，CRP 等炎症负荷）+ `A`（气化/自噬 AMPK-mTOR，糖脂代谢底物感应）；轴分 < 60 视为弱轴 → 并入 `weak_axes` 参与个性化匹配；
+   - **关键正确性**：`has_gene` 在接入体检轴**之前**计算，避免体检指标驱动的个性化被误报为基因定制（is_demo 三态不被污染）；仅体检数据时横幅如实标注「已按体检指标（代谢-炎症轴）做个性化匹配…非基因定制」；
+   - 输出新增 `has_bioage` / `axis_scores` / `bioage`（含 8 项标志物明细、`not_clinical`、方法说明）。
+2. **新增 `app/api/axes.py`（注册为 `/api/v1/axes`）**——填补 fusion_engine 无 API 消费者的空白：
+   - `GET /meta`：轴标识/落点轴/阈值/标志物清单（前端渲染用）；
+   - `POST /bioage`：独立算轴分与生物学年龄偏移（前端单轴展示）；
+   - `POST /assess`：体检指标 + 基因/组学 → 八轴个性化推荐（含免责声明）。
+   - 全部响应恒带 `not_clinical=True` 与方法说明，遵循去医疗化边界。
+3. **单测**：`tests/core/test_fusion_engine_bioage.py`（7 项）：轴标识稳定、差指标标弱轴并映射 F/A、好指标不误标、**体检不污染 has_gene**、无数据仍 is_demo、仅基因不触发生物年龄、输出结构与诚实标注。
+- **本地验证**：offline harness（stub 包 + loguru stub）**19/19 全过**。
+
+### 路线图收口状态（截至 2026-09-10）
 | 优先级 | 状态 | 备注 |
 |---|---|---|
 | P0-1 ClinPGx | ✅ | ECS 外网复验仍为信息缺口（需出网可达） |
@@ -211,9 +228,9 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 | P1 CHP 入库 | ✅ | 6,207 饮片 |
 | P1 续 配伍禁忌 | ✅ | |
 | **P1-2 药-草-食** | ✅ | 本轮新增 |
-| P2 PhenoAge 轴 | ✅ | engine 已落地 |
+| P2 PhenoAge 轴 | ✅ | engine + 八轴接入 + API（2026-09-10 闭环） |
 | **P2-2 分诊闸门** | ✅ | 本轮新增 |
 | P3 bias LLM-judge | ⚠️ | 代码完成；激活待用户提供 OpenAI 兼容端点+key（ECS 8420 网关实测不存在） |
 | 知识层对齐报告 | ✅ | 本轮新增 |
-| 八轴前端展示 | ⬜ | 需前端构建，列为下一 sprint（engine 已就绪） |
+| 八轴前端展示 | 🟡 | 后端+API 已就绪（`/api/v1/axes/meta|bioage|assess`）；前端 UI 接线待下一 sprint |
 | ClinPGx ECS 外网实测 | ⬜ | 信息缺口，需 ECS 出网可达后复验 |

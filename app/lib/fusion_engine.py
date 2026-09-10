@@ -1,6 +1,12 @@
 """
-HealthLens 个性化融合引擎 v0.3（moat 脚手架 + LLM 增强）
+HealthLens 个性化融合引擎 v0.4（moat 脚手架 + LLM 增强 + 代谢-炎症轴）
 ============================================
+v0.4 新增（2026-09-10，研发路线三期 P2-1）：
+  - 接入 bioage_engine 的「代谢-炎症轴」（PhenoAge 借鉴，透明体检指标代理）
+  - 轴分低于阈值时，把该轴映射到既有八轴 F(正邪-炎症)/A(气化-自噬 AMPK-mTOR) 参与匹配
+  - 体检指标驱动的个性化与基因驱动的个性化分别标注（is_demo 三态不被污染）
+  - 任何异常静默回退到规则引擎，永不阻断主流程
+
 v0.3 新增（2026-08-27）：
   - USE_LLM=1 时调用本地 Ollama 模型对处方文本做语义增强（个人化、自然化）
   - 失败静默回退到规则引擎，永不阻断主流程
@@ -13,6 +19,19 @@ import re
 import urllib.request
 from dataclasses import dataclass, field, asdict
 from typing import Optional
+
+from app.core.bioage_engine import BioAgeEngine, AXIS_KEY, AXIS_LABEL
+
+# 代谢-炎症轴 → 既有八轴落点（假说级映射，非临床结论）：
+#   F = 正邪-炎症（CRP 等炎症负荷）；A = 气化/自噬(AMPK-mTOR)（糖脂代谢底物感应）
+BIOAGE_AXIS_MAP: set[str] = {"F", "A"}
+# 轴分低于该阈值视为该轴偏弱，参与个性化匹配
+BIOAGE_WEAK_THRESHOLD: float = 60.0
+# assess() 接受的标志物字段（用于过滤用户传入的未知键）
+_BIOAGE_FIELDS = (
+    "glucose", "hba1c", "hs_crp", "waist_cm",
+    "hdl", "triglycerides", "sbp", "bmi",
+)
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "case_evidence_db.json")
 MAP_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "tcm_pathway_map.json")
@@ -54,6 +73,10 @@ class UserProfile:
     weak_axes: set[str] = field(default_factory=set)
     # 个体禁忌（命中即排除相关建议）
     contraindications: set[str] = field(default_factory=set)
+    # v0.4：体检指标驱动的「代谢-炎症轴」（PhenoAge 代理，非临床）
+    chrono_age: Optional[int] = None
+    is_male: bool = True
+    biomarkers: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -146,7 +169,42 @@ def recommend(profile: UserProfile, cases: Optional[list[dict]] = None,
         if ax:
             weak_axes.add(ax)
 
+    # has_gene 仅由基因/组学来源判定（先算，避免被体检指标污染 is_demo 三态）
     has_gene = bool(weak_canon) or bool(weak_axes)
+
+    # v0.4：代谢-炎症轴（体检指标代理，PhenoAge 借鉴）。
+    # 轴分偏低 → 映射到 F(正邪-炎症)/A(气化-自噬) 参与个性化匹配。
+    bioage_block: Optional[dict] = None
+    has_bioage = False
+    bm = {
+        k: v for k, v in (profile.biomarkers or {}).items()
+        if k in _BIOAGE_FIELDS and v is not None
+    }
+    if bm and profile.chrono_age is not None:
+        try:
+            engine = BioAgeEngine()
+            ba = engine.assess(profile.chrono_age, is_male=profile.is_male, **bm)
+            has_bioage = True
+            axis_weak = ba.axis_score < BIOAGE_WEAK_THRESHOLD
+            if axis_weak:
+                weak_axes |= BIOAGE_AXIS_MAP
+            bioage_block = {
+                "axis_key": AXIS_KEY,
+                "axis_label": AXIS_LABEL,
+                "chrono_age": ba.chrono_age,
+                "bio_age": ba.bio_age,
+                "delta": ba.delta,
+                "axis_score": ba.axis_score,
+                "axis_weak": axis_weak,
+                "band": engine.delta_band(ba.delta),
+                "mapped_axes": sorted(BIOAGE_AXIS_MAP),
+                "not_clinical": ba.not_clinical,
+                "method": ba.method,
+                "markers": [asdict(m) for m in ba.markers],
+            }
+        except Exception:
+            bioage_block = None  # 静默回退，永不阻断主流程
+            has_bioage = False
 
     recs: list[Recommendation] = []
     for c in cases:
@@ -199,18 +257,28 @@ def recommend(profile: UserProfile, cases: Optional[list[dict]] = None,
     user_context = "; ".join(profile.pathway_scores.keys())
     rec_dicts = _llm_enhance(rec_dicts, user_context)
 
-    # is_demo 三态：缺基因数据 → 整批示例横幅
+    # is_demo 三态：基因/组学 与 体检指标 两条个性化来源分别标注
     banner = None
-    if not has_gene:
+    if not has_gene and not has_bioage:
         banner = "is_demo：未提供基因/组学数据，以下为「通用健康建议」示例，非为你定制。"
+    elif not has_gene and has_bioage:
+        banner = (
+            "未提供基因/组学数据；已按体检指标（代谢-炎症轴）做个性化匹配，"
+            "属生活方式参考，非基因定制、非临床结论。"
+        )
     elif any(r["mode"] == "general" for r in rec_dicts):
         banner = "部分条目无基因交集，标记为通用建议；个性化条目已标 personalized。"
 
     return {
         "banner": banner,
         "has_gene": has_gene,
+        "has_bioage": has_bioage,
         "weak_pathways": sorted(weak_display),
         "weak_axes": sorted(weak_axes),
+        "axis_scores": (
+            {AXIS_KEY: bioage_block["axis_score"]} if bioage_block else {}
+        ),
+        "bioage": bioage_block,
         "recommendations": rec_dicts,
         "llm_enabled": os.environ.get("USE_LLM", "0"),
     }
@@ -226,6 +294,7 @@ def disclaimer() -> str:
 
 
 if __name__ == "__main__":
-    print("HealthLens fusion_engine v0.3 — 个性化融合引擎（+ LLM 增强）")
+    print("HealthLens fusion_engine v0.4 — 个性化融合引擎（+ LLM 增强 + 代谢-炎症轴）")
     print("载入案例库:", len(load_cases()), "条 | 映射通路:", len(_CANON_TO_AXIS), "条")
     print("LLM:", "已启用" if os.environ.get("USE_LLM", "").lower() in ("1", "true") else "规则模式（USE_LLM=1 开启）")
+    print(f"代谢-炎症轴: {AXIS_LABEL}（{AXIS_KEY}）→ 落点轴 {sorted(BIOAGE_AXIS_MAP)}，弱轴阈值 {BIOAGE_WEAK_THRESHOLD}")

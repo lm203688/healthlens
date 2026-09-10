@@ -90,6 +90,7 @@ def create_app() -> FastAPI:
     from app.api.notifications import router as notifications_router
     from app.api.medication_adherence import router as adherence_router
     from app.api.knowledge import router as knowledge_router
+    from app.api.axes import router as axes_router
 
     app.include_router(auth_router, prefix="/api/v1/auth", tags=["认证"])
     app.include_router(records_router, prefix="/api/v1/records", tags=["数据接入"])
@@ -106,6 +107,7 @@ def create_app() -> FastAPI:
     app.include_router(notifications_router, prefix="/api/v1/notifications", tags=["通知中心"])
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
     app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
+    app.include_router(axes_router, prefix="/api/v1/axes", tags=["八轴稳态"])
 
     # 智能体能力路由（GOAI 借鉴落地）
     try:
