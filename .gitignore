@@ -103,6 +103,11 @@ desktop.ini
 node_modules/
 .next/
 .cache/
+# Vite 配置热重载产生的临时文件（每次改 vite.config.js 都会生成）
+frontend/vite.config.js.timestamp-*.mjs
+# 注意：frontend/src/index.css、tailwind.config.js、postcss.config.js
+# 是 SPA 构建的必需输入，**必须入库** —— 否则 CI 构建 SPA 时
+# main.jsx 的 `import './index.css'` 解析失败，/app/ 产物直接缺失。
 
 # ============================================================
 # 内层应用仓库（healthlens/ 子目录自带 .git + 后端代码）

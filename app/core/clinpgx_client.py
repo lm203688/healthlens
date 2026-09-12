@@ -73,9 +73,17 @@ class GuidelineInfo:
 
 
 def get_gene_detail(gene: str) -> dict | None:
-    """ClinPGx gene 详情 (名称/别名/是否有 CPIC 指南)。"""
+    """ClinPGx gene 详情 (名称/别名/是否有 CPIC 指南)。
+
+    端点形式注意 (2026-09-10 ECS 实测):
+      `/data/gene/{id}` 的路径参数只接受 ClinPGx 内部 ID (如 PA124),
+      传基因符号 (`/data/gene/CYP2C19`) 会返回 404
+      `No Gene with ID 'CYP2C19' found.`。
+      按基因符号查询必须用 query 形式 `?symbol=<gene>`。
+    返回形如 {"data":[{"id":"PA124","symbol":"CYP2C19","name":...}],"status":"success"}。
+    """
     try:
-        return _get_json(f"{CLINPGX_BASE}/data/gene/{gene}")
+        return _get_json(f"{CLINPGX_BASE}/data/gene?symbol={gene}&view=min")
     except Exception:
         return None
 

@@ -24,11 +24,13 @@
 import json
 import re
 import shutil
+import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import paramiko
+# paramiko 改为惰性导入（见 fetch_backend_sitemap）：仅 SSH 拉取后端 sitemap 时用到，
+# 静态构建（拷贝 worker/SPA/HTML）不依赖它，避免未安装时整个脚本 import 阶段崩溃。
 
 CST = timezone(timedelta(hours=8))
 ROOT = Path(__file__).resolve().parents[3]          # .../healthlens
@@ -63,6 +65,7 @@ def fetch_backend_sitemap() -> str | None:
     走 127.0.0.1:8000（nginx 反代源站），不经过 Cloudflare。失败返回 None 由调用方兜底。
     """
     try:
+        import paramiko  # 惰性导入：SSH 辅助仅拉 sitemap 时用，静态构建不依赖
         c = paramiko.SSHClient()
         c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         c.connect(
@@ -190,14 +193,61 @@ def build():
     # ---------- 1c-bis. React SPA 产品入口（frontend/ -> dist/app/） ----------
     # 根路径 / 保留给内容型 GEO 首页（SEO 主资产），SPA 挂载在 /app/ 子路径。
     # 对应 _worker.js 的第 3b 条路由（/app/** 回退到 /app/index.html）。
+    #
+    # 【2026-08-31 加固】此前 SPA 缺失时只打 WARN 就继续构建，于是「没有 app/ 的
+    # 残缺产物」被部署上线：/app/ 因 Pages 的 ASSETS 对未命中路径做 SPA 回退、
+    # 返回根 index.html 且 status=200，worker 的 shell.status < 400 误判通过
+    # → React 应用被 GEO 首页顶替（当天真实事故，凌晨自动化触发）。
+    # 现改为：先尝试 npm run build 自动构建；仍失败则记入 errors 让构建非 0 退出。
+    # 宁可中止部署，也绝不用残缺产物覆盖线上正常版本。
     spa_dist = ROOT / "frontend" / "dist"
-    if spa_dist.is_dir() and (spa_dist / "index.html").is_file():
+
+    def _spa_ready() -> bool:
+        return spa_dist.is_dir() and (spa_dist / "index.html").is_file()
+
+    def _run_npm(cmd: str, timeout: int = 600):
+        return subprocess.run(
+            cmd, cwd=str(ROOT / "frontend"), shell=True,
+            capture_output=True, text=True, timeout=timeout,
+        )
+
+    if not _spa_ready():
+        log(f"  [WARN] 无 React SPA 产物: {spa_dist}（尝试 npm run build 自动构建）")
+        try:
+            r = _run_npm("npm run build")
+            if r.returncode == 0:
+                log("  [OK] npm run build 成功")
+            else:
+                # 【2026-09-12 修复 · 线上连续 5 天 /app/ 打不开的根因】
+                # GitHub Actions 是全新检出：frontend/node_modules 不存在，
+                # 而 .gitignore 又把 frontend/dist 排除在仓库外，于是 CI 上
+                # 第一次 npm run build 必然 "vite: not found"。此前只试一次就
+                # 记 errors —— 但 workflow 里该步骤带 continue-on-error: true，
+                # 失败被当成 success，于是后续「部署残缺产物」照跑，把没有 app/
+                # 的构建结果持续覆盖到生产（/app/ 被 Pages 的 SPA 回退顶成 GEO 首页）。
+                # 这里补齐依赖安装后重试，让 CI 也能真正构建出 SPA。
+                log(f"  [WARN] npm run build rc={r.returncode}（依赖可能未安装）: {(r.stderr or '')[-200:]}")
+                log("  [INFO] 安装前端依赖（npm ci，失败回退 npm install）...")
+                ir = _run_npm("npm ci --no-audit --no-fund || npm install --no-audit --no-fund", timeout=900)
+                log(f"  [INFO] 依赖安装 rc={ir.returncode}")
+                r = _run_npm("npm run build")
+                if r.returncode == 0:
+                    log("  [OK] 安装依赖后 npm run build 成功")
+                else:
+                    log(f"  [FAIL] npm run build 仍失败 rc={r.returncode}: {(r.stderr or '')[-300:]}")
+        except Exception as e:
+            log(f"  [FAIL] npm run build 异常: {e}")
+
+    if _spa_ready():
         shutil.copytree(spa_dist, DIST / "app", dirs_exist_ok=True)
         _files = [f for f in (DIST / "app").rglob("*") if f.is_file()]
         _size = sum(f.stat().st_size for f in _files)
         log(f"  app/                  {len(_files)} 个文件 / {_size // 1024} KB（React SPA，入口 /app/）")
     else:
-        log(f"  [WARN] 无 React SPA 产物: {spa_dist}（/app/ 不可用；先在 frontend/ 跑 npm run build）")
+        errors.append(
+            f"React SPA 产物缺失且自动构建失败: {spa_dist}（/app/ 不可用；"
+            f"已中止构建，避免用残缺产物覆盖线上正常版本）"
+        )
 
     # ---------- 1d. 信任/法务静态页（隐私/条款/免责/安全/关于/联系/更新日志/帮助/API） ----------
     # 独立 HTML，由 _worker.js 的 serveStatic(path+".html") 直接命中 /privacy 等，不依赖 SPA。

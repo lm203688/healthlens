@@ -2,6 +2,7 @@ import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import HealthAssess from './pages/HealthAssess';
 import TCMConstitution from './pages/TCMConstitution';
+import AxisProfile from './pages/AxisProfile';
 import CheckIn from './pages/CheckIn';
 import Reports from './pages/Reports';
 import Knowledge from './pages/Knowledge';
@@ -13,6 +14,7 @@ const NAV_ITEMS = [
   { to: '/',           label: '首页',        icon: '🏠' },
   { to: '/assess',     label: '健康评估',    icon: '🩺' },
   { to: '/tcm',        label: '体质辨识',    icon: '🏥' },
+  { to: '/axes',       label: '八轴评估',    icon: '🧭' },
   { to: '/checkin',    label: '每日打卡',    icon: '📅' },
   { to: '/reports',    label: '健康报告',    icon: '📊' },
   { to: '/knowledge',  label: '知识探索',    icon: '📚' },
@@ -88,6 +90,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/assess" element={<HealthAssess />} />
           <Route path="/tcm" element={<TCMConstitution />} />
+          <Route path="/axes" element={<AxisProfile />} />
           <Route path="/checkin" element={<CheckIn />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/knowledge" element={<Knowledge />} />

@@ -59,6 +59,11 @@ export const api = {
   profiles: () => request('/profiles'),
   profile:  (id) => request(`/profiles/${id}`),
 
+  /* ===== 八轴稳态（代谢-炎症轴 / PhenoAge 借鉴）===== */
+  axesMeta:   ()     => request('/axes/meta'),
+  axesBioage: (body) => request('/axes/bioage', { method: 'POST', body: JSON.stringify(body) }),
+  axesAssess: (body) => request('/axes/assess', { method: 'POST', body: JSON.stringify(body) }),
+
   /* ===== 每日健康打卡（observations）===== */
   observations: () => request('/observations'),
   observationPost: (body) => request('/observations', { method: 'POST', body: JSON.stringify(body) }),

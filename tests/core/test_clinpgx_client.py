@@ -21,6 +21,31 @@ def test_offline_fallback_pairs(monkeypatch):
     assert c.get_pair_guideline("CYP2C19", "氯吡格雷(Clopidogrel)") is None
 
 
+def test_gene_detail_uses_symbol_query(monkeypatch):
+    """回归 (2026-09-10 ECS 实测): `/data/gene/{symbol}` 返 404『No Gene with ID』。
+    路径参数只接受 ClinPGx 内部 ID (如 PA124)，按符号查必须用 `?symbol=` 查询形式。"""
+    seen = {}
+
+    def capture(url):
+        seen["url"] = url
+        return {"data": [{"id": "PA124", "symbol": "CYP2C19"}], "status": "success"}
+
+    monkeypatch.setattr(c, "_get_json", capture)
+    d = c.get_gene_detail("CYP2C19")
+    assert d and d["status"] == "success"
+    assert "/data/gene?symbol=CYP2C19" in seen["url"]
+    # 不得退化为会 404 的路径参数形式
+    assert "/data/gene/CYP2C19" not in seen["url"]
+
+
+def test_gene_detail_offline_fallback(monkeypatch):
+    def boom(url):
+        raise RuntimeError("offline")
+
+    monkeypatch.setattr(c, "_get_json", boom)
+    assert c.get_gene_detail("CYP2C19") is None
+
+
 def test_offline_fallback_enrich(monkeypatch):
     def boom(url):
         raise RuntimeError("offline")
