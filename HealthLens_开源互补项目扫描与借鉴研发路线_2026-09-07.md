@@ -219,18 +219,60 @@ HealthLens 已有扎实底座（`pgx_engine`、`risk_engine`、`tcm_*` 系列、
 3. **单测**：`tests/core/test_fusion_engine_bioage.py`（7 项）：轴标识稳定、差指标标弱轴并映射 F/A、好指标不误标、**体检不污染 has_gene**、无数据仍 is_demo、仅基因不触发生物年龄、输出结构与诚实标注。
 - **本地验证**：offline harness（stub 包 + loguru stub）**19/19 全过**。
 
-### 路线图收口状态（截至 2026-09-10）
-| 优先级 | 状态 | 备注 |
+### 路线图收口状态（截至 2026-09-12，逐项线上实测复验）
+| 优先级 | 状态 | 复验证据（2026-09-12 实测） |
 |---|---|---|
-| P0-1 ClinPGx | ✅ | ECS 外网复验仍为信息缺口（需出网可达） |
+| P0-1 ClinPGx | ✅ | ECS 容器内 `get_gene_drug_pairs("CYP2C19")` → **27 对**；`?symbol=` 修复已在 ECS |
 | P0-2 护栏提示词 + 红队 | ✅ | |
 | P0-2.5 红队缺口闭环 | ✅ | |
 | P1 CHP 入库 | ✅ | 6,207 饮片 |
 | P1 续 配伍禁忌 | ✅ | |
-| **P1-2 药-草-食** | ✅ | 本轮新增 |
-| P2 PhenoAge 轴 | ✅ | engine + 八轴接入 + API（2026-09-10 闭环） |
-| **P2-2 分诊闸门** | ✅ | 本轮新增 |
-| P3 bias LLM-judge | ⚠️ | 代码完成；激活待用户提供 OpenAI 兼容端点+key（ECS 8420 网关实测不存在） |
-| 知识层对齐报告 | ✅ | 本轮新增 |
-| 八轴前端展示 | 🟡 | 后端+API 已就绪（`/api/v1/axes/meta|bioage|assess`）；前端 UI 接线待下一 sprint |
-| ClinPGx ECS 外网实测 | ⬜ | 信息缺口，需 ECS 出网可达后复验 |
+| **P1-2 药-草-食** | ✅ | |
+| P2 PhenoAge 轴 | ✅ | engine + 八轴接入 + API |
+| **P2-2 分诊闸门** | ✅ | |
+| P3 bias LLM-judge | ✅ | ECS 已配 `HL_JUDGE_*`（SenseNova `deepseek-v4-flash`），3 例探针全对；本轮新增 429/5xx 退避重试 |
+| 知识层对齐报告 | ✅ | |
+| **八轴前端展示** | ✅ | `/app/` 已恢复：`id="root"` + `/app/assets/index-BNn7NfXK.js`（含"八轴""代谢-炎症轴"）均 200 |
+| ClinPGx ECS 外网实测 | ✅ | 已复验，不再是信息缺口 |
+| 后端版本号 | ✅ | ECS `.env` 0.18.1 → **0.22.0**，与 `app/config.py` 对齐；`/health` 已回 0.22.0 |
+
+---
+
+### 🔴 本轮意外发现并修复的 P0 生产事故：`/app/` 连续 5 天打不开（2026-09-07 ~ 09-12）
+
+每日 04:00 巡检自动化连续 5 天正确报出"Pages 生产部署缺 `app/` 目录"，
+但一直被归类为"转人工"，从未定位到触发器。本轮定位到完整根因链：
+
+1. `.github/workflows/scheduled-pipeline.yml` 每 30 分钟触发（GitHub 限流后实际约 2~3 小时一次），
+   它是生产上 `healthlens.cc` 的唯一部署者。
+2. **该 workflow 从未构建 React SPA**：`frontend/dist` 被 `.gitignore` 排除，
+   CI 全新检出时既无 `frontend/dist` 也无 `frontend/node_modules`，
+   而 `build_site.py` 的兜底构建只有一次 `npm run build`（无 `npm ci`）→ 必然 `vite: not found`。
+3. **同时缺 3 个构建必需文件**：`frontend/src/index.css`、`frontend/tailwind.config.js`、
+   `frontend/postcss.config.js` 一直是 untracked —— 即使装好依赖，
+   `main.jsx` 的 `import './index.css'` 也会解析失败。
+4. **静默失败链条**：三个步骤都带 `continue-on-error: true`，
+   而判断条件用的是 `steps.<id>.conclusion`——加了 continue-on-error 后
+   `conclusion` 恒为 `success`（真实结果在 `.outcome`）。后果：
+   - "失败时尝试自愈"永远不触发（`steps.run.conclusion` 永不为 `failure`）；
+   - "部署到 Cloudflare Pages"在构建失败时照跑 → 把**没有 `app/` 的残缺产物**
+     持续覆盖到生产（Pages 对未命中的 `/app/` 做 SPA 回退，返回根 GEO 首页且状态 200，
+     表面"正常"，实际 React 应用等于下线）；
+   - "汇总与告警"永远判定为正常 → **5 天没有一个告警 Issue**。
+
+**修复（三层，均已推送 main）**：
+
+| 层 | 文件 | 内容 |
+|---|---|---|
+| ① 构建输入 | `frontend/src/index.css`、`frontend/tailwind.config.js`、`frontend/postcss.config.js` | 纳入版本库（SPA 构建必需输入） |
+| ② 构建能力 | `auto-pipeline/scripts/phase_6_deploy/build_site.py` | SPA 缺失时先 `npm ci`（回退 `npm install`）再重试 `npm run build`，让 CI 也能真正产出 `frontend/dist` |
+| ③ 流程与门禁 | `.github/workflows/scheduled-pipeline.yml` | 新增 `setup-node` + 显式 SPA 构建步骤；全部判定改用 `.outcome`；**部署前硬校验 `dist/app/index.html`，缺失直接拒绝部署** |
+
+**复验**：本地重部署后，源站 `healthlens-a3w.pages.dev` 与自定义域 `healthlens.cc`
+的 `/app/` 均返回 457B React 外壳、`id="root"`=1、
+`/app/assets/index-BNn7NfXK.js`→200 `application/javascript` 264,206B、
+`index-gkXA0JvK.css`→200 `text/css` 25,801B。
+
+**遗留观察**：workflow 的 cron 仍是 `*/30 * * * *`（注释说 8/31 应回滚到每日 09:00，但代码没改）。
+修复后它只是"更频繁地部署正确产物"，不再有害；是否降频属产品决策，留给人工决定。
+
