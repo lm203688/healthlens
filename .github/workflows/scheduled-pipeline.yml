@@ -7,10 +7,28 @@ name: 自动化流水线（定时）
 #
 # 闭环设计（此前缺失的正是后三段）：
 #   执行 → 失败重试 → 自愈 → 产出内容 → 提交 → 自动触发部署 → 失败开 Issue
+#
+# ============================================================
+# 【2026-09-12 修复】线上 /app/ 连续 5 天打不开的根因就在本文件：
+#
+#  1) 本 workflow 从未构建 React SPA。frontend/dist 被 .gitignore 排除，
+#     CI 全新检出时既没有 frontend/dist 也没有 frontend/node_modules，
+#     于是 build_site.py 里那次 npm run build 必然 "vite: not found"。
+#  2) 三个步骤都写了 continue-on-error: true，而判断条件用的是
+#     steps.<id>.conclusion —— 加了 continue-on-error 之后 conclusion 恒为
+#     success（真实结果在 .outcome 里）。后果三连：
+#        · 「失败时尝试自愈」永远不触发（run.conclusion 永不为 failure）
+#        · 「部署到 Cloudflare Pages」在构建失败时照跑 → 把没有 app/ 的
+#          残缺产物持续覆盖到生产
+#        · 「汇总与告警」永远认为一切正常 → 5 天来一个 Issue 都没开
+#     这是「静默失败 + 残缺产物上线」的完整链条。
+#  3) 修复：显式安装 Node 依赖并构建 SPA；所有判断改用 .outcome；
+#     部署前加产物完整性硬校验（缺 app/index.html 直接拒绝部署）。
+# ============================================================
 
 on:
   schedule:
-    - cron: '*/30 * * * *'      # 爆发期：每30分钟（至2026-08-30；8/31回滚至每日09:00）
+    - cron: '*/30 * * * *'      # 每30分钟（GitHub 对定时任务会限流，实际约 2~3 小时一次）
   workflow_dispatch:
     inputs:
       phase:
@@ -37,6 +55,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      # 构建 SPA 需要 Node（wrangler 也依赖 npx）
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: 安装依赖
         run: pip install -q requests paramiko
 
@@ -51,9 +74,11 @@ jobs:
             python scheduler.py run-all
           fi
 
+      # 注意：这里必须用 steps.run.outcome（真实结果）。continue-on-error 会把
+      # conclusion 变成 success，此前自愈永远不触发。
       - name: 失败时尝试自愈并重跑一次
         id: heal
-        if: steps.run.conclusion == 'failure'
+        if: steps.run.outcome == 'failure'
         continue-on-error: true
         working-directory: auto-pipeline
         run: |
@@ -61,14 +86,35 @@ jobs:
           python scheduler.py heal
           python scheduler.py run-all
 
+      # 【2026-09-12 新增】先构建 React SPA，产出 frontend/dist。
+      # 缺失时 build_site.py 也会自己兜底安装+构建，这里是显式且更快的一条路径。
+      - name: 构建 React SPA（/app/ 入口）
+        id: spabuild
+        continue-on-error: true
+        working-directory: frontend
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npm run build
+          test -f dist/index.html || { echo "::error::SPA 构建未产出 dist/index.html"; exit 1; }
+
       - name: 构建静态产物
         id: build
         continue-on-error: true
         run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
 
+      # 【2026-09-12 新增】部署前的最后一道硬闸：缺 app/index.html 一律拒绝部署，
+      # 防止残缺产物把线上正常版本覆盖掉（Pages 会把未命中的 /app/ SPA 回退成 GEO 首页）。
+      - name: 产物完整性校验
+        id: verify
+        if: steps.build.outcome == 'success'
+        run: |
+          test -f auto-pipeline/dist/index.html || { echo "::error::产物缺少站点首页 index.html"; exit 1; }
+          test -f auto-pipeline/dist/app/index.html || { echo "::error::产物缺少 SPA 入口 app/index.html，拒绝部署残缺产物"; exit 1; }
+          echo "产物校验通过：index.html + app/index.html 均在"
+
       - name: 部署到 Cloudflare Pages
         id: deploy
-        if: steps.build.conclusion == 'success'
+        if: steps.build.outcome == 'success' && steps.verify.outcome == 'success'
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -78,7 +124,7 @@ jobs:
 
 
       - name: 提交内容变更
-        if: steps.build.conclusion == 'success'
+        if: steps.build.outcome == 'success'
         run: |
           git config user.name  "healthlens-bot"
           git config user.email "bot@healthlens.cc"
@@ -95,18 +141,27 @@ jobs:
         if: always()
         uses: actions/github-script@v7
         env:
-          RUN_OUTCOME:   ${{ steps.run.conclusion }}
-          HEAL_OUTCOME:  ${{ steps.heal.conclusion }}
-          BUILD_OUTCOME: ${{ steps.build.conclusion }}
-          DEPLOY_OUTCOME: ${{ steps.deploy.conclusion }}
+          RUN_OUTCOME:    ${{ steps.run.outcome }}
+          HEAL_OUTCOME:   ${{ steps.heal.outcome }}
+          SPA_OUTCOME:    ${{ steps.spabuild.outcome }}
+          BUILD_OUTCOME:  ${{ steps.build.outcome }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
         with:
           script: |
-            const run   = process.env.RUN_OUTCOME;
-            const heal  = process.env.HEAL_OUTCOME;
-            const build = process.env.BUILD_OUTCOME;
+            const run    = process.env.RUN_OUTCOME;
+            const heal   = process.env.HEAL_OUTCOME;
+            const spa    = process.env.SPA_OUTCOME;
+            const build  = process.env.BUILD_OUTCOME;
+            const verify = process.env.VERIFY_OUTCOME;
             const deploy = process.env.DEPLOY_OUTCOME;
             const healed = run === 'failure' && heal === 'success';
-            const broken = (run === 'failure' && heal !== 'success') || build === 'failure' || deploy === 'failure';
+            // 使用 outcome（真实结果）而非 conclusion —— 后者被 continue-on-error 掩盖
+            const broken = (run === 'failure' && heal !== 'success')
+                        || spa === 'failure'
+                        || build === 'failure'
+                        || verify === 'failure'
+                        || deploy === 'failure';
 
             const TITLE = '⚠️ 自动化流水线执行失败';
             const { data: open } = await github.rest.issues.listForRepo({
@@ -121,7 +176,9 @@ jobs:
                 '| 阶段 | 结果 |', '|---|---|',
                 `| 流水线执行 | ${run} |`,
                 `| 自愈重跑 | ${heal || '未触发'} |`,
+                `| SPA 构建 | ${spa || '未触发'} |`,
                 `| 产物构建 | ${build} |`,
+                `| 产物校验 | ${verify || '未触发'} |`,
                 `| 部署上线 | ${deploy || '未触发'} |`, '',
                 '自愈已尝试但未能恢复，需要人工介入。', '',
                 `[查看日志](${link})`
