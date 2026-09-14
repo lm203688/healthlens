@@ -1,13 +1,13 @@
 {
-  "report_id": "data_asset_c_20260913",
-  "generated_at": "2026-09-13T23:58:16.527029",
+  "report_id": "data_asset_c_20260914",
+  "generated_at": "2026-09-14T00:00:03.637251",
   "data_source": "real_api_probe",
   "sources": [
     {
       "name": "KEGG",
       "type": "pathway",
       "total_records": 0,
-      "last_sync": "2026-09-13",
+      "last_sync": "2026-09-14",
       "status": "unknown",
       "detail": "API 响应异常"
     },
@@ -15,21 +15,21 @@
       "name": "UniProt",
       "type": "protein",
       "total_records": 0,
-      "last_sync": "2026-09-13",
+      "last_sync": "2026-09-14",
       "status": "unknown"
     },
     {
       "name": "ClinVar",
       "type": "variant",
       "total_records": 4561224,
-      "last_sync": "2026-09-13",
+      "last_sync": "2026-09-14",
       "status": "current"
     },
     {
       "name": "dbSNP",
       "type": "snp",
       "total_records": 1197210835,
-      "last_sync": "2026-09-13",
+      "last_sync": "2026-09-14",
       "status": "current"
     },
     {
