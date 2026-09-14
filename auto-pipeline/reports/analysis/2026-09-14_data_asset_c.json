@@ -1,6 +1,6 @@
 {
   "report_id": "data_asset_c_20260914",
-  "generated_at": "2026-09-14T16:30:51.459160",
+  "generated_at": "2026-09-14T20:29:45.158372",
   "data_source": "real_api_probe",
   "sources": [
     {
@@ -21,7 +21,7 @@
     {
       "name": "ClinVar",
       "type": "variant",
-      "total_records": 4561224,
+      "total_records": 4563915,
       "last_sync": "2026-09-14",
       "status": "current"
     },
@@ -77,14 +77,14 @@
   ],
   "needs_sync": [],
   "value_estimate": {
-    "total_records": 1201772059,
+    "total_records": 1201774750,
     "avg_value_per_record": 0.002,
     "freshness_score": 0.5,
-    "estimated_value_cny": 1201772.06,
+    "estimated_value_cny": 1201774.75,
     "breakdown": {
       "KEGG": 0,
       "UniProt": 0,
-      "ClinVar": 4561224,
+      "ClinVar": 4563915,
       "dbSNP": 1197210835,
       "TCMKnowledge": 0,
       "UserData": 0
