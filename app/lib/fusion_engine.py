@@ -1,6 +1,12 @@
 """
-HealthLens 个性化融合引擎 v0.4（moat 脚手架 + LLM 增强 + 代谢-炎症轴）
+HealthLens 个性化融合引擎 v0.5（moat 脚手架 + LLM 增强 + 代谢-炎症轴 + 轴间桥接网络）
 ============================================
+v0.5 新增（2026-09-15，gasdermin/焦亡范式借鉴）：
+  - 轴间桥接网络 AXIS_BRIDGES：把"单轴偏弱"的解释升级为"轴间因果链条"。
+    头条条目：A(自噬)↑ → 自噬-溶酶体选择性降解 NLRP3 / GSDMD → F(正邪-炎症)轴
+    焦亡性炎症↓。锚点生物学为 Tier-2/3 证据，标注为假说级、非临床结论。
+  - axis_bridges_for(weak_axes) 供 API / 前端把机制解释直接呈现给用户。
+
 v0.4 新增（2026-09-10，研发路线三期 P2-1）：
   - 接入 bioage_engine 的「代谢-炎症轴」（PhenoAge 借鉴，透明体检指标代理）
   - 轴分低于阈值时，把该轴映射到既有八轴 F(正邪-炎症)/A(气化-自噬 AMPK-mTOR) 参与匹配
@@ -33,6 +39,44 @@ _BIOAGE_FIELDS = (
     "hdl", "triglycerides", "sbp", "bmi",
 )
 
+# v0.5：轴间桥接网络（机制级映射，假说级结论，非临床）
+# 把"单轴偏弱"的解释升级为"轴间因果链条"。头条条目：
+#   A(自噬)↑ → 自噬-溶酶体选择性降解 NLRP3 / GSDMD → F(正邪-炎症)轴焦亡性炎症↓
+# 锚点生物学：自噬选择性降解炎症小体组分（细胞与动物证据 Tier-2/3），
+# 属合理机制推演，非已验证的干预结论，内容层须写"可能/相关"而非"导致/改善"。
+AXIS_BRIDGES: list[dict] = [
+    {
+        "from": "A", "to": "F",
+        "direction": "negative",  # from 增强 → to 减弱
+        "mechanism": (
+            "自噬-溶酶体选择性降解 NLRP3 炎症小体组分与 GSDMD 成孔蛋白，"
+            "降低炎症小体活化与焦亡性炎症（IL-1β / IL-18 释放）"
+        ),
+        "molecules": ["NLRP3", "GSDMD", "caspase-1", "IL-1β", "IL-18"],
+        "evidence": "Tier-2/3（自噬选择性降解炎症小体；细胞与动物证据）",
+        "hypothesis_level": True,
+        "intervention_link": "间歇性限食、规律运动、充足睡眠（AMPK→自噬流）",
+    },
+    {
+        "from": "A", "to": "H",
+        "direction": "positive",
+        "mechanism": "自噬/线粒体更新支持先天之本（肾精 H 轴）相关能量稳态与清除效率",
+        "molecules": ["PGC-1α", "AMPK", "mitophagy"],
+        "evidence": "Tier-2（线粒体自噬与能量稳态）",
+        "hypothesis_level": True,
+        "intervention_link": "有氧训练、冷热应激、限食",
+    },
+    {
+        "from": "F", "to": "D",
+        "direction": "negative",
+        "mechanism": "慢性低度炎症（正邪失衡）削弱阴阳互根的动态平衡；炎症状态下行利于 D 轴稳态",
+        "molecules": ["CRP", "IL-6", "TNF-α"],
+        "evidence": "Tier-2/3（炎症与整体稳态关联，群体与机制证据）",
+        "hypothesis_level": True,
+        "intervention_link": "抗炎饮食、压力管理、规律运动",
+    },
+]
+
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "case_evidence_db.json")
 MAP_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "tcm_pathway_map.json")
 EVIDENCE_WEIGHT = {"L1": 3, "L2": 2, "L3": 1}
@@ -63,6 +107,15 @@ def canon(token: str) -> str:
 
 def canon_to_axis(canonical: str) -> Optional[str]:
     return _CANON_TO_AXIS.get(canonical)
+
+
+def axis_bridges_for(weak_axes: set[str]) -> list[dict]:
+    """返回与弱项轴相关的轴间桥接（机制解释线索，非临床结论）。
+
+    例：弱项含 F 或 A 时返回 A→F 焦亡抑制桥接，可在前端/API 直接呈现
+    「自噬增强 → 炎症小体降解 → 焦亡性炎症下降」的因果链条。
+    """
+    return [b for b in AXIS_BRIDGES if b["from"] in weak_axes or b["to"] in weak_axes]
 
 
 @dataclass
@@ -275,6 +328,7 @@ def recommend(profile: UserProfile, cases: Optional[list[dict]] = None,
         "has_bioage": has_bioage,
         "weak_pathways": sorted(weak_display),
         "weak_axes": sorted(weak_axes),
+        "axis_bridges": axis_bridges_for(weak_axes),
         "axis_scores": (
             {AXIS_KEY: bioage_block["axis_score"]} if bioage_block else {}
         ),
@@ -294,7 +348,9 @@ def disclaimer() -> str:
 
 
 if __name__ == "__main__":
-    print("HealthLens fusion_engine v0.4 — 个性化融合引擎（+ LLM 增强 + 代谢-炎症轴）")
+    print("HealthLens fusion_engine v0.5 — 个性化融合引擎（+ LLM 增强 + 代谢-炎症轴 + 轴间桥接）")
     print("载入案例库:", len(load_cases()), "条 | 映射通路:", len(_CANON_TO_AXIS), "条")
     print("LLM:", "已启用" if os.environ.get("USE_LLM", "").lower() in ("1", "true") else "规则模式（USE_LLM=1 开启）")
     print(f"代谢-炎症轴: {AXIS_LABEL}（{AXIS_KEY}）→ 落点轴 {sorted(BIOAGE_AXIS_MAP)}，弱轴阈值 {BIOAGE_WEAK_THRESHOLD}")
+    print("轴间桥接网络:", len(AXIS_BRIDGES), "条 | 头条 A→F 焦亡抑制:",
+          any(b["from"] == "A" and b["to"] == "F" for b in AXIS_BRIDGES))

@@ -1,0 +1,70 @@
+# HealthLens
+
+> AI 驱动的精准健康平台：体检数据解读 → 细胞层面归因 → 中医食养修复方案
+
+## 这个站点是做什么的
+
+HealthLens 处理一条完整的因果链：体检指标异常 → 生化通路归因 →
+细胞层面机制 → 中医证候映射 → 药食同源的非药物干预方案。
+核心主张是：多数亚健康问题应先用饮食与作息干预，而非直接用药。
+
+## 内容索引
+
+- [7天健康改善挑战：新手入门完整指南](https://healthlens.cc/knowledge/action-7day-challenge.html): HealthLens 7天健康改善挑战，手把手引导新用户完成首次健康分析、获取修复评分、制定个性化日常修复方案。每天一个小任务，7天开启量化健康改善之旅。
+- [7天肠道修复健康改善挑战](https://healthlens.cc/knowledge/action-gut-7day-challenge.html): 7天肠道修复健康改善挑战入门指南，每日核心食材搭配方案与行动步骤，引导新用户完成首次分析和方案制定，量化追踪健康改善。
+- [陈皮：理气化痰的药食同源智慧](https://healthlens.cc/knowledge/aged-tangerine-peel-phlegm.html): 陈皮是经典理气化痰药食同源食材，《本草纲目》记载其理气健脾功效。现代研究证实陈皮挥发油具有促消化、抗氧化作用，越陈越佳的传统智慧获科学验证。
+- [当归：补血活血的药食同源智慧](https://healthlens.cc/knowledge/angelica-blood-circulation.html): 当归是经典补血活血药食同源食材，《神农本草经》列为中品。现代研究证实当归阿魏酸具有造血促进作用，藁本内酯改善微循环，适合血虚体质调理。
+- [黄芪：补气固表的免疫调节智慧](https://healthlens.cc/knowledge/astragalus-qi-immunity.html): 黄芪是经典补气药食同源食材，《神农本草经》列为上品。现代研究证实黄芪多糖具有免疫调节作用，适合气虚体质的日常调理和免疫支持。
+- [自噬激活的非用药做法：断食、运动与睡眠如何清除受损蛋白](https://healthlens.cc/knowledge/autophagy-activation.html): 自噬是细胞清除受损蛋白与细胞器的回收程序，可由间歇性限食、运动、睡眠、热量限制等非药物方式温和激活。了解机制（AMPK/mTOR/TFEB）、古籍辟谷经验、基因通路倾向，以及断食的禁忌与监测。
+- [黑芝麻：补肝肾的药食同源智慧](https://healthlens.cc/knowledge/black-sesame-liver-kidney.html): 黑芝麻是经典补肝肾药食同源食材，《本草纲目》记载其补肝肾润五脏功效。现代研究证实黑芝麻富含芝麻素和维生素E，具有抗氧化和抗衰老作用。
+- [九种体质类型详解：找到你的先天健康底色](https://healthlens.cc/knowledge/body-constitution-types.html): 九种体质类型决定了你对环境的适应方式和对不同健康改善策略的响应差异。了解自己的体质倾向，是制定个性化日常修复方案的第一步。
+- [细胞修复的非用药做法：从古籍导引到基因通路](https://healthlens.cc/knowledge/cell-repair-non-drug.html): 细胞修复是非药物可激活的生物学机制（自噬/线粒体/衰老细胞清除/干细胞龛/昼夜节律）。了解古籍导引、断食、药食如何经现代机制验证，以及基因检测如何提供个体化线索而非处方。
+- [栗子的功效与食用方法：补肾益气的天然坚果](https://healthlens.cc/knowledge/chestnut-kidney-stomach.html): 栗子出现在4本中医古籍中，《食疗本草》称其「令人强筋骨」，《滇南本草》记载「补肾气，腰脚无力」「此果最益人」。现代研究发现栗子富含不饱和脂肪酸和矿物质，支持心血管健康与骨骼强度。
+- [7天山药养生粥食谱：古籍食疗方的现代改良版](https://healthlens.cc/knowledge/chinese-yam-soup-recipe.html): 基于《饮膳正要》山药面方和《养老奉亲书》雌鸡粥方，改良设计7天山药养生粥食谱。山药是5本中医古籍共同推崇的药食同源食材，搭配枸杞、莲子、红枣等食材，形成一周轮换的日常修复方案。
+- [菊花：清肝明目的药食同源智慧](https://healthlens.cc/knowledge/chrysanthemum-liver-eyes.html): 菊花是经典清肝明目药食同源食材，《神农本草经》列为上品。现代研究证实菊花黄酮具有抗氧化和肝保护作用，适合用眼过度、肝火上炎者的日常调理。
+- [昼夜节律不只是"生物钟"：它如何影响你的代谢、免疫和情绪](https://healthlens.cc/knowledge/circadian-rhythm-health.html): 深入解读昼夜节律如何调控代谢、免疫和情绪三大健康维度。了解视交叉上核SCN的工作原理、基因对个人节律差异的影响，以及7个科学的日常修复策略，帮助你找回身体的自然节奏。
+- [CodeWithCJ/SparkyFitness - 深度解析与实践指南](https://healthlens.cc/knowledge/codewithcjsparkyfitness.html): 深入了解CodeWithCJ/SparkyFitness的科学原理、实践方法和健康益处。基于最新研究，提供可操作的健康改善建议。
+- [你的第二基因组：肠道菌群如何重塑健康认知](https://healthlens.cc/knowledge/cognition-gut-microbiome-value.html): 肠道菌群的基因总量是你自身基因的150倍，深刻影响着免疫、代谢和情绪。了解这个被忽视的健康维度，发现个性化健康改善机会。
+- [为什么你的健康数据比你想的更有价值](https://healthlens.cc/knowledge/cognition-health-data-value.html): 健康数据不只是体检报告上的数字。了解基因、体质和生活方式如何共同决定你的健康走向，发现数据背后的个性化健康改善机会。
+- [薏苡仁：健脾渗湿的药食同源智慧](https://healthlens.cc/knowledge/coix-seed-spleen-dampness.html): 薏苡仁是经典健脾渗湿药食同源食材，《神农本草经》列为上品。现代研究证实薏苡仁多糖具有抗炎和免疫调节作用，适合痰湿体质的日常调理。
+- [老人食疗养生指南：基于《养老奉亲书》的日常修复方案](https://healthlens.cc/knowledge/elderly-food-therapy.html): 宋代陈直《养老奉亲书》提出「以食治疾，胜于用药」的理念，专为老人设计食疗体系。本文精选牛乳、莲实粥、羊脊骨粥、甘蔗粥等古籍食疗方，结合现代老年营养学研究和基因适配视角，提供实用的日常修复方案。
+- [芡实的功效与食用方法：健脾祛湿的水中珍品](https://healthlens.cc/knowledge/euryale-ferment-spleen.html): 芡实（鸡头米）是出现于3本中医古籍的经典药食同源食材。《食疗本草》称其「长生之药」，《滇南本草》记载其「开胃助气，止渴益肾」。现代研究发现芡实富含抗氧化物质和膳食纤维，支持肠道健康与免疫调节。
+- [你的基因决定了哪种运动最适合你](https://healthlens.cc/knowledge/exercise-gene-response.html): ACTN3速度基因、ACE耐力基因、PPARGC1A线粒体基因如何影响你的运动适应性。了解不同基因型对应的最优运动类型，以及如何根据基因调整运动修复方案，实现个性化运动健康管理。
+- [外泌体与细胞修复：你的身体如何用"纳米快递"传递修复信号](https://healthlens.cc/knowledge/exosome-repair.html): 外泌体是细胞释放的纳米级囊泡，携带miRNA和蛋白质在细胞间传递修复信号。运动、断食等非药物方式可调节外泌体释放，激活全身性细胞修复。了解这一前沿生物学机制。
+- [叶酸的食物来源与基因适配：MTHFR基因型的个性化营养方案](https://healthlens.cc/knowledge/folic-acid-food-sources.html): MTHFR基因C677T多态性影响叶酸代谢效率，中国北方人群TT型频率高达35.7%。了解叶酸的食物来源、MTHFR基因型的个性化营养方案，以及如何通过天然食物补充叶酸，实现精准营养管理。
+- [基因与营养代谢：为什么同样的食物，对你和别人的效果不一样](https://healthlens.cc/knowledge/gene-nutrient-metabolism.html): 基因决定了你对不同营养素的吸收和代谢效率。了解乳糖耐受、叶酸代谢、咖啡因代谢等基因差异，找到最适合你的个性化营养修复方案。
+- [生姜：千年药食同源智慧的现代科学解读](https://healthlens.cc/knowledge/ginger-food-medicine.html): 生姜是最经典的药食同源食材之一。现代科学证实姜辣素和姜烯酚具有抗炎、促消化、调节血糖等多重健康改善功效。了解如何将生姜融入日常修复。
+- [枸杞：从《本草纲目》到现代营养学的红色超级食物](https://healthlens.cc/knowledge/goji-berry-food-medicine.html): 枸杞是药食同源的经典代表。从《本草纲目》的记载到现代科学对枸杞多糖、抗氧化和视力保护的研究，全面了解枸杞的健康价值、不同体质的适配建议，以及4种实用的枸杞日常修复食谱。
+- [肠道菌群：你的"第二基因组"如何影响日常健康](https://healthlens.cc/knowledge/gut-microbiome-health.html): 肠道菌群被称为人体的
+- [黄精的功效与食用方法：九蒸九曝的延年智慧](https://healthlens.cc/knowledge/huangjing-antiaging.html): 黄精是《食疗本草》《饮膳正要》共同推崇的延年益寿药食同源食材。九蒸九曝炮制法传承千年。现代研究发现黄精多糖具有抗衰老、调节免疫、改善代谢等功效。了解黄精的食用方法与日常修复方案。
+- [百合：润肺清心的药食同源智慧](https://healthlens.cc/knowledge/lily-bulb-lung-heart.html): 百合是经典润肺清心药食同源食材，《神农本草经》记载其养阴润肺功效。现代研究证实百合多糖具有免疫调节作用，百合皂苷有镇静效果，适合秋燥和心烦调理。
+- [龙眼肉：养心安神的药食同源智慧](https://healthlens.cc/knowledge/longan-heart-calm.html): 龙眼肉是经典养心安神药食同源食材，《本草纲目》记载其补益心脾功效。现代研究证实龙眼肉能调节GABA与5-羟色胺水平，适合心脾两虚者的日常安神调理。
+- [藕的功效与食用方法：生熟异性的补五脏智慧](https://healthlens.cc/knowledge/lotus-root-five-organs.html): 藕在3本中医古籍中被记载，生食清热、熟食补五脏。《食疗本草》称其
+- [线粒体健康与能量代谢：非用药抗衰的核心杠杆](https://healthlens.cc/knowledge/mitochondrial-health.html): 线粒体是细胞的能量工厂，其功能 declining 与疲劳、代谢下降、衰老相关。可由有氧训练、冷热应激、间歇性限食、充足睡眠等非药物方式提升（PGC-1α/SIRT 通路）。了解古籍导引经验、基因通路倾向与可执行方案。
+- [MTHFR基因与B族维生素：为什么"补叶酸"对你可能不够](https://healthlens.cc/knowledge/mthfr-folate-b-vitamins.html): MTHFR C677T和A1298C基因变异如何影响叶酸代谢和B族维生素的利用效率。了解不同基因型对叶酸需求的差异、同型半胱氨酸的关联，以及天然叶酸与合成叶酸的区别，制定个性化的营养修复方案。
+- [桑椹的功效与食用方法：从《食疗本草》到现代抗衰老研究](https://healthlens.cc/knowledge/mulberry-antiaging.html): 桑椹在《食疗本草》中记载为「补五脏，耳目聪明，利关节，通血气」，《滇南本草》更记载桑椹配覆盆子的长寿丹方。现代研究发现桑椹富含花青素和白藜芦醇，具有抗氧化、抗衰老、改善认知等多重功效。
+- [NRF2通路：你身体的天然抗氧化防线](https://healthlens.cc/knowledge/nrf2-antioxidant-pathway.html): NRF2是人体最重要的抗氧化调节通路之一。了解NRF2通路如何激活身体的自护系统、基因变异如何影响NRF2活性，以及通过西兰花萝卜硫素、姜黄素、EGCG等药食同源食材激活NRF2的日常修复策略。
+- [pemf频率疗法在家用设备中的应用增长-guide](https://healthlens.cc/knowledge/pemf频率疗法在家用设备中的应用增长-guide.html)
+- [qixing-jk/all-api-hub - 深度解析与实践指南](https://healthlens.cc/knowledge/qixing-jkall-api-hub.html): 深入了解qixing-jk/all-api-hub的科学原理、实践方法和健康益处。基于最新研究，提供可操作的健康改善建议。
+- [repowise-dev/repowise - 深度解析与实践指南](https://healthlens.cc/knowledge/repowise-devrepowise.html): 深入了解repowise-dev/repowise的科学原理、实践方法和健康益处。基于最新研究，提供可操作的健康改善建议。
+- [你是"早鸟型"还是"夜猫型"？基因如何决定你的最佳睡眠节律](https://healthlens.cc/knowledge/sleep-gene-types.html): 你的睡眠类型（早鸟型或夜猫型）很大程度上由基因决定。了解PER、CLOCK等核心睡眠基因，找到你的最佳入睡时间和睡眠修复策略。
+- [酸枣仁：安神助眠的药食同源智慧](https://healthlens.cc/knowledge/sour-jujube-seed-sleep.html): 酸枣仁是经典药食同源助眠食材，《神农本草经》列为上品。现代研究揭示其通过GABA受体调节发挥安神作用，适合日常睡眠修复调理。
+- [the-momentum/open-wearables - 深度解析与实践指南](https://healthlens.cc/knowledge/the-momentumopen-wearables.html): 深入了解the-momentum/open-wearables的科学原理、实践方法和健康益处。基于最新研究，提供可操作的健康改善建议。
+- [thetahealth/mirobody - 深度解析与实践指南](https://healthlens.cc/knowledge/thetahealthmirobody.html): 深入了解thetahealth/mirobody的科学原理、实践方法和健康益处。基于最新研究，提供可操作的健康改善建议。
+- [药食同源菌群调理方案的效果验证框架](https://healthlens.cc/knowledge/trust-microbiome-verification.html): HealthLens 通过修复评分系统量化追踪菌群调理效果，展示药食同源方案的健康改善验证框架，让效果可衡量、可对比、可优化。
+- [健康改善量化追踪：从数据看到真实的改变](https://healthlens.cc/knowledge/trust-repair-comparison.html): 通过一个完整的健康改善案例框架，展示如何通过修复评分量化追踪日常修复效果。从睡眠修复到营养优化，数据告诉你改变正在发生。
+- [肠道菌群与中医脾胃理论的科学交汇](https://healthlens.cc/knowledge/understanding-gut-tcm-spleen.html): 现代肠道菌群研究与中医脾胃理论在分子层面高度吻合。药食同源食材通过益生元机制塑造菌群生态，实现科学化的脾胃调理。
+- [炎症衰老：身体里那把看不见的"慢火"](https://healthlens.cc/knowledge/understanding-inflammaging.html): 什么是炎症衰老？用通俗语言解释慢性低度炎症如何悄悄加速身体老化，以及如何通过日常修复和药食同源饮食降低炎症水平。
+- [从细胞焦亡看慢性炎症如何加速衰老：Gasdermin 通路与可操作的抗炎杠杆](https://healthlens.cc/knowledge/pyroptosis-chronic-inflammation-aging.html): 细胞焦亡（pyroptosis）是炎症最底层的分子执行机制：炎症小体→caspase-1→GSDMD 成孔→IL-1β/IL-18 释放并裂解细胞。了解它如何喂养炎症衰老，以及睡眠、限食、运动、压力管理等可操作的调节杠杆；并解释自噬如何回收炎症小体组分（A→F 轴联动）。
+- [炎症小体 NLRP3 与生活方式：睡眠、饮食、压力如何调节身体的警报开关](https://healthlens.cc/knowledge/nlrp3-inflammasome-lifestyle.html): NLRP3 炎症小体是细胞内的警报开关，被代谢压力、菌群失衡、睡眠缺失与长期压力点燃，触发焦亡与 IL-1β 释放。了解睡眠、限食、运动、多酚饮食与压力管理如何温和降温，以及自噬作为关键复位键的机制。
+- [核桃：补肾健脑的药食同源智慧](https://healthlens.cc/knowledge/walnut-kidney-brain.html): 核桃是经典补肾健脑药食同源食材，《本草纲目》记载其补肾固精功效。现代研究证实核桃富含omega-3脂肪酸和多酚，具有神经保护和认知改善作用。
+- [枸杞子的功效与食用方法：古籍记载与现代基因视角](https://healthlens.cc/knowledge/wolfberry-nourishing-kidney.html): 枸杞子是出现于4本中医古籍的经典药食同源食材。《食疗本草》《饮膳正要》《养老奉亲书》均详细记载其食用方法。现代研究发现枸杞多糖可激活NRF2抗氧化通路，类胡萝卜素支持视力健康。
+- [山药的功效与食用方法：从古籍到基因营养学的完整解析](https://healthlens.cc/knowledge/yam-food-medicine.html): 山药是最受历代医家推崇的药食同源食材，5本古籍均有记载。现代研究证实山药多糖能调节肠道菌群，薯蓣皂苷支持激素平衡。了解山药的日常食用方法与基因适配建议。
+- [国内竞品健康管理app功能对比分析-guide](https://healthlens.cc/knowledge/国内竞品健康管理app功能对比分析-guide.html)
+
+## 使用说明
+
+内容面向健康科普，不构成医疗建议。涉及疾病诊断与治疗请遵医嘱。
+药食同源方案在与处方药同用前需评估相互作用（例如当归与华法林同用会增加出血风险）。
+
+最后更新: 2026-09-12
