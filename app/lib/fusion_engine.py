@@ -19,14 +19,57 @@ v0.3 新增（2026-08-27）：
   - LLM 模型名通过 HEALTHLENS_LLM_MODEL 环境变量配置（默认 qwen3.8）
 """
 from __future__ import annotations
+
+import importlib.util
 import json
 import os
 import re
+import sys
 import urllib.request
-from dataclasses import dataclass, field, asdict
-from typing import Optional
+from dataclasses import asdict, dataclass, field
 
-from app.core.bioage_engine import BioAgeEngine, AXIS_KEY, AXIS_LABEL
+# 【关键约束】这里绝不能写成 `from app.core.bioage_engine import ...`。
+#
+# 那样会触发 app/__init__.py，后者在 import 时构建整个 FastAPI 应用
+# （fastapi / loguru / slowapi / 全部路由模块），导致本模块在「无重型依赖的
+# 精简环境」里根本无法导入。受影响的具体场景：
+#   · CI 作业 "Agent Library Test (no FastAPI deps)"（只装 pytest+ruff）
+#     —— 2026-09-15 run 34938135916 即因此 ImportError，作业已连续红。
+#   · healthlens_agent/_loader.py 用 importlib 按文件路径加载本模块，
+#     本模块再回头 import app 包，等于把精简环境的设计破坏掉。
+# bioage_engine.py 自身只依赖标准库（dataclasses），按文件路径加载即可，
+# 与 healthlens_agent/_loader.py 的手法一致。
+_BIOAGE_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "core", "bioage_engine.py",
+)
+
+
+def _load_bioage():
+    """按文件路径加载 bioage_engine，绕过 app 包的 FastAPI 依赖。"""
+    mod = sys.modules.get("bioage_engine")
+    if mod is not None and hasattr(mod, "BioAgeEngine"):
+        return mod
+    spec = importlib.util.spec_from_file_location("bioage_engine", _BIOAGE_PATH)
+    if spec is None or spec.loader is None:
+        raise FileNotFoundError(_BIOAGE_PATH)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["bioage_engine"] = module  # 预注册，避免内部相对导入问题
+    spec.loader.exec_module(module)
+    return module
+
+
+try:
+    _bioage = _load_bioage()
+    BioAgeEngine = _bioage.BioAgeEngine
+    AXIS_KEY = _bioage.AXIS_KEY
+    AXIS_LABEL = _bioage.AXIS_LABEL
+except Exception:  # noqa: BLE001 —— 精简环境缺文件时降级，见下方 _HAS_BIOAGE
+    BioAgeEngine = None  # type: ignore[assignment]
+    AXIS_KEY = "metabolic_inflammatory"
+    AXIS_LABEL = "代谢-炎症轴"
+
+_HAS_BIOAGE = BioAgeEngine is not None
 
 # 代谢-炎症轴 → 既有八轴落点（假说级映射，非临床结论）：
 #   F = 正邪-炎症（CRP 等炎症负荷）；A = 气化/自噬(AMPK-mTOR)（糖脂代谢底物感应）
@@ -105,7 +148,7 @@ def canon(token: str) -> str:
     return _ALIASES.get(n, n)
 
 
-def canon_to_axis(canonical: str) -> Optional[str]:
+def canon_to_axis(canonical: str) -> str | None:
     return _CANON_TO_AXIS.get(canonical)
 
 
@@ -127,7 +170,7 @@ class UserProfile:
     # 个体禁忌（命中即排除相关建议）
     contraindications: set[str] = field(default_factory=set)
     # v0.4：体检指标驱动的「代谢-炎症轴」（PhenoAge 代理，非临床）
-    chrono_age: Optional[int] = None
+    chrono_age: int | None = None
     is_male: bool = True
     biomarkers: dict[str, float] = field(default_factory=dict)
 
@@ -163,7 +206,7 @@ def _axes(case: dict) -> set[str]:
     return {a.upper() for a in axes}
 
 
-def _contra_hit(case: dict, user_contra: set[str]) -> Optional[str]:
+def _contra_hit(case: dict, user_contra: set[str]) -> str | None:
     blob = " ".join([case.get("gene_link", ""), case.get("mechanism", "")])
     for kw in user_contra:
         if kw in blob:
@@ -175,7 +218,7 @@ def _llm_enhance_prescription(text: str, context: str) -> str:
     """用本地 LLM 对处方文本做个人化语义增强。失败返回原文。"""
     try:
         model = os.environ.get("HEALTHLENS_LLM_MODEL", "qwen3.8")
-        url = f"http://127.0.0.1:11434/api/generate"
+        url = "http://127.0.0.1:11434/api/generate"
         prompt = (
             f"你是一个中医健康顾问。用户的健康背景：{context}\n"
             f"请基于以下建议，生成一段更自然、更个人化的表述（不超过 80 字），"
@@ -204,7 +247,7 @@ def _llm_enhance(recommendations: list[dict], user_context: str) -> list[dict]:
     return enhanced
 
 
-def recommend(profile: UserProfile, cases: Optional[list[dict]] = None,
+def recommend(profile: UserProfile, cases: list[dict] | None = None,
               include_general: bool = True, top_k: int = 8) -> dict:
     cases = cases or load_cases()
 
@@ -227,7 +270,7 @@ def recommend(profile: UserProfile, cases: Optional[list[dict]] = None,
 
     # v0.4：代谢-炎症轴（体检指标代理，PhenoAge 借鉴）。
     # 轴分偏低 → 映射到 F(正邪-炎症)/A(气化-自噬) 参与个性化匹配。
-    bioage_block: Optional[dict] = None
+    bioage_block: dict | None = None
     has_bioage = False
     bm = {
         k: v for k, v in (profile.biomarkers or {}).items()

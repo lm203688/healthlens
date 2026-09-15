@@ -265,6 +265,47 @@ export default function AxisProfile() {
             </p>
           </div>
 
+          {assess.axis_bridges?.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-semibold text-slate-800">
+                轴间桥接机制（{assess.axis_bridges.length} 条）
+              </h3>
+              {assess.axis_bridges.map((b, i) => (
+                <div key={i} className="rounded-xl p-4 shadow-sm bg-sky-50 border border-sky-100">
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-700">
+                      {b.from} · {AXIS_LABELS[b.from]?.name}
+                    </span>
+                    <span className="text-slate-500 text-sm font-medium">
+                      {b.direction === 'negative' ? '↑ 抑制' : '↔ 关联'}
+                    </span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-700">
+                      {b.to} · {AXIS_LABELS[b.to]?.name}
+                    </span>
+                    {b.evidence_level && (
+                      <span className="text-[11px] px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-500">
+                        证据 {b.evidence_level}
+                      </span>
+                    )}
+                  </div>
+                  {b.mechanism && (
+                    <p className="text-sm text-slate-700 leading-relaxed">{b.mechanism}</p>
+                  )}
+                  {b.molecules?.length > 0 && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      关键分子：{b.molecules.join(' · ')}
+                    </p>
+                  )}
+                  {b.hypothesis_level && (
+                    <p className="text-xs text-amber-700 mt-1">
+                      假说级机制关联，非临床结论，仅供研究参考，不构成医疗建议。
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
           {assess.recommendations?.length > 0 && (
             <div className="space-y-3">
               <h3 className="font-semibold text-slate-800">

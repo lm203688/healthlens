@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "healthlens"
 version = "0.8.2"
@@ -25,13 +29,19 @@ dependencies = [
     "cryptography>=41.0",
     "pytesseract>=0.3.10",
     "pdf2image>=1.16.0",
-    "paddlepaddle>=2.5.0",
-    "paddleocr>=2.7.0",
     "prometheus-client>=0.19.0",
     "slowapi>=0.1.9",
 ]
 
 [project.optional-dependencies]
+# PaddleOCR 体积大（paddlepaddle 约 120MB + opencv/shapely 等传递依赖），
+# 且只在 app/core/ocr_engine.py 的函数体内惰性 import，不属于启动必需。
+# 挪成可选 extra 后 CI 安装从「拉 GB 级重型栈」降为「秒级」，Docker 用 .[ocr] 装回。
+ocr = [
+    "paddlepaddle>=2.5.0",
+    "paddleocr>=2.7.0",
+]
+
 dev = [
     "pytest",
     "pytest-asyncio",
@@ -41,6 +51,28 @@ dev = [
     "mypy",
     "aiosqlite>=0.19",
 ]
+
+# ============================================================
+# 【关键】显式声明包发现规则。
+#
+# 缺失此配置时，setuptools 走 flat-layout 自动发现，而本仓库根目录有多个
+# 顶层目录（app/ healthlens_agent/ skills/ alembic/ frontend/ data/ nginx/
+# reports/ goai_borrow/ ...），于是直接报：
+#   error: Multiple top-level packages discovered in a flat-layout
+# 这是 CI 作业 "Lint & Test" 的 `pip install -e ".[dev]"` 自 2026-09 起
+# 一直红的直接原因（run 34938135916），Dockerfile 的 `pip install .`
+# 同样会踩同一个坑——生产镜像是加这些目录之前构建的才没暴露。
+#
+# 只打包真正被 import 的两个包：app 与 healthlens_agent。
+# skills/ 由 `python skills/<name>/test.py` 直接执行，不需打包；
+# goai_borrow/ 全仓无任何 import 引用。
+# ============================================================
+[tool.setuptools]
+py-modules = []
+
+[tool.setuptools.packages.find]
+include = ["app*", "healthlens_agent*"]
+exclude = ["data*", "nginx*", "reports*", "frontend*", "goai_borrow*", "alembic*"]
 
 [tool.black]
 line-length = 88

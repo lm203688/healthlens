@@ -16,8 +16,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency spec and install to isolated prefix
+# 用 ".[ocr]"：PaddleOCR 已移入可选 extra（体积大、仅惰性 import），
+# 但生产环境需要 OCR 能力，所以显式装回，行为与旧版 `pip install .` 一致。
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir . --prefix=/install \
+RUN pip install --no-cache-dir ".[ocr]" --prefix=/install \
     && rm -rf /install/lib/python3.11/site-packages/tests
 
 # ============================================================

@@ -131,6 +131,17 @@ def normalize_links(path: Path):
 
 def build():
     started = datetime.now(CST)
+    # 【2026-09-15 修复】把真实产物目录写成指针文件供 CI 读取。
+    # 背景：dist 非空时 __main__ 会自动改用一次性目录 dist_build_<ts>，
+    # 而 scheduled-pipeline.yml / deploy-pages.yml 的校验与部署步骤硬编码
+    # auto-pipeline/dist —— 于是校验和部署落在错误的目录上。
+    # 实际故障（run 34941831023，2026-09-15 07:27）：产物完整构建在
+    # dist_build_20260915_153159（index.html 149KB + app/ 3 文件），
+    # 校验步骤却去查 auto-pipeline/dist/index.html，判「产物缺少站点首页」，
+    # 部署被拒。产物本身没有问题，问题全在下游拿错了路径。
+    # 该文件不入库：git add 步骤只提交 content/reports/pipeline_state.json。
+    PIPELINE.mkdir(parents=True, exist_ok=True)
+    (PIPELINE / "build_out.txt").write_text(str(DIST), encoding="utf-8")
     log("=" * 64)
     log("HealthLens 静态站点构建")
     log("=" * 64)

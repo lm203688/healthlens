@@ -3,11 +3,10 @@
 验证：gasdermin/焦亡范式借鉴落地为可呈现的机制链条。
 确定性、零外部依赖（与 test_fusion_engine_bioage.py 同构）。
 """
-import pytest
 
 from app.lib.fusion_engine import (
-    axis_bridges_for,
     AXIS_BRIDGES,
+    axis_bridges_for,
 )
 
 

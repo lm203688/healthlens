@@ -26,12 +26,31 @@ jobs:
       - name: 构建静态产物
         run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
 
+      # 【2026-09-15 修复】解析真实产物目录，不要硬编码 auto-pipeline/dist。
+      # build_site.py 在 dist 非空时会自动改写到一次性目录 dist_build_<ts>
+      # （本仓库 CI 检出后 dist 未入库，通常就是 dist，但流水线复用时不是）。
+      # 旧写法校验/统计的是可能被写偏的目录，会误报「index.html 缺失」。
+      - name: 解析真实产物目录
+        id: resolve
+        run: |
+          OUT=""
+          if [ -f auto-pipeline/build_out.txt ]; then
+            OUT=$(cat auto-pipeline/build_out.txt)
+          fi
+          if [ -z "$OUT" ] || [ ! -f "$OUT/index.html" ]; then
+            OUT=$(ls -dt auto-pipeline/dist_build_* auto-pipeline/dist 2>/dev/null | head -1)
+          fi
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+          test -n "$OUT" && test -d "$OUT" || { echo "::error::无法定位构建产物目录"; exit 1; }
+          echo "::notice::本次构建产物目录: $OUT"
+
       - name: 产物完整性断言
         run: |
           set -e
-          test -s auto-pipeline/dist/index.html || { echo "::error::index.html 缺失"; exit 1; }
-          grep -q "HealthLens" auto-pipeline/dist/index.html || { echo "::error::首页缺少站点标识，疑似内容来源错误"; exit 1; }
-          N=$(find auto-pipeline/dist/knowledge -name '*.html' 2>/dev/null | wc -l)
+          OUT="${{ steps.resolve.outputs.out }}"
+          test -s "$OUT/index.html" || { echo "::error::index.html 缺失"; exit 1; }
+          grep -q "HealthLens" "$OUT/index.html" || { echo "::error::首页缺少站点标识，疑似内容来源错误"; exit 1; }
+          N=$(find "$OUT/knowledge" -name '*.html' 2>/dev/null | wc -l)
           echo "知识页面数: $N"
           if [ "$N" -lt 10 ]; then echo "::warning::知识页面仅 $N 个（auto-pipeline 未产出），不影响前端/函数部署"; fi
-          echo "产物校验通过：$(du -sh auto-pipeline/dist | cut -f1)"
+          echo "产物校验通过：$(du -sh "$OUT" | cut -f1)"

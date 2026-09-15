@@ -1,5 +1,15 @@
 # HealthLens Python Dependencies
 # Synced with pyproject.toml — update both files together
+#
+# 【2026-09-15 同步】此前本文件缺 slowapi，而 app/__init__.py 在启动时就
+# `from slowapi import _rate_limit_exceeded_handler`，导致用本文件装依赖的
+# 环境（本地/CI 手工步骤）装完后应用根本起不来。已补齐。
+#
+# 【PaddleOCR 已挪为可选 extra】paddlepaddle / paddleocr 体积大（约 120MB+
+# 传递依赖），且只在 app/core/ocr_engine.py 的函数体内惰性 import，不属于
+# 启动必需。需要 OCR 时用：  pip install ".[ocr]"
+# （Dockerfile 已改为 `pip install ".[ocr]"`，生产环境行为不变。）
+
 fastapi>=0.100.0
 uvicorn>=0.23.0
 sqlalchemy[asyncio]>=2.0
@@ -22,3 +32,4 @@ cryptography>=41.0
 pytesseract>=0.3.10
 pdf2image>=1.16.0
 prometheus-client>=0.19.0
+slowapi>=0.1.9

@@ -28,7 +28,11 @@ name: 自动化流水线（定时）
 
 on:
   schedule:
-    - cron: '*/30 * * * *'      # 每30分钟（GitHub 对定时任务会限流，实际约 2~3 小时一次）
+    # 【2026-09-15 降频】此前 */30，GitHub 实际限流到 2~3 小时一次，
+    # 名义频率与实际频率严重不符，白白排队 40+ 轮/天。
+    # 现显式对齐为每 2 小时一次，与实测有效频率一致，队列压力减半。
+    # 回滚：改回 '*/30 * * * *' 即可。
+    - cron: '0 */2 * * *'
   workflow_dispatch:
     inputs:
       phase:
@@ -102,25 +106,54 @@ jobs:
         continue-on-error: true
         run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
 
-      # 【2026-09-12 新增】部署前的最后一道硬闸：缺 app/index.html 一律拒绝部署，
-      # 防止残缺产物把线上正常版本覆盖掉（Pages 会把未命中的 /app/ SPA 回退成 GEO 首页）。
+      # 【2026-09-12 新增 / 2026-09-15 修路径】部署前的最后一道硬闸：
+      # 缺 app/index.html 一律拒绝部署，防止残缺产物覆盖线上正常版本
+      # （Pages 会把未命中的 /app/ SPA 回退成 GEO 首页）。
+      #
+      # 【2026-09-15 修复 · 关键】本步骤必须校验「本次构建真正产出的目录」，
+      # 不能硬编码 auto-pipeline/dist。原因：流水线内部的 phase_6_deploy 已先
+      # 构建并占用 auto-pipeline/dist，随后本 workflow 显式再跑 build_site.py
+      # 时命中「输出目录非空」保护，自动改写到一次性目录 dist_build_<ts>。
+      # 旧写法校验的是流水线那个（不含 index.html 的）半成品目录，于是判定
+      # 「产物缺少站点首页 index.html」并拒绝部署——而真实产物是完整的。
+      # run 34941831023（2026-09-15 07:27）即因此卡死：dist_build_20260915_153159
+      # 里 index.html 149KB + app/ 3 文件齐全，校验却查了空目录。
+      - name: 解析本次构建的真实产物目录
+        id: resolve
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          # 优先级：build_site.py 写的指针文件 > 时间戳最新的一次性目录
+          OUT=""
+          if [ -f auto-pipeline/build_out.txt ]; then
+            OUT=$(cat auto-pipeline/build_out.txt)
+          fi
+          if [ -z "$OUT" ] || [ ! -f "$OUT/index.html" ]; then
+            OUT=$(ls -dt auto-pipeline/dist_build_* auto-pipeline/dist 2>/dev/null | head -1)
+          fi
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+          test -n "$OUT" && test -d "$OUT" || { echo "::error::无法定位构建产物目录"; exit 1; }
+          echo "::notice::本次构建产物目录: $OUT"
+
       - name: 产物完整性校验
         id: verify
-        if: steps.build.outcome == 'success'
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success'
         run: |
-          test -f auto-pipeline/dist/index.html || { echo "::error::产物缺少站点首页 index.html"; exit 1; }
-          test -f auto-pipeline/dist/app/index.html || { echo "::error::产物缺少 SPA 入口 app/index.html，拒绝部署残缺产物"; exit 1; }
-          echo "产物校验通过：index.html + app/index.html 均在"
+          OUT="${{ steps.resolve.outputs.out }}"
+          test -f "$OUT/index.html" || { echo "::error::产物缺少站点首页 index.html ($OUT)"; exit 1; }
+          test -f "$OUT/app/index.html" || { echo "::error::产物缺少 SPA 入口 app/index.html，拒绝部署残缺产物"; exit 1; }
+          echo "产物校验通过：$OUT/index.html + $OUT/app/index.html 均在"
 
       - name: 部署到 Cloudflare Pages
         id: deploy
-        if: steps.build.outcome == 'success' && steps.verify.outcome == 'success'
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success' && steps.verify.outcome == 'success'
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BUILD_DIR: ${{ steps.resolve.outputs.out }}
         run: |
-          npx --yes wrangler pages deploy auto-pipeline/dist --project-name=healthlens --branch=main
+          npx --yes wrangler pages deploy "$BUILD_DIR" --project-name=healthlens --branch=main
 
 
       - name: 提交内容变更
@@ -145,6 +178,7 @@ jobs:
           HEAL_OUTCOME:   ${{ steps.heal.outcome }}
           SPA_OUTCOME:    ${{ steps.spabuild.outcome }}
           BUILD_OUTCOME:  ${{ steps.build.outcome }}
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
           VERIFY_OUTCOME: ${{ steps.verify.outcome }}
           DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
         with:
@@ -153,6 +187,7 @@ jobs:
             const heal   = process.env.HEAL_OUTCOME;
             const spa    = process.env.SPA_OUTCOME;
             const build  = process.env.BUILD_OUTCOME;
+            const resolve = process.env.RESOLVE_OUTCOME;
             const verify = process.env.VERIFY_OUTCOME;
             const deploy = process.env.DEPLOY_OUTCOME;
             const healed = run === 'failure' && heal === 'success';
@@ -160,6 +195,7 @@ jobs:
             const broken = (run === 'failure' && heal !== 'success')
                         || spa === 'failure'
                         || build === 'failure'
+                        || resolve === 'failure'
                         || verify === 'failure'
                         || deploy === 'failure';
 
@@ -178,6 +214,7 @@ jobs:
                 `| 自愈重跑 | ${heal || '未触发'} |`,
                 `| SPA 构建 | ${spa || '未触发'} |`,
                 `| 产物构建 | ${build} |`,
+                `| 产物目录解析 | ${resolve || '未触发'} |`,
                 `| 产物校验 | ${verify || '未触发'} |`,
                 `| 部署上线 | ${deploy || '未触发'} |`, '',
                 '自愈已尝试但未能恢复，需要人工介入。', '',
