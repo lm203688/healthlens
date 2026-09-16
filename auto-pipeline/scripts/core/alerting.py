@@ -48,6 +48,23 @@ _LEVEL_RANK = {LEVEL_INFO: 0, LEVEL_WARN: 1, LEVEL_CRITICAL: 2}
 # 同一 dedup_key 的重复告警冷却时间（秒）
 DEFAULT_COOLDOWN = 3600 * 4  # 4 小时
 
+# 陈旧告警过期阈值（天）。活跃告警若 last_seen 距今超过该天数且期间未再出现，
+# 会在下次被读取时自动从活跃清单移除。取值权衡：太短会误杀真实持续中的故障，
+# 太长则让早已失效的告警长期阻塞流水线。14 天 ≈ 2 周，配合每 2 小时的流水线
+# 与每 3 小时的看门狗，足以覆盖间歇性复发；新出现的 CRITICAL 仍会立即阻断。
+DEFAULT_STALE_DAYS = 14
+
+# 已提示过「缺少环境变量」的变量名集合（每进程去重，避免告警风暴）
+_MISSING_SECRET_WARNED: set = set()
+
+# 本机加载凭据的推荐方式（写进提示文案，避免每次都要重新翻配置注释）
+_ENV_HINT = ("在本机 source .workbuddy/cache/env.sh（内含 export SERVERCHAN_SENDKEY=xxx）"
+             "，或直接在当前 shell 执行 export SERVERCHAN_SENDKEY=<你的SendKey>")
+
+
+def env_hint() -> str:
+    return _ENV_HINT
+
 
 # --------------------------------------------------------------------------
 # 配置
@@ -131,6 +148,27 @@ def _build_webhook_request(kind: str, payload: dict) -> tuple[bytes, str]:
     return json.dumps(body, ensure_ascii=False).encode("utf-8"), "application/json"
 
 
+def _warn_missing_secret(names: list, kind: str) -> None:
+    """凭据缺失提醒：每个变量名每进程只提示一次，避免告警风暴。
+
+    历史上 CI 里 SERVERCHAN_SENDKEY 未配置，webhook 通道每次告警都发 403，
+    日志噪音反而掩盖了真实问题；这里改成一次性提示 + 明确的修复路径。
+    """
+    global _MISSING_SECRET_WARNED
+    for n in names:
+        if n in _MISSING_SECRET_WARNED:
+            continue
+        _MISSING_SECRET_WARNED.add(n)
+        print(
+            f"[alerting] webhook({kind}) 通道跳过：缺少环境变量 {n}\n"
+            f"            修复方式二选一 ——\n"
+            f"            1) 本机跑流水线：{env_hint()}\n"
+            f"            2) GitHub Actions：仓库 Settings → Secrets and variables → Actions\n"
+            f"               → New repository secret，名称 {n}，值为 SendKey 原文。",
+            file=sys.stderr,
+        )
+
+
 def _channel_webhook(payload: dict, cfg: dict) -> bool:
     hooks = cfg.get("webhooks", [])
     if not hooks:
@@ -150,12 +188,27 @@ def _channel_webhook(payload: dict, cfg: dict) -> bool:
         # 支持 ${ENV_VAR} 展开：真实密钥（如 Server酱 SendKey）只放本机环境变量或
         # .workbuddy/cache/env.sh，config.json 里留占位符即可安全入库。
         # 本仓库是公开仓库，历史上 SendKey 曾明文写在 config.json，2026-08-29 已改为展开式。
+        #
+        # 注意：展开后必须校验「被替换的变量本身非空」——若环境变量未设置，
+        # re.sub 会把 ${SERVERCHAN_SENDKEY} 替换成空串，url 变成
+        # "https://sctapi.ftqq.com/.send"：非空、也不含 "${"，
+        # 旧守卫（if not url or "${" in url）完全拦不住，于是每次告警都往
+        # 坏 URL 发 POST，CI 日志里稳定刷 "webhook(serverchan) 失败: HTTP Error 403"。
+        # 2026-09-15 修正：改用「是否发生空值展开」判断，缺失凭据时静默跳过。
         if "${" in url:
             import re
+            missing = []
+
             def _expand(m: "re.Match") -> str:
-                return os.environ.get(m.group(1), "")
+                val = os.environ.get(m.group(1), "")
+                if not val:
+                    missing.append(m.group(1))
+                return val
+
             url = re.sub(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}", _expand, url)
-            if not url or "${" in url:  # 环境变量未设置 -> 跳过该通道
+            if not url or "${" in url or missing:
+                if missing:
+                    _warn_missing_secret(missing, hook.get("kind", "generic"))
                 continue
         if not url or url.startswith("<"):  # 占位符未替换
             continue
@@ -339,8 +392,87 @@ def resolve_alert(dedup_key, note=""):
 
 
 def get_active_alerts() -> dict:
-    """返回当前活跃告警，供看门狗/报告使用。"""
+    """返回当前活跃告警，供看门狗/报告使用。
+
+    读的时候顺带做过期清理：陈旧告警若长期未再出现，会自动从活跃清单移除。
+    没有这一步，一条 40 天前就该失效的 CRITICAL 会永久阻塞流水线——
+    scheduler._crosscheck_health 只看活跃清单里的 CRITICAL 条数，它无法判断
+    「这条告警是不是早就没人理了」。过期判据是 last_seen 距今超过阈值，
+    而不是「没人调用 resolve」——后者取决于某个恰好会 resolve 它的检查是否运行。
+    """
+    expire_stale_alerts()
     return _load_alert_state().get("active", {})
+
+
+def expire_stale_alerts(max_age_days=None) -> list:
+    """自动过期陈旧告警：超过阈值天数未再出现 ⇒ 从活跃清单移除。
+
+    为什么必须做：
+      · 流水线判据是「活跃 CRITICAL 条数 > 0 即不健康」，而 resolve 只在
+        某个专项检查主动调用时才发生。
+      · 实测案例（2026-09-15）：ops:bad_deploy_target 于 2026-08-29 随配置修正
+        实际消失，但无人 resolve，其 last_seen 停在 2026-08-28，此后 18 天里
+        让整条定时流水线持续 FAILED（DEGRADED ⇒ exit 1），且「汇总与告警」步骤
+        因此反复失败、每次都给同一个 Issue 追加评论。
+      · 阈值 14 天足够长，不会误杀真实持续中的故障；新出现的 CRITICAL 仍会
+        立即阻断，只是不会无限期地阻断。
+
+    过期动作只写本地文件记录，不发 webhook、不打 console 告警——
+    批量过期时不该制造新的噪音。过期事实本身留有可审计的痕迹。
+
+    Returns:
+        本次过期的 dedup_key 列表（可能为空）。
+    """
+    if max_age_days is None:
+        cfg = _load_config()
+        max_age_days = cfg.get("stale_days", DEFAULT_STALE_DAYS)
+
+    state = _load_alert_state()
+    active = state.setdefault("active", {})
+    now = datetime.now()
+
+    expired = []
+    for key in list(active.keys()):
+        item = active[key]
+        stamp = item.get("last_seen") or item.get("first_seen") or ""
+        if not stamp:
+            # 缺时间戳的脏数据无法判断新旧，按陈旧处理，避免永久滞留
+            expired.append(key)
+            active.pop(key, None)
+            continue
+        try:
+            seen = datetime.fromisoformat(stamp)
+        except (ValueError, TypeError):
+            expired.append(key)
+            active.pop(key, None)
+            continue
+        age_days = (now - seen).total_seconds() / 86400.0
+        if age_days <= max_age_days:
+            continue
+        active.pop(key, None)
+        expired.append(key)
+        _channel_file({
+            "timestamp": now.isoformat(),
+            "level": LEVEL_INFO,
+            "title": f"已过期（陈旧自动清理）: {item.get('title', key)}",
+            "message": (
+                f"{key} 已 {age_days:.0f} 天未再出现（last_seen={stamp[:19]}，"
+                f"阈值 {max_age_days} 天），从活跃清单移除。\n"
+                f"累计出现 {item.get('count', 1)} 次，首次 {item.get('first_seen', '')[:19]}。\n"
+                f"若该问题实际仍存在，下一次检查会重新登记；若确已修复，"
+                f"这是一次补上的恢复记录。"
+            ),
+            "context": {"expired_from": item, "age_days": round(age_days, 1),
+                        "threshold_days": max_age_days, "reason": "stale"},
+            "dedup_key": f"expired:{key}",
+            "occurrence": 1,
+        })
+
+    if expired:
+        state["history_count"] = state.get("history_count", 0) + len(expired)
+        _save_alert_state(state)
+        _rewrite_active_md(state)
+    return expired
 
 
 def has_critical() -> bool:

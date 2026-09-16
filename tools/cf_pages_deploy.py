@@ -30,7 +30,36 @@ import argparse
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NODE = os.environ.get("NODE_EXE", "C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe")
+
+# node 版本目录带构建号后缀（实际是 22.22.2-3 而不是 22.22.2）。
+# 此前硬编码完整版本路径，运行时一升级就静默失效：
+#   2026-09-16 实证 —— 部署阶段报「找不到 node」，两篇已通过测试的内容被标成
+#   deploy_failed，而流水线仍汇总为「成功」，产物从未上线。
+# 因此改为自动发现：环境变量 > current 软链 > 版本目录倒序 > 系统 PATH。
+NODE_VERSIONS_DIR = "C:/Users/xing/.workbuddy/binaries/node/versions"
+_NODE_BIN = "node.exe" if os.name == "nt" else "node"
+
+
+def _resolve_node():
+    cands = [
+        os.environ.get("NODE_EXE", ""),
+        os.environ.get("HEALTHLENS_NODE", ""),
+    ]
+    base = NODE_VERSIONS_DIR
+    cands.append(os.path.join(base, "current", _NODE_BIN))
+    try:
+        for d in sorted(os.listdir(base), reverse=True):
+            cands.append(os.path.join(base, d, _NODE_BIN))
+    except OSError:
+        pass
+    cands += [shutil.which("node") or "", "/usr/local/bin/node", "/usr/bin/node"]
+    for c in cands:
+        if c and os.path.isfile(c):
+            return c
+    return cands[0]
+
+
+NODE = _resolve_node()
 WRANGLER_JS = (
     os.environ.get("WRANGLER_JS")
     or "C:/Users/xing/.workbuddy/binaries/node/workspace/node_modules/wrangler/bin/wrangler.js"

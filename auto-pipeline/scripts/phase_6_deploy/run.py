@@ -31,6 +31,7 @@ Cloudflare Pages 令牌放在 config.json 的 deployment.cf_tokens_file
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -56,9 +57,33 @@ PY_EXE_CANDIDATES = [
     "C:/Users/xing/.workbuddy/binaries/python/versions/3.13.12/python.exe",
     sys.executable,
 ]
-NODE_EXE = os.environ.get(
-    "NODE_EXE", "C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe"
-)
+# node 版本目录带构建号后缀（实际 22.22.2-3，不是 22.22.2）。硬编码完整版本路径
+# 会在运行时升级后静默失效：2026-09-16 实证部署阶段报「找不到 node」，把已通过
+# 测试的两篇内容全标成 deploy_failed，而阶段本身仍返回成功——产物从未上线。
+# 故改为自动发现：环境变量 > current 软链 > 版本目录倒序 > 系统 PATH。
+NODE_VERSIONS_DIR = "C:/Users/xing/.workbuddy/binaries/node/versions"
+_NODE_BIN = "node.exe" if os.name == "nt" else "node"
+
+
+def _pick_node() -> str:
+    """按优先级解析可用的 node 可执行文件。"""
+    cands = [
+        os.environ.get("NODE_EXE", ""),
+        os.environ.get("HEALTHLENS_NODE", ""),
+        os.path.join(NODE_VERSIONS_DIR, "current", _NODE_BIN),
+    ]
+    base = NODE_VERSIONS_DIR
+    if os.path.isdir(base):
+        for d in sorted(os.listdir(base), reverse=True):
+            cands.append(os.path.join(base, d, _NODE_BIN))
+    cands += [shutil.which("node") or "", "/usr/local/bin/node", "/usr/bin/node"]
+    for c in cands:
+        if c and Path(c).is_file():
+            return c
+    return cands[0]
+
+
+NODE_EXE = _pick_node()
 DEFAULT_BASE_URL = "https://healthlens.cc"
 IDENTITY_MARKERS = ["healthlens", "HealthLens"]
 FORBIDDEN_MARKERS = ["aishield", "AIShield", "roboparts", "oraclemind"]

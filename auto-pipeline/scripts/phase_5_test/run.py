@@ -234,14 +234,24 @@ def run():
         with open(BASE_DIR / "config.json", "r", encoding="utf-8") as f:
             json.load(f)
         
-        # 获取已生成的内容
+        # 获取已生成的内容。
+        # 必须同时认领 pending_test：core/self_heal.py 的 heal_failed_tasks() 会把
+        # test_failed 的任务退回 pending_test 以重跑本阶段。此前这里只认 generated，
+        # 两个状态机互不认识，导致自愈把任务改回一个永远没人认领的状态——
+        # 任务被「重试」了一次却永久卡死，正是 self_heal.py 顶部记录的
+        # 「task_edu_001 卡 8 天无重试、无告警」的根因。
         state = get_state()
-        tasks = [t for t in state.get("development_tasks", []) if t.get("status") == "generated"]
-        
+        retryable = ("generated", "pending_test")
+        tasks = [t for t in state.get("development_tasks", [])
+                 if t.get("status") in retryable]
+
         if not tasks:
             log("没有待测试的内容，跳过测试阶段")
             complete_phase(phase, output_file=None, items_processed=0)
             return True
+        log(f"待测试内容: {len(tasks)} 项 "
+            f"(generated={sum(1 for t in tasks if t['status'] == 'generated')}, "
+            f"pending_test={sum(1 for t in tasks if t['status'] == 'pending_test')})")
         
         # 测试每个内容项
         results = []

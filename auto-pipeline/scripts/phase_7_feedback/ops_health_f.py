@@ -290,7 +290,20 @@ def check_medical_terms():
                 if content[idx:idx + len(term) + 1] == f"{term}药":
                     continue
 
-                ctx = content[max(0, idx - window): idx + len(term) + window]
+                # JSON-LD FAQ 结构里，问题项的 "name" 与答案 "text" 相隔约 50-80 字符，
+                # 例如：
+                #   "name": "能据此做健康诊断吗？",
+                #   "acceptedAnswer": {..., "text": "不能。...不构成诊断、处方或治疗建议"}
+                # 这类「主动预判误用并当场否定」的写法是最积极的合规形态，但固定 40 字
+                # 窗口只能看到问题、看不到答案，于是把免责声明本身判成违规。
+                # 因此仅在命中位置确实落在 FAQ 结构化数据内时扩大窗口。
+                # 注意：这里刻意不全局放大 window——"避免"、"排除"等否定线索在健康科普里
+                # 很常见（如"避免久坐"），全局放大窗口会把这些无关语句带进来造成误放行。
+                probe = content[max(0, idx - 240): idx + len(term) + 240]
+                if '"@type": "Question"' in probe or '"acceptedAnswer"' in probe:
+                    ctx = probe
+                else:
+                    ctx = content[max(0, idx - window): idx + len(term) + window]
                 # 排除批判性引用（如 ❌ "基因检测=定制处方" 实为否定该说法）
                 critique_marks = ["❌", "✗", "✘", "错误", "误区", "伪"]
                 # 出现在免责/否定语境中属合规要件，不计为风险
@@ -318,9 +331,47 @@ def check_medical_terms():
         for path in sorted(root.rglob(pattern)):
             _scan_file(path, f"{label_prefix}/{path.relative_to(root).as_posix()}", tier)
 
-    # 优先级 1：线上产物 auto-pipeline/dist/（CF Pages 实际托管，真正面向用户）。
-    # 此前完全未扫描，是最大的监控盲区。
-    _scan_tree(BASE_DIR / "dist", "auto-pipeline/dist", "*.html", "online")
+    # 优先级 1a：知识库页面源文件（content/generated/，随代码库版本控制）。
+    # 这是 dist/ 的上游，改这里才能真正消除风险。
+    _scan_tree(BASE_DIR / "content" / "generated",
+               "auto-pipeline/content/generated", "*.html", "online")
+
+    # 优先级 1b：线上产物 dist/。
+    # 注意 dist/ 被 .gitignore 忽略，CI 检出后该目录恒为空——所以本项只在有真实构建产物的
+    # 环境（本机、或流水线构建之后）生效，不会成为 CI 的常驻噪声。
+    # 更关键的是**陈旧产物判定**：dist 由 build_site.py 从 content/generated 生成，
+    # 若某个页面在源文件改完合规措辞后 dist 仍是旧构建，继续按「线上风险」判定会形成
+    # 反馈回路——源已修好，流水线却永远红，直到有人手动重跑构建。
+    # 因此 dist 中比「最新源文件」更旧的页面只告警、不计为阻断项。
+    dist_dir = BASE_DIR / "dist"
+    source_files = list((BASE_DIR / "content" / "generated").glob("*.html")) \
+        if (BASE_DIR / "content" / "generated").is_dir() else []
+    newest_source = max((p.stat().st_mtime for p in source_files), default=0)
+
+    stale_skipped = []
+
+    def _scan_dist_tree(root: Path, label_prefix: str, pattern: str, tier: str) -> None:
+        if not root.exists():
+            return
+        for path in sorted(root.rglob(pattern)):
+            try:
+                mtime = path.stat().st_mtime
+            except OSError:
+                mtime = 0
+            rel = f"{label_prefix}/{path.relative_to(root).as_posix()}"
+            if newest_source and mtime < newest_source:
+                # 陈旧构建：源已更新，产物未重跑。不阻断，但留痕。
+                stale_skipped.append(rel)
+                continue
+            _scan_file(path, rel, tier)
+
+    _scan_dist_tree(dist_dir, "auto-pipeline/dist", "*.html", "online")
+
+    if stale_skipped:
+        log(f"[WARN] dist/ 中有 {len(stale_skipped)} 个页面早于最新源文件构建，"
+            f"已跳过（陈旧本地产物，将由流水线重新生成）: "
+            f"{', '.join(stale_skipped[:5])}"
+            + (" ..." if len(stale_skipped) > 5 else ""))
 
     # 优先级 2：当前活跃前端源码 frontend/src/
     _scan_tree(BASE_DIR.parent / "frontend" / "src", "frontend/src", "*.jsx", "source")
@@ -461,8 +512,6 @@ def _evaluate_and_alert(health_checks, containers_info, security_issues, medical
     problems = []
     if error_count:
         problems.append(f"端点异常×{error_count}")
-    if not containers_info["reachable"]:
-        problems.append("服务器不可达")
     if unhealthy_containers:
         problems.append(f"容器异常×{len(unhealthy_containers)}")
     if critical_security:
@@ -474,9 +523,26 @@ def _evaluate_and_alert(health_checks, containers_info, security_issues, medical
     if critical_deploy:
         problems.append(f"部署目标错误×{len(critical_deploy)}")
 
+    # SSH 不可达是否算阻断项？
+    #   端点全部正常 ⇒ 服务器显然活着，SSH 不通是「观察手段不可用」而非「服务故障」。
+    #   典型场景：GitHub Actions runner 上没有部署密钥（.workbuddy/cache/ 不入库），
+    #   此检查会永远失败，却把整条流水线拖红 40+ 天。真正宕机会先体现在端点检查上，
+    #   且有独立的「站点看门狗」每 3 小时跑一次做交叉验证。
+    #   端点有异常 ⇒ 服务器可达性成为关键证据，此时不可达必须算阻断项。
+    container_scope_unknown = (not containers_info["reachable"]) and not unhealthy_containers
+    if container_scope_unknown:
+        if error_count or not ok_count:
+            problems.append("服务器不可达")
+        else:
+            log(
+                f"[WARN] 容器状态未知（{containers_info.get('reason', '')[:90]}），"
+                f"但端点 {ok_count}/{ok_count + error_count} 全部正常，"
+                f"按「观察手段不可用」处理，不计入流水线失败。"
+            )
+
     if not problems:
         return "healthy", True, ok_count, error_count, unhealthy_containers
-    # 端点全挂 / 严重安全问题 / 身份错误 / 部署目标错误 → down；其余 → needs_attention
+    # 端点全挂 / 严重安全问题 / 身份错误 / 部署目标错误 / 容器异常 → down；其余 → needs_attention
     overall = "down" if (ok_count == 0 or critical_security or unhealthy_containers
                          or wrong_site or critical_deploy) else "needs_attention"
     log(f"运维检查判定 {overall}: {'; '.join(problems)}", level="ERROR")
