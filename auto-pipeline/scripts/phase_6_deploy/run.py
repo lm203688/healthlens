@@ -32,10 +32,13 @@ Cloudflare Pages 令牌放在 config.json 的 deployment.cf_tokens_file
 import json
 import os
 import shutil
+import re
 import subprocess
 import sys
 import time
+import html as _html_mod
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -149,6 +152,28 @@ def _http(url: str, timeout: int = 25) -> tuple[int, str]:
         return 0, f"{type(e).__name__}: {e}"
 
 
+_TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+_H1_RE = re.compile(r"<h1[^>]*>(.*?)</h1>", re.IGNORECASE | re.DOTALL)
+
+
+def _page_title(html_text: str) -> str:
+    """取页面的版本指纹：优先 <title>，退回第一个 <h1>。
+
+    必须退回 <h1>：流水线产出的 user_education 类页面是 `<article>` 片段，
+    没有 <head>/<title>（build_site.py 原样拷进 dist/knowledge/），
+    只找 <title> 会取到空串，导致「线上是否真是这一版」的比对被跳过。
+    """
+    for rx in (_TITLE_RE, _H1_RE):
+        m = rx.search(html_text or "")
+        if not m:
+            continue
+        txt = re.sub(r"<[^>]+>", " ", m.group(1))
+        txt = re.sub(r"\s+", " ", txt).strip()
+        if txt:
+            return _html_mod.unescape(txt)
+    return ""
+
+
 # --------------------------------------------------------------------------
 # 构建
 # --------------------------------------------------------------------------
@@ -244,34 +269,83 @@ def deploy_to_pages(dist_dir: Path, config: dict) -> dict:
 # --------------------------------------------------------------------------
 # 线上回读校验
 # --------------------------------------------------------------------------
-def verify_live(base_url: str, slugs: list[str]) -> list[dict]:
-    """回读线上，确认每个 slug 真的能访问且内容是 HealthLens 自己的。"""
+def _verify_note(code: int, title_ok: bool, body: str, exp: str) -> str:
+    """生成回读结论的可读说明，避免把 404 误写成「标题不符」。"""
+    if code == 0:
+        return f"网络错误: {body[:120]}"
+    if code != 200:
+        return f"线上返回 HTTP {code}，页面未生效"
+    if not title_ok:
+        return f"线上主标题与本次内容不符（期望含「{exp[:40]}」）——疑似仍是旧版"
+    return ""
+
+
+def verify_live(base_url: str, slugs: list[str],
+                expected_titles: dict[str, str] | None = None,
+                attempts: int = 3, retry_wait: int = 30) -> list[dict]:
+    """回读线上，确认每个 slug 真的能访问、是 HealthLens 的内容、且是本次这一版。
+
+    三层校验：
+      1. HTTP 200 —— 页面存在（部署了没有）
+      2. 站点标识 —— 是 HealthLens 自己的内容（没有串站）
+      3. <title> 一致 —— 是「本次」这一版，不是旧版
+         只查前两条不够：wrangler 上传成功但线上仍是旧内容时，
+         前两关全过，等于没校验。2026-09-16 实证即此情形。
+
+    必须重试：wrangler pages deploy 返回成功后，自定义域名的边缘传播还需
+    几十秒到一两分钟。首次回读落在传播窗口内就会误判为失败。
+    """
+    expected_titles = expected_titles or {}
     ts = int(time.time())
     results = []
     for slug in slugs:
-        url = f"{base_url}/knowledge/{slug}?{ts}"
+        # 中文 slug 必须 percent-encode：urllib 拒绝非 ASCII 路径，会抛
+        # UnicodeEncodeError，被 _http 吞成 (0, 报错文本) ⇒ 每个页面都判
+        # network_error。此前该校验因此从未真正生效过，"status: deployed"
+        # 全靠 wrangler 的退出码，等于没有回读。
+        url = f"{base_url}/knowledge/{urllib.parse.quote(slug)}?{ts}"
         code, body = _http(url)
         low = body.lower()
         has_identity = any(m.lower() in low for m in IDENTITY_MARKERS)
         hit_forbidden = [m for m in FORBIDDEN_MARKERS if m.lower() in low]
-        if code == 200 and has_identity and not hit_forbidden:
-            status = "ok"
-        elif code == 200 and not has_identity:
-            status = "unrecognized_content"
+        exp = expected_titles.get(slug, "")
+        title_ok = True if not exp else exp.lower() in low
+        ok_now = code == 200 and has_identity and not hit_forbidden and title_ok
+        tried = 1
+        while not ok_now and tried < attempts:
+            time.sleep(retry_wait)
+            code, body = _http(
+                f"{base_url}/knowledge/{urllib.parse.quote(slug)}?{int(time.time())}")
+            low = body.lower()
+            has_identity = any(m.lower() in low for m in IDENTITY_MARKERS)
+            hit_forbidden = [m for m in FORBIDDEN_MARKERS if m.lower() in low]
+            title_ok = True if not exp else exp.lower() in low
+            ok_now = code == 200 and has_identity and not hit_forbidden and title_ok
+            tried += 1
+        if code != 200:
+            status = f"http_{code}"
         elif hit_forbidden:
             status = "wrong_site"
+        elif not has_identity:
+            status = "unrecognized_content"
+        elif not title_ok:
+            status = "stale_content"
         elif code == 0:
             status = "network_error"
         else:
-            status = f"http_{code}"
+            status = "ok"
         results.append({
             "slug": slug,
             "http_code": code,
             "bytes": len(body),
             "status": status,
-            "note": f"网络错误: {body[:120]}" if code == 0 else "",
+            "attempts": tried,
+            "expected_title": exp,
+            "title_match": title_ok,
+            "note": _verify_note(code, title_ok, body, exp),
         })
-        log(f"  [verify] {slug}: HTTP {code} {status} ({len(body)} bytes)")
+        log(f"  [verify] {slug}: HTTP {code} {status} ({len(body)} bytes, "
+            f"title_match={title_ok}, 重试 {tried} 次)")
     return results
 
 
@@ -341,9 +415,15 @@ def deploy_to_server(content_items, config):
     # 3. 逐项核对：产物里真的存在才算 deployed
     built = {p.name for p in (out_dir / "knowledge").glob("*.html")} if (out_dir / "knowledge").is_dir() else set()
     slugs = []
+    expected_titles: dict[str, str] = {}
     for item in content_items:
         slug = Path(item["content_file"]).stem
         exists = slug in built or f"{slug}.html" in built
+        built_file = out_dir / "knowledge" / f"{slug}.html"
+        if exists and built_file.is_file():
+            # 记下本次构建产物的 <title>，回读时用它判断线上是否真是这一版
+            expected_titles[slug] = _page_title(
+                built_file.read_text(encoding="utf-8", errors="ignore"))
         results.append({
             "task_id": item["task_id"],
             "file": item["content_file"],
@@ -358,12 +438,27 @@ def deploy_to_server(content_items, config):
 
     # 4. 线上回读校验（抽样，最多 12 个，避免拖慢管线）
     base_url = (d.get("site_url") or DEFAULT_BASE_URL).rstrip("/")
-    verify_results = verify_live(base_url, slugs[:12]) if slugs else []
-    bad = [v for v in verify_results if v["status"] != "ok"]
+    verify_results = (verify_live(base_url, slugs[:12],
+                                  expected_titles={k: v for k, v in expected_titles.items()
+                                                   if k in slugs[:12]})
+                      if slugs else [])
     for item in results:
         v = next((x for x in verify_results if x["slug"] == item["slug"]), None)
-        if v:
-            item["live_check"] = v
+        if not v:
+            continue
+        item["live_check"] = v
+        # wrangler 退出码 0 只代表「上传被接受」，不代表线上真的能读到新内容。
+        # 回读不通过时必须如实降级，否则报告写 "deployed" 而页面仍是旧版或 404，
+        # 下游 sitemap 还会把这个 URL 当成有效页面收录。
+        # 2026-09-16 实证：两篇重写内容 upload 成功，线上却仍是旧版 1784B、
+        # 另一篇 404，报告却显示 deployed=2 failed=0。
+        if item["status"] == "deployed" and v["status"] != "ok":
+            item["status"] = "deployed_unverified"
+            item["note"] = (
+                f"上传成功但线上回读未通过（{v['status']}，HTTP {v['http_code']}，"
+                f"重试 {v.get('attempts', 1)} 次）——内容可能未真正生效，"
+                "常见原因：CF Pages 传播延迟、被后续 CI 部署覆盖、或构建产物非最新")
+    bad = [v for v in verify_results if v["status"] != "ok"]
     if bad:
         log(f"[verify] {len(bad)}/{len(verify_results)} 个页面线上校验未通过", level="WARN")
 
