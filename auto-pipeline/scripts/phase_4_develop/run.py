@@ -2,9 +2,23 @@
 阶段4：开发/生成
 基于决策阶段的任务队列，生成SEO知识页面和用户教育内容
 输出：生成的HTML/MD内容文件 + 开发完成报告
+
+内容新鲜度跳过（2026-09-17 新增）
+---------------------------------
+此前本阶段遍历所有 task 并**无脑覆盖** content_file。这意味着：
+  1. reset_pipeline / start-new 后，人工精修过的内容会被 f-string 模板覆盖；
+  2. self_heal 把 test_failed 退回 pending_test 后，phase_4 不重跑（状态不对），
+     但如果人工 reset 又跑 phase_3 → phase_4，精修内容照样被覆盖；
+  3. 模板内容是占位符（"深入了解{title}的科学原理"），没有 AI 生成，
+     覆盖等于把有价值的人工内容换成无价值的占位符。
+
+现在：content_file 已存在且 < 7 天 → 跳过重写，只更新 task 状态为 generated。
+这是借鉴 Karpathy autoresearch 的「冻结指标」思想——已有成果是资产，
+不应被自动循环无脑覆盖。
 """
 import json
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -18,6 +32,9 @@ from state_manager import (
     save_state,
     start_phase,
 )
+
+# 内容新鲜度阈值：content_file 修改时间在此天数内 → 跳过重写
+CONTENT_FRESH_DAYS = 7
 
 
 def generate_seo_article(task, source_item):
@@ -218,6 +235,44 @@ def run():
 
         for task in tasks:
             source_item = approved_items.get(task.get("based_on_item"), {})
+
+            # 内容新鲜度检查：已存在且 < CONTENT_FRESH_DAYS 天 → 跳过重写。
+            # 防止人工精修内容被 f-string 模板覆盖。
+            # 这是借鉴 Karpathy autoresearch 的「冻结成果」思想：
+            # 已有的人工精修内容是资产，不应被自动循环无脑覆盖。
+            if task["type"] == "seo_knowledge_page":
+                slug = title_to_slug(task.get("title", ""))
+            elif task["type"] == "user_education":
+                slug = title_to_slug(task.get("title", "")) + "-guide"
+            else:
+                slug = ""
+            content_path = BASE_DIR / "content" / "generated" / f"{slug}.html"
+
+            if content_path.exists():
+                age_days = (time.time() - content_path.stat().st_mtime) / 86400
+                if age_days < CONTENT_FRESH_DAYS:
+                    existing_text = content_path.read_text(encoding="utf-8", errors="ignore")
+                    meta = {
+                        "task_id": task["task_id"],
+                        "type": task["type"],
+                        "title": task.get("title", ""),
+                        "slug": slug,
+                        "word_count": len(existing_text),
+                        "content_file": f"content/generated/{slug}.html",
+                        "tags": task.get("tags", []),
+                        "status": "generated",
+                        "skipped": True,
+                        "skip_reason": f"内容 {age_days:.1f} 天前生成（阈值 {CONTENT_FRESH_DAYS} 天），保持原文件不重写",
+                    }
+                    generated_items.append(meta)
+                    for t in state["development_tasks"]:
+                        if t["task_id"] == task["task_id"]:
+                            t["status"] = "generated"
+                            t["content_file"] = meta["content_file"]
+                            t["skip_info"] = meta["skip_reason"]
+                            break
+                    log(f"[跳过] {task['task_id']} 内容 {age_days:.1f} 天前生成，保持原文件")
+                    continue
 
             if task["type"] == "seo_knowledge_page":
                 meta, content = generate_seo_article(task, source_item)

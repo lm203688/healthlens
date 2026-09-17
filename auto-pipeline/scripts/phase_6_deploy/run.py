@@ -527,9 +527,15 @@ def run():
             config = json.load(f)
 
         state = get_state()
+        # 只认领 test_passed：warning 内容不上线。
+        # 此前同时认领 test_warning，意味着 phase_5 检测到中风险用语、
+        # SEO 缺陷、字数不足等内容也能直接发布——质量把关形同虚设。
+        # 这是 2026-09 两篇内容被迫人工重写的根因之一：phase_5 检测到了
+        # 问题但 phase_6 照发不误，检测等于没用。
+        # warning 状态的任务留在 test_warning 等人工处理或自愈退回 pending_test。
         tasks = [
             t for t in state.get("development_tasks", [])
-            if t.get("status") in ("test_passed", "test_warning")
+            if t.get("status") == "test_passed"
         ]
 
         if not tasks:

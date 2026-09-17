@@ -276,6 +276,79 @@ def run_pipeline_a(allow_heal=True):
     return {"ok": ok, "executed": executed, "succeeded": succeeded, "failures": failures}
 
 
+def _build_funnel():
+    """构建任务漏斗报告：queued → generated → test_passed → deployed。
+
+    借鉴 Tencent TeamAI 的 friction scoring：会话结束时按「摩擦信号」打分，
+    高分则提示人工介入。这里把「任务在哪个阶段卡住」作为摩擦信号——
+    生成 N 篇、通过 M 篇、部署 K 篇之间的转化率，低于阈值告警。
+
+    此前这些数字散在 pipeline_state.json 里没人看，无法回答
+    「过去 30 天内容通过率多少」「卡在哪里」这类问题。
+    """
+    state = get_state()
+    tasks = state.get("development_tasks", [])
+    if not tasks:
+        return {"total": 0, "note": "无任务"}
+
+    from collections import Counter
+    counts = Counter(t.get("status", "unknown") for t in tasks)
+
+    # 漏斗阶段（按任务生命周期顺序）
+    funnel = {
+        "queued": counts.get("queued", 0),
+        "generated": counts.get("generated", 0),
+        "pending_test": counts.get("pending_test", 0),
+        "test_passed": counts.get("test_passed", 0),
+        "test_warning": counts.get("test_warning", 0),
+        "test_failed": counts.get("test_failed", 0),
+        "needs_manual_review": counts.get("needs_manual_review", 0),
+        "deployed": counts.get("deployed", 0),
+        "deploy_failed": counts.get("deploy_failed", 0),
+        "not_in_build": counts.get("not_in_build", 0),
+        "deployed_unverified": counts.get("deployed_unverified", 0),
+    }
+
+    total = len(tasks)
+    deployed = funnel.get("deployed", 0)
+    test_passed = funnel.get("test_passed", 0)
+    generated = funnel.get("generated", 0)
+
+    # 转化率
+    pass_rate = (test_passed + deployed) / total * 100 if total else 0
+    deploy_rate = deployed / total * 100 if total else 0
+
+    # 摩擦信号：卡在某个状态的任务数
+    stuck_signals = []
+    if funnel.get("needs_manual_review", 0) > 0:
+        stuck_signals.append(f"{funnel['needs_manual_review']} 个任务需人工处理")
+    if funnel.get("test_failed", 0) > 0:
+        stuck_signals.append(f"{funnel['test_failed']} 个任务测试失败")
+    if funnel.get("deploy_failed", 0) > 0:
+        stuck_signals.append(f"{funnel['deploy_failed']} 个任务部署失败")
+    if funnel.get("deployed_unverified", 0) > 0:
+        stuck_signals.append(f"{funnel['deployed_unverified']} 个任务上线未验证")
+    # test_warning 是「检测到了但不阻断」的产物，现在不应有（phase_6 不认领）
+    if funnel.get("test_warning", 0) > 0:
+        stuck_signals.append(f"{funnel['test_warning']} 个任务 warning 状态（应已修复）")
+
+    friction_score = len(stuck_signals)  # 0 = 无摩擦，>=3 = 高摩擦
+
+    return {
+        "total": total,
+        "funnel": funnel,
+        "pass_rate_pct": round(pass_rate, 1),
+        "deploy_rate_pct": round(deploy_rate, 1),
+        "friction_score": friction_score,
+        "stuck_signals": stuck_signals,
+        "verdict": (
+            "healthy" if friction_score == 0
+            else "needs_attention" if friction_score < 3
+            else "critical"
+        ),
+    }
+
+
 def _crosscheck_health():
     """交叉校验：不信任子脚本的自我汇报，直接读关键健康指标。
 
@@ -356,6 +429,14 @@ def run_all():
     # 4. 交叉校验（关键：不采信子脚本的自我汇报）
     health_issues = _crosscheck_health()
 
+    # 4.5. 漏斗报告（friction scoring）
+    funnel = _build_funnel()
+    if funnel.get("friction_score", 0) >= 3:
+        health_issues.append(
+            f"漏斗摩擦高（{funnel['friction_score']} 信号）: "
+            + "; ".join(funnel.get("stuck_signals", []))
+        )
+
     failed_items = []
     if not a_result["ok"]:
         failed_items += [f"A线·{PHASE_NAMES.get(f['phase'], f['phase'])}({f['reason']})"
@@ -382,6 +463,7 @@ def run_all():
         "failed_count": len(failed_items),
         "failed_items": failed_items,
         "health_issues": health_issues,
+        "funnel": funnel,
         "heal_summary": heal_summary,
         "pipeline_a": a_result,
         "feedback_a": feedback_a,
