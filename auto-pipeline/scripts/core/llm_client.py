@@ -124,6 +124,46 @@ def generate(prompt: str, system: str = "", max_tokens: int = 1024,
     return None
 
 
+def generate_with_metadata(prompt: str, system: str = "", max_tokens: int = 1024,
+                           temperature: float = 0.3, timeout: int = 120) -> tuple:
+    """
+    统一生成入口（带元数据）。返回 (content, metadata)。
+
+    metadata 含 model / provider / latency_ms / generated_at。
+    记录元数据的价值：GitHub 用户反馈里明确指出「AI 生成内容 commit 缺
+    prompt / model / seed 元数据，无法追溯」（CSDN 2025-11）。这是审计
+    与合规复现的基础——尤其对 FDA/FTC 2025-09 起加强执法的医疗内容。
+    """
+    # 1. 尝试 SenseNova
+    if SENSENOVA_KEY:
+        t0 = time.time()
+        result = _call_sensenova(prompt, system, max_tokens, temperature)
+        if result and len(result) > 20:
+            return result, {
+                "model": SENSENOVA_MODEL,
+                "provider": "sensenova",
+                "latency_ms": int((time.time() - t0) * 1000),
+                "generated_at": _now_iso(),
+            }
+
+    # 2. 兜底 Ollama
+    t0 = time.time()
+    result = _call_ollama(prompt, system, max_tokens, temperature)
+    if result and len(result) > 20:
+        return result, {
+            "model": OLLAMA_MODEL,
+            "provider": "ollama",
+            "latency_ms": int((time.time() - t0) * 1000),
+            "generated_at": _now_iso(),
+        }
+    return None, None
+
+
+def _now_iso() -> str:
+    from datetime import datetime
+    return datetime.now().isoformat(timespec="seconds")
+
+
 def is_available() -> bool:
     """快速探测至少一个 LLM 可用"""
     # Ollama 探测（本地，几乎零延迟）

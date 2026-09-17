@@ -230,6 +230,183 @@ def check_template_placeholders(content):
     return issues
 
 
+# ---------- FDA Fair Balance 收益/风险平衡检查（2026-09-18 新增）----------
+# 依据：FDA 2025-09-09 关闭 "adequate provision" loophole，收益陈述
+# 必须与风险提示同页呈现（equally prominent）。市场数据：88% 头部药品
+# 广告不符合 fair balance 要求。此前 Phase 5 只做高风险词阻断，
+# 但"讲了一堆好处没讲风险"这种隐性违规没检测到。
+# 本检查不阻断部署，只标 warning——让 reviewer 知道哪篇需要补风险提示。
+
+# 收益词（benefit claims）：堆砌会导致收益陈述过重
+BENEFIT_TERMS = [
+    "改善", "提升", "增强", "帮助", "优化", "促进", "支持", "有效",
+    "明显", "显著", "理想", "完美", "强大", "卓越", "突破", "奇迹",
+    "神奇", "快速", "轻松", "简单", "便捷", "全面", "系统", "权威",
+    "专业", "领先", "先进", "创新", "顶级", "高端", "极致", "终极",
+    "最好", "最佳", "最优", "首选", "第一",
+]
+
+# 风险/限制词（risk disclosures）：应伴随收益陈述同页出现
+RISK_TERMS = [
+    "不适", "副作用", "限制", "注意", "咨询医生", "咨询专业",
+    "可能", "风险", "警示", "禁忌", "不良反应", "警告", "谨慎",
+    "慎重", "评估", "个体差异", "因人而异", "专业指导", "医疗人员",
+    "健康风险", "健康隐患", "不适反应", "不适感", "过敏反应",
+    "敏感", "不耐受", "慎用", "禁忌人群", "不适用",
+]
+
+
+def check_fair_balance(content):
+    """检查收益陈述与风险提示的平衡（FDA Fair Balance）。
+
+    判定规则：
+    - 收益词/风险词比 > 3:1 → warning（收益陈述过重）
+    - 字数 > 500 且 风险词 = 0 → warning（完全没风险提示）
+    - 字数 <= 500 且 风险词 = 0 → 跳过（短内容可能不需要）
+
+    返回 dict:
+      {"status": "pass"|"warning",
+       "benefit_count": int, "risk_count": int,
+       "ratio": float,
+       "benefit_terms": [top 5 收益词],
+       "risk_terms": [top 5 风险词],
+       "message": str}
+    """
+    # 统计收益词（去重计数，避免同一词被算多次）
+    benefit_hits = {}
+    for term in BENEFIT_TERMS:
+        c = content.count(term)
+        if c > 0:
+            benefit_hits[term] = c
+    benefit_count = sum(benefit_hits.values())
+
+    # 统计风险词
+    risk_hits = {}
+    for term in RISK_TERMS:
+        c = content.count(term)
+        if c > 0:
+            risk_hits[term] = c
+    risk_count = sum(risk_hits.values())
+
+    # 字数（粗略）
+    chinese_chars = len(re.findall(r'[\u4e00-\u9fff]', content))
+    content_length = chinese_chars
+
+    # 判定
+    issues = []
+    ratio = benefit_count / max(risk_count, 1)
+
+    if risk_count == 0 and content_length > 500:
+        issues.append("完全缺少风险提示词（FDA Fair Balance 要求）")
+    elif ratio > 3:
+        issues.append(f"收益陈述/风险提示比 {ratio:.1f}:1 超过 3:1，收益陈述过重")
+
+    # 取 top 5 显示
+    top_benefits = sorted(benefit_hits.items(), key=lambda x: -x[1])[:5]
+    top_risks = sorted(risk_hits.items(), key=lambda x: -x[1])[:5]
+
+    return {
+        "status": "warning" if issues else "pass",
+        "benefit_count": benefit_count,
+        "risk_count": risk_count,
+        "ratio": round(ratio, 2),
+        "top_benefit_terms": [{"term": t, "count": c} for t, c in top_benefits],
+        "top_risk_terms": [{"term": t, "count": c} for t, c in top_risks],
+        "issues": issues,
+        "message": "；".join(issues) if issues else "收益/风险陈述基本平衡",
+    }
+
+
+# ---------- YMYL 增强 Schema 检查（2026-09-18 新增）----------
+# Google AI Overviews 抓取医疗 YMYL 内容要求：
+# - MedicalWebPage schema（医疗内容专用类型）
+# - FAQPage schema（如页面有 FAQ 段落，必须用 FAQPage 结构化标记）
+# 当前模板有"常见问题"段落但只用了 Article schema，无法被 AI Overviews 抓取。
+# 本检查不阻断部署，只标 warning——提示 Phase 4 模板需升级。
+
+
+def check_ymyl_schema(content, content_type="seo_knowledge_page"):
+    """检查 Google YMYL E-E-A-T 要求的 Schema 是否齐全。
+
+    检查项：
+    - 是否有 MedicalWebPage schema（医疗内容专用）
+    - 是否有 FAQPage schema（页面有 FAQ 段落时必需）
+    - 是否有 author 署名（E-E-A-T 里的 Expertise）
+    - 是否有 dateModified（内容新鲜度信号）
+    - 是否有 publisher（组织信任标记）
+    """
+    issues = []
+
+    # 提取所有 JSON-LD
+    jsonld_blocks = re.findall(
+        r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        content, re.DOTALL,
+    )
+    all_types = []
+    all_data = []
+    for block in jsonld_blocks:
+        try:
+            data = json.loads(block.strip())
+            all_data.append(data)
+            if isinstance(data, list):
+                for item in data:
+                    if isinstance(item, dict) and "@type" in item:
+                        all_types.append(item["@type"])
+            elif isinstance(data, dict) and "@type" in data:
+                all_types.append(data["@type"])
+        except json.JSONDecodeError:
+            pass
+
+    # 检查 MedicalWebPage
+    if content_type == "seo_knowledge_page":
+        if "MedicalWebPage" not in all_types:
+            issues.append({
+                "type": "missing_medical_webpage_schema",
+                "severity": "warning",
+                "message": "缺少 MedicalWebPage schema（Google AI Overviews 抓取门槛）",
+                "found_types": all_types,
+            })
+
+    # 检查 FAQPage（页面有 FAQ 段落时必需）
+    has_faq_section = bool(
+        re.search(r'<h2[^>]*>.*?(常见问题|FAQ|问答).*?</h2>', content, re.IGNORECASE)
+        or re.search(r'<h3[^>]*>Q:', content)
+        or 'question' in content.lower() and 'answer' in content.lower()
+    )
+    if has_faq_section and "FAQPage" not in all_types:
+        issues.append({
+            "type": "missing_faqpage_schema",
+            "severity": "warning",
+            "message": "页面有 FAQ 段落但缺少 FAQPage schema（AI Overviews 抓取门槛）",
+            "found_types": all_types,
+        })
+
+    # 检查 E-E-A-T 字段（author / publisher / dateModified）
+    for data in all_data:
+        if isinstance(data, dict) and data.get("@type") in ("Article", "MedicalWebPage"):
+            if not data.get("author"):
+                issues.append({
+                    "type": "missing_author",
+                    "severity": "warning",
+                    "message": "缺少 author 字段（E-E-A-T Expertise 信号）",
+                })
+            if not data.get("publisher"):
+                issues.append({
+                    "type": "missing_publisher",
+                    "severity": "warning",
+                    "message": "缺少 publisher 字段（Trust 信号）",
+                })
+            if not data.get("dateModified"):
+                issues.append({
+                    "type": "missing_dateModified",
+                    "severity": "warning",
+                    "message": "缺少 dateModified（内容新鲜度信号）",
+                })
+            break
+
+    return issues
+
+
 def _llm_audit(content: str, title: str) -> list:
     """用 LLM 做深度审计（InkOS 审计员模式）。
 
@@ -386,21 +563,59 @@ def test_content_item(item):
         "note": "LLM 深度审计建议（AI 味/事实一致性/可读性），不阻断部署"
     }
 
+    # 9. FDA Fair Balance 收益/风险平衡检查（2025-09-09 新规，不阻断，warning）
+    fb_result = check_fair_balance(content)
+    checks["fair_balance"] = {
+        "status": fb_result["status"],
+        "benefit_count": fb_result["benefit_count"],
+        "risk_count": fb_result["risk_count"],
+        "ratio": fb_result["ratio"],
+        "top_benefit_terms": fb_result["top_benefit_terms"],
+        "top_risk_terms": fb_result["top_risk_terms"],
+        "message": fb_result["message"],
+        "note": "FDA Fair Balance 检查（收益/风险陈述平衡），不阻断部署"
+    }
+
+    # 10. YMYL 增强 Schema 检查（Google AI Overviews 抓取门槛，不阻断，warning）
+    ymyl_issues = check_ymyl_schema(content, item.get("type", ""))
+    checks["ymyl_schema"] = {
+        "status": "pass" if not ymyl_issues else "warning",
+        "issues_found": len(ymyl_issues),
+        "details": ymyl_issues,
+        "note": "Google YMYL E-E-A-T Schema 检查（MedicalWebPage/FAQPage/author），不阻断部署"
+    }
+
     # 综合判定
-    all_statuses = [c["status"] for c in checks.values()]
-    if "fail" in all_statuses:
+    # 设计原则：
+    # - 只有 fail 检查阻断上线（medical_terms HIGH / word_count / schema_markup 基础）
+    # - warning 检查（fake_citations / llm_audit / fair_balance / ymyl_schema / medical_terms MEDIUM）
+    #   仅记录在 checks 里供 reviewer 参考，不改变 overall。
+    # 此前综合判定把 warning 也算进 overall，导致 warning 内容变成 test_warning 状态，
+    # Phase 6 只认 test_passed → 内容无法上线。这正是 2026-09-17 记录的
+    # "质量把关形同虚设"的反面：现在质量把关太严，正常内容也卡住。
+    # 正确做法：fail 阻断，warning 提示，reviewer 看 checks 决定要不要精修。
+    fail_checks = [name for name, c in checks.items() if c.get("status") == "fail"]
+    warning_checks = [name for name, c in checks.items() if c.get("status") == "warning"]
+
+    if fail_checks:
         overall = "failed"
-    elif "warning" in all_statuses:
-        overall = "warning"
     else:
         overall = "passed"
-    
+
     return {
         "task_id": item["task_id"],
         "title": item.get("title", ""),
         "type": item.get("type", ""),
         "status": overall,
-        "checks": checks
+        "checks": checks,
+        "fail_checks": fail_checks,
+        "warning_checks": warning_checks,
+        "warnings_count": len(warning_checks),
+        "needs_review": len(warning_checks) > 0,
+        "review_notes": [
+            f"{name}: {checks[name].get('message') or checks[name].get('note', '')}"
+            for name in warning_checks
+        ],
     }
 
 

@@ -33,7 +33,7 @@ from state_manager import (
     save_state,
     start_phase,
 )
-from llm_client import generate as llm_generate, is_available as llm_available
+from llm_client import generate as llm_generate, is_available as llm_available, generate_with_metadata
 
 # 内容新鲜度阈值：content_file 修改时间在此天数内 → 跳过重写
 CONTENT_FRESH_DAYS = 7
@@ -58,10 +58,97 @@ def _is_llm_junk(text: str) -> bool:
     return False
 
 
-def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> str | None:
-    """用 LLM 生成正文段落。返回 None 表示不可用或质量不够。"""
+# FDA Structure/Function 声明转换表（2025-09-09 新规）
+# ----------------------------------------------------
+# 2025-09-09 起 FDA 关闭 "adequate provision" loophole，疾病治疗声明
+# 必须替换为结构/功能声明。此前内容合规检查只做"高风险词阻断"，
+# 但 LLM 生成时不知道应该改成什么——现在在 Phase 4 里自动替换。
+# 长词优先，避免"降血压"被"降压"先替换后残留"压"字。
+# 保守策略：一律替换，宁可在个别中性感句上产生"支持血压维持在正常范围"
+# 这类稍显生硬的表达，也不让疾病治疗声明上线。
+STRUCTURE_FUNCTION_REPLACEMENTS = [
+    # 长词优先（疾病治疗声明）
+    ("治疗抑郁症", "可能有助于情绪调节"),
+    ("治疗糖尿病", "支持血糖维持在正常范围"),
+    ("治疗高血压", "支持心血管健康"),
+    ("治疗关节炎", "支持关节活动"),
+    ("治疗失眠", "支持放松与休息"),
+    ("治疗焦虑", "可能有助于情绪调节"),
+    ("治疗甲亢", "支持甲状腺正常功能"),
+    ("治疗抑郁", "可能有助于情绪调节"),
+    ("治疗心脏病", "支持心血管健康"),
+    ("治疗癌症", "可能有助于细胞健康"),
+    # 指标调节类
+    ("降血压", "支持血压维持在正常范围"),
+    ("降胆固醇", "支持胆固醇维持在正常范围"),
+    ("降血脂", "支持血脂维持在正常范围"),
+    ("降血糖", "支持血糖维持在正常范围"),
+    ("降糖", "支持血糖维持在正常范围"),
+    ("降脂", "支持血脂维持在正常范围"),
+    ("降压", "支持血压维持在正常范围"),
+    # 抗炎/免疫类
+    ("抗炎", "支持身体自然炎症反应"),
+    ("减轻关节炎疼痛", "支持关节活动"),
+    ("预防感冒", "支持健康免疫功能"),
+    ("增强免疫力", "支持免疫系统正常运作"),
+    ("提高免疫力", "支持免疫系统正常运作"),
+    # 体重/皮肤类
+    ("减肥", "支持体重管理"),
+    ("瘦身", "支持体重管理"),
+    ("美白", "帮助改善肤色"),
+    ("抗衰", "支持皮肤健康"),
+    # 排毒/肠道类
+    ("排毒", "支持身体自然代谢过程"),
+    ("调理肠胃", "支持消化系统健康"),
+    ("调节肠胃", "支持消化系统健康"),
+    ("清除毒素", "支持身体自然代谢过程"),
+    # 抗菌抗病毒类
+    ("杀死细菌", "支持免疫系统抵御感染"),
+    ("杀死病毒", "支持免疫系统抵御感染"),
+    ("抗病毒", "支持免疫系统正常运作"),
+    ("抗菌", "支持环境卫生"),
+    ("杀菌", "支持环境卫生"),
+    ("抗癌", "支持细胞健康"),
+    # 通用医疗词（放在最后，避免吃掉上面的长词）
+    ("治愈", "可能有助于缓解"),
+    ("根治", "可能有助于改善"),
+    ("治疗疾病", "可能有助于健康改善"),
+    ("治疗", "帮助改善"),
+]
+
+
+def _apply_structure_function_replacements(text: str) -> tuple:
+    """应用 FDA Structure/Function 声明转换。
+
+    返回 (converted_text, replacements_applied)
+    replacements_applied: [{"from","to","count"}...] 便于审计追溯
+    """
+    if not text:
+        return text, []
+    applied = []
+    result = text
+    for bad, good in STRUCTURE_FUNCTION_REPLACEMENTS:
+        count = result.count(bad)
+        if count > 0:
+            result = result.replace(bad, good)
+            applied.append({"from": bad, "to": good, "count": count})
+    return result, applied
+
+
+def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> tuple:
+    """用 LLM 生成正文段落。返回 (text, metadata)。
+
+    metadata 含：
+      - model / provider（记录哪个模型生成的，便于审计追溯）
+      - prompt_hash（prompt 的 SHA256 前 12 位，便于重现同一 prompt）
+      - latency_ms / generated_at
+      - structure_function_replacements（FDA 声明转换记录）
+    GitHub 用户反馈明确指出：AI 生成内容 commit 缺元数据无法追溯。
+    """
+    import hashlib
+
     if not llm_available():
-        return None
+        return None, None
 
     tag_str = "、".join(tags[:5]) if tags else "健康管理"
     if topic_type == "seo":
@@ -73,6 +160,7 @@ def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> str |
             f"- 不要编造具体研究数据（不要写 n=XXX 或 XX% 降幅）\n"
             f"- 不要写「值得注意的是」「综上所述」等 AI 套话\n"
             f"- 如果不确定具体机制，用「可能」「或」等温和表述\n"
+            f"- 使用结构/功能声明（如「支持血压维持在正常范围」）而非疾病治疗声明\n"
             f"- 直接输出正文段落，不要标题、不要列表、不要 markdown"
         )
     else:  # user_education
@@ -83,20 +171,36 @@ def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> str |
             f"- 用通俗中文，面向普通用户\n"
             f"- 不要编造具体研究数据\n"
             f"- 不要写 AI 套话\n"
+            f"- 使用结构/功能声明而非疾病治疗声明\n"
             f"- 直接输出正文段落"
         )
 
-    result = llm_generate(
+    # 记录 prompt hash 便于审计追溯（GitHub 反馈：AI 生成 commit 缺元数据）
+    prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:12]
+
+    result, llm_meta = generate_with_metadata(
         prompt=prompt,
-        system="你是健康科普作者。用中文回答，通俗易懂，不编造数据，不写 AI 套话。",
+        system="你是健康科普作者。用中文回答，通俗易懂，不编造数据，不写 AI 套话，使用结构/功能声明而非疾病治疗声明。",
         max_tokens=800,
         temperature=0.4,
         timeout=90,
     )
-    if result and not _is_llm_junk(result):
-        return result
-    log(f"LLM 生成质量不足或不可用，回退模板", level="WARN")
-    return None
+
+    if not result or _is_llm_junk(result):
+        log(f"LLM 生成质量不足或不可用，回退模板", level="WARN")
+        return None, None
+
+    # 应用 FDA Structure/Function 声明转换
+    result, sf_replacements = _apply_structure_function_replacements(result)
+
+    # 合并元数据
+    metadata = {
+        **(llm_meta or {}),
+        "prompt_hash": prompt_hash,
+        "raw_chars": len(result),
+        "structure_function_replacements": sf_replacements,
+    }
+    return result, metadata
 
 
 def generate_seo_article(task, source_item):
@@ -105,7 +209,7 @@ def generate_seo_article(task, source_item):
     tags = task.get("tags", [])
 
     # 尝试 LLM 生成正文（替代模板里的"科学原理"和"临床证据"段落）
-    llm_body = _llm_generate_body(title, tags, topic_type="seo")
+    llm_body, llm_metadata = _llm_generate_body(title, tags, topic_type="seo")
 
     slug = title_to_slug(title)
 
@@ -133,6 +237,11 @@ def generate_seo_article(task, source_item):
                          '等因素密切相关。任何关于效果的判断都应基于个体化评估，而非通用结论。</p>')
         llm_used = False
 
+    # YMYL 增强 Schema：MedicalWebPage（Google AI Overviews 抓取门槛）+ FAQPage
+    # 当前模板有"常见问题"段落，需要单独用 FAQPage schema 标记让 AI Overviews 抓取。
+    # FAQPage schema 必须与可见内容一致，否则 Google 会惩罚。
+    faq_schema = '''\n    <script type="application/ld+json">\n    {\n      "@context": "https://schema.org",\n      "@type": "FAQPage",\n      "mainEntity": [\n        {\n          "@type": "Question",\n          "name": "多久能看到效果？",\n          "acceptedAnswer": {\n            "@type": "Answer",\n            "text": "因人而异，通常2-4周开始感受到变化，3个月可观察到显著的指标改善。"\n          }\n        },\n        {\n          "@type": "Question",\n          "name": "需要坚持多长时间？",\n          "acceptedAnswer": {\n            "@type": "Answer",\n            "text": "健康管理是长期过程。建议将健康生活方式融入日常，而非短期突击。"\n          }\n        }\n      ]\n    }\n    </script>'''
+
     content = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -145,15 +254,19 @@ def generate_seo_article(task, source_item):
     <script type="application/ld+json">
     {{
       "@context": "https://schema.org",
-      "@type": "Article",
+      "@type": "MedicalWebPage",
       "headline": "{title}",
       "description": "深入了解{title}的科学原理与实践指南",
       "author": {{"@type": "Organization", "name": "HealthLens"}},
       "publisher": {{"@type": "Organization", "name": "HealthLens"}},
       "datePublished": "{datetime.now().strftime('%Y-%m-%d')}",
-      "dateModified": "{datetime.now().strftime('%Y-%m-%d')}"
+      "dateModified": "{datetime.now().strftime('%Y-%m-%d')}",
+      "about": "{title}",
+      "medicalSpecialty": "General Practice",
+      "audience": {{"@type": "PeopleAudience", "name": "Health-concerned adults"}}
     }}
     </script>
+    {faq_schema}
 </head>
 <body>
     <article>
@@ -215,6 +328,7 @@ def generate_seo_article(task, source_item):
         "tags": tags,
         "status": "generated",
         "llm_used": llm_used,
+        "llm_metadata": llm_metadata,
     }, content
 
 
@@ -236,7 +350,7 @@ def generate_user_education(task, source_item):
     slug = title_to_slug(title) + "-guide"
 
     # 尝试 LLM 生成"快速了解"段落
-    llm_body = _llm_generate_body(title, tags, topic_type="edu")
+    llm_body, llm_metadata = _llm_generate_body(title, tags, topic_type="edu")
 
     if llm_body:
         quick_understand = f'<h2>快速了解</h2>\n    <p>{llm_body}</p>'
@@ -297,6 +411,7 @@ def generate_user_education(task, source_item):
         "tags": tags,
         "status": "generated",
         "llm_used": llm_used,
+        "llm_metadata": llm_metadata,
     }, content
 
 
