@@ -65,10 +65,42 @@ def _http_get_with_retry(url, timeout=20, retries=3, backoff=2.0, purpose=""):
     raise last_err
 
 
+# 健康领域硬关键词：GitHub repo 的 description/topics 必须命中其一才进入后续链路。
+# 此前的空转：GitHub 搜 "health+AI" 返回的项目里，有些 description 根本不含健康词
+# （如 repowise-dev/repowise 是个文档工具），却被标 "medium" 相关性进入 Phase 2/3/4，
+# 最终 Phase 4 用 f-string 模板生成"repowise-dev/repowise 的健康知识文章"——
+# 这是把 GitHub 项目名当健康主题，是整条链路的源头空转。
+# 现在：description 或 topics 不含任何健康关键词的 repo 直接跳过。
+HEALTH_KEYWORDS = [
+    "health", "medical", "genomic", "genomics", "clinical", "fitness",
+    "sleep", "nutrition", "diet", "weight", "blood", "biomarker",
+    "wellness", "therap", "diagnos", "treatment", "drug", "pharma",
+    "disease", "patient", "symptom", "vital sign", "heart rate",
+    "blood pressure", "glucose", "insulin", "cholesterol", "immunity",
+    "inflammation", "gut", "microbiome", "metabolis", "mitochondri",
+    "aging", "longevity", "anti-aging", "cancer", "diabetes",
+    "mental health", "anxiety", "depression", "sleep quality",
+]
+
+
+def _has_health_signal(repo: dict) -> bool:
+    """检查 GitHub repo 是否真的与健康领域相关（description + topics + name）。"""
+    desc = (repo.get("description") or "").lower()
+    topics = " ".join(repo.get("topics") or []).lower()
+    name = (repo.get("full_name") or "").lower()
+    haystack = f"{desc} {topics} {name}"
+    return any(k in haystack for k in HEALTH_KEYWORDS)
+
+
 def collect_github_trends():
-    """从 GitHub Trending 收集健康 AI 相关项目"""
+    """从 GitHub Trending 收集健康 AI 相关项目。
+
+    硬过滤：description/topics/name 不含健康关键词的 repo 直接跳过——
+    避免把 "repowise-dev/repowise" 这类非健康项目当成健康主题进入内容链路。
+    """
     items = []
     queries = ["health+AI", "wearable+health", "medical+AI", "genomics+analysis"]
+    skipped = 0
 
     for query in queries[:2]:  # 限制请求数
         url = f"https://api.github.com/search/repositories?q={query}&sort=stars&order=desc&per_page=5"
@@ -77,14 +109,21 @@ def collect_github_trends():
             continue
 
         for repo in data["items"][:3]:
+            # 硬过滤：非健康 repo 不进入后续链路
+            if not _has_health_signal(repo):
+                skipped += 1
+                log(f"  [跳过] {repo['full_name']}: 无健康关键词信号", level="INFO")
+                continue
+
+            desc_lower = (repo.get("description") or "").lower()
             items.append({
                 "id": f"gh_{repo['id']}",
                 "title": repo["full_name"],
                 "category": "tech_trend",
                 "summary": (repo.get("description") or "")[:200],
                 "sources": [{"name": "GitHub", "url": repo["html_url"], "relevance": 0.8}],
-                "relevance_to_healthlens": "high" if any(k in (repo.get("description") or "").lower()
-                    for k in ["health", "medical", "genomic", "fitness", "sleep"]) else "medium",
+                "relevance_to_healthlens": "high" if any(k in desc_lower
+                    for k in ["health", "medical", "genomic", "clinical", "fitness", "sleep", "diagnos"]) else "medium",
                 "actionable_insight": f"Stars: {repo['stargazers_count']}, Language: {repo.get('language', 'N/A')}",
                 "market_signals": {
                     "github_stars": repo["stargazers_count"],
@@ -95,6 +134,8 @@ def collect_github_trends():
                 "tags": [t for t in (repo.get("topics") or [])[:5]],
             })
 
+    if skipped:
+        log(f"  GitHub 采集：{len(items)} 个通过健康过滤，{skipped} 个被跳过")
     return items
 
 

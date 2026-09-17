@@ -181,7 +181,52 @@ def check_seo_basics(content, title=""):
     no_alt = [img for img in images if 'alt=' not in img and "alt=" not in img]
     if no_alt:
         issues.append({"item": "image_alt", "status": "warning", "message": f"{len(no_alt)} 张图片缺少alt属性"})
-    
+
+    return issues
+
+
+# ---------- 内容真实性审计（2026-09-17 新增）----------
+# 实证：Phase 4 模板里硬编码 "n=59,078 全因死亡风险降低64%" 虚假引用，
+# 5 篇 SEO 内容都含同一句编造数据。这种"看起来像研究引用、实际是模板占位"
+# 的内容会直接欺骗读者并伤害品牌可信度。以下检查不阻断部署，只标 warning，
+# 目的是让人类 reviewer 知道哪篇需要人工精修。
+
+
+def check_fake_citations(content):
+    """检测模板里硬编码的虚假研究引用。
+
+    模式：具体样本量 n= + 具体百分比降幅 + 年份。这是典型的模板编造数据，
+    因为真实研究引用的样本量/百分比不会在 5 篇文章里完全一致。
+    """
+    issues = []
+    # n=59,078 / n=12,345 这类具体样本量
+    for m in re.finditer(r'n=\d{2,3},\d{3}', content):
+        issues.append({"type": "fake_sample_size", "match": m.group(0)})
+    # "降低XX%" 与具体年份绑定
+    for m in re.finditer(r'(降低|减少|提升)了?\s*\d{1,3}%', content):
+        ctx = content[max(0, m.start() - 30):m.end() + 10]
+        if re.search(r'\d{4}年', ctx):
+            issues.append({"type": "fake_percentage_with_year", "match": m.group(0),
+                           "context": ctx.strip()[:60]})
+    # "大型队列研究" / "随机对照试验" 但没有具体来源（DOI/JAMA 等）
+    for term in ["大型队列研究", "随机对照试验", "Meta 分析", "荟萃分析"]:
+        if term in content and "doi" not in content.lower() and "jama" not in content.lower():
+            issues.append({"type": "study_claim_without_source", "term": term})
+    return issues
+
+
+def check_template_placeholders(content):
+    """检测 f-string 未替换的占位符。
+
+    模板里如果还有 {xxx} 形式的未替换占位符（除 JSON-LD 里的 { "xxx" } 外），
+    说明生成逻辑漏了一个变量。
+    """
+    issues = []
+    # 跳过 JSON-LD 区块（那里的 {} 是 JSON 语法）
+    text = re.sub(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>.*?</script>', '', content, flags=re.DOTALL)
+    # 找 {xxx} 形式的未替换占位符
+    for m in re.finditer(r'\{([a-zA-Z_][a-zA-Z0-9_]{2,30})\}', text):
+        issues.append({"type": "unreplaced_placeholder", "match": m.group(0)})
     return issues
 
 
@@ -258,7 +303,25 @@ def test_content_item(item):
             "issues_found": len(seo_issues),
             "details": seo_issues
         }
-    
+
+    # 6. 虚假引用检测（不阻断，只 warning —— 让人类知道哪篇要精修）
+    fake_issues = check_fake_citations(content)
+    checks["fake_citations"] = {
+        "status": "pass" if not fake_issues else "warning",
+        "issues_found": len(fake_issues),
+        "details": fake_issues[:5],
+        "note": "模板硬编码的虚假研究引用（如 n=59,078），不阻断部署但建议人工精修"
+    }
+
+    # 7. 模板占位符检测（不阻断，warning）
+    ph_issues = check_template_placeholders(content)
+    checks["template_placeholders"] = {
+        "status": "pass" if not ph_issues else "warning",
+        "issues_found": len(ph_issues),
+        "details": ph_issues[:5],
+        "note": "f-string 未替换的 {xxx} 占位符"
+    }
+
     # 综合判定
     all_statuses = [c["status"] for c in checks.values()]
     if "fail" in all_statuses:
