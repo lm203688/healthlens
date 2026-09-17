@@ -334,6 +334,18 @@ def _build_funnel():
 
     friction_score = len(stuck_signals)  # 0 = 无摩擦，>=3 = 高摩擦
 
+    # LLM 健康状态（Phase 4 AI 填充 + Phase 5 深度审计的可用性）
+    try:
+        sys.path.insert(0, str(BASE_DIR / "scripts" / "core"))
+        from llm_client import health_check as _llm_health
+        llm_status = _llm_health()
+    except Exception:
+        llm_status = {"any_available": False, "note": "llm_client 不可用"}
+
+    # LLM 不可用 → 内容生成回退模板，是潜在摩擦信号
+    if not llm_status.get("any_available"):
+        stuck_signals.append("LLM 不可用，Phase 4 内容生成回退模板")
+
     return {
         "total": total,
         "funnel": funnel,
@@ -341,6 +353,7 @@ def _build_funnel():
         "deploy_rate_pct": round(deploy_rate, 1),
         "friction_score": friction_score,
         "stuck_signals": stuck_signals,
+        "llm": llm_status,
         "verdict": (
             "healthy" if friction_score == 0
             else "needs_attention" if friction_score < 3

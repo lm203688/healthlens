@@ -17,6 +17,7 @@
 不应被自动循环无脑覆盖。
 """
 import json
+import re
 import sys
 import time
 from datetime import datetime
@@ -32,20 +33,106 @@ from state_manager import (
     save_state,
     start_phase,
 )
+from llm_client import generate as llm_generate, is_available as llm_available
 
 # 内容新鲜度阈值：content_file 修改时间在此天数内 → 跳过重写
 CONTENT_FRESH_DAYS = 7
 
+# LLM 生成质量下限：正文 < 此字数视为垃圾，回退模板
+LLM_MIN_CHARS = 200
+# LLM 垃圾模式检测：这些模式出现说明 LLM 在复读/胡说
+_LLM_JUNK_PATTERNS = [
+    r'(电磁场强度变化时，电磁场会)',  # minimind 复读模式
+    r'(核心原理是利用电磁场的强度和频率)',  # minimind 套话
+    r'(\d+\.?\d*\s*个.{0,20}\d+\.?\d*\s*个)',  # 数字复读
+]
+
+
+def _is_llm_junk(text: str) -> bool:
+    """检测 LLM 输出是否是垃圾（复读/套话/太短）"""
+    if not text or len(text) < LLM_MIN_CHARS:
+        return True
+    for pat in _LLM_JUNK_PATTERNS:
+        if re.search(pat, text):
+            return True
+    return False
+
+
+def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> str | None:
+    """用 LLM 生成正文段落。返回 None 表示不可用或质量不够。"""
+    if not llm_available():
+        return None
+
+    tag_str = "、".join(tags[:5]) if tags else "健康管理"
+    if topic_type == "seo":
+        prompt = (
+            f"用 300-400 字介绍「{title}」的科学原理、作用机制和适用场景。\n"
+            f"标签：{tag_str}\n"
+            f"要求：\n"
+            f"- 用通俗中文，避免堆砌医疗术语\n"
+            f"- 不要编造具体研究数据（不要写 n=XXX 或 XX% 降幅）\n"
+            f"- 不要写「值得注意的是」「综上所述」等 AI 套话\n"
+            f"- 如果不确定具体机制，用「可能」「或」等温和表述\n"
+            f"- 直接输出正文段落，不要标题、不要列表、不要 markdown"
+        )
+    else:  # user_education
+        prompt = (
+            f"用 200-300 字介绍「{title}」的核心概念和实际操作方法。\n"
+            f"标签：{tag_str}\n"
+            f"要求：\n"
+            f"- 用通俗中文，面向普通用户\n"
+            f"- 不要编造具体研究数据\n"
+            f"- 不要写 AI 套话\n"
+            f"- 直接输出正文段落"
+        )
+
+    result = llm_generate(
+        prompt=prompt,
+        system="你是健康科普作者。用中文回答，通俗易懂，不编造数据，不写 AI 套话。",
+        max_tokens=800,
+        temperature=0.4,
+        timeout=90,
+    )
+    if result and not _is_llm_junk(result):
+        return result
+    log(f"LLM 生成质量不足或不可用，回退模板", level="WARN")
+    return None
+
 
 def generate_seo_article(task, source_item):
-    """生成SEO知识文章"""
+    """生成SEO知识文章。尝试 LLM 生成正文，失败回退模板。"""
     title = task.get("title", "健康知识")
     tags = task.get("tags", [])
 
-    # 生成结构化的知识文章
-    # 实际生产中会调用LLM API生成，这里生成模板结构
+    # 尝试 LLM 生成正文（替代模板里的"科学原理"和"临床证据"段落）
+    llm_body = _llm_generate_body(title, tags, topic_type="seo")
 
     slug = title_to_slug(title)
+
+    # LLM 正文段落（替换模板里的固定段落）
+    if llm_body:
+        mechanism_html = f'<h2>科学原理与机制</h2>\n        <p>{llm_body}</p>'
+        evidence_html = ('<h2>临床研究证据</h2>\n'
+                         '        <p>目前关于{title}的研究仍在进行中。具体效果因人而异，'
+                         '与基础健康状况、干预强度、坚持时长等因素密切相关。'
+                         '任何关于效果的判断都应基于个体化评估，而非通用结论。</p>')
+        llm_used = True
+    else:
+        mechanism_html = ('<h2>科学原理与机制</h2>\n'
+                         '        <p>从分子生物学角度看，{title}的作用机制涉及多个生理通路的协同作用。'
+                         '研究表明，主要通过以下途径发挥作用：</p>\n'
+                         '        <ul>\n'
+                         '            <li>调节昼夜节律钟基因的表达</li>\n'
+                         '            <li>改善线粒体功能和能量代谢</li>\n'
+                         '            <li>优化肠道菌群组成</li>\n'
+                         '            <li>调节AMPK/mTOR信号通路</li>\n'
+                         '        </ul>')
+        evidence_html = ('<h2>临床研究证据</h2>\n'
+                         '        <p>关于{title}的健康益处，目前已有多种观察性研究和生活方式干预研究'
+                         '探讨其潜在影响。具体效果因人而异，与基础健康状况、干预强度、坚持时长'
+                         '等因素密切相关。任何关于效果的判断都应基于个体化评估，而非通用结论。</p>')
+        llm_used = False
+
     content = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -76,17 +163,9 @@ def generate_seo_article(task, source_item):
         <h2>什么是{title}</h2>
         <p>{title}是近年来健康领域的重要研究方向。越来越多的科学证据表明，通过生活方式的系统性调整，可以在多个层面改善人体健康状态。</p>
         
-        <h2>科学原理与机制</h2>
-        <p>从分子生物学角度看，{title}的作用机制涉及多个生理通路的协同作用。研究表明，主要通过以下途径发挥作用：</p>
-        <ul>
-            <li>调节昼夜节律钟基因的表达</li>
-            <li>改善线粒体功能和能量代谢</li>
-            <li>优化肠道菌群组成</li>
-            <li>调节AMPK/mTOR信号通路</li>
-        </ul>
+        {mechanism_html}
         
-        <h2>临床研究证据</h2>
-        <p>关于{title}的健康益处，目前已有多种观察性研究和生活方式干预研究探讨其潜在影响。具体效果因人而异，与基础健康状况、干预强度、坚持时长等因素密切相关。任何关于效果的判断都应基于个体化评估，而非通用结论。</p>
+        {evidence_html}
         
         <h2>实践方法与建议</h2>
         <p>以下是基于科学证据的实践建议：</p>
@@ -134,7 +213,8 @@ def generate_seo_article(task, source_item):
         "word_count": len(content),
         "content_file": f"content/generated/{slug}.html",
         "tags": tags,
-        "status": "generated"
+        "status": "generated",
+        "llm_used": llm_used,
     }, content
 
 
@@ -150,16 +230,28 @@ def title_to_slug(title):
 
 
 def generate_user_education(task, source_item):
-    """生成用户教育内容"""
+    """生成用户教育内容。尝试 LLM 生成正文，失败回退模板。"""
     title = task.get("title", "健康指南")
+    tags = task.get("tags", [])
     slug = title_to_slug(title) + "-guide"
+
+    # 尝试 LLM 生成"快速了解"段落
+    llm_body = _llm_generate_body(title, tags, topic_type="edu")
+
+    if llm_body:
+        quick_understand = f'<h2>快速了解</h2>\n    <p>{llm_body}</p>'
+        llm_used = True
+    else:
+        quick_understand = (f'<h2>快速了解</h2>\n'
+                          f'    <p>{title}听起来复杂，其实核心原则很简单。'
+                          f'掌握以下3个关键点，就能开始实践：</p>')
+        llm_used = False
 
     content = f"""<article class="edu-article">
     <h1>{title}：实用指南</h1>
     <div class="meta">发布于 {datetime.now().strftime('%Y年%m月%d日')} | 阅读时间：约 5 分钟</div>
     
-    <h2>快速了解</h2>
-    <p>{title}听起来复杂，其实核心原则很简单。掌握以下3个关键点，就能开始实践：</p>
+    {quick_understand}
     
     <div class="key-points">
         <div class="point">
@@ -202,8 +294,9 @@ def generate_user_education(task, source_item):
         "slug": slug,
         "word_count": len(content),
         "content_file": f"content/generated/{slug}.html",
-        "tags": task.get("tags", []),
-        "status": "generated"
+        "tags": tags,
+        "status": "generated",
+        "llm_used": llm_used,
     }, content
 
 
@@ -235,6 +328,32 @@ def run():
 
         for task in tasks:
             source_item = approved_items.get(task.get("based_on_item"), {})
+
+            # 冻结检查（autoresearch 模式）：task.frozen=True → 永不重写。
+            # 用途：人工精修过的高价值内容，标记冻结后即使超过新鲜度阈值也不重写。
+            if task.get("frozen"):
+                if content_path.exists():
+                    existing_text = content_path.read_text(encoding="utf-8", errors="ignore")
+                    meta = {
+                        "task_id": task["task_id"],
+                        "type": task["type"],
+                        "title": task.get("title", ""),
+                        "slug": slug,
+                        "word_count": len(existing_text),
+                        "content_file": f"content/generated/{slug}.html",
+                        "tags": task.get("tags", []),
+                        "status": "generated",
+                        "skipped": True,
+                        "skip_reason": "内容已冻结（frozen=True），人工精修资产不重写",
+                    }
+                    generated_items.append(meta)
+                    for t in state["development_tasks"]:
+                        if t["task_id"] == task["task_id"]:
+                            t["status"] = "generated"
+                            t["content_file"] = meta["content_file"]
+                            break
+                    log(f"[冻结] {task['task_id']} 已冻结，保持原文件")
+                    continue
 
             # 内容新鲜度检查：已存在且 < CONTENT_FRESH_DAYS 天 → 跳过重写。
             # 防止人工精修内容被 f-string 模板覆盖。

@@ -230,6 +230,61 @@ def check_template_placeholders(content):
     return issues
 
 
+def _llm_audit(content: str, title: str) -> list:
+    """用 LLM 做深度审计（InkOS 审计员模式）。
+
+    检查维度：AI 味、事实一致性、可读性、重复段落。
+    返回建议列表（不阻断部署）。LLM 不可用时返回空列表。
+    """
+    from llm_client import generate as llm_generate, is_available as llm_available
+
+    if not llm_available():
+        return []
+
+    # 截断到前 1500 字，避免超长 context
+    snippet = content[:1500]
+    prompt = (
+        f"审计以下健康科普文章，找出需要改进的地方。\n"
+        f"标题：{title}\n"
+        f"正文片段：\n{snippet}\n\n"
+        f"检查维度：\n"
+        f"1. AI 味：是否有「值得注意的是」「综上所述」「在当今」「深入探讨」等套话\n"
+        f"2. 事实一致性：是否有自相矛盾或明显错误的表述\n"
+        f"3. 可读性：是否有过长句子、术语堆砌\n"
+        f"4. 重复度：是否有重复段落或套话复读\n\n"
+        f"要求：\n"
+        f"- 每条建议不超过 30 字\n"
+        f"- 只列具体改进点，不要总结\n"
+        f"- 如果文章质量没问题，回复'无'\n"
+        f"- 直接输出建议，用换行分隔，不要编号"
+    )
+
+    result = llm_generate(
+        prompt=prompt,
+        system="你是内容质量审计员。严格、简洁，只列具体改进点。",
+        max_tokens=500,
+        temperature=0.1,
+        timeout=60,
+    )
+    if not result:
+        return []
+
+    # 解析建议，过滤噪音（markdown 标题、复读段落、过长建议）
+    notes = []
+    for line in result.strip().split("\n"):
+        line = line.strip().lstrip("0123456789.-) ")
+        if not line or line == "无" or len(line) < 5:
+            continue
+        # 过滤 markdown 标题行
+        if line.startswith("#"):
+            continue
+        # 过滤过长建议（LLM 复读段落）
+        if len(line) > 50:
+            continue
+        notes.append(line)
+    return notes[:5]
+
+
 def test_content_item(item):
     """测试单个内容项"""
     content_path = BASE_DIR / item["content_file"]
@@ -320,6 +375,15 @@ def test_content_item(item):
         "issues_found": len(ph_issues),
         "details": ph_issues[:5],
         "note": "f-string 未替换的 {xxx} 占位符"
+    }
+
+    # 8. LLM 深度审计（InkOS 审计员模式，不阻断，仅输出建议）
+    llm_notes = _llm_audit(content, item.get("title", ""))
+    checks["llm_audit"] = {
+        "status": "pass" if not llm_notes else "warning",
+        "issues_found": len(llm_notes),
+        "notes": llm_notes[:10],
+        "note": "LLM 深度审计建议（AI 味/事实一致性/可读性），不阻断部署"
     }
 
     # 综合判定
