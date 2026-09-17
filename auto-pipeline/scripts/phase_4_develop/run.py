@@ -40,21 +40,111 @@ CONTENT_FRESH_DAYS = 7
 
 # LLM 生成质量下限：正文 < 此字数视为垃圾，回退模板
 LLM_MIN_CHARS = 200
-# LLM 垃圾模式检测：这些模式出现说明 LLM 在复读/胡说
+
+# minimind 35B 已知套话（保留作快速命中）
 _LLM_JUNK_PATTERNS = [
-    r'(电磁场强度变化时，电磁场会)',  # minimind 复读模式
-    r'(核心原理是利用电磁场的强度和频率)',  # minimind 套话
-    r'(\d+\.?\d*\s*个.{0,20}\d+\.?\d*\s*个)',  # 数字复读
+    r'(电磁场强度变化时，电磁场会)',
+    r'(核心原理是利用电磁场的强度和频率)',
 ]
+
+# 复读窗口：任意 6+ 字短语在此窗口内重复出现即判定垃圾
+_REPEAT_WINDOW = 200
+_REPEAT_MIN_LEN = 6
+
+
+def _has_repetition(text: str) -> bool:
+    """检测自我复读：任意 6+ 字短语在 200 字窗口内重复出现。
+
+    minimind 35B 的典型幻觉模式：
+    "基因的表达调控、基因的表达调控、基因与环境的相互作用"
+    "包括代谢产物的生成、代谢产物的作用等"
+    这些不是套话，是模型在卡壳时机械重复。硬编码正则抓不住，
+    必须用窗口扫描。
+    """
+    n = len(text)
+    if n < LLM_MIN_CHARS:
+        return False
+    # 按 6-10 字滑窗扫描，记录每个窗口内出现过的 n-gram
+    # 用 set 存 (start_pos, ngram)，O(n^2) 但 n<2000 没问题
+    seen: dict[str, int] = {}  # ngram -> first position
+    for length in range(_REPEAT_MIN_LEN, 11):
+        for i in range(0, n - length + 1):
+            ng = text[i:i + length]
+            # 跳过纯标点/空白
+            if ng.strip() in ('', '，、。；：""''（）【】', '，、', '——', '…'):
+                continue
+            if ng in seen:
+                # 距离过近的重复（<200 字）
+                if i - seen[ng] < _REPEAT_WINDOW and i - seen[ng] >= length:
+                    return True
+            else:
+                seen[ng] = i
+    return False
+
+
+def _has_format_violation(text: str) -> bool:
+    """检测格式违规：要求纯段落但 LLM 返回编号列表/markdown。
+
+    minimind 经常无视"不要标题、不要列表、不要 markdown"的指令，
+    返回 "1. **xxx** 2. **xxx**" 这种格式。
+    """
+    # 编号列表（1. 2. 3. 或 ① ② ③）
+    if re.search(r'(?:^|\n)\s*(?:\d+[.)、]|①|②|③|④|⑤)', text):
+        return True
+    # markdown 标题
+    if re.search(r'(?:^|\n)#{1,6}\s', text):
+        return True
+    # markdown 粗体滥用（** 连续 3 次以上）
+    if text.count('**') >= 6:
+        return True
+    # markdown 链接
+    if re.search(r'\[.+?\]\(.+?\)', text):
+        return True
+    return False
+
+
+def _has_medical_hallucination(text: str) -> bool:
+    """检测明显的医学事实幻觉。
+
+    minimind 35B 在健康领域会编造具体数字/范围，比如：
+    "生物年龄在 1-3 岁之间"——生物年龄是相对指标，不是绝对年龄。
+    "n=59,078 降低 64%"——无来源的具体研究数据。
+    """
+    # 具体样本量 + 百分比（无来源的研究引用）
+    if re.search(r'n\s*=\s*\d[\d,]*', text):
+        return True
+    if re.search(r'(降低|减少|提升|增加)了?\s*\d{1,3}\s*%', text):
+        return True
+    # 生物年龄/表观年龄被描述为具体岁数（应是相对指标）
+    if re.search(r'生物年龄[^\n]{0,15}(\d{1,3}\s*岁|\d{1,3}[\.\d]*\s*岁)', text):
+        return True
+    # 虚假的"研究表明"无来源引用
+    if re.search(r'(研究表明|研究发现|最新研究|多项研究)[^。]{0,30}(降低|减少|提升)\s*\d', text):
+        return True
+    return False
 
 
 def _is_llm_junk(text: str) -> bool:
-    """检测 LLM 输出是否是垃圾（复读/套话/太短）"""
+    """检测 LLM 输出是否是垃圾（太短/复读/格式违规/医学幻觉）。
+
+    分层检测，任一命中即判定垃圾回退模板：
+    1. 长度不足（<200 字）
+    2. 已知套话模式
+    3. 自我复读（任意 6+ 字短语在 200 字窗口内重复）
+    4. 格式违规（要求段落但返回列表/markdown）
+    5. 医学事实幻觉（具体数字/百分比/年龄岁数）
+    """
     if not text or len(text) < LLM_MIN_CHARS:
         return True
     for pat in _LLM_JUNK_PATTERNS:
         if re.search(pat, text):
             return True
+    if _has_repetition(text):
+        return True
+    if _has_format_violation(text):
+        return True
+    if _has_medical_hallucination(text):
+        return True
     return False
 
 
