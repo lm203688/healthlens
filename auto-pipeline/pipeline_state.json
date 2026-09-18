@@ -1,8 +1,8 @@
 {
   "pipeline_id": "W35-2026",
   "created_at": "2026-09-06T03:01:25.449290",
-  "status": "running_ops_health_f",
-  "current_phase": "ops_health_f",
+  "status": "completed",
+  "current_phase": null,
   "phases": {
     "collect": {
       "status": "completed",
@@ -68,51 +68,51 @@
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:01.839994",
-      "completed_at": "2026-09-18T06:00:03.863015",
-      "output_file": "reports/analysis/2026-09-18_feedback_a.json",
-      "items_processed": 8,
+      "started_at": "2026-09-16T07:46:43.192091",
+      "completed_at": "2026-09-16T07:46:51.513341",
+      "output_file": "reports/analysis/2026-09-16_feedback_a.json",
+      "items_processed": 6,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:03.894000",
-      "completed_at": "2026-09-18T06:00:03.897153",
-      "output_file": "reports/analysis/2026-09-18_conversion_b.json",
+      "started_at": "2026-09-16T07:46:51.631198",
+      "completed_at": "2026-09-16T07:46:55.962106",
+      "output_file": "reports/analysis/2026-09-16_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:03.941483",
-      "completed_at": "2026-09-18T06:00:06.446117",
-      "output_file": "reports/analysis/2026-09-18_data_asset_c.json",
+      "started_at": "2026-09-16T07:46:56.107123",
+      "completed_at": "2026-09-16T07:46:59.838830",
+      "output_file": "reports/analysis/2026-09-16_data_asset_c.json",
       "items_processed": 6,
       "error": null,
       "quality_issues": 4
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:06.497506",
-      "completed_at": "2026-09-18T06:00:07.213428",
-      "output_file": "reports/analysis/2026-09-18_promotion_d.json",
+      "started_at": "2026-09-16T07:46:59.976190",
+      "completed_at": "2026-09-16T07:47:03.394138",
+      "output_file": "reports/analysis/2026-09-16_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:07.581725",
-      "completed_at": "2026-09-18T06:00:07.586507",
-      "output_file": "reports/analysis/2026-09-18_finance_e.json",
+      "started_at": "2026-09-16T07:47:03.547611",
+      "completed_at": "2026-09-16T07:47:07.732622",
+      "output_file": "reports/analysis/2026-09-16_finance_e.json",
       "items_processed": 1,
       "error": null,
       "alerts": 1
     },
     "ops_health_f": {
       "status": "completed",
-      "started_at": "2026-09-18T06:00:07.644536",
-      "completed_at": "2026-09-18T06:00:15.256848",
-      "output_file": "reports/analysis/2026-09-18_ops_health_f.json",
+      "started_at": "2026-09-16T07:47:07.927974",
+      "completed_at": "2026-09-16T07:47:13.444761",
+      "output_file": "reports/analysis/2026-09-16_ops_health_f.json",
       "items_processed": 4,
       "error": null
     }
@@ -860,25 +860,27 @@
   ],
   "feedback_metrics": {
     "ops_health": {
-      "checked_at": "2026-09-18T06:00:15.255401",
       "overall": "healthy",
       "endpoints_ok": 4,
       "endpoints_error": 0,
-      "server_reachable": false,
-      "containers_unhealthy": 0,
-      "security_issues": 1,
-      "medical_terms_found": 0
+      "server_reachable": false
     },
     "content_pipeline": {
-      "checked_at": "2026-09-18T06:00:03.861018",
+      "checked_at": "2026-09-16T07:46:51.501291",
       "data_source": "http_probe",
-      "total_deployed": 7,
-      "success_rate": 75.0,
+      "total_deployed": 5,
+      "success_rate": 100.0,
       "top_performer": "__core_health__",
-      "weight_adjustments": {}
+      "weight_adjustments": {
+        "source_count": {
+          "current": 45,
+          "suggested": 45,
+          "reason": "内容表现优秀，可适当放宽筛选标准增加产出"
+        }
+      }
     },
     "user_conversion": {
-      "checked_at": "2026-09-18T06:00:03.895616",
+      "checked_at": "2026-09-16T07:46:55.952851",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -887,7 +889,7 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-09-18T06:00:06.444421",
+      "checked_at": "2026-09-16T07:46:59.829822",
       "total_records": 1201774750,
       "quality_issues": 4,
       "estimated_value": 1201774.75,
@@ -895,7 +897,7 @@
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-09-18T06:00:07.211726",
+      "checked_at": "2026-09-16T07:47:03.385999",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -904,181 +906,16 @@
       "channel_actions": 0
     },
     "finance": {
-      "checked_at": "2026-09-18T06:00:07.583567",
+      "checked_at": "2026-09-16T07:47:07.723726",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
       "all_time_revenue": 0,
       "alerts": 1,
-      "data_source": "db_unavailable"
+      "data_source": "db_error"
     }
   },
   "development_tasks": [
-    {
-      "task_id": "task_seo_001",
-      "type": "seo_knowledge_page",
-      "based_on_item": "gh_1189384516",
-      "title": "repowise-dev/repowise",
-      "priority": "high",
-      "status": "deployed",
-      "tags": [
-        "ai",
-        "code-complexity",
-        "code-health",
-        "code-intelligence",
-        "code-quality"
-      ],
-      "target_word_count": 2000,
-      "content_file": "content/generated/repowise-devrepowise.html",
-      "deploy_info": {
-        "task_id": "task_seo_001",
-        "file": "content/generated/repowise-devrepowise.html",
-        "status": "deployed",
-        "slug": "repowise-devrepowise",
-        "remote_path": "/knowledge/repowise-devrepowise.html",
-        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
-        "note": "",
-        "live_check": {
-          "slug": "repowise-devrepowise",
-          "http_code": 200,
-          "bytes": 3338,
-          "status": "ok",
-          "note": ""
-        }
-      }
-    },
-    {
-      "task_id": "task_seo_002",
-      "type": "seo_knowledge_page",
-      "based_on_item": "gh_1006104934",
-      "title": "CodeWithCJ/SparkyFitness",
-      "priority": "high",
-      "status": "deployed",
-      "tags": [
-        "ai",
-        "artificial-intelligence",
-        "fitness",
-        "fitness-app",
-        "fitness-tracker"
-      ],
-      "target_word_count": 2000,
-      "content_file": "content/generated/codewithcjsparkyfitness.html",
-      "deploy_info": {
-        "task_id": "task_seo_002",
-        "file": "content/generated/codewithcjsparkyfitness.html",
-        "status": "deployed",
-        "slug": "codewithcjsparkyfitness",
-        "remote_path": "/knowledge/codewithcjsparkyfitness.html",
-        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
-        "note": "",
-        "live_check": {
-          "slug": "codewithcjsparkyfitness",
-          "http_code": 200,
-          "bytes": 3381,
-          "status": "ok",
-          "note": ""
-        }
-      }
-    },
-    {
-      "task_id": "task_seo_003",
-      "type": "seo_knowledge_page",
-      "based_on_item": "gh_1052828228",
-      "title": "qixing-jk/all-api-hub",
-      "priority": "high",
-      "status": "deployed",
-      "tags": [
-        "ai",
-        "cc-switch",
-        "chatgpt",
-        "chatgpt-api",
-        "cherrystudio"
-      ],
-      "target_word_count": 2000,
-      "content_file": "content/generated/qixing-jkall-api-hub.html",
-      "deploy_info": {
-        "task_id": "task_seo_003",
-        "file": "content/generated/qixing-jkall-api-hub.html",
-        "status": "deployed",
-        "slug": "qixing-jkall-api-hub",
-        "remote_path": "/knowledge/qixing-jkall-api-hub.html",
-        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
-        "note": "",
-        "live_check": {
-          "slug": "qixing-jkall-api-hub",
-          "http_code": 200,
-          "bytes": 3322,
-          "status": "ok",
-          "note": ""
-        }
-      }
-    },
-    {
-      "task_id": "task_seo_004",
-      "type": "seo_knowledge_page",
-      "based_on_item": "gh_1086572146",
-      "title": "the-momentum/open-wearables",
-      "priority": "high",
-      "status": "deployed",
-      "tags": [
-        "apple-health",
-        "apple-watch",
-        "fastapi",
-        "fitness",
-        "fitness-analysis"
-      ],
-      "target_word_count": 2000,
-      "content_file": "content/generated/the-momentumopen-wearables.html",
-      "deploy_info": {
-        "task_id": "task_seo_004",
-        "file": "content/generated/the-momentumopen-wearables.html",
-        "status": "deployed",
-        "slug": "the-momentumopen-wearables",
-        "remote_path": "/knowledge/the-momentumopen-wearables.html",
-        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
-        "note": "",
-        "live_check": {
-          "slug": "the-momentumopen-wearables",
-          "http_code": 200,
-          "bytes": 3418,
-          "status": "ok",
-          "note": ""
-        }
-      }
-    },
-    {
-      "task_id": "task_seo_005",
-      "type": "seo_knowledge_page",
-      "based_on_item": "gh_1106398326",
-      "title": "thetahealth/mirobody",
-      "priority": "high",
-      "status": "deployed",
-      "tags": [
-        "ai-agents",
-        "fhir",
-        "health-data",
-        "lab-reports",
-        "loinc"
-      ],
-      "target_word_count": 2000,
-      "content_file": "content/generated/thetahealthmirobody.html",
-      "deploy_info": {
-        "task_id": "task_seo_005",
-        "file": "content/generated/thetahealthmirobody.html",
-        "status": "deployed",
-        "slug": "thetahealthmirobody",
-        "remote_path": "/knowledge/thetahealthmirobody.html",
-        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
-        "note": "",
-        "live_check": {
-          "slug": "thetahealthmirobody",
-          "http_code": 200,
-          "bytes": 3307,
-          "status": "ok",
-          "note": ""
-        }
-      }
-    },
     {
       "task_id": "task_edu_006",
       "type": "user_education",
@@ -1147,20 +984,6 @@
       "run_id": "run_20260916_074635",
       "started_at": "2026-09-16T07:46:35.849391",
       "finished_at": "2026-09-16T07:47:13.473176",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260918_055421",
-      "started_at": "2026-09-18T05:54:21.490420",
-      "finished_at": "2026-09-18T05:54:31.936649",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260918_055959",
-      "started_at": "2026-09-18T05:59:59.647128",
-      "finished_at": "2026-09-18T06:00:15.364079",
       "verdict": "SUCCESS",
       "failed_count": 0
     }
