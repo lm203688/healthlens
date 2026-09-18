@@ -411,9 +411,18 @@ def _llm_audit(content: str, title: str) -> list:
     """用 LLM 做深度审计（InkOS 审计员模式）。
 
     检查维度：AI 味、事实一致性、可读性、重复段落。
-    返回建议列表（不阻断部署）。LLM 不可用时返回空列表。
+    返回建议列表（不阻断部署）。LLM 不可用或场景开关关闭时返回空列表。
+
+    场景开关 LLM_AUDIT_ENABLED 默认 False：实测 minimind 35B 审计建议
+    全是复读（"细胞毒性是…细胞毒性是…"），reviewer 看到的都是垃圾。
+    启用需换更强模型（设 LLM_AUDIT_ENABLED=true）。本地启发式检查
+    （check_ai_smell / check_fake_citations / check_fair_balance 等）
+    不受开关影响，始终运行。
     """
-    from llm_client import generate as llm_generate, is_available as llm_available
+    from llm_client import generate as llm_generate, is_available as llm_available, is_audit_enabled
+
+    if not is_audit_enabled():
+        return []
 
     if not llm_available():
         return []

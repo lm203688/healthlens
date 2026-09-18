@@ -22,6 +22,22 @@ SENSENOVA_URL = "https://token.sensenova.cn/v1"
 SENSENOVA_MODEL = os.environ.get("SENSENOVA_MODEL", "sensenova-6.7-flash-lite")
 SENSENOVA_KEY = os.environ.get("SENSENOVA_API_KEY", "")
 
+# ── 场景开关（默认关闭，避免白烧推理） ──────────────────
+# 实测（2026-09-18）：minimind 35B 在 10 道健康知识题上 10/10 全部被
+# _is_llm_junk 拦截（复读+列表格式违规），Phase 4 相当于开着但 100%
+# 回退模板——白烧每题 60-90 秒推理时间。Phase 5 审计输出全是复读建议。
+# 开关保持代码通路，SenseNova 修好或换强模型时改环境变量即可启用，无需改代码。
+# 启用方式：LLM_GENERATE_ENABLED=true（Phase 4 正文生成）
+#          LLM_AUDIT_ENABLED=true（Phase 5 深度审计）
+def _env_bool(name: str, default: bool = False) -> bool:
+    v = os.environ.get(name)
+    if v is None:
+        return default
+    return v.strip().lower() in ("1", "true", "yes", "on")
+
+LLM_GENERATE_ENABLED = _env_bool("LLM_GENERATE_ENABLED", False)
+LLM_AUDIT_ENABLED = _env_bool("LLM_AUDIT_ENABLED", False)
+
 # SenseNova key 从 WorkBuddy models.json 自动读取（用户记忆里的路径）
 _MODELS_JSON = Path.home() / ".workbuddy" / "models.json"
 if not SENSENOVA_KEY and _MODELS_JSON.exists():
@@ -165,8 +181,7 @@ def _now_iso() -> str:
 
 
 def is_available() -> bool:
-    """快速探测至少一个 LLM 可用"""
-    # Ollama 探测（本地，几乎零延迟）
+    """快速探测至少一个 LLM 可用（不考虑场景开关，纯可用性）"""
     try:
         req = urllib.request.Request(f"{OLLAMA_URL}/models")
         resp = urllib.request.urlopen(req, context=_ctx, timeout=3)
@@ -176,6 +191,16 @@ def is_available() -> bool:
     except Exception:
         pass
     return bool(SENSENOVA_KEY)
+
+
+def is_generation_enabled() -> bool:
+    """Phase 4 正文生成是否启用。默认 False（minimind 不达标，避免白烧推理）。"""
+    return LLM_GENERATE_ENABLED and is_available()
+
+
+def is_audit_enabled() -> bool:
+    """Phase 5 深度审计是否启用。默认 False（minimind 审计建议全是复读）。"""
+    return LLM_AUDIT_ENABLED and is_available()
 
 
 def health_check() -> dict:

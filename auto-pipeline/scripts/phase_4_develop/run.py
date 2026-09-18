@@ -33,7 +33,7 @@ from state_manager import (
     save_state,
     start_phase,
 )
-from llm_client import generate as llm_generate, is_available as llm_available, generate_with_metadata
+from llm_client import generate as llm_generate, is_available as llm_available, generate_with_metadata, is_generation_enabled
 
 # 内容新鲜度阈值：content_file 修改时间在此天数内 → 跳过重写
 CONTENT_FRESH_DAYS = 7
@@ -236,6 +236,13 @@ def _llm_generate_body(title: str, tags: list, topic_type: str = "seo") -> tuple
     GitHub 用户反馈明确指出：AI 生成内容 commit 缺元数据无法追溯。
     """
     import hashlib
+
+    # 场景开关：默认关闭，避免白烧推理时间。
+    # 实测 minimind 35B 在 10 道健康知识题上 10/10 被 _is_llm_junk 拦截
+    # （复读+格式违规），LLM 调用等价于 100% 回退模板。开启需 SenseNova
+    # 修好或换更强模型（设 LLM_GENERATE_ENABLED=true）。
+    if not is_generation_enabled():
+        return None, None
 
     if not llm_available():
         return None, None

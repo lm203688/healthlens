@@ -338,13 +338,23 @@ def _build_funnel():
     try:
         sys.path.insert(0, str(BASE_DIR / "scripts" / "core"))
         from llm_client import health_check as _llm_health
+        from llm_client import LLM_GENERATE_ENABLED, LLM_AUDIT_ENABLED
         llm_status = _llm_health()
+        llm_status["generate_enabled"] = LLM_GENERATE_ENABLED
+        llm_status["audit_enabled"] = LLM_AUDIT_ENABLED
     except Exception:
-        llm_status = {"any_available": False, "note": "llm_client 不可用"}
+        llm_status = {"any_available": False, "generate_enabled": False,
+                      "audit_enabled": False, "note": "llm_client 不可用"}
 
-    # LLM 不可用 → 内容生成回退模板，是潜在摩擦信号
+    # 只有"LLM 真的不可用"才算摩擦信号；场景开关关闭是设计选择，不算摩擦。
+    # 实测（2026-09-18）：minimind 35B 在健康题上 10/10 被垃圾检测拦截，
+    # 默认关闭生成/审计避免白烧推理。若 SenseNova 修好或换强模型，
+    # 设 LLM_GENERATE_ENABLED=true / LLM_AUDIT_ENABLED=true 即可启用。
     if not llm_status.get("any_available"):
-        stuck_signals.append("LLM 不可用，Phase 4 内容生成回退模板")
+        # 场景开关开着但 LLM 挂了 = 真故障，报摩擦
+        if llm_status.get("generate_enabled") or llm_status.get("audit_enabled"):
+            stuck_signals.append("LLM 不可用但场景开关已开启，内容生成/审计回退模板")
+        # 开关都关着 + LLM 挂 = 无所谓，不算摩擦
 
     return {
         "total": total,
