@@ -88,38 +88,38 @@ def log(m=""):
     print(m, flush=True)
 
 
-def _load_state_whitelist() -> set:
-    """读 pipeline_state.json，返回 state.development_tasks 里合法任务的 filename 集合。
+def _is_garbage_content(f: Path) -> bool:
+    """检测文件是否是 GitHub 项目名当健康标题的垃圾内容。
 
-    只信任 state 管理的内容：任何写入 content/generated 但未在 state 里登记的文件
-    都不应上线。这是防止垃圾内容绕过 Phase 1 过滤后仍能部署的最后一道门。
+    2026-09-18 实证：Phase 1 早期把 GitHub trending 项目名当健康主题，生成的
+    HTML 标题就是 GitHub repo 名（repowise-dev/repowise、CodeWithCJ/SparkyFitness
+    等），完全不健康。Phase 1 已加健康关键词过滤不会再生成，但磁盘上遗留的垃圾
+    文件仍会被 build_site.py 扫到并部署。
 
-    2026-09-18 实证：Phase 1 加了健康关键词过滤，但 content/generated 里遗留的
-    5 篇 GitHub 项目名产物（repowise-dev/repowise 等）仍在磁盘，且 status=deployed
-    留在 state 里。build_site.py 扫全目录 → 垃圾内容继续上线。加白名单兜底。
+    用黑名单而非白名单：白名单会误伤不在 state.development_tasks 管理范围内的
+    老内容（如 autophagy-activation 等 8/29 生成的内容）。黑名单基于内容特征
+    检测——如果 <h1> 或 <title> 匹配 GitHub 项目名模式（owner/repo），则判定为垃圾。
 
-    返回空 set 时调用方放行所有文件（用于 state 缺失/损坏场景，保守放行优于构建失败）。
+    检测模式：
+    - <h1>owner/repo</h1> 或 <title>owner/repo</title>
+    - GitHub 项目名格式：小写字母/数字/连字符 + / + 小写字母/数字/连字符
+    - 排除含空格的自然语言标题（正常健康标题不含斜杠）
     """
-    state_path = PIPELINE / "pipeline_state.json"
-    if not state_path.exists():
-        log("  [WARN] pipeline_state.json 不存在，content/generated 全部放行")
-        return set()
     try:
-        with open(state_path, "r", encoding="utf-8") as f:
-            state = json.load(f)
-    except Exception as e:
-        log(f"  [WARN] 读取 pipeline_state.json 失败：{e}，content/generated 全部放行")
-        return set()
-    # 只信任已通过测试且已进入部署流程的任务。test_warning/deploy_failed 不算合法
-    # 上线内容（test_warning 被 phase_6 拒绝认领，deploy_failed 是上次部署失败的历史记录）。
-    ok_statuses = {"generated", "test_passed", "deployed"}
-    whitelist = set()
-    for t in state.get("development_tasks", []):
-        if t.get("status") in ok_statuses:
-            cf = t.get("content_file", "")
-            if cf:
-                whitelist.add(Path(cf).name)
-    return whitelist
+        content = f.read_text(encoding="utf-8", errors="replace")
+    except Exception:
+        return False
+    # 匹配 <h1> 和 <title> 里的文本
+    for tag in ("h1", "title"):
+        m = re.search(rf'<{tag}[^>]*>([^<]+)</{tag}>', content, re.I)
+        if not m:
+            continue
+        text = m.group(1).strip()
+        # GitHub 项目名模式：owner/repo（不含空格，含斜杠，小写为主）
+        # 排除正常健康标题（含中文、空格、大写单词等）
+        if re.match(r'^[a-z0-9_-]+/[a-z0-9_-]+$', text, re.I):
+            return True
+    return False
 
 
 def extract_meta(html_path: Path) -> dict:
@@ -311,18 +311,21 @@ def build():
     log("\n[2/5] 知识库页面")
     pages, overridden = {}, []
     generated_src = (PIPELINE / "content" / "generated").resolve()
-    whitelist = _load_state_whitelist() if generated_src.exists() else set()
     for src in CONTENT_SOURCES:
         if not src.is_dir():
             continue
         found = sorted(src.glob("*.html"))
-        # 流水线产出源：加 state 白名单过滤，防止垃圾内容绕过 Phase 1 过滤后仍上线。
-        # reports/ 下的老手写内容不在 state 管理范围，走非白名单路径（全放行）。
+        # 流水线产出源：用黑名单过滤 GitHub 项目名垃圾内容。
+        # reports/ 下的老手写内容不在 state 管理范围，走非黑名单路径（全放行）。
         is_generated_src = src.resolve() == generated_src
         skipped = []
-        if is_generated_src and whitelist:
-            kept = [f for f in found if f.name in whitelist]
-            skipped = [f for f in found if f.name not in whitelist]
+        if is_generated_src:
+            kept = []
+            for f in found:
+                if _is_garbage_content(f):
+                    skipped.append(f)
+                else:
+                    kept.append(f)
             found = kept
         for f in found:
             if f.name in pages:
@@ -333,9 +336,9 @@ def build():
         if sub_assets.is_dir():
             shutil.copytree(sub_assets, DIST / "assets", dirs_exist_ok=True)
         if is_generated_src and skipped:
-            log(f"  {src.name:<28} {len(found):>3} 页（白名单过滤掉 {len(skipped)} 个未登记文件）")
+            log(f"  {src.name:<28} {len(found):>3} 页（黑名单过滤掉 {len(skipped)} 个垃圾文件）")
             for f in skipped[:8]:
-                log(f"     [跳过] {f.name}（未在 state.development_tasks 登记，防垃圾上线）")
+                log(f"     [跳过] {f.name}（GitHub 项目名模式，非健康内容）")
         elif found:
             log(f"  {src.name:<28} {len(found):>3} 页")
 
