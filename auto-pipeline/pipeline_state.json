@@ -1,8 +1,8 @@
 {
   "pipeline_id": "W35-2026",
   "created_at": "2026-09-06T03:01:25.449290",
-  "status": "completed",
-  "current_phase": null,
+  "status": "running_ops_health_f",
+  "current_phase": "ops_health_f",
   "phases": {
     "collect": {
       "status": "completed",
@@ -68,51 +68,51 @@
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-09-16T07:46:43.192091",
-      "completed_at": "2026-09-16T07:46:51.513341",
-      "output_file": "reports/analysis/2026-09-16_feedback_a.json",
-      "items_processed": 6,
+      "started_at": "2026-09-18T08:41:01.981074",
+      "completed_at": "2026-09-18T08:41:02.985941",
+      "output_file": "reports/analysis/2026-09-18_feedback_a.json",
+      "items_processed": 3,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-09-16T07:46:51.631198",
-      "completed_at": "2026-09-16T07:46:55.962106",
-      "output_file": "reports/analysis/2026-09-16_conversion_b.json",
+      "started_at": "2026-09-18T08:41:03.024113",
+      "completed_at": "2026-09-18T08:41:03.028220",
+      "output_file": "reports/analysis/2026-09-18_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-09-16T07:46:56.107123",
-      "completed_at": "2026-09-16T07:46:59.838830",
-      "output_file": "reports/analysis/2026-09-16_data_asset_c.json",
+      "started_at": "2026-09-18T08:41:03.088088",
+      "completed_at": "2026-09-18T08:41:04.902400",
+      "output_file": "reports/analysis/2026-09-18_data_asset_c.json",
       "items_processed": 6,
       "error": null,
       "quality_issues": 4
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-09-16T07:46:59.976190",
-      "completed_at": "2026-09-16T07:47:03.394138",
-      "output_file": "reports/analysis/2026-09-16_promotion_d.json",
+      "started_at": "2026-09-18T08:41:04.966604",
+      "completed_at": "2026-09-18T08:41:05.788055",
+      "output_file": "reports/analysis/2026-09-18_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-09-16T07:47:03.547611",
-      "completed_at": "2026-09-16T07:47:07.732622",
-      "output_file": "reports/analysis/2026-09-16_finance_e.json",
+      "started_at": "2026-09-18T08:41:05.971878",
+      "completed_at": "2026-09-18T08:41:05.976267",
+      "output_file": "reports/analysis/2026-09-18_finance_e.json",
       "items_processed": 1,
       "error": null,
       "alerts": 1
     },
     "ops_health_f": {
       "status": "completed",
-      "started_at": "2026-09-16T07:47:07.927974",
-      "completed_at": "2026-09-16T07:47:13.444761",
-      "output_file": "reports/analysis/2026-09-16_ops_health_f.json",
+      "started_at": "2026-09-18T08:41:06.050124",
+      "completed_at": "2026-09-18T08:41:09.026651",
+      "output_file": "reports/analysis/2026-09-18_ops_health_f.json",
       "items_processed": 4,
       "error": null
     }
@@ -860,27 +860,41 @@
   ],
   "feedback_metrics": {
     "ops_health": {
+      "checked_at": "2026-09-18T08:41:09.024787",
       "overall": "healthy",
       "endpoints_ok": 4,
       "endpoints_error": 0,
-      "server_reachable": false
+      "server_reachable": false,
+      "containers_unhealthy": 0,
+      "security_issues": 1,
+      "medical_terms_found": 0
     },
     "content_pipeline": {
-      "checked_at": "2026-09-16T07:46:51.501291",
+      "checked_at": "2026-09-18T08:41:02.983371",
       "data_source": "http_probe",
-      "total_deployed": 5,
-      "success_rate": 100.0,
+      "total_deployed": 2,
+      "success_rate": 33.3,
       "top_performer": "__core_health__",
       "weight_adjustments": {
+        "market_validation": {
+          "current": 25,
+          "suggested": 25,
+          "reason": "内容表现不佳，需加强市场验证筛选"
+        },
+        "feasibility": {
+          "current": 15,
+          "suggested": 15,
+          "reason": "技术可行性评估需更严格"
+        },
         "source_count": {
-          "current": 45,
-          "suggested": 45,
-          "reason": "内容表现优秀，可适当放宽筛选标准增加产出"
+          "current": 35,
+          "suggested": 35,
+          "reason": "降低来源数量权重，避免伪信号"
         }
       }
     },
     "user_conversion": {
-      "checked_at": "2026-09-16T07:46:55.952851",
+      "checked_at": "2026-09-18T08:41:03.026199",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -889,7 +903,7 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-09-16T07:46:59.829822",
+      "checked_at": "2026-09-18T08:41:04.900157",
       "total_records": 1201774750,
       "quality_issues": 4,
       "estimated_value": 1201774.75,
@@ -897,7 +911,7 @@
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-09-16T07:47:03.385999",
+      "checked_at": "2026-09-18T08:41:05.785941",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -906,13 +920,13 @@
       "channel_actions": 0
     },
     "finance": {
-      "checked_at": "2026-09-16T07:47:07.723726",
+      "checked_at": "2026-09-18T08:41:05.974350",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
       "all_time_revenue": 0,
       "alerts": 1,
-      "data_source": "db_error"
+      "data_source": "db_unavailable"
     }
   },
   "development_tasks": [
@@ -984,6 +998,13 @@
       "run_id": "run_20260916_074635",
       "started_at": "2026-09-16T07:46:35.849391",
       "finished_at": "2026-09-16T07:47:13.473176",
+      "verdict": "SUCCESS",
+      "failed_count": 0
+    },
+    {
+      "run_id": "run_20260918_084100",
+      "started_at": "2026-09-18T08:41:00.622136",
+      "finished_at": "2026-09-18T08:41:09.088059",
       "verdict": "SUCCESS",
       "failed_count": 0
     }

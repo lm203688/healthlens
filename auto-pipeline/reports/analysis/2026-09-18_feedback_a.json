@@ -1,11 +1,27 @@
 {
   "report_id": "feedback_a_20260918",
-  "generated_at": "2026-09-18T06:00:03.862332",
+  "generated_at": "2026-09-18T08:41:02.985249",
   "data_source": "http_probe",
-  "success_rate": 75.0,
-  "feedback_count": 8,
-  "adjustments_made": false,
-  "adjustments": {},
+  "success_rate": 33.3,
+  "feedback_count": 3,
+  "adjustments_made": true,
+  "adjustments": {
+    "market_validation": {
+      "current": 25,
+      "suggested": 25,
+      "reason": "内容表现不佳，需加强市场验证筛选"
+    },
+    "feasibility": {
+      "current": 15,
+      "suggested": 15,
+      "reason": "技术可行性评估需更严格"
+    },
+    "source_count": {
+      "current": 35,
+      "suggested": 35,
+      "reason": "降低来源数量权重，避免伪信号"
+    }
+  },
   "feedback_details": [
     {
       "slug": "__core_health__",
@@ -14,67 +30,7 @@
       "metrics": {
         "core_pages_ok": 4,
         "core_pages_total": 4,
-        "avg_latency_ms": 279
-      },
-      "performance": "above_average",
-      "data_source": "http_probe"
-    },
-    {
-      "slug": "repowise-devrepowise",
-      "title": "repowise-dev/repowise",
-      "deployed_days": 0,
-      "metrics": {
-        "http_code": 200,
-        "latency_ms": 182,
-        "body_size": 50000
-      },
-      "performance": "above_average",
-      "data_source": "http_probe"
-    },
-    {
-      "slug": "codewithcjsparkyfitness",
-      "title": "CodeWithCJ/SparkyFitness",
-      "deployed_days": 0,
-      "metrics": {
-        "http_code": 200,
-        "latency_ms": 175,
-        "body_size": 50000
-      },
-      "performance": "above_average",
-      "data_source": "http_probe"
-    },
-    {
-      "slug": "qixing-jkall-api-hub",
-      "title": "qixing-jk/all-api-hub",
-      "deployed_days": 0,
-      "metrics": {
-        "http_code": 200,
-        "latency_ms": 172,
-        "body_size": 50000
-      },
-      "performance": "above_average",
-      "data_source": "http_probe"
-    },
-    {
-      "slug": "the-momentumopen-wearables",
-      "title": "the-momentum/open-wearables",
-      "deployed_days": 0,
-      "metrics": {
-        "http_code": 200,
-        "latency_ms": 192,
-        "body_size": 50000
-      },
-      "performance": "above_average",
-      "data_source": "http_probe"
-    },
-    {
-      "slug": "thetahealthmirobody",
-      "title": "thetahealth/mirobody",
-      "deployed_days": 0,
-      "metrics": {
-        "http_code": 200,
-        "latency_ms": 178,
-        "body_size": 50000
+        "avg_latency_ms": 249
       },
       "performance": "above_average",
       "data_source": "http_probe"
