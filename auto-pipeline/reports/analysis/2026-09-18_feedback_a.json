@@ -1,0 +1,107 @@
+{
+  "report_id": "feedback_a_20260918",
+  "generated_at": "2026-09-18T05:54:24.244442",
+  "data_source": "http_probe",
+  "success_rate": 75.0,
+  "feedback_count": 8,
+  "adjustments_made": false,
+  "adjustments": {},
+  "feedback_details": [
+    {
+      "slug": "__core_health__",
+      "title": "核心页面健康度",
+      "deployed_days": 0,
+      "metrics": {
+        "core_pages_ok": 4,
+        "core_pages_total": 4,
+        "avg_latency_ms": 120
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "repowise-devrepowise",
+      "title": "repowise-dev/repowise",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 76,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "codewithcjsparkyfitness",
+      "title": "CodeWithCJ/SparkyFitness",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 73,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "qixing-jkall-api-hub",
+      "title": "qixing-jk/all-api-hub",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 108,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "the-momentumopen-wearables",
+      "title": "the-momentum/open-wearables",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 102,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "thetahealthmirobody",
+      "title": "thetahealth/mirobody",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 80,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "国内竞品健康管理app功能对比分析-guide",
+      "title": "国内竞品健康管理App功能对比分析",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 0,
+        "latency_ms": 0,
+        "body_size": 0
+      },
+      "performance": "below_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 0,
+        "latency_ms": 0,
+        "body_size": 0
+      },
+      "performance": "below_average",
+      "data_source": "http_probe"
+    }
+  ]
+}
