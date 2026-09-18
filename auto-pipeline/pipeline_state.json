@@ -1,123 +1,125 @@
 {
-  "pipeline_id": "W30-2026",
-  "created_at": "2026-07-27T17:04:40.328202",
-  "status": "running_ops_health_f",
-  "current_phase": "ops_health_f",
+  "pipeline_id": "W35-2026",
+  "created_at": "2026-09-06T03:01:25.449290",
+  "status": "completed",
+  "current_phase": null,
   "phases": {
     "collect": {
       "status": "completed",
-      "started_at": "2026-08-29T10:43:53.913843",
-      "completed_at": "2026-08-29T10:44:01.321827",
-      "output_file": "reports/intelligence/2026-08-29_intelligence_report.json",
+      "started_at": "2026-09-15T18:11:53.322126",
+      "completed_at": "2026-09-15T18:11:59.328621",
+      "output_file": "reports/intelligence/2026-09-15_intelligence_report.json",
       "items_processed": 18,
       "error": null
     },
     "analyze": {
       "status": "completed",
-      "started_at": "2026-08-28T23:19:51.005359",
-      "completed_at": "2026-08-28T23:19:51.035178",
-      "output_file": "reports/analysis/2026-08-28_analysis_report.json",
-      "items_processed": 13,
+      "started_at": "2026-09-06T03:01:39.684327",
+      "completed_at": "2026-09-06T03:01:39.696696",
+      "output_file": "reports/analysis/2026-09-06_analysis_report.json",
+      "items_processed": 18,
       "error": null,
       "approved_count": 8,
-      "watch_count": 5,
+      "watch_count": 10,
       "rejected_count": 0
     },
     "decide": {
       "status": "completed",
-      "started_at": "2026-08-28T23:19:51.732270",
-      "completed_at": "2026-08-28T23:19:51.762076",
-      "output_file": "reports/analysis/2026-08-28_decision_report.json",
-      "items_processed": 13,
+      "started_at": "2026-09-06T03:01:39.790581",
+      "completed_at": "2026-09-06T03:01:39.807886",
+      "output_file": "reports/analysis/2026-09-06_decision_report.json",
+      "items_processed": 18,
       "error": null,
-      "tasks_created": 0,
-      "new_approved": 0
+      "tasks_created": 7,
+      "new_approved": 8
     },
     "develop": {
       "status": "completed",
-      "started_at": "2026-08-28T23:19:52.398251",
-      "completed_at": "2026-08-28T23:19:52.411559",
-      "output_file": null,
-      "items_processed": 0,
+      "started_at": "2026-09-06T03:01:39.908274",
+      "completed_at": "2026-09-06T03:01:39.924794",
+      "output_file": "reports/analysis/2026-09-06_development_report.json",
+      "items_processed": 7,
       "error": null,
       "seo_articles": 5,
-      "education_articles": 1
+      "education_articles": 2
     },
     "test": {
       "status": "completed",
-      "started_at": "2026-08-28T23:19:53.062075",
-      "completed_at": "2026-08-28T23:19:53.075045",
-      "output_file": null,
-      "items_processed": 0,
+      "started_at": "2026-09-16T07:45:50.038161",
+      "completed_at": "2026-09-16T07:45:50.056145",
+      "output_file": "reports/analysis/2026-09-16_test_report.json",
+      "items_processed": 2,
       "error": null,
-      "passed": 5,
-      "failed": 1,
-      "warnings": 0
+      "passed": 2,
+      "failed": 0,
+      "warnings": 0,
+      "note": "2026-09-16T07:45:40.807067 复位：2 项内容重写后待重测"
     },
     "deploy": {
       "status": "completed",
-      "started_at": "2026-08-27T16:27:37.479934",
-      "completed_at": "2026-08-27T16:27:37.504487",
-      "output_file": "reports/deployed/2026-08-27_deployment_report.json",
-      "items_processed": 5,
+      "started_at": "2026-09-16T07:52:35.487191",
+      "completed_at": "2026-09-16T07:52:52.070761",
+      "output_file": "reports/deployed/2026-09-16_deployment_report.json",
+      "items_processed": 2,
       "error": null,
-      "deployed_count": 5,
-      "failed_count": 0
+      "deployed_count": 2,
+      "failed_count": 0,
+      "note": "2026-09-16T07:52:25.187469 复位：修复 node 路径解析后待重新构建上线"
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:13.490604",
-      "completed_at": "2026-09-18T02:50:13.493919",
-      "output_file": null,
-      "items_processed": 0,
+      "started_at": "2026-09-16T07:46:43.192091",
+      "completed_at": "2026-09-16T07:46:51.513341",
+      "output_file": "reports/analysis/2026-09-16_feedback_a.json",
+      "items_processed": 6,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:13.524402",
-      "completed_at": "2026-09-18T02:50:13.529650",
-      "output_file": "reports/analysis/2026-09-18_conversion_b.json",
+      "started_at": "2026-09-16T07:46:51.631198",
+      "completed_at": "2026-09-16T07:46:55.962106",
+      "output_file": "reports/analysis/2026-09-16_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:13.580252",
-      "completed_at": "2026-09-18T02:50:16.256005",
-      "output_file": "reports/analysis/2026-09-18_data_asset_c.json",
+      "started_at": "2026-09-16T07:46:56.107123",
+      "completed_at": "2026-09-16T07:46:59.838830",
+      "output_file": "reports/analysis/2026-09-16_data_asset_c.json",
       "items_processed": 6,
       "error": null,
       "quality_issues": 4
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:16.322816",
-      "completed_at": "2026-09-18T02:50:17.480513",
-      "output_file": "reports/analysis/2026-09-18_promotion_d.json",
+      "started_at": "2026-09-16T07:46:59.976190",
+      "completed_at": "2026-09-16T07:47:03.394138",
+      "output_file": "reports/analysis/2026-09-16_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:18.221695",
-      "completed_at": "2026-09-18T02:50:18.227114",
-      "output_file": "reports/analysis/2026-09-18_finance_e.json",
+      "started_at": "2026-09-16T07:47:03.547611",
+      "completed_at": "2026-09-16T07:47:07.732622",
+      "output_file": "reports/analysis/2026-09-16_finance_e.json",
       "items_processed": 1,
       "error": null,
       "alerts": 1
     },
     "ops_health_f": {
       "status": "completed",
-      "started_at": "2026-09-18T02:50:18.287527",
-      "completed_at": "2026-09-18T02:50:21.612185",
-      "output_file": "reports/analysis/2026-09-18_ops_health_f.json",
+      "started_at": "2026-09-16T07:47:07.927974",
+      "completed_at": "2026-09-16T07:47:13.444761",
+      "output_file": "reports/analysis/2026-09-16_ops_health_f.json",
       "items_processed": 4,
       "error": null
     }
   },
   "approved_queue": [
     {
-      "id": "intel_003",
+      "id": "comp_001",
       "title": "国内竞品健康管理App功能对比分析",
       "category": "approved",
       "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
@@ -125,12 +127,7 @@
         {
           "name": "竞品分析",
           "url": "",
-          "relevance": 0.9
-        },
-        {
-          "name": "七麦数据",
-          "url": "",
-          "relevance": 0.75
+          "relevance": 0.8
         }
       ],
       "relevance_to_healthlens": "high",
@@ -139,23 +136,24 @@
         "dau_growth": "稳定",
         "付费率": "3-8%"
       },
-      "technical_feasibility": 0.9,
+      "technical_feasibility": 0.8,
       "tags": [
         "竞品分析",
-        "市场格局",
-        "差异化"
+        "市场格局"
       ],
-      "total_score": 79.7,
+      "is_static": true,
+      "source_type": "static_baseline",
+      "total_score": 71.2,
       "score_breakdown": {
-        "source_score": 26.7,
-        "source_count": 2,
+        "source_score": 11.7,
+        "source_count": 1,
         "source_types": 1,
         "goal_score": 30.0,
         "relevance": "high",
-        "market_score": 14.0,
+        "market_score": 17.5,
         "signal_count": 2,
-        "feasibility_score": 9.0,
-        "feasibility": 0.9
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
       },
       "recommendation": {
         "action": "develop_content",
@@ -165,397 +163,6 @@
           "用户教育内容"
         ],
         "rationale": "基因归因+量化修复是差异化核心竞争力"
-      }
-    },
-    {
-      "id": "intel_001",
-      "title": "可穿戴设备与AI健康分析的融合趋势",
-      "category": "approved",
-      "summary": "越来越多的可穿戴设备厂商开始集成AI驱动的健康分析功能，包括睡眠质量深度分析、压力水平评估等。",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/trending/health-ai",
-          "relevance": 0.85
-        },
-        {
-          "name": "arXiv",
-          "url": "https://arxiv.org/search/?query=wearable+health+ai",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "可增强睡眠修复追踪模块的AI分析能力",
-      "market_signals": {
-        "github_stars_growth": "+25%/month",
-        "startup_funding": "3家获投"
-      },
-      "technical_feasibility": 0.85,
-      "tags": [
-        "可穿戴",
-        "AI分析",
-        "睡眠追踪"
-      ],
-      "total_score": 79.2,
-      "score_breakdown": {
-        "source_score": 26.7,
-        "source_count": 2,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 14.0,
-        "signal_count": 2,
-        "feasibility_score": 8.5,
-        "feasibility": 0.85
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新",
-          "睡眠修复专题"
-        ],
-        "rationale": "可增强睡眠修复追踪模块的AI分析能力"
-      }
-    },
-    {
-      "id": "intel_002",
-      "title": "表观遗传时钟与生活方式干预的临床验证",
-      "category": "approved",
-      "summary": "多项临床研究证实，综合生活方式干预（饮食+运动+睡眠）可使表观遗传年龄逆转2-5年。",
-      "sources": [
-        {
-          "name": "Nature Aging",
-          "url": "",
-          "relevance": 0.9
-        },
-        {
-          "name": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/",
-          "relevance": 0.85
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "为修复年龄和修复评分提供更坚实的学术依据",
-      "market_signals": {
-        "clinical_trials": "12项进行中",
-        "consumer_interest": "上升"
-      },
-      "technical_feasibility": 0.75,
-      "tags": [
-        "表观遗传",
-        "生活方式干预",
-        "临床验证"
-      ],
-      "total_score": 78.2,
-      "score_breakdown": {
-        "source_score": 26.7,
-        "source_count": 2,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 14.0,
-        "signal_count": 2,
-        "feasibility_score": 7.5,
-        "feasibility": 0.75
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "深度知识文章",
-          "科研速递"
-        ],
-        "rationale": "为修复年龄和修复评分提供更坚实的学术依据"
-      }
-    },
-    {
-      "id": "gh_1189384516",
-      "title": "repowise-dev/repowise",
-      "category": "approved",
-      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/repowise-dev/repowise",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 6246, Language: Python",
-      "market_signals": {
-        "github_stars": 6246,
-        "forks": 668,
-        "updated_at": "2026-08-27T07:59:13Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [
-        "ai",
-        "code-complexity",
-        "code-health",
-        "code-intelligence",
-        "code-quality"
-      ],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 6246, Language: Python"
-      }
-    },
-    {
-      "id": "gh_1006104934",
-      "title": "CodeWithCJ/SparkyFitness",
-      "category": "approved",
-      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/CodeWithCJ/SparkyFitness",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 5652, Language: TypeScript",
-      "market_signals": {
-        "github_stars": 5652,
-        "forks": 335,
-        "updated_at": "2026-08-27T06:36:17Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [
-        "ai",
-        "artificial-intelligence",
-        "fitness",
-        "fitness-app",
-        "fitness-tracker"
-      ],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 5652, Language: TypeScript"
-      }
-    },
-    {
-      "id": "gh_1052828228",
-      "title": "qixing-jk/all-api-hub",
-      "category": "approved",
-      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/qixing-jk/all-api-hub",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 4801, Language: TypeScript",
-      "market_signals": {
-        "github_stars": 4801,
-        "forks": 321,
-        "updated_at": "2026-08-27T08:04:32Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [
-        "ai",
-        "cc-switch",
-        "chatgpt",
-        "chatgpt-api",
-        "cherrystudio"
-      ],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 4801, Language: TypeScript"
-      }
-    },
-    {
-      "id": "gh_1086572146",
-      "title": "the-momentum/open-wearables",
-      "category": "approved",
-      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/the-momentum/open-wearables",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 2408, Language: Python",
-      "market_signals": {
-        "github_stars": 2408,
-        "forks": 454,
-        "updated_at": "2026-08-27T08:08:07Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [
-        "apple-health",
-        "apple-watch",
-        "fastapi",
-        "fitness",
-        "fitness-analysis"
-      ],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 2408, Language: Python"
-      }
-    },
-    {
-      "id": "gh_1106398326",
-      "title": "thetahealth/mirobody",
-      "category": "approved",
-      "summary": "The AI-native health data engine — collect, standardize, and reason over labs, wearables & genomics.",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/thetahealth/mirobody",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 1060, Language: Python",
-      "market_signals": {
-        "github_stars": 1060,
-        "forks": 197,
-        "updated_at": "2026-08-27T06:01:21Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [
-        "ai-agents",
-        "fhir",
-        "genomics",
-        "health",
-        "health-data"
-      ],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 1060, Language: Python"
-      }
-    },
-    {
-      "id": "gh_44771262",
-      "title": "microsoft/HealthClinic.biz",
-      "category": "approved",
-      "summary": "The samples contained in this repo are used to present an end-to-end demo scenario based on a fictitious B2B and multitenant system, named “HealthClinic.biz” that provides different websites, mobile a",
-      "sources": [
-        {
-          "name": "GitHub",
-          "url": "https://github.com/microsoft/HealthClinic.biz",
-          "relevance": 0.8
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "Stars: 503, Language: JavaScript",
-      "market_signals": {
-        "github_stars": 503,
-        "forks": 288,
-        "updated_at": "2026-07-28T11:47:14Z"
-      },
-      "technical_feasibility": 0.8,
-      "tags": [],
-      "total_score": 78.7,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 25,
-        "signal_count": 3,
-        "feasibility_score": 12.0,
-        "feasibility": 0.8
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "趋势分析文章",
-          "知识库更新"
-        ],
-        "rationale": "Stars: 503, Language: JavaScript"
       }
     },
     {
@@ -581,6 +188,8 @@
         "竞品分析",
         "市场格局"
       ],
+      "is_static": true,
+      "source_type": "static_baseline",
       "total_score": 71.2,
       "score_breakdown": {
         "source_score": 11.7,
@@ -602,724 +211,24 @@
         ],
         "rationale": "可探索频率干预模块与现有方案的融合"
       }
-    },
-    {
-      "id": "arx_02341",
-      "title": "FRAME: separating sampling variation from representational cause in medical imaging fairness",
-      "category": "approved",
-      "summary": "Subgroup performance differences are the standard evidence for fairness bias in medical imaging, and the usual response removes the demographic information that a model encodes. Here we introduce Fair",
-      "sources": [
-        {
-          "name": "arXiv",
-          "url": "http://arxiv.org/abs/2608.25981v1",
-          "relevance": 0.85
-        }
-      ],
-      "relevance_to_healthlens": "high",
-      "actionable_insight": "发表日期: 2026-08-26",
-      "market_signals": {
-        "source": "arXiv",
-        "date": "2026-08-26"
-      },
-      "technical_feasibility": 0.75,
-      "tags": [
-        "arxiv",
-        "research"
-      ],
-      "total_score": 70.4,
-      "score_breakdown": {
-        "source_score": 11.7,
-        "source_count": 1,
-        "source_types": 1,
-        "goal_score": 30.0,
-        "relevance": "high",
-        "market_score": 17.5,
-        "signal_count": 2,
-        "feasibility_score": 11.2,
-        "feasibility": 0.75
-      },
-      "recommendation": {
-        "action": "develop_content",
-        "priority": "high",
-        "content_types": [
-          "深度知识文章",
-          "科研速递"
-        ],
-        "rationale": "发表日期: 2026-08-26"
-      }
     }
   ],
   "watch_queue": [
     {
       "item": {
-        "id": "intel_006",
-        "title": "LLM驱动的健康助手用户体验研究",
-        "category": "watch",
-        "summary": "大语言模型在健康咨询场景的应用日益广泛，但用户信任度和准确性仍是核心挑战。",
-        "sources": [
-          {
-            "name": "HuggingFace",
-            "url": "",
-            "relevance": 0.8
-          },
-          {
-            "name": "用户研究",
-            "url": "",
-            "relevance": 0.7
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "优化AI健康助手的回答质量和可信度",
-        "market_signals": {
-          "adoption_rate": "快速增长",
-          "trust_score": "中等"
-        },
-        "technical_feasibility": 0.8,
-        "tags": [
-          "LLM",
-          "健康助手",
-          "用户体验"
-        ],
-        "total_score": 66.7,
-        "score_breakdown": {
-          "source_score": 26.7,
-          "source_count": 2,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 14.0,
-          "signal_count": 2,
-          "feasibility_score": 8.0,
-          "feasibility": 0.8
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-07-27T17:04:40.803424",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "intel_005",
-        "title": "肠道菌群检测与个性化营养推荐",
-        "category": "watch",
-        "summary": "基于肠道菌群检测的个性化营养方案成为健康管理新热点，多家创业公司进入此领域。",
-        "sources": [
-          {
-            "name": "行业报告",
-            "url": "",
-            "relevance": 0.75
-          },
-          {
-            "name": "学术论文",
-            "url": "",
-            "relevance": 0.8
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "肠道菌群是汇聚节点理论的重要组成部分",
-        "market_signals": {
-          "startups": "20+家",
-          "consumer_adoption": "早期"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "肠道菌群",
-          "个性化营养",
-          "微生物组"
-        ],
-        "total_score": 65.7,
-        "score_breakdown": {
-          "source_score": 26.7,
-          "source_count": 2,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 14.0,
-          "signal_count": 2,
-          "feasibility_score": 7.0,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-07-27T17:04:40.803424",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "intel_004",
-        "title": "PEMF频率疗法在家用设备中的应用增长",
-        "category": "watch",
-        "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/",
-            "relevance": 0.7
-          },
-          {
-            "name": "市场研究",
-            "url": "",
-            "relevance": 0.65
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "可探索频率干预模块与现有方案的融合",
-        "market_signals": {
-          "market_size": "12亿美元",
-          "cagr": "8.5%"
-        },
-        "technical_feasibility": 0.6,
-        "tags": [
-          "PEMF",
-          "频率疗法",
-          "线粒体"
-        ],
-        "total_score": 64.7,
-        "score_breakdown": {
-          "source_score": 26.7,
-          "source_count": 2,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 14.0,
-          "signal_count": 2,
-          "feasibility_score": 6.0,
-          "feasibility": 0.6
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-07-27T17:04:40.803424",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42649103",
-        "title": "Multi-Dimensional Barriers for Work Productivity and Possible Solutions to Overcome Presenteeism in Young-Onset Diabetes: A Mixed-Methods Study.",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42649103/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42649103",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug 2"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135752",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42648907",
-        "title": "Proteomic landscape of pan-tissue neuroendocrine carcinomas defines subtype-specific functional architectures, biomarkers and therapeutic targets.",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42648907/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42648907",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug 2"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135760",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42648887",
-        "title": "Interaction of genetic susceptibility and sunlight exposure on primary open-angle glaucoma risk and progression.",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42648887/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42648887",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug 2"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135762",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42648725",
-        "title": "Beyond Virtual Glucose Monitoring: Interpreting a Complex Multicomponent Intervention.",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42648725/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42648725",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug 2"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135762",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42648678",
-        "title": "Cellulose- and lignin-based smart hydrogels for barrier-adaptive delivery of fragile biotherapeutics: Molecular design, activity preservation, and tra",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42648678/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42648678",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug 2"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135763",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "arx_47889",
-        "title": "Planetary Prediction Engine: Autonomous Geospatial Prediction via Intelligent Data Selection and Foundation Model Embeddings",
-        "category": "watch",
-        "summary": "Addressing critical global challenges, from food security and disaster risk to disease outbreaks and socio-economic vulnerability, demands high-fidelity geospatial modeling. However, building predicti",
-        "sources": [
-          {
-            "name": "arXiv",
-            "url": "http://arxiv.org/abs/2608.26088v1",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "发表日期: 2026-08-26",
-        "market_signals": {
-          "source": "arXiv",
-          "date": "2026-08-26"
-        },
-        "technical_feasibility": 0.75,
-        "tags": [
-          "arxiv",
-          "research"
-        ],
-        "total_score": 58.4,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 11.2,
-          "feasibility": 0.75
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135764",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "arx_78710",
-        "title": "CardioFusion-AI: Robust ECG--PPG Fusion for Multimodal Physiological Monitoring Under Signal Degradation",
-        "category": "watch",
-        "summary": "Wearable electrocardiogram (ECG) and photoplethysmogram (PPG) sensors are complementary but individually fragile: motion artifact, poor contact, and sensor dropout can degrade one or both signals. Fus",
-        "sources": [
-          {
-            "name": "arXiv",
-            "url": "http://arxiv.org/abs/2608.26000v1",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "发表日期: 2026-08-26",
-        "market_signals": {
-          "source": "arXiv",
-          "date": "2026-08-26"
-        },
-        "technical_feasibility": 0.75,
-        "tags": [
-          "arxiv",
-          "research"
-        ],
-        "total_score": 58.4,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 11.2,
-          "feasibility": 0.75
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135765",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "arx_25658",
-        "title": "Why ML-based cough models do not generalize: a systematic cross-dataset evaluation for tuberculosis screening",
-        "category": "watch",
-        "summary": "Cough acoustics are promising for non-invasive tuberculosis (TB) screening, yet whether machine learning (ML) models capture disease-related acoustics or artifacts of data collection remains unresolve",
-        "sources": [
-          {
-            "name": "arXiv",
-            "url": "http://arxiv.org/abs/2608.25846v1",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "发表日期: 2026-08-26",
-        "market_signals": {
-          "source": "arXiv",
-          "date": "2026-08-26"
-        },
-        "technical_feasibility": 0.75,
-        "tags": [
-          "arxiv",
-          "research"
-        ],
-        "total_score": 58.4,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 11.2,
-          "feasibility": 0.75
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135765",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "arx_62859",
-        "title": "Large Language Model Few-Shot Prompting with Dilemma Training Outperforms Human Surrogates in Predicting Patient Preferences",
-        "category": "watch",
-        "summary": "In serious illness, human surrogates often struggle to accurately predict patient preferences (68% accuracy), causing decision conflict. Personalized Patient Preference Predictor (P4) agents offer a p",
-        "sources": [
-          {
-            "name": "arXiv",
-            "url": "http://arxiv.org/abs/2608.25771v1",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "medium",
-        "actionable_insight": "发表日期: 2026-08-26",
-        "market_signals": {
-          "source": "arXiv",
-          "date": "2026-08-26"
-        },
-        "technical_feasibility": 0.75,
-        "tags": [
-          "arxiv",
-          "research"
-        ],
-        "total_score": 58.4,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 18.0,
-          "relevance": "medium",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 11.2,
-          "feasibility": 0.75
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-27T16:27:36.135766",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42659555",
-        "title": "[Electroclinical recognition of SCN2A, SCN8A, KCNQ2, and KCNQ3 pathogenic variants].",
-        "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug",
-        "sources": [
-          {
-            "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42659555/",
-            "relevance": 0.85
-          }
-        ],
-        "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42659555",
-        "market_signals": {
-          "source": "PubMed",
-          "date": "2026 Aug"
-        },
-        "technical_feasibility": 0.7,
-        "tags": [
-          "pubmed",
-          "clinical"
-        ],
-        "total_score": 69.7,
-        "score_breakdown": {
-          "source_score": 11.7,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 30.0,
-          "relevance": "high",
-          "market_score": 17.5,
-          "signal_count": 2,
-          "feasibility_score": 10.5,
-          "feasibility": 0.7
-        },
-        "recommendation": {
-          "action": "monitor",
-          "review_interval": "2weeks",
-          "key_indicators": [
-            "市场接受度",
-            "技术成熟度",
-            "竞品动态"
-          ]
-        }
-      },
-      "added_at": "2026-08-28T23:19:51.751423",
-      "next_review": "2weeks"
-    },
-    {
-      "item": {
-        "id": "pm_42659477",
-        "title": "E-health literacy and health system distrust: exploring a nonlinear association in a cross-sectional study.",
+        "id": "pm_42698288",
+        "title": "Aggregation-Induced Emission Luminogens: Emerging Theranostic Platforms for Pulmonary Diseases.",
         "category": "watch",
         "summary": "Source: PubMed, Published: 2026",
         "sources": [
           {
             "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42659477/",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42698288/",
             "relevance": 0.85
           }
         ],
         "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42659477",
+        "actionable_insight": "PubMed ID: 42698288",
         "market_signals": {
           "source": "PubMed",
           "date": "2026"
@@ -1351,27 +260,27 @@
           ]
         }
       },
-      "added_at": "2026-08-28T23:19:51.751433",
+      "added_at": "2026-09-06T03:01:39.800392",
       "next_review": "2weeks"
     },
     {
       "item": {
-        "id": "pm_42659028",
-        "title": "European Society of Cardiology (ESC) Core Curriculum for the Cardiologist: 2026 update.",
+        "id": "pm_42698198",
+        "title": "Understanding Patients' Experiences of Digital Ethics in a Digitalised Healthcare System.",
         "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "summary": "Source: PubMed, Published: 2026 Sep",
         "sources": [
           {
             "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42659028/",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42698198/",
             "relevance": 0.85
           }
         ],
         "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42659028",
+        "actionable_insight": "PubMed ID: 42698198",
         "market_signals": {
           "source": "PubMed",
-          "date": "2026 Aug 2"
+          "date": "2026 Sep"
         },
         "technical_feasibility": 0.7,
         "tags": [
@@ -1400,27 +309,27 @@
           ]
         }
       },
-      "added_at": "2026-08-28T23:19:51.751435",
+      "added_at": "2026-09-06T03:01:39.800396",
       "next_review": "2weeks"
     },
     {
       "item": {
-        "id": "pm_42658889",
-        "title": "Co-producing access to care with young people living in Zambia through digital and vending machine-enabled innovation in sexual and reproductive healt",
+        "id": "pm_42698159",
+        "title": "Therapeutic Potential of Gene Modified MSC-Exos in Insulin Resistance: Mitochondrial Crosstalk and miRNA Regulation.",
         "category": "watch",
-        "summary": "Source: PubMed, Published: 2026",
+        "summary": "Source: PubMed, Published: 2026 Sep",
         "sources": [
           {
             "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42658889/",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42698159/",
             "relevance": 0.85
           }
         ],
         "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42658889",
+        "actionable_insight": "PubMed ID: 42698159",
         "market_signals": {
           "source": "PubMed",
-          "date": "2026"
+          "date": "2026 Sep"
         },
         "technical_feasibility": 0.7,
         "tags": [
@@ -1449,27 +358,27 @@
           ]
         }
       },
-      "added_at": "2026-08-28T23:19:51.751435",
+      "added_at": "2026-09-06T03:01:39.800397",
       "next_review": "2weeks"
     },
     {
       "item": {
-        "id": "pm_42658841",
-        "title": "Methodological insights and clinical outcomes in ALS and FTLD: lessons from the SPIN cohort.",
+        "id": "pm_42698105",
+        "title": "HIV-tuberculosis co-infection in Liangshan, a resource-limited region of Southwest China: trends and implications in the context of integrated prevent",
         "category": "watch",
-        "summary": "Source: PubMed, Published: 2026 Aug",
+        "summary": "Source: PubMed, Published: 2026 Sep 4",
         "sources": [
           {
             "name": "PubMed",
-            "url": "https://pubmed.ncbi.nlm.nih.gov/42658841/",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42698105/",
             "relevance": 0.85
           }
         ],
         "relevance_to_healthlens": "high",
-        "actionable_insight": "PubMed ID: 42658841",
+        "actionable_insight": "PubMed ID: 42698105",
         "market_signals": {
           "source": "PubMed",
-          "date": "2026 Aug"
+          "date": "2026 Sep 4"
         },
         "technical_feasibility": 0.7,
         "tags": [
@@ -1498,82 +407,309 @@
           ]
         }
       },
-      "added_at": "2026-08-28T23:19:51.751436",
+      "added_at": "2026-09-06T03:01:39.800398",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42698103",
+        "title": "Unlocking MENA's potential in rare-disease precision medicine.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Sep 4",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42698103/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42698103",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Sep 4"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800399",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_96593",
+        "title": "LLM4CKD: Large Language Models for Early Stage Chronic Kidney Disease Screening",
+        "category": "watch",
+        "summary": "Early screening of chronic kidney disease (CKD) is critical for timely intervention, yet most machine learning (ML) and deep learning (DL) approaches require labeled data and model training, limiting ",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2609.04013v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-09-03",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-09-03"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800399",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_19836",
+        "title": "RobustSeiz: An Open-Source Framework for Benchmarking the Robustness of EEG Seizure Detection Models",
+        "category": "watch",
+        "summary": "Despite strong performance on held-out electroencephalography (EEG) data, seizure detectors may fail under real-world acquisition variability, artifacts, and adversarial inputs. We introduce RobustSei",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2609.04007v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-09-03",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-09-03"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800400",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_30420",
+        "title": "RARF: Region-Aware Rectified Flows for 3D Brain MRI Inpainting",
+        "category": "watch",
+        "summary": "Medical image inpainting has the potential to improve automated brain MRI analysis by reconstructing healthy tissue within pathological regions. We introduce RARF, a task-agnostic region-aware rectifi",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2609.03956v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-09-03",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-09-03"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800400",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_81492",
+        "title": "Pushing the (Decision) Boundaries: Dynamically Calibrating Differentially Private Noise to Explainability in Federated Learning",
+        "category": "watch",
+        "summary": "Federated Learning (FL) with Differential Privacy (DP) is increasingly adopted to preserve data confidentiality in distributed machine learning. However, DP noise distorts learned representations and ",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2609.03851v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-09-03",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-09-03"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800401",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_87471",
+        "title": "LongCounsel-8: A Benchmark Suite for Longitudinal Depression Tracking from Multi-Session Counseling Dialogues",
+        "category": "watch",
+        "summary": "Tracking depression from multi-session counseling dialogues requires estimating both current symptom severity and how it changes across sessions. Yet progress on this task is constrained by the scarci",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2609.03507v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-09-03",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-09-03"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-09-06T03:01:39.800403",
       "next_review": "2weeks"
     }
   ],
-  "rejected_items": [
-    {
-      "item": {
-        "id": "intel_007",
-        "title": "连续血糖监测(CGM)与代谢健康管理",
-        "category": "reject",
-        "summary": "CGM设备价格下降推动代谢健康管理普及，从糖尿病人群延伸到健康人群。",
-        "sources": [
-          {
-            "name": "市场研究",
-            "url": "",
-            "relevance": 0.75
-          }
-        ],
-        "relevance_to_healthlens": "low",
-        "actionable_insight": "可作为数据来源拓展方向",
-        "market_signals": {
-          "price_drop": "50%/3年",
-          "consumer_market": "启动"
-        },
-        "technical_feasibility": 0.5,
-        "tags": [
-          "CGM",
-          "代谢健康",
-          "数据整合"
-        ],
-        "total_score": 41.3,
-        "score_breakdown": {
-          "source_score": 13.3,
-          "source_count": 1,
-          "source_types": 1,
-          "goal_score": 9.0,
-          "relevance": "low",
-          "market_score": 14.0,
-          "signal_count": 2,
-          "feasibility_score": 5.0,
-          "feasibility": 0.5
-        },
-        "recommendation": {
-          "action": "archive",
-          "reason": "当前价值不高，建议后续重新评估"
-        }
-      },
-      "rejected_at": "2026-07-27T17:04:40.803928"
-    }
-  ],
+  "rejected_items": [],
   "deployment_history": [
     {
-      "deployment_id": "deploy_20260727_170441",
-      "timestamp": "2026-07-27T17:04:41.189633",
-      "items_deployed": 2,
-      "items_failed": 0,
-      "details": [
-        {
-          "task_id": "task_seo_002",
-          "file": "content/generated/可穿戴设备与ai健康分析的融合趋势.html",
-          "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/可穿戴设备与ai健康分析的融合趋势.html",
-          "note": "dry-run"
-        },
-        {
-          "task_id": "task_seo_003",
-          "file": "content/generated/表观遗传时钟与生活方式干预的临床验证.html",
-          "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/表观遗传时钟与生活方式干预的临床验证.html",
-          "note": "dry-run"
-        }
-      ]
-    },
-    {
-      "deployment_id": "deploy_20260827_162737",
-      "timestamp": "2026-08-27T16:27:37.493309",
+      "deployment_id": "deploy_20260906_030243",
+      "timestamp": "2026-09-06T03:02:43.672370",
       "items_deployed": 5,
       "items_failed": 0,
       "details": [
@@ -1581,50 +717,170 @@
           "task_id": "task_seo_001",
           "file": "content/generated/repowise-devrepowise.html",
           "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/repowise-devrepowise.html",
-          "note": "dry-run"
+          "slug": "repowise-devrepowise",
+          "remote_path": "/knowledge/repowise-devrepowise.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "repowise-devrepowise",
+            "http_code": 200,
+            "bytes": 3338,
+            "status": "ok",
+            "note": ""
+          }
         },
         {
           "task_id": "task_seo_002",
           "file": "content/generated/codewithcjsparkyfitness.html",
           "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/codewithcjsparkyfitness.html",
-          "note": "dry-run"
+          "slug": "codewithcjsparkyfitness",
+          "remote_path": "/knowledge/codewithcjsparkyfitness.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "codewithcjsparkyfitness",
+            "http_code": 200,
+            "bytes": 3381,
+            "status": "ok",
+            "note": ""
+          }
         },
         {
           "task_id": "task_seo_003",
           "file": "content/generated/qixing-jkall-api-hub.html",
           "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/qixing-jkall-api-hub.html",
-          "note": "dry-run"
+          "slug": "qixing-jkall-api-hub",
+          "remote_path": "/knowledge/qixing-jkall-api-hub.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "qixing-jkall-api-hub",
+            "http_code": 200,
+            "bytes": 3322,
+            "status": "ok",
+            "note": ""
+          }
         },
         {
           "task_id": "task_seo_004",
           "file": "content/generated/the-momentumopen-wearables.html",
           "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/the-momentumopen-wearables.html",
-          "note": "dry-run"
+          "slug": "the-momentumopen-wearables",
+          "remote_path": "/knowledge/the-momentumopen-wearables.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "the-momentumopen-wearables",
+            "http_code": 200,
+            "bytes": 3418,
+            "status": "ok",
+            "note": ""
+          }
         },
         {
           "task_id": "task_seo_005",
           "file": "content/generated/thetahealthmirobody.html",
           "status": "deployed",
-          "remote_path": "/opt/healthlens/web/static/knowledge/thetahealthmirobody.html",
-          "note": "dry-run"
+          "slug": "thetahealthmirobody",
+          "remote_path": "/knowledge/thetahealthmirobody.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "thetahealthmirobody",
+            "http_code": 200,
+            "bytes": 3307,
+            "status": "ok",
+            "note": ""
+          }
+        }
+      ]
+    },
+    {
+      "deployment_id": "deploy_20260916_074912",
+      "timestamp": "2026-09-16T07:49:12.633232",
+      "items_deployed": 0,
+      "items_failed": 2,
+      "details": [
+        {
+          "task_id": "task_edu_006",
+          "file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+          "status": "failed",
+          "error": "找不到 node（cf_pages_deploy.py 内部需要它跑 wrangler）: C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe",
+          "attempts": []
+        },
+        {
+          "task_id": "task_edu_007",
+          "file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+          "status": "failed",
+          "error": "找不到 node（cf_pages_deploy.py 内部需要它跑 wrangler）: C:/Users/xing/.workbuddy/binaries/node/versions/22.22.2/node.exe",
+          "attempts": []
+        }
+      ]
+    },
+    {
+      "deployment_id": "deploy_20260916_075252",
+      "timestamp": "2026-09-16T07:52:52.060073",
+      "items_deployed": 2,
+      "items_failed": 0,
+      "details": [
+        {
+          "task_id": "task_edu_006",
+          "file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+          "status": "deployed",
+          "slug": "国内竞品健康管理app功能对比分析-guide",
+          "remote_path": "/knowledge/国内竞品健康管理app功能对比分析-guide.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "国内竞品健康管理app功能对比分析-guide",
+            "http_code": 0,
+            "bytes": 102,
+            "status": "network_error",
+            "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 15-22: ordinal not in range(128)"
+          }
+        },
+        {
+          "task_id": "task_edu_007",
+          "file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+          "status": "deployed",
+          "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+          "remote_path": "/knowledge/pemf频率疗法在家用设备中的应用增长-guide.html",
+          "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+          "note": "",
+          "live_check": {
+            "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+            "http_code": 0,
+            "bytes": 102,
+            "status": "network_error",
+            "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 19-33: ordinal not in range(128)"
+          }
         }
       ]
     }
   ],
   "feedback_metrics": {
+    "ops_health": {
+      "overall": "healthy",
+      "endpoints_ok": 4,
+      "endpoints_error": 0,
+      "server_reachable": false
+    },
     "content_pipeline": {
-      "checked_at": "2026-08-04T17:34:10.532556",
-      "total_deployed": 2,
-      "success_rate": 50.0,
-      "top_performer": "可穿戴设备与ai健康分析的融合趋势",
-      "weight_adjustments": {}
+      "checked_at": "2026-09-16T07:46:51.501291",
+      "data_source": "http_probe",
+      "total_deployed": 5,
+      "success_rate": 100.0,
+      "top_performer": "__core_health__",
+      "weight_adjustments": {
+        "source_count": {
+          "current": 45,
+          "suggested": 45,
+          "reason": "内容表现优秀，可适当放宽筛选标准增加产出"
+        }
+      }
     },
     "user_conversion": {
-      "checked_at": "2026-09-18T02:50:13.527115",
+      "checked_at": "2026-09-16T07:46:55.952851",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -1633,7 +889,7 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-09-18T02:50:16.250923",
+      "checked_at": "2026-09-16T07:46:59.829822",
       "total_records": 1201774750,
       "quality_issues": 4,
       "estimated_value": 1201774.75,
@@ -1641,7 +897,7 @@
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-09-18T02:50:17.477744",
+      "checked_at": "2026-09-16T07:47:03.385999",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -1649,459 +905,250 @@
       "overall_cac": 0.0,
       "channel_actions": 0
     },
-    "ops_health": {
-      "checked_at": "2026-09-18T02:50:21.609627",
-      "overall": "healthy",
-      "endpoints_ok": 4,
-      "endpoints_error": 0,
-      "server_reachable": false,
-      "containers_unhealthy": 0,
-      "security_issues": 1,
-      "medical_terms_found": 0
-    },
     "finance": {
-      "checked_at": "2026-09-18T02:50:18.224712",
+      "checked_at": "2026-09-16T07:47:07.723726",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
       "all_time_revenue": 0,
       "alerts": 1,
-      "data_source": "db_unavailable"
-    },
-    "backup": {
-      "checked_at": "2026-08-04T17:33:36.681264",
-      "status": "failed",
-      "file": "backups\\healthlens_20260804_173336.sql.gz",
-      "mode": "auto"
+      "data_source": "db_error"
     }
   },
-  "development_tasks": [],
-  "backup_history": [
+  "development_tasks": [
     {
-      "backup_id": "bk_20260804_173336",
-      "started_at": "2026-08-04T17:33:36.326596",
-      "finished_at": "2026-08-04T17:33:36.681264",
-      "status": "failed"
+      "task_id": "task_seo_001",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/repowise-devrepowise.html",
+      "deploy_info": {
+        "task_id": "task_seo_001",
+        "file": "content/generated/repowise-devrepowise.html",
+        "status": "deployed",
+        "slug": "repowise-devrepowise",
+        "remote_path": "/knowledge/repowise-devrepowise.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "repowise-devrepowise",
+          "http_code": 200,
+          "bytes": 3338,
+          "status": "ok",
+          "note": ""
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_002",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/codewithcjsparkyfitness.html",
+      "deploy_info": {
+        "task_id": "task_seo_002",
+        "file": "content/generated/codewithcjsparkyfitness.html",
+        "status": "deployed",
+        "slug": "codewithcjsparkyfitness",
+        "remote_path": "/knowledge/codewithcjsparkyfitness.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "codewithcjsparkyfitness",
+          "http_code": 200,
+          "bytes": 3381,
+          "status": "ok",
+          "note": ""
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_003",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/qixing-jkall-api-hub.html",
+      "deploy_info": {
+        "task_id": "task_seo_003",
+        "file": "content/generated/qixing-jkall-api-hub.html",
+        "status": "deployed",
+        "slug": "qixing-jkall-api-hub",
+        "remote_path": "/knowledge/qixing-jkall-api-hub.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "qixing-jkall-api-hub",
+          "http_code": 200,
+          "bytes": 3322,
+          "status": "ok",
+          "note": ""
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_004",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/the-momentumopen-wearables.html",
+      "deploy_info": {
+        "task_id": "task_seo_004",
+        "file": "content/generated/the-momentumopen-wearables.html",
+        "status": "deployed",
+        "slug": "the-momentumopen-wearables",
+        "remote_path": "/knowledge/the-momentumopen-wearables.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "the-momentumopen-wearables",
+          "http_code": 200,
+          "bytes": 3418,
+          "status": "ok",
+          "note": ""
+        }
+      }
+    },
+    {
+      "task_id": "task_seo_005",
+      "type": "seo_knowledge_page",
+      "based_on_item": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "priority": "high",
+      "status": "deployed",
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "health-data",
+        "lab-reports",
+        "loinc"
+      ],
+      "target_word_count": 2000,
+      "content_file": "content/generated/thetahealthmirobody.html",
+      "deploy_info": {
+        "task_id": "task_seo_005",
+        "file": "content/generated/thetahealthmirobody.html",
+        "status": "deployed",
+        "slug": "thetahealthmirobody",
+        "remote_path": "/knowledge/thetahealthmirobody.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://fff8301c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "thetahealthmirobody",
+          "http_code": 200,
+          "bytes": 3307,
+          "status": "ok",
+          "note": ""
+        }
+      }
+    },
+    {
+      "task_id": "task_edu_006",
+      "type": "user_education",
+      "based_on_item": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "priority": "medium",
+      "status": "deployed",
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "target_word_count": 1200,
+      "content_file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+      "heal_note": "人工修复 (原 deploy_failed) @ 2026-09-16T07:52:25.187469: 失败原因是 node 路径硬编码 22.22.2，实际为 22.22.2-3；已改为自动发现。内容本身已通过 phase_5。",
+      "deploy_info": {
+        "task_id": "task_edu_006",
+        "file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+        "status": "deployed",
+        "slug": "国内竞品健康管理app功能对比分析-guide",
+        "remote_path": "/knowledge/国内竞品健康管理app功能对比分析-guide.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "国内竞品健康管理app功能对比分析-guide",
+          "http_code": 0,
+          "bytes": 102,
+          "status": "network_error",
+          "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 15-22: ordinal not in range(128)"
+        }
+      }
+    },
+    {
+      "task_id": "task_edu_007",
+      "type": "user_education",
+      "based_on_item": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "priority": "medium",
+      "status": "deployed",
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "target_word_count": 1200,
+      "content_file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+      "heal_note": "人工修复 (原 deploy_failed) @ 2026-09-16T07:52:25.187469: 失败原因是 node 路径硬编码 22.22.2，实际为 22.22.2-3；已改为自动发现。内容本身已通过 phase_5。",
+      "deploy_info": {
+        "task_id": "task_edu_007",
+        "file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+        "status": "deployed",
+        "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+        "remote_path": "/knowledge/pemf频率疗法在家用设备中的应用增长-guide.html",
+        "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+        "note": "",
+        "live_check": {
+          "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+          "http_code": 0,
+          "bytes": 102,
+          "status": "network_error",
+          "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 19-33: ordinal not in range(128)"
+        }
+      }
     }
   ],
   "run_history": [
     {
-      "run_id": "run_20260911_195734",
-      "started_at": "2026-09-11T19:57:34.231194",
-      "finished_at": "2026-09-11T19:59:21.359475",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260911_222727",
-      "started_at": "2026-09-11T22:27:27.523584",
-      "finished_at": "2026-09-11T22:29:13.325887",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_003306",
-      "started_at": "2026-09-12T00:33:06.666126",
-      "finished_at": "2026-09-12T00:34:52.599207",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_052946",
-      "started_at": "2026-09-12T05:29:46.641737",
-      "finished_at": "2026-09-12T05:31:35.542116",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_053136",
-      "started_at": "2026-09-12T05:31:36.409862",
-      "finished_at": "2026-09-12T05:33:19.714816",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_093240",
-      "started_at": "2026-09-12T09:32:40.887589",
-      "finished_at": "2026-09-12T09:34:30.100075",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_093431",
-      "started_at": "2026-09-12T09:34:31.124618",
-      "finished_at": "2026-09-12T09:36:16.430564",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_132739",
-      "started_at": "2026-09-12T13:27:39.218115",
-      "finished_at": "2026-09-12T13:29:24.659040",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_132925",
-      "started_at": "2026-09-12T13:29:25.441416",
-      "finished_at": "2026-09-12T13:31:06.865024",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_162735",
-      "started_at": "2026-09-12T16:27:35.845991",
-      "finished_at": "2026-09-12T16:29:22.272473",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_162923",
-      "started_at": "2026-09-12T16:29:23.231170",
-      "finished_at": "2026-09-12T16:31:05.987997",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_183934",
-      "started_at": "2026-09-12T18:39:34.624115",
-      "finished_at": "2026-09-12T18:41:17.972492",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_184118",
-      "started_at": "2026-09-12T18:41:18.768778",
-      "finished_at": "2026-09-12T18:42:59.464771",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_211901",
-      "started_at": "2026-09-12T21:19:01.491462",
-      "finished_at": "2026-09-12T21:20:46.535339",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_212047",
-      "started_at": "2026-09-12T21:20:47.372977",
-      "finished_at": "2026-09-12T21:22:29.352477",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_231203",
-      "started_at": "2026-09-12T23:12:03.526465",
-      "finished_at": "2026-09-12T23:13:48.623770",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260912_231349",
-      "started_at": "2026-09-12T23:13:49.555863",
-      "finished_at": "2026-09-12T23:15:32.043136",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_012053",
-      "started_at": "2026-09-13T01:20:53.340610",
-      "finished_at": "2026-09-13T01:22:35.569880",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_012236",
-      "started_at": "2026-09-13T01:22:36.338413",
-      "finished_at": "2026-09-13T01:24:16.114955",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_063923",
-      "started_at": "2026-09-13T06:39:23.197991",
-      "finished_at": "2026-09-13T06:41:11.387774",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_064112",
-      "started_at": "2026-09-13T06:41:12.252708",
-      "finished_at": "2026-09-13T06:42:55.442130",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_123746",
-      "started_at": "2026-09-13T12:37:46.245372",
-      "finished_at": "2026-09-13T12:39:34.933196",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_123935",
-      "started_at": "2026-09-13T12:39:35.627500",
-      "finished_at": "2026-09-13T12:41:17.152688",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_165403",
-      "started_at": "2026-09-13T16:54:03.109454",
-      "finished_at": "2026-09-13T16:55:49.661876",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_165550",
-      "started_at": "2026-09-13T16:55:50.572517",
-      "finished_at": "2026-09-13T16:57:34.402048",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_191439",
-      "started_at": "2026-09-13T19:14:39.893810",
-      "finished_at": "2026-09-13T19:16:21.922201",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_191622",
-      "started_at": "2026-09-13T19:16:22.767365",
-      "finished_at": "2026-09-13T19:18:02.962236",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_213548",
-      "started_at": "2026-09-13T21:35:48.523669",
-      "finished_at": "2026-09-13T21:37:34.166465",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_213735",
-      "started_at": "2026-09-13T21:37:35.184150",
-      "finished_at": "2026-09-13T21:39:16.288533",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260913_235813",
-      "started_at": "2026-09-13T23:58:13.370211",
-      "finished_at": "2026-09-13T23:59:59.111037",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_000000",
-      "started_at": "2026-09-14T00:00:00.077499",
-      "finished_at": "2026-09-14T00:01:43.194209",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_044343",
-      "started_at": "2026-09-14T04:43:43.898508",
-      "finished_at": "2026-09-14T04:45:38.500517",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_044539",
-      "started_at": "2026-09-14T04:45:39.436625",
-      "finished_at": "2026-09-14T04:47:22.633553",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_102603",
-      "started_at": "2026-09-14T10:26:03.263262",
-      "finished_at": "2026-09-14T10:27:48.979676",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_102749",
-      "started_at": "2026-09-14T10:27:49.904096",
-      "finished_at": "2026-09-14T10:29:32.890705",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_162900",
-      "started_at": "2026-09-14T16:29:00.643642",
-      "finished_at": "2026-09-14T16:30:47.848811",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_163048",
-      "started_at": "2026-09-14T16:30:48.693029",
-      "finished_at": "2026-09-14T16:32:33.060689",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_202754",
-      "started_at": "2026-09-14T20:27:54.825914",
-      "finished_at": "2026-09-14T20:29:41.773377",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_202942",
-      "started_at": "2026-09-14T20:29:42.803119",
-      "finished_at": "2026-09-14T20:31:25.734932",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_232237",
-      "started_at": "2026-09-14T23:22:37.919565",
-      "finished_at": "2026-09-14T23:24:22.758586",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260914_232423",
-      "started_at": "2026-09-14T23:24:23.746461",
-      "finished_at": "2026-09-14T23:26:06.142632",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_014651",
-      "started_at": "2026-09-15T01:46:51.363527",
-      "finished_at": "2026-09-15T01:48:34.638623",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_014835",
-      "started_at": "2026-09-15T01:48:35.371124",
-      "finished_at": "2026-09-15T01:50:15.944310",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_160534",
-      "started_at": "2026-09-15T16:05:34.852144",
-      "finished_at": "2026-09-15T16:07:23.045197",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_160723",
-      "started_at": "2026-09-15T16:07:23.797901",
-      "finished_at": "2026-09-15T16:09:09.652223",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_204704",
-      "started_at": "2026-09-15T20:47:04.698633",
-      "finished_at": "2026-09-15T20:48:51.644231",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_204852",
-      "started_at": "2026-09-15T20:48:52.479382",
-      "finished_at": "2026-09-15T20:50:35.966766",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_235435",
-      "started_at": "2026-09-15T23:54:35.403253",
-      "finished_at": "2026-09-15T23:56:19.592589",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260915_235620",
-      "started_at": "2026-09-15T23:56:20.362989",
-      "finished_at": "2026-09-15T23:58:01.515097",
-      "verdict": "FAILED",
-      "failed_count": 1
-    },
-    {
-      "run_id": "run_20260916_025904",
-      "started_at": "2026-09-16T02:59:04.998083",
-      "finished_at": "2026-09-16T02:59:11.842290",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260916_090016",
-      "started_at": "2026-09-16T09:00:16.937575",
-      "finished_at": "2026-09-16T09:00:25.155734",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260916_143225",
-      "started_at": "2026-09-16T14:32:25.412697",
-      "finished_at": "2026-09-16T14:32:33.150562",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260916_191937",
-      "started_at": "2026-09-16T19:19:37.848812",
-      "finished_at": "2026-09-16T19:19:45.339829",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260916_223539",
-      "started_at": "2026-09-16T22:35:39.367631",
-      "finished_at": "2026-09-16T22:35:47.706450",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260917_030217",
-      "started_at": "2026-09-17T03:02:17.306320",
-      "finished_at": "2026-09-17T03:02:26.313896",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260917_090649",
-      "started_at": "2026-09-17T09:06:49.342923",
-      "finished_at": "2026-09-17T09:06:56.260397",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260917_143625",
-      "started_at": "2026-09-17T14:36:25.375345",
-      "finished_at": "2026-09-17T14:36:34.859413",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260917_192930",
-      "started_at": "2026-09-17T19:29:30.750535",
-      "finished_at": "2026-09-17T19:29:38.550816",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260917_223628",
-      "started_at": "2026-09-17T22:36:28.387139",
-      "finished_at": "2026-09-17T22:36:35.835719",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20260918_025013",
-      "started_at": "2026-09-18T02:50:13.384803",
-      "finished_at": "2026-09-18T02:50:21.643982",
+      "run_id": "run_20260916_074635",
+      "started_at": "2026-09-16T07:46:35.849391",
+      "finished_at": "2026-09-16T07:47:13.473176",
       "verdict": "SUCCESS",
       "failed_count": 0
     }
