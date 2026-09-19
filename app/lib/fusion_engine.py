@@ -303,12 +303,12 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
     # 弱项规范通路集合 + 原始键（用于展示）
     weak_canon: set[str] = set()
     weak_display: list[str] = []
-    for k, v in profile.pathway_scores.items():
+    for k, v in (profile.pathway_scores or {}).items():
         if v < 0.5:
             weak_canon.add(canon(k))
             weak_display.append(k)
     # 弱项轴集合：直接给的轴 + 由弱项通路反查的轴
-    weak_axes: set[str] = {a.upper() for a in profile.weak_axes}
+    weak_axes: set[str] = {a.upper() for a in (profile.weak_axes or set())}
     for c in weak_canon:
         ax = canon_to_axis(c)
         if ax:
@@ -399,7 +399,7 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
     rec_dicts = [asdict(r) for r in recs]
 
     # LLM 增强（USE_LLM=1 时启用，失败静默回退）
-    user_context = "; ".join(profile.pathway_scores.keys())
+    user_context = "; ".join((profile.pathway_scores or {}).keys())
     rec_dicts = _llm_enhance(rec_dicts, user_context)
 
     # is_demo 三态：基因/组学 与 体检指标 两条个性化来源分别标注
