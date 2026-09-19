@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
+import MedicalDisclaimer from '../components/MedicalDisclaimer';
 
 const NINE_TYPES = {
   pinghe:   { name: '平和质', color: 'bg-emerald-50 border-emerald-300',  dot: 'text-emerald-600', desc: '阴阳调和、体态适中、面色红润、精力充沛。是最理想体质，患病率低。' },
@@ -81,6 +82,7 @@ export default function TCMConstitution() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      <MedicalDisclaimer />
       <div>
         <h2 className="text-2xl font-bold">🏥 中医体质辨识</h2>
         <p className="text-slate-500 text-sm mt-1">
