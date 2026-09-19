@@ -3,11 +3,28 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#059669"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="HealthLens"/>
+<meta name="description" content="AI-powered health analytics with 8-axis fusion engine, TCM constitution analysis, and BioAge scoring."/>
 <title>HealthLens · 健康全景平台</title>
-<link rel="icon" href="/favicon.svg"/>
+<link rel="icon" href="/app/icons/icon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/app/icons/icon.svg"/>
+<link rel="manifest" href="/app/manifest.json"/>
 </head>
 <body class="bg-slate-50">
 <div id="root"></div>
 <script type="module" src="/src/main.jsx"></script>
+<script>
+  // Service Worker registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/app/sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.log('SW registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>
