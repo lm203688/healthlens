@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
+import MedicalDisclaimer from '../components/MedicalDisclaimer';
 
 const METRICS = [
   { code: '8867-4', name: '血压 (收缩压)', unit: 'mmHg', refLow: 90, refHigh: 140, type: 'number' },
@@ -97,6 +98,7 @@ export default function CheckIn() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      <MedicalDisclaimer />
       <div>
         <h2 className="text-2xl font-bold">📅 每日健康打卡</h2>
         <p className="text-slate-500 text-sm mt-1">记录您的健康指标，长期跟踪变化趋势</p>
