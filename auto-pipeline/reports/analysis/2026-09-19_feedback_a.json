@@ -1,0 +1,63 @@
+{
+  "report_id": "feedback_a_20260919",
+  "generated_at": "2026-09-19T02:48:34.674673",
+  "data_source": "http_probe",
+  "success_rate": 33.3,
+  "feedback_count": 3,
+  "adjustments_made": true,
+  "adjustments": {
+    "market_validation": {
+      "current": 25,
+      "suggested": 25,
+      "reason": "内容表现不佳，需加强市场验证筛选"
+    },
+    "feasibility": {
+      "current": 15,
+      "suggested": 15,
+      "reason": "技术可行性评估需更严格"
+    },
+    "source_count": {
+      "current": 35,
+      "suggested": 35,
+      "reason": "降低来源数量权重，避免伪信号"
+    }
+  },
+  "feedback_details": [
+    {
+      "slug": "__core_health__",
+      "title": "核心页面健康度",
+      "deployed_days": 0,
+      "metrics": {
+        "core_pages_ok": 4,
+        "core_pages_total": 4,
+        "avg_latency_ms": 194
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "国内竞品健康管理app功能对比分析-guide",
+      "title": "国内竞品健康管理App功能对比分析",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 0,
+        "latency_ms": 0,
+        "body_size": 0
+      },
+      "performance": "below_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 0,
+        "latency_ms": 0,
+        "body_size": 0
+      },
+      "performance": "below_average",
+      "data_source": "http_probe"
+    }
+  ]
+}
