@@ -40,6 +40,24 @@ MEDICAL_HIGH_RISK_TERMS = [
     ("永久有效",  "严禁使用'永久有效'类绝对化承诺"),
     ("一次见效",  "严禁使用'一次见效'类夸大表述"),
     ("立竿见影",  "严禁使用'立竿见影'类夸大表述"),
+    # ↓ 2026-09-19 增补：抗衰老夸大词。
+    # 缺口来源：吕垣澄 OSK 部分重编程、表观遗传时钟等前沿条目，
+    # 最容易被写成"逆转衰老/返老还童"标题，而旧词表对此完全无感——
+    # 检测到了才拦得住，检测不到等于门禁不存在。
+    ("逆转衰老",  "严禁使用'逆转衰老'类绝对化表述，建议改为'支持健康衰老'"),
+    ("返老还童",  "严禁使用'返老还童'类夸大表述"),
+    ("逆龄",      "严禁使用'逆龄'类夸大表述"),
+    ("永葆青春",  "严禁使用'永葆青春'类夸大表述"),
+    ("冻龄",      "严禁使用'冻龄'类夸大表述"),
+    ("换血回春",  "严禁使用'换血回春'类未经验证的夸大表述"),
+    # ↓ 2026-09-19 增补：抗癌治疗功效声称。
+    # 缺口来源：青蛙肠道菌 Ewingella americana 等肿瘤免疫前沿条目。
+    # 《广告法》第十七条：非医疗/药品/医疗器械广告不得涉及疾病治疗功能。
+    ("杀死癌细胞", "严禁使用'杀死癌细胞'类疾病治疗功效声称"),
+    ("消灭肿瘤",   "严禁使用'消灭肿瘤'类疾病治疗功效声称"),
+    ("肿瘤消失",   "严禁使用'肿瘤消失'类疗效声称"),
+    ("攻克癌症",   "严禁使用'攻克癌症'类绝对化表述"),
+    ("抗癌神药",   "严禁使用'抗癌神药'类夸大表述"),
 ]
 
 # 中风险词：出现标 warning，提示人工复核，但不阻断上线。
@@ -47,6 +65,11 @@ MEDICAL_MEDIUM_RISK_TERMS = [
     ("疗效",     "建议用'效果'或'改善'替代'疗效'"),
     ("临床证明", "建议核实并标注具体研究来源"),
     ("专家推荐", "建议核实并标注具体专家来源"),
+    # ↓ 2026-09-19 增补：单字面本身可能出现在合法的"机制研究"语境里
+    # （如"剪接失调与抗癌机制的基础研究"），故不硬 fail，只提示人工复核。
+    ("抗癌",     "非医疗平台不应作疾病治疗功效声称，建议改为'肿瘤相关基础研究'并标注实验阶段"),
+    ("防癌",     "非医疗平台不应作疾病预防声称，建议改为'与风险因素相关的研究'"),
+    ("抗衰老",   "建议改为'支持健康衰老'，且不得作任何干预承诺"),
 ]
 
 # Schema.org 必需字段
@@ -59,35 +82,191 @@ REQUIRED_SCHEMA_FIELDS = [
     "datePublished",
 ]
 
+# 语境判定（2026-09-19 新增）
+# --------------------------
+# 起因：把新词补进门禁后做全量回归，发现 57 个内容文件里有 32 个命中既有
+# HIGH 词（诊断 / 处方 / 100% / 立竿见影）。逐条查上下文，**32 处全部为
+# 误伤**，且第一类是最坏的一种——门禁在罚平台自己的合规免责声明：
+#   ① 否定语境：「不构成医学诊断」「不能下 SNP 级处方」「而非处方」
+#      「效果不会立竿见影」「尚未作为常规诊断工具」
+#   ② CSS 数值：`width:100%` / `height:100%` 落在 <style> 块内被当正文命中
+#   ③ 反例清单：「误区2：立竿见影」「❌ "基因检测=定制线粒体处方"」——
+#      编辑明确标注为"错误说法"的条目
+#   ④ 数据表数值：「活性 100%」「CC（野生型）100%」——中性测量值
+#   ⑤ 引文语境：《饮膳正要》金髓煎「……返老还童」属古籍引用
+#   ⑥ FAQ 问句：「外泌体能诊断疾病吗？」是提问，不是平台声称
+# 误伤后果：这些页面一旦重新进入管线即被判 needs_manual_review，内容生产
+# 静默停摆，且告警指向错误方向（让人去改免责声明）。故做五处机械修正。
+#
+# 分级策略（关键）：不给所有线索用同一个窗口。
+#   显式编辑标记（❌ / 误区 / 禁忌…）语义无歧义——出现即断言"其后是反例"，
+#   可用较宽窗口（EXPLICIT_WINDOW=24）。
+#   弱否定词（不 / 非 / 尚未…）本身可能出现在无关句子里，窗口必须收紧
+#   （NEG_WINDOW=12），否则会吞掉真实功效声称——例如放宽后会误放过
+#   "我们不做过度承诺。产品可根治失眠。"
+# 只有"引号外 + 无否定/反例线索 + 非问句"的出现才按 HIGH 阻断，
+# 即平台自己做的绝对化功效声称一个都不会漏。
+_STRIP_BLOCKS = re.compile(
+    r"<(style|script)\b[^>]*>.*?</\1>", re.DOTALL | re.IGNORECASE
+)
+
+_QUOTE_PAIRS = [("「", "」"), ("『", "』"), ("“", "”"), ("《", "》")]
+# 刻意不收直引号："..."。HTML 属性（class="x"）也用直引号，若纳入判定，
+# 任何位于属性之后的词都会被当成"处于引号内"而误降级，等于全局削弱门禁。
+
+# 显式编辑标记：语义无歧义，用宽窗口
+EXPLICIT_MARKERS = ("❌", "✗", "误区", "禁忌", "不推荐", "错误说法", "常见误解")
+EXPLICIT_WINDOW = 24
+# 弱否定线索：用窄窗口，避免吞掉真实声称
+NEGATION_CUES = (
+    "不", "非", "勿", "禁止", "严禁", "避免", "而非", "并非",
+    "不能", "不会", "不得", "不应", "无法", "尚未", "还没",
+)
+NEG_WINDOW = 12
+
+# 需要"功效上下文"才计为 HIGH 的词：单字面本身可能是中性测量值。
+# 「100%」在中性语境里是数据（活性 100%），在功效语境里才是绝对化承诺
+# （"有效率达 100%"）。故只在 ±EFFICACY_WINDOW 内出现功效词时才计 HIGH；
+# 否则整条跳过（连 MEDIUM 都不进，避免把数据表刷成噪声）。
+CONTEXT_REQUIRED_TERMS = {"100%"}
+EFFICACY_WORDS = (
+    "有效", "疗效", "治愈", "改善", "成功率", "见效", "康复",
+    "逆转", "保证", "搞定", "解决", "根治", "人人", "彻底",
+)
+EFFICACY_WINDOW = 20
+
+
+# 分句边界：否定线索只在"同一句内"生效，不允许跨句赦免。
+# 实测反例（2026-09-19）：「我们不做过度承诺。产品可根治失眠。」——按 12 字
+# 窗口，前一句的「不做」会把后一句的「根治」也赦免掉。窗口再窄也只是缓解，
+# 真正的修法是遇到句号/分号/逗号/换行就截断，让线索回到它所在的分句。
+# 刻意**不含** `>`：实际 HTML 形如 `<li><strong>误区2</strong>：立竿见影`，
+# 若把 `>` 当边界，「误区」标记会被 <strong> 截掉，反例清单又变回误伤。
+# 正确做法是先把标签整体剥离（见 _TAG_RE），而不是拿标签当分句符。
+_SENT_BOUNDARY = "。！？；!?;\n，,"
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _after_last_boundary(s: str) -> str:
+    """截取最后一个分句边界之后的部分。"""
+    last = -1
+    for ch in _SENT_BOUNDARY:
+        p = s.rfind(ch)
+        if p > last:
+            last = p
+    return s[last + 1:] if last >= 0 else s
+
+
+def _in_quotation(content: str, idx: int) -> bool:
+    """判断 idx 位置是否落在成对的引号 / 书名号对内。"""
+    for lq, rq in _QUOTE_PAIRS:
+        open_at = content.rfind(lq, 0, idx)
+        if open_at == -1:
+            continue
+        close_at = content.find(rq, open_at + 1)
+        if close_at == -1:
+            continue
+        if open_at < idx < close_at:
+            return True
+    return False
+
+
+def _in_negation(content: str, idx: int) -> bool:
+    """判断 idx 前是否存在否定线索（均限同一句内；显式标记允许更宽）。"""
+    wide = _after_last_boundary(content[max(0, idx - EXPLICIT_WINDOW):idx])
+    if any(m in wide for m in EXPLICIT_MARKERS):
+        return True
+    narrow = _after_last_boundary(content[max(0, idx - NEG_WINDOW):idx])
+    return any(cue in narrow for cue in NEGATION_CUES)
+
+
+def _in_question(content: str, idx: int, term_len: int) -> bool:
+    """判断命中词是否紧跟问句语气词——「…能诊断疾病吗？」是提问而非声称。"""
+    tail = content[idx + term_len: idx + term_len + 4]
+    return ("吗" in tail) or ("？" in tail) or ("?" in tail)
+
+
+def _contextual(content: str, idx: int, term: str) -> bool:
+    """命中位置是否处于可解释语境（引文 / 否定 / 反例 / 问句）。"""
+    return (
+        _in_quotation(content, idx)
+        or _in_negation(content, idx)
+        or _in_question(content, idx, len(term))
+    )
+
+
+def _has_efficacy_context(content: str, idx: int) -> bool:
+    """命中位置 ±EFFICACY_WINDOW 内是否存在功效词（用于 CONTEXT_REQUIRED_TERMS）。"""
+    left = content[max(0, idx - EFFICACY_WINDOW):idx]
+    right = content[idx: idx + EFFICACY_WINDOW]
+    return any(w in left or w in right for w in EFFICACY_WORDS)
+
 
 def check_medical_terms(content):
     """检查医疗风险用语，按 HIGH / MEDIUM 分级返回。
 
     返回 dict:
       {
-        "high":  [{"term","count","suggestion"}...],   # 高风险，出现即 fail
-        "medium":[{"term","count","suggestion"}...],   # 中风险，标 warning
+        "high":  [{"term","count","suggestion"}...],      # 高风险，出现即 fail
+        "medium":[{"term","count","suggestion",...}...],  # 中风险，标 warning
         "has_high": bool,
+        "scan_scope": str,   # 扫描口径说明（供 reviewer 判读）
       }
+    降级规则：命中位置全部处于引文 / 否定 / 反例 / 问句语境 → 只进 medium。
+    只要有一处落在"引号外且无任何语境线索"，仍按 HIGH 阻断。
     """
+    scan_text = _TAG_RE.sub(" ", _STRIP_BLOCKS.sub(" ", content))
     high, medium = [], []
     for term, suggestion in MEDICAL_HIGH_RISK_TERMS:
-        if term in content:
+        positions = []
+        start = 0
+        while True:
+            i = scan_text.find(term, start)
+            if i == -1:
+                break
+            positions.append(i)
+            start = i + len(term)
+        if not positions:
+            continue
+        if term in CONTEXT_REQUIRED_TERMS:
+            # 无功效语境的出现视为中性测量值，整条跳过
+            positions = [i for i in positions if _has_efficacy_context(scan_text, i)]
+            if not positions:
+                continue
+        outside = [i for i in positions if not _contextual(scan_text, i, term)]
+        if outside:
             high.append({
                 "term": term,
-                "count": content.count(term),
+                "count": len(outside),
                 "suggestion": suggestion,
                 "severity": "high",
             })
-    for term, suggestion in MEDICAL_MEDIUM_RISK_TERMS:
-        if term in content:
+        else:
             medium.append({
                 "term": term,
-                "count": content.count(term),
+                "count": len(positions),
+                "suggestion": suggestion + "（命中位置均在引文/否定/反例/问句语境内，降级为人工复核）",
+                "severity": "medium",
+                "demoted_from": "high",
+            })
+    for term, suggestion in MEDICAL_MEDIUM_RISK_TERMS:
+        n = scan_text.count(term)
+        if n:
+            medium.append({
+                "term": term,
+                "count": n,
                 "suggestion": suggestion,
                 "severity": "medium",
             })
-    return {"high": high, "medium": medium, "has_high": len(high) > 0}
+    return {
+        "high": high,
+        "medium": medium,
+        "has_high": len(high) > 0,
+        "scan_scope": (
+            "已剥离 <style>/<script>；引文/否定/反例/问句语境降级 MEDIUM；"
+            "100% 仅在功效语境计入"
+        ),
+    }
 
 
 def check_schema_markup(content):
