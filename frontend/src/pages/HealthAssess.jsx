@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { api } from '../api/client';
+import MedicalDisclaimer from '../components/MedicalDisclaimer';
 
 const SYMPTOM_CATEGORIES = [
   {
@@ -85,6 +86,7 @@ export default function HealthAssess() {
   if (step === 1) {
     return (
       <div className="max-w-3xl mx-auto space-y-6">
+        <MedicalDisclaimer />
         <div>
           <h2 className="text-2xl font-bold">🩺 详细健康评估</h2>
           <p className="text-slate-500 text-sm mt-1">选择您的症状和生活习惯，AI 融合引擎将从 8 个维度深度分析</p>
@@ -178,6 +180,7 @@ export default function HealthAssess() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      <MedicalDisclaimer />
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-emerald-700">评估完成</h2>
