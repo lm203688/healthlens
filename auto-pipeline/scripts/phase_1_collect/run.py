@@ -82,6 +82,24 @@ HEALTH_KEYWORDS = [
     "mental health", "anxiety", "depression", "sleep quality",
 ]
 
+# 机制层关键词（2026-09-19 增补）
+# ----------------------------------
+# 此前的词表偏"应用/消费级"（sleep/diet/blood pressure…），只按 description
+# 字面命中，导致纯机制类项目与论文从源头进不来。实测（2026-09-19）：把
+# RNA 剪接体失调、吕垣澄 OSK 部分重编程、CRISPR 基因编辑、斯坦福 iPSC→脑
+# 类器官这四类前沿条目逐条对照旧词表，命中数为 0——即这些内容无论多重要，
+# 采集器都抓不到。补入机制层词后，q-bio 类与表观遗传/蛋白稳态类条目才可能
+# 进入 Phase 2 之后的分析链路。
+HEALTH_KEYWORDS_MECHANISM = [
+    "splicing", "spliceosome", "transcriptom", "post-transcriptional",
+    "reprogramming", "epigenetic", "epigenome", "methylation",
+    "organoid", "stem cell", "ipsc", "differentiation",
+    "immunotherap", "oncoimmun", "tumor microenvironment",
+    "crispr", "gene editing", "gene therapy", "genome editing",
+    "proteostasis", "senescence", "telomere", "autophagy",
+    "circadian", "healthspan", "geroscience",
+]
+
 
 def _has_health_signal(repo: dict) -> bool:
     """检查 GitHub repo 是否真的与健康领域相关（description + topics + name）。"""
@@ -89,7 +107,7 @@ def _has_health_signal(repo: dict) -> bool:
     topics = " ".join(repo.get("topics") or []).lower()
     name = (repo.get("full_name") or "").lower()
     haystack = f"{desc} {topics} {name}"
-    return any(k in haystack for k in HEALTH_KEYWORDS)
+    return any(k in haystack for k in HEALTH_KEYWORDS + HEALTH_KEYWORDS_MECHANISM)
 
 
 def collect_github_trends():
@@ -145,16 +163,25 @@ def collect_arxiv_papers():
     queries = [
         "cat:cs.LG AND (health OR medical OR clinical)",
         "cat:q-bio.GN AND (genomic OR precision)",
+        # 2026-09-19 增补：机制层第三路查询。
+        "cat:q-bio.BM AND (aging OR longevity OR epigenetic)",
     ]
 
-    for query in queries[:1]:
+    # 2026-09-19 修复：此前是 `for query in queries[:1]`——硬编码只跑第一条，
+    # 第二条 q-bio.GN（基因学）被静默丢弃，等于半个采集器从未启动。
+    # 同时把"单条失败即上抛"改为"全部失败才上抛"：原逻辑下任一条查询抖一下
+    # 就会让整个 Phase 1 报错，而"一条成功、一条失败"本不该算数据源不可用。
+    failed = 0
+    for query in queries:
         encoded = urllib.parse.quote(query)
         url = f"http://export.arxiv.org/api/query?search_query={encoded}&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending"
-        # 网络请求带重试；失败则上抛，避免静默返回空而让上层误判源健康
+        # 网络请求带重试；失败则计入失败数，避免静默返回空而让上层误判源健康
         try:
             xml_text = _http_get_with_retry(url, timeout=20, retries=3, purpose="arXiv")
         except Exception as e:
-            raise RuntimeError(f"arXiv 请求失败（已重试 3 次）: {str(e)[:80]}")
+            failed += 1
+            log(f"  arXiv 查询失败（{query[:40]}）: {str(e)[:80]}", level="WARN")
+            continue
 
         try:
             import re
@@ -177,23 +204,35 @@ def collect_arxiv_papers():
                     "summary": summary,
                     "sources": [{"name": "arXiv", "url": link, "relevance": 0.85}],
                     "relevance_to_healthlens": "high" if any(k in title.lower()
-                        for k in ["health", "clinical", "medical", "genomic"]) else "medium",
+                        for k in ["health", "clinical", "medical", "genomic",
+                                  "splicing", "epigenetic", "reprogramming",
+                                  "organoid", "senescence", "autophagy"]) else "medium",
                     "actionable_insight": f"发表日期: {published}",
                     "market_signals": {"source": "arXiv", "date": published},
                     "technical_feasibility": 0.75,
                     "tags": ["arxiv", "research"],
                 })
         except Exception as e:
-            # 解析失败同样是数据不可用，上抛而非静默返回空
-            raise RuntimeError(f"arXiv 解析失败: {str(e)[:80]}")
+            # 解析失败同样是数据不可用，计入失败数；全部查询都失败才上抛
+            failed += 1
+            log(f"  arXiv 解析失败（{query[:40]}）: {str(e)[:80]}", level="WARN")
 
+    if not items and failed:
+        raise RuntimeError(f"arXiv 全部 {len(queries)} 个查询均失败（已重试 3 次）")
     return items
 
 
 def collect_pubmed_studies():
     """从 PubMed 收集临床研究动态"""
     items = []
-    query = "digital health[tiab] OR precision medicine[tiab] OR lifestyle intervention[tiab]"
+    # 2026-09-19 增补机制层检索词组：原查询只有 digital health / precision
+    # medicine / lifestyle intervention 三组，全部落在"应用层"，采集不到
+    # 剪接失调、表观遗传重编程、类器官、健康寿命这类机制层证据。
+    query = (
+        "digital health[tiab] OR precision medicine[tiab] OR lifestyle intervention[tiab] "
+        "OR RNA splicing[tiab] OR epigenetic reprogramming[tiab] "
+        "OR organoid[tiab] OR healthspan[tiab] OR cellular senescence[tiab]"
+    )
     encoded = urllib.parse.quote(query)
     url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={encoded}&retmax=5&sort=date&retmode=json"
 
