@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
+import MedicalDisclaimer from '../components/MedicalDisclaimer';
 
 /* 八轴稳态模型（A–H）。代谢-炎症轴按假说级映射落点 A / F。 */
 const AXIS_LABELS = {
@@ -84,6 +85,7 @@ export default function AxisProfile() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      <MedicalDisclaimer />
       <div>
         <h2 className="text-2xl font-bold">🧭 八轴稳态评估</h2>
         <p className="text-slate-500 text-sm mt-1">
