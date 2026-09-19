@@ -77,6 +77,7 @@ def create_app() -> FastAPI:
     from app.api.notifications import router as notifications_router
     from app.api.medication_adherence import router as adherence_router
     from app.api.knowledge import router as knowledge_router
+    from app.api.axes import router as axes_router
     from app.api.repair import router as repair_router
     from app.api.fusion import router as fusion_router
     from app.api.v1.diagnosis_agent import router as diagnosis_agent_router
@@ -112,6 +113,7 @@ def create_app() -> FastAPI:
     app.include_router(notifications_router, prefix="/api/v1/notifications", tags=["通知中心"])
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
     app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
+    app.include_router(axes_router, prefix="/api/v1/axes", tags=["八轴稳态"])
     app.include_router(repair_router, prefix="/api/v1/repair", tags=["细胞修复"])
     app.include_router(fusion_router, prefix="/api/v1/fusion", tags=["融合诊断"])
     app.include_router(diagnosis_agent_router, prefix="/api/v1/diagnosis", tags=["AI诊断Agent"])
@@ -141,6 +143,16 @@ def create_app() -> FastAPI:
     app.include_router(gdpr_router, prefix="/api/v1/gdpr", tags=["GDPR"])
     # 公开分享页面（无需登录）
     app.include_router(share_public_router, tags=["公开分享"])
+
+    # 智能体能力路由（GOAI 借鉴落地）
+    # 注意：app/api/agent.py 内已写死 "/api/v1/agent/..." 全路径，
+    # 故此处的 include_router 不能再传 prefix，否则会变成 /api/v1/api/v1/agent/...
+    try:
+        from app.api.agent import router as agent_router
+
+        app.include_router(agent_router)
+    except Exception as _agent_err:  # noqa: BLE001
+        logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
 
     # 静态前端文件服务 (frontend/) - 带缓存控制
     from fastapi.staticfiles import StaticFiles
