@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
+import MedicalDisclaimer from '../components/MedicalDisclaimer';
 
 export default function Reports() {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export default function Reports() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      <MedicalDisclaimer />
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">健康报告</h2>
