@@ -1,0 +1,49 @@
+{
+  "name": "HealthLens · 健康全景平台",
+  "short_name": "HealthLens",
+  "description": "AI-powered health analytics platform with 8-axis fusion engine, TCM constitution analysis, and BioAge scoring.",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "/app/",
+  "scope": "/app/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#059669",
+  "categories": ["health", "medical"],
+  "icons": [
+    {
+      "src": "/app/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/app/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "健康评估",
+      "short_name": "评估",
+      "url": "/app/assess",
+      "icons": [{ "src": "/app/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "每日打卡",
+      "short_name": "打卡",
+      "url": "/app/checkin",
+      "icons": [{ "src": "/app/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "健康报告",
+      "short_name": "报告",
+      "url": "/app/reports",
+      "icons": [{ "src": "/app/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "id": "/app/"
+}
