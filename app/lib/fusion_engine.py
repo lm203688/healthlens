@@ -440,7 +440,7 @@ def disclaimer() -> str:
 
 
 if __name__ == "__main__":
-    print("HealthLens fusion_engine v0.5 — 个性化融合引擎（+ LLM 增强 + 代谢-炎症轴 + 轴间桥接）")
+    print("HealthLens fusion_engine v0.6 — 个性化融合引擎（+ LLM 增强 + 代谢-炎症轴 + 轴间桥接）")
     print("载入案例库:", len(load_cases()), "条 | 映射通路:", len(_CANON_TO_AXIS), "条")
     print("LLM:", "已启用" if os.environ.get("USE_LLM", "").lower() in ("1", "true") else "规则模式（USE_LLM=1 开启）")
     print(f"代谢-炎症轴: {AXIS_LABEL}（{AXIS_KEY}）→ 落点轴 {sorted(BIOAGE_AXIS_MAP)}，弱轴阈值 {BIOAGE_WEAK_THRESHOLD}")
