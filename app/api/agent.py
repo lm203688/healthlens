@@ -36,7 +36,7 @@ class FusionIn(ProfileIn):
 def agent_fusion(req: FusionIn) -> Dict:
     """运行融合安全管线，返回带安全审计与免责声明的融合结果。"""
     profile = UserProfile(
-        pathway_scores=req.pathway_scores or None,
+        pathway_scores=req.pathway_scores or {},
         weak_axes=set(req.weak_axes or []),
         contraindications=set(req.contraindications or []),
     )
