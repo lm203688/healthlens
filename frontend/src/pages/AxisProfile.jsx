@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
-import MedicalDisclaimer from '../components/MedicalDisclaimer';
+import MedicalDisclaimer from '../components/HealthDisclaimer';
+import Modal from '../components/Modal';
 
 /* 八轴稳态模型（A–H）。代谢-炎症轴按假说级映射落点 A / F。 */
 const AXIS_LABELS = {
@@ -46,6 +47,8 @@ export default function AxisProfile() {
   const [assess, setAssess] = useState(null);
   const [loading, setLoading] = useState('');
   const [error, setError] = useState(null);
+  const [evidence, setEvidence] = useState(null);   // 证据卡弹窗数据
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
 
   useEffect(() => {
     api.axesMeta()
@@ -333,6 +336,15 @@ export default function AxisProfile() {
                   {r.monitor_markers && (
                     <p className="text-xs text-slate-400 mt-1">📊 监测指标：{r.monitor_markers}</p>
                   )}
+                  {r.evidence_detail && (
+                    <button
+                      type="button"
+                      onClick={() => { setEvidence(r.evidence_detail); setEvidenceOpen(true); }}
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition"
+                    >
+                      🔬 查看证据来源
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -343,6 +355,85 @@ export default function AxisProfile() {
           )}
         </div>
       )}
+
+      <Modal open={evidenceOpen} title="证据来源与健康参考" onClose={() => setEvidenceOpen(false)}>
+        {evidence && (
+          <div className="space-y-4 text-sm">
+            <div>
+              <p className="text-slate-500 text-xs">养生干预 / 参考做法</p>
+              <p className="font-medium text-slate-800">{evidence.intervention || '—'}</p>
+            </div>
+            {evidence.tcm_concept && (
+              <div>
+                <p className="text-slate-500 text-xs">中医养生视角</p>
+                <p className="text-slate-700">{evidence.tcm_concept}</p>
+              </div>
+            )}
+            {evidence.mechanism && (
+              <div>
+                <p className="text-slate-500 text-xs">可能的作用机制</p>
+                <p className="text-slate-700 leading-relaxed">{evidence.mechanism}</p>
+              </div>
+            )}
+            <div className="grid grid-cols-2 gap-3">
+              {evidence.design && (
+                <div>
+                  <p className="text-slate-500 text-xs">研究设计</p>
+                  <p className="text-slate-700">{evidence.design}</p>
+                </div>
+              )}
+              {evidence.population && (
+                <div>
+                  <p className="text-slate-500 text-xs">研究对象</p>
+                  <p className="text-slate-700">{evidence.population}</p>
+                </div>
+              )}
+              {evidence.effect_size && (
+                <div>
+                  <p className="text-slate-500 text-xs">效应量</p>
+                  <p className="text-slate-700">{evidence.effect_size}</p>
+                </div>
+              )}
+              {evidence.evidence_level && (
+                <div>
+                  <p className="text-slate-500 text-xs">证据等级</p>
+                  <p className="text-slate-700">{evidence.evidence_level}</p>
+                </div>
+              )}
+            </div>
+            {evidence.primary_outcomes?.length > 0 && (
+              <div>
+                <p className="text-slate-500 text-xs">主要结局</p>
+                <ul className="list-disc list-inside text-slate-700 space-y-0.5">
+                  {evidence.primary_outcomes.map((o, i) => (
+                    <li key={i}>{o}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {evidence.source && (
+              <div className="bg-slate-50 rounded-lg px-3 py-2">
+                <p className="text-slate-500 text-xs">文献来源</p>
+                <p className="text-slate-700">
+                  {evidence.source.journal || '—'}
+                  {evidence.source.year ? ` (${evidence.source.year})` : ''}
+                </p>
+                {evidence.source.doi && (
+                  <p className="text-xs text-emerald-700 break-all">DOI: {evidence.source.doi}</p>
+                )}
+              </div>
+            )}
+            {evidence.fusion_note && (
+              <p className="text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2">
+                融合备注：{evidence.fusion_note}
+              </p>
+            )}
+            <p className="text-xs text-slate-400 leading-relaxed border-t border-slate-100 pt-3">
+              以上为公开研究文献的归纳，仅供健康参考，不构成医疗诊断或治疗建议。
+            </p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
