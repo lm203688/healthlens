@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
-import MedicalDisclaimer from '../components/MedicalDisclaimer';
+import MedicalDisclaimer from '../components/HealthDisclaimer';
+import SelfCheck from '../components/SelfCheck';
 
 const METRICS = [
   { code: '8867-4', name: '血压 (收缩压)', unit: 'mmHg', refLow: 90, refHigh: 140, type: 'number' },
@@ -189,6 +190,10 @@ export default function CheckIn() {
           )}
         </div>
       )}
+
+      <div className="pt-2">
+        <SelfCheck />
+      </div>
     </div>
   );
 }
