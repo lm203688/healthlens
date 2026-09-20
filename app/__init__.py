@@ -87,6 +87,8 @@ def create_app() -> FastAPI:
     from app.api.v1.diagnosis_agent import router as diagnosis_agent_router
     from app.api.frequency import router as frequency_router
     from app.api.feedback import router as feedback_router
+    from app.api.checkin import router as checkin_router
+    from app.api.audit import router as audit_router
     from app.api.analytics import router as analytics_router
     from app.api.growth import router as growth_router
     from app.api.freemium import router as freemium_router
@@ -123,6 +125,8 @@ def create_app() -> FastAPI:
     app.include_router(diagnosis_agent_router, prefix="/api/v1/diagnosis", tags=["AI诊断Agent"])
     app.include_router(frequency_router, prefix="/api/v1/frequency", tags=["频率疗法"])
     app.include_router(feedback_router, prefix="/api/v1/feedback", tags=["用户反馈"])
+    app.include_router(checkin_router, prefix="/api/v1/checkin", tags=["自测闭环"])
+    app.include_router(audit_router, prefix="/api/v1/audit", tags=["运行时审计"])
     app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["行为分析"])
     app.include_router(growth_router, prefix="/api/v1/growth", tags=["推广系统"])
     app.include_router(freemium_router, prefix="/api/v1/freemium", tags=["积分门禁"])
