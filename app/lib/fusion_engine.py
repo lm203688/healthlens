@@ -398,6 +398,11 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
 
     rec_dicts = [asdict(r) for r in recs]
 
+    # 证据链可视化：把每条推荐挂上完整证据来源（来源/机制/设计/人群/结局/等级）
+    case_by_id = {c.get("id"): c for c in cases}
+    for r in rec_dicts:
+        r["evidence_detail"] = evidence_detail(case_by_id.get(r.get("case_id")))
+
     # LLM 增强（USE_LLM=1 时启用，失败静默回退）
     user_context = "; ".join((profile.pathway_scores or {}).keys())
     rec_dicts = _llm_enhance(rec_dicts, user_context)
@@ -427,6 +432,50 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         "bioage": bioage_block,
         "recommendations": rec_dicts,
         "llm_enabled": os.environ.get("USE_LLM", "0"),
+    }
+
+
+def get_case_by_id(case_id: str, path: str = DB_PATH) -> dict | None:
+    """按 case_id 取完整案例证据记录（供证据链可视化用）。"""
+    for c in load_cases(path):
+        if c.get("id") == case_id:
+            return c
+    return None
+
+
+def evidence_detail(case: dict | None) -> dict | None:
+    """从案例记录抽取「证据链」字段，供前端点推荐弹出证据卡。
+
+    纯 wellness 定位：仅展示古籍经验 + 现代稳态生物学证据（来源/机制/设计/
+    人群/主要结局/证据等级），不添加任何医疗诊断或治疗结论。
+    """
+    if not case:
+        return None
+    src = case.get("source") or {}
+    outcomes = case.get("primary_outcomes") or []
+    return {
+        "case_id": case.get("id"),
+        "intervention": case.get("intervention"),
+        "tcm_concept": case.get("tcm_concept"),
+        "mechanism": case.get("mechanism"),
+        "design": case.get("design"),
+        "population": case.get("population"),
+        "effect_size": case.get("effect_size"),
+        "evidence_level": case.get("evidence_level"),
+        "fusion_note": case.get("fusion_note"),
+        "source": {
+            "journal": src.get("journal") if isinstance(src, dict) else None,
+            "year": src.get("year") if isinstance(src, dict) else None,
+            "doi": src.get("doi") if isinstance(src, dict) else None,
+        },
+        "primary_outcomes": [
+            {
+                "marker": o.get("marker"),
+                "change": o.get("change"),
+                "note": o.get("note"),
+            }
+            for o in outcomes[:5]
+        ],
     }
 
 
