@@ -31,6 +31,17 @@ export const api = {
   otpSend:   (body) => request('/auth/otp/send',   { method: 'POST', body: JSON.stringify(body) }),
   otpVerify: (body) => request('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
 
+  /* ===== TOTP 验证器 App 通道 =====
+   * enroll/disable 无需请求体；verify/confirm 传 { code }；method 传 { method: 'otp'|'totp' }
+   * 登录（verify）为未鉴权端点：仅 6 位码即可登录已绑定用户。
+   * 绑定（enroll/confirm/disable/method）需先登录，故放在个人档案页。 */
+  totpStatus:  ()     => request('/auth/totp/status'),
+  totpEnroll:  ()     => request('/auth/totp/enroll',  { method: 'POST' }),
+  totpVerify:  (body) => request('/auth/totp/verify',  { method: 'POST', body: JSON.stringify(body) }),
+  totpConfirm: (body) => request('/auth/totp/confirm', { method: 'POST', body: JSON.stringify(body) }),
+  totpDisable: ()     => request('/auth/totp/disable', { method: 'POST' }),
+  totpMethod:  (body) => request('/auth/totp/method',  { method: 'PUT',  body: JSON.stringify(body) }),
+
   /* ===== 健康评估（Agent 融合管线）===== */
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
   agentTeam:   (body) => request('/agent/team',   { method: 'POST', body: JSON.stringify(body) }),
@@ -63,6 +74,11 @@ export const api = {
   axesMeta:   ()     => request('/axes/meta'),
   axesBioage: (body) => request('/axes/bioage', { method: 'POST', body: JSON.stringify(body) }),
   axesAssess: (body) => request('/axes/assess', { method: 'POST', body: JSON.stringify(body) }),
+
+  /* ===== wellness 自测闭环（SIIV V 端：能量/消化/睡眠 1-5）===== */
+  checkinPost:    (body) => request('/checkin',        { method: 'POST', body: JSON.stringify(body) }),
+  checkinHistory: ()     => request('/checkin/history'),
+  checkinSummary: ()     => request('/checkin/summary'),
 
   /* ===== 每日健康打卡（observations）===== */
   observations: () => request('/observations'),
