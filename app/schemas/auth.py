@@ -136,3 +136,32 @@ class RoleUpdateInput(BaseModel):
         if v not in allowed:
             raise ValueError(f"role must be one of {allowed}")
         return v
+
+
+class TotpEnrollInput(BaseModel):
+    """TOTP 注册输入（用户绑定认证器 App）"""
+
+    pass  # 无需额外字段，由服务端生成密钥
+
+
+class TotpVerifyInput(BaseModel):
+    """TOTP 验证码校验输入"""
+
+    code: str  # 6 位数字
+
+    @field_validator("code")
+    @classmethod
+    def validate_code(cls, v: str) -> str:
+        v = (v or "").strip().replace(" ", "")
+        if not v.isdigit() or len(v) != 6:
+            raise ValueError("验证码应为 6 位数字")
+        return v
+
+
+class TotpStatusOutput(BaseModel):
+    """TOTP 状态输出"""
+
+    enabled: bool
+    provisioning_uri: str | None = None  # enrollment 时返回，供前端渲染二维码
+    account: str | None = None
+
