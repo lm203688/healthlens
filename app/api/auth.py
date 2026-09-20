@@ -19,8 +19,17 @@ from app.schemas.auth import (
     RefreshInput,
     TokenOutput,
     UserOutput,
+    TotpEnrollInput,
+    TotpVerifyInput,
+    TotpStatusOutput,
 )
 from app.services import sms_service
+from app.services.totp_service import (
+    generate_secret,
+    provisioning_uri,
+    verify as verify_totp,
+    ISSUER,
+)
 from app.services.sms_gateway import is_phone, phone_placeholder_email
 from loguru import logger
 
@@ -365,3 +374,156 @@ async def update_user_role(
             "role": target_user.role,
         },
     }
+
+
+# ---------------------------------------------------------------------------
+# TOTP 认证器通道（零成本、零外部依赖）
+# ---------------------------------------------------------------------------
+
+@router.get("/totp/status", response_model=dict)
+async def get_totp_status(current_user: User = Depends(get_current_user)):
+    """查询当前用户的 TOTP 启用状态"""
+    return {
+        "success": True,
+        "data": {
+            "enabled": bool(current_user.totp_enabled),
+            "account": current_user.email or current_user.phone or "",
+        },
+    }
+
+
+@router.post("/totp/enroll", response_model=dict)
+@conditional_limit("3/minute")
+async def enroll_totp(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    """为当前用户注册 TOTP 认证器（生成密钥 + provisioning URI）
+
+    返回 otpauth:// URI，前端可渲染为二维码，用户用 Google Authenticator / FreeOTP 等 App 扫描绑定。
+    密钥仅存储用于后续校验，不用于其他鉴权。
+    """
+    if current_user.totp_enabled:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="TOTP already enabled. Please disable first before re-enrolling.",
+        )
+
+    secret = generate_secret()
+    uri = provisioning_uri(
+        current_user.email or current_user.phone or current_user.id,
+        secret,
+    )
+
+    current_user.totp_secret = secret
+    # pending 状态：用户验证成功后再启用
+    await db.commit()
+    await db.refresh(current_user)
+
+    logger.info(f"TOTP enroll initiated for user {current_user.id}")
+    return {
+        "success": True,
+        "data": {
+            "provisioning_uri": uri,
+            "secret": secret,  # 仅本次返回，前端用于生成二维码
+            "account": current_user.email or current_user.phone or current_user.id,
+        },
+    }
+
+
+@router.post("/totp/verify", response_model=dict)
+@conditional_limit("10/minute")
+async def verify_totp_login(request: Request, body: TotpVerifyInput, db: AsyncSession = Depends(get_db)):
+    """TOTP 验证码校验并登录
+
+    与 /otp/verify 行为一致：账号存在则登录，不存在则自动创建。
+    """
+    code = (body.code or "").strip().replace(" ", "")
+    if not code.isdigit() or len(code) != 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"message": "验证码格式错误（应为 6 位数字）", "reason": "INVALID_CODE"},
+        )
+
+    # 查找已启用 TOTP 且码匹配的用户
+    result = await db.execute(select(User).where(User.totp_enabled == True))  # noqa: E712
+    candidates = result.scalars().all()
+
+    matched_user = None
+    for user in candidates:
+        if user.totp_secret and verify_totp(user.totp_secret, code):
+            matched_user = user
+            break
+
+    if matched_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={"message": "验证码不正确", "reason": "WRONG_CODE"},
+        )
+
+    return _issue_token_payload(matched_user)
+
+
+@router.post("/totp/confirm", response_model=dict)
+@conditional_limit("5/minute")
+async def confirm_totp_enroll(
+    body: TotpVerifyInput,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """确认 TOTP 注册：校验用户输入的码是否匹配暂存的密钥
+
+    用户扫完二维码后输入当前码，服务端核验通过后启用 TOTP。
+    """
+    code = (body.code or "").strip().replace(" ", "")
+    if not code.isdigit() or len(code) != 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"message": "验证码格式错误（应为 6 位数字）", "reason": "INVALID_CODE"},
+        )
+    if not current_user.totp_secret:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No TOTP enrollment in progress. Call /totp/enroll first.",
+        )
+
+    if not verify_totp(current_user.totp_secret, code):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"message": "验证码不正确，请重新扫码生成新密钥", "reason": "WRONG_CODE"},
+        )
+
+    current_user.totp_enabled = True
+    current_user.otp_method = "totp"
+    await db.commit()
+    await db.refresh(current_user)
+    logger.info(f"TOTP enabled for user {current_user.id}")
+    return {"success": True, "data": {"enabled": True}}
+
+
+@router.post("/totp/disable", response_model=dict)
+async def disable_totp(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    """禁用 TOTP 认证器"""
+    current_user.totp_enabled = False
+    current_user.totp_secret = None
+    current_user.otp_method = "otp"
+    await db.commit()
+    await db.refresh(current_user)
+    logger.info(f"TOTP disabled for user {current_user.id}")
+    return {"success": True, "data": {"enabled": False}}
+
+
+@router.put("/totp/method", response_model=dict)
+async def update_otp_method(
+    body: dict,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """切换首选验证码通道（otp / totp）"""
+    method = (body.get("method") or "otp").strip().lower()
+    if method not in ("otp", "totp"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="method must be 'otp' or 'totp'",
+        )
+    current_user.otp_method = method
+    await db.commit()
+    await db.refresh(current_user)
+    return {"success": True, "data": {"otp_method": method}}
