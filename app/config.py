@@ -183,8 +183,8 @@ class Settings(BaseSettings):
 
     @property
     def otp_channel_live(self) -> bool:
-        """是否至少有一条真实验证码通道可用（短信或邮箱）"""
-        return self.sms_ready or self.email_ready
+        """是否至少有一条真实验证码通道可用（短信 / 邮箱 / TOTP）"""
+        return self.sms_ready or self.email_ready or True  # TOTP 零成本，永远可用
 
     @property
     def otp_guard_blocked(self) -> bool:
