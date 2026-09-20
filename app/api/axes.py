@@ -4,10 +4,12 @@
 诚实边界：本轴为**透明体检指标代理**（非 DNAm 甲基化，非临床），
 响应恒定携带 not_clinical=True 与方法说明，前端必须展示免责。
 """
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
+from app.database import get_db
 from app.models.user import User
 
 router = APIRouter(tags=["axes"])
@@ -129,9 +131,11 @@ async def assess_bioage(
 async def assess_axes(
     body: AxisAssessInput,
     current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """八轴个性化融合推荐：体检指标驱动代谢-炎症轴，基因/组学驱动其余弱项轴。"""
     from app.lib.fusion_engine import UserProfile, recommend, disclaimer
+    from app.services.runtime_audit import build_events, persist_events
 
     profile = UserProfile(
         pathway_scores=body.pathway_scores,
@@ -149,8 +153,51 @@ async def assess_axes(
     result = recommend(profile, top_k=body.top_k)
     result["disclaimer"] = disclaimer()
 
+    # 简化版运行时审计：对输入/输出/推荐证据做轻量自检（失败静默）
+    import json as _json
+    try:
+        events = build_events(
+            endpoint="/api/v1/axes/assess",
+            user_id=str(current_user.id),
+            input_text=_json.dumps(body.model_dump(), ensure_ascii=False),
+            output_text=_json.dumps(result, ensure_ascii=False),
+            recommendations=result.get("recommendations"),
+        )
+        await persist_events(db, events)
+    except Exception:
+        pass
+
     return {
         "success": True,
         "data": result,
         "meta": {"top_k": body.top_k},
     }
+
+
+# ---------------------------------------------------------------------------
+# 证据链可视化：按 case_id 取完整案例证据记录
+# ---------------------------------------------------------------------------
+
+@router.get("/evidence/{case_id}", response_model=dict)
+async def get_evidence(case_id: str):
+    """返回某条推荐的完整证据链（古籍经验 + 现代稳态生物学证据）。
+
+    wellness 定位：仅展示来源/机制/设计/人群/结局/证据等级，不构成医疗结论。
+    """
+    from app.lib.fusion_engine import get_case_by_id, evidence_detail
+
+    case = get_case_by_id(case_id)
+    if not case:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"未找到案例证据记录: {case_id}",
+        )
+
+    return {
+        "success": True,
+        "data": {
+            "case_id": case_id,
+            "evidence": evidence_detail(case),
+        },
+    }
+
