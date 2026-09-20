@@ -394,7 +394,7 @@ async def get_totp_status(current_user: User = Depends(get_current_user)):
 
 @router.post("/totp/enroll", response_model=dict)
 @conditional_limit("3/minute")
-async def enroll_totp(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+async def enroll_totp(request: Request, current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     """为当前用户注册 TOTP 认证器（生成密钥 + provisioning URI）
 
     返回 otpauth:// URI，前端可渲染为二维码，用户用 Google Authenticator / FreeOTP 等 App 扫描绑定。
@@ -464,6 +464,7 @@ async def verify_totp_login(request: Request, body: TotpVerifyInput, db: AsyncSe
 @router.post("/totp/confirm", response_model=dict)
 @conditional_limit("5/minute")
 async def confirm_totp_enroll(
+    request: Request,
     body: TotpVerifyInput,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
