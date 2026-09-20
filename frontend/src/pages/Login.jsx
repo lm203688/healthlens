@@ -40,6 +40,8 @@ async function readError(resp) {
 }
 
 export default function Login() {
+  // 通道：'otp' = 验证码登录（手机/邮箱）；'totp' = 验证器 App（仅 6 位码）
+  const [channel, setChannel] = useState('otp');
   const [account, setAccount] = useState('');
   const [code, setCode] = useState('');
   const [sent, setSent] = useState(false);   // 是否已发出验证码
@@ -139,6 +141,32 @@ export default function Login() {
     setError(null);
   }
 
+  // 验证器 App 通道：仅 6 位动态码，匹配已绑定用户即登录
+  async function handleTotpLogin(e) {
+    e.preventDefault();
+    setError(null);
+    if (code.trim().length !== 6) {
+      setError('请输入验证器 App 显示的 6 位动态码');
+      return;
+    }
+    setVerifying(true);
+    try {
+      const resp = await api.totpVerify({ code: code.trim() });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(await readError(resp));
+      const { access_token, refresh_token, user } = data.data || {};
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+      localStorage.setItem('user_email', user?.email || user?.phone || '');
+      setNotice('验证成功，正在进入…');
+      setTimeout(() => navigate('/'), 600);
+    } catch (err) {
+      setError(err.message || '验证失败');
+    } finally {
+      setVerifying(false);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-slate-50 px-4 py-10">
       <div className="w-full max-w-md">
@@ -153,95 +181,154 @@ export default function Login() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-          <h2 className="text-lg font-semibold text-slate-800 mb-1">
-            {sent ? '输入验证码' : '验证码登录'}
-          </h2>
-          <p className="text-sm text-slate-500 mb-6">
+          <h2 className="text-lg font-semibold text-slate-800 mb-1">登录</h2>
+          <p className="text-sm text-slate-500 mb-4">
             无需注册，验证后即自动创建账号
           </p>
 
-          <form onSubmit={sent ? handleVerify : (e) => { e.preventDefault(); handleSendCode(); }} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                手机号 / 邮箱
-              </label>
-              <div className="relative">
-                <input
-                  type={kind === 'email' ? 'email' : 'tel'}
-                  value={account}
-                  onChange={(e) => { setAccount(e.target.value); setError(null); }}
-                  onKeyDown={(e) => { if (e.key === 'Enter' && sent) handleVerify(e); }}
-                  placeholder="国内请输入手机号，其他地区请输入邮箱"
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent pr-20"
-                  disabled={sent}
-                  autoComplete="username"
-                  required
-                />
-                {sent && (
-                  <button
-                    type="button"
-                    onClick={resetAccount}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1"
-                  >
-                    更换
-                  </button>
-                )}
-              </div>
-              {account && !kind && (
-                <p className="mt-1 text-xs text-amber-600">
-                  请输入 11 位手机号或正确的邮箱地址
-                </p>
-              )}
-            </div>
+          {/* 通道切换 */}
+          <div className="flex p-1 bg-slate-100 rounded-xl mb-5">
+            {[
+              { id: 'otp',  label: '验证码登录' },
+              { id: 'totp', label: '验证器 App' },
+            ].map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => { setChannel(c.id); setError(null); setNotice(null); setCode(''); }}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${
+                  channel === c.id
+                    ? 'bg-white text-emerald-700 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
 
-            {sent && (
+          {channel === 'otp' ? (
+            <form onSubmit={sent ? handleVerify : (e) => { e.preventDefault(); handleSendCode(); }} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">验证码</label>
-                <div className="flex gap-2">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  手机号 / 邮箱
+                </label>
+                <div className="relative">
                   <input
-                    ref={codeRef}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={6}
-                    value={code}
-                    onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                    placeholder="6 位数字"
-                    className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                    autoComplete="one-time-code"
+                    type={kind === 'email' ? 'email' : 'tel'}
+                    value={account}
+                    onChange={(e) => { setAccount(e.target.value); setError(null); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && sent) handleVerify(e); }}
+                    placeholder="国内请输入手机号，其他地区请输入邮箱"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent pr-20"
+                    disabled={sent}
+                    autoComplete="username"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={handleSendCode}
-                    disabled={countdown > 0 || sending}
-                    className="px-4 py-2.5 text-sm rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed whitespace-nowrap"
-                  >
-                    {countdown > 0 ? `${countdown}s` : sending ? '发送中…' : '重新发送'}
-                  </button>
+                  {sent && (
+                    <button
+                      type="button"
+                      onClick={resetAccount}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1"
+                    >
+                      更换
+                    </button>
+                  )}
                 </div>
+                {account && !kind && (
+                  <p className="mt-1 text-xs text-amber-600">
+                    请输入 11 位手机号或正确的邮箱地址
+                  </p>
+                )}
               </div>
-            )}
 
-            {error && (
-              <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
-            )}
-            {notice && !error && (
-              <div className="bg-emerald-50 text-emerald-700 text-sm p-3 rounded-lg">{notice}</div>
-            )}
+              {sent && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">验证码</label>
+                  <div className="flex gap-2">
+                    <input
+                      ref={codeRef}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                      placeholder="6 位数字"
+                      className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      autoComplete="one-time-code"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSendCode}
+                      disabled={countdown > 0 || sending}
+                      className="px-4 py-2.5 text-sm rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed whitespace-nowrap"
+                    >
+                      {countdown > 0 ? `${countdown}s` : sending ? '发送中…' : '重新发送'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
-            <button
-              type="submit"
-              disabled={
-                !kind ||
-                (sent ? verifying || code.trim().length < 4 : sending)
-              }
-              className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
-            >
-              {sent
-                ? verifying ? '验证中…' : '进入应用'
-                : sending ? '发送中…' : '获取验证码'}
-            </button>
-          </form>
+              {error && (
+                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
+              )}
+              {notice && !error && (
+                <div className="bg-emerald-50 text-emerald-700 text-sm p-3 rounded-lg">{notice}</div>
+              )}
+
+              <button
+                type="submit"
+                disabled={
+                  !kind ||
+                  (sent ? verifying || code.trim().length < 4 : sending)
+                }
+                className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
+              >
+                {sent
+                  ? verifying ? '验证中…' : '进入应用'
+                  : sending ? '发送中…' : '获取验证码'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleTotpLogin} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  验证器动态码
+                </label>
+                <input
+                  ref={codeRef}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={code}
+                  onChange={(e) => { setCode(e.target.value.replace(/\D/g, '')); setError(null); }}
+                  placeholder="验证器 App 显示的 6 位动态码"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  autoComplete="one-time-code"
+                  required
+                />
+                <p className="mt-1 text-xs text-slate-400">
+                  已绑定验证器 App 的用户，输入当前动态码即可登录。
+                </p>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
+              )}
+              {notice && !error && (
+                <div className="bg-emerald-50 text-emerald-700 text-sm p-3 rounded-lg">{notice}</div>
+              )}
+
+              <button
+                type="submit"
+                disabled={verifying || code.trim().length !== 6}
+                className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
+              >
+                {verifying ? '验证中…' : '进入应用'}
+              </button>
+            </form>
+          )}
 
           <p className="text-center text-xs text-slate-400 mt-4">
             首次验证将自动创建账号，无需设置密码
