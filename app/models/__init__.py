@@ -17,3 +17,19 @@ from app.models.notification import Notification
 from app.models.risk_assessment import RiskAssessment
 from app.models.medication_adherence import MedicationAdherence
 from app.models.tcm_knowledge import TcmClassicalBook, FoodTherapyRecipe, ClassicalFormula, NonPharmaTreatment
+from app.models.points import UserPoints, PointTransaction, PointRule
+from app.models.sleep import SleepRecord, SleepChecklist, RepairScore
+from app.models.seo import SeoPage, SeoPageTemplate, KeywordCluster
+from app.models.analytics import AnalyticsEvent, AnalyticsSession, ConversionRecord
+from app.models.referral import InviteCode, ShareRecord
+from app.models.share_report import SharedReport
+from app.models.tiered_referral import (
+    ReferralTier,
+    ReferralRelationship,
+    ReferralRebate,
+    PointPackage,
+    PointOrder,
+)
+from app.models.verification_code import VerificationCode
+from app.models.wellness_checkin import WellnessCheckin
+from app.models.audit_event import AuditEvent
