@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/client';
+import TotpManager from '../components/TotpManager';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -234,6 +235,8 @@ export default function Profile() {
           {saving ? '保存中…' : '💾 保存档案'}
         </button>
       </div>
+
+      <TotpManager />
 
       {error && <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm">{error}</div>}
       {success && <div className="bg-emerald-50 text-emerald-700 p-4 rounded-lg text-sm">{success}</div>}
