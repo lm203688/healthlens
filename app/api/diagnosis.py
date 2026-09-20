@@ -48,8 +48,22 @@ async def trigger_analysis(
     - 分析完成后写入 DiagnosisResult 表
     """
     from app.services.diagnosis_service import trigger_diagnosis
+    from app.services.runtime_audit import build_events, persist_events
 
     result = await trigger_diagnosis(db, current_user.id)
+
+    # 简化版运行时审计：对输入/输出做轻量自检（失败静默）
+    import json as _json
+    try:
+        events = build_events(
+            endpoint="/api/v1/diagnosis/analyze",
+            user_id=str(current_user.id),
+            input_text=_json.dumps(body.model_dump(), ensure_ascii=False),
+            output_text=_json.dumps(result, ensure_ascii=False),
+        )
+        await persist_events(db, events)
+    except Exception:
+        pass
 
     return {
         "success": True,
