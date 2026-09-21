@@ -1,0 +1,81 @@
+{
+  "report_id": "ops_f_20260921",
+  "generated_at": "2026-09-21T03:01:34.682663",
+  "overall_status": "needs_attention",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 410
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 81
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 677
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 88
+    }
+  ],
+  "server_reachable": false,
+  "server_unreachable_reason": "SSH 失败 (exit 255): ubuntu@150.158.119.19: Permission denied (publickey,password).",
+  "containers": [],
+  "security_issues": [
+    {
+      "severity": "warning",
+      "issue": ".gitignore 不存在"
+    }
+  ],
+  "medical_terms": [
+    {
+      "term": "诊断",
+      "file": "frontend/src/components/SelfCheck.jsx",
+      "count": 2,
+      "total_occurrences": 2,
+      "tier": "source",
+      "is_active_frontend": true
+    }
+  ],
+  "site_identity": [
+    {
+      "path": "/",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    },
+    {
+      "path": "/robots.txt",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    }
+  ],
+  "deploy_target_issues": [],
+  "actions_needed": [
+    {
+      "action": "恢复服务器连通性: SSH 失败 (exit 255): ubuntu@150.158.119.19: Permission denied (publickey,password).",
+      "severity": "high"
+    },
+    {
+      "action": "安全: .gitignore 不存在",
+      "severity": "warning"
+    },
+    {
+      "action": "医疗用语: 替换'诊断'(2处)",
+      "severity": "medium"
+    }
+  ]
+}
