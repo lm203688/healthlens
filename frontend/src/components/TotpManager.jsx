@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { api } from '../api/client';
 
 /** 验证器 App 绑定管理（需已登录）。
@@ -103,15 +104,32 @@ export default function TotpManager() {
 
       {enrolling && (
         <div className="space-y-3">
-          <div className="bg-slate-50 rounded-lg p-4">
-            <p className="text-sm text-slate-600 mb-2">
-              用验证器 App 扫描下方链接，或手动输入密钥：
+          <div className="bg-slate-50 rounded-lg p-4 flex flex-col items-center gap-3">
+            <p className="text-sm text-slate-600 text-center">
+              用 Google Authenticator / FreeOTP 扫描下方二维码，或手动输入密钥：
             </p>
-            <a href={uri} className="text-sm text-emerald-700 break-all underline">{uri}</a>
-            <p className="text-xs text-slate-400 mt-2">
-              密钥（手动输入用）：<span className="font-mono text-slate-600">{secret}</span>
-            </p>
-            {account && <p className="text-xs text-slate-400">账号：{account}</p>}
+            {uri && (
+              <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                <QRCodeSVG
+                  value={uri}
+                  size={180}
+                  level="M"
+                  marginSize={2}
+                  fgColor="#0f172a"
+                  bgColor="#ffffff"
+                />
+              </div>
+            )}
+            <div className="w-full text-center">
+              <p className="text-xs text-slate-400">
+                密钥（手动输入用）：
+                <span className="font-mono text-slate-700 text-sm tracking-wide">{secret}</span>
+              </p>
+              {account && <p className="text-xs text-slate-400 mt-1">账号：{account}</p>}
+              <a href={uri} className="block text-xs text-emerald-700 underline break-all mt-1">
+                otpauth 链接（备用）
+              </a>
+            </div>
           </div>
           <div className="flex gap-2">
             <input
