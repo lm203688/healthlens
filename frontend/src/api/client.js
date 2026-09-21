@@ -74,6 +74,7 @@ export const api = {
   axesMeta:   ()     => request('/axes/meta'),
   axesBioage: (body) => request('/axes/bioage', { method: 'POST', body: JSON.stringify(body) }),
   axesAssess: (body) => request('/axes/assess', { method: 'POST', body: JSON.stringify(body) }),
+  axesProject: (body) => request('/axes/project', { method: 'POST', body: JSON.stringify(body) }),
 
   /* ===== wellness 自测闭环（SIIV V 端：能量/消化/睡眠 1-5）===== */
   checkinPost:    (body) => request('/checkin',        { method: 'POST', body: JSON.stringify(body) }),
