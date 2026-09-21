@@ -1,0 +1,80 @@
+name: 部署生产前端（SPA + _worker.js）
+
+# 专注把根 frontend/ 的 React SPA 构建并部署到 Cloudflare Pages（healthlens 项目）。
+# 不跑 auto-pipeline 内容生成，避免副作用与内容提交噪音。
+# 触发：手动 workflow_dispatch（也可由其他作业调用）。
+#
+# 认证：使用仓库 Secrets 中的 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID，
+# 与本地已失效的 cfut_ 直传令牌无关。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # 显式构建 SPA（后续 build_site.py 会直接复用 frontend/dist）。
+      - name: 安装前端依赖并构建 SPA
+        id: spabuild
+        working-directory: frontend
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npm run build
+          test -f dist/index.html || { echo "::error::SPA 构建未产出 dist/index.html"; exit 1; }
+
+      - name: 安装 Python 依赖
+        run: pip install -q requests paramiko
+
+      - name: 构建静态产物（合并 SPA + 首页 + _worker.js）
+        id: build
+        run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
+
+      # 解析本次构建真实产物目录（build_site.py 在 dist 非空时会改写到一次性目录）。
+      - name: 解析本次构建的真实产物目录
+        id: resolve
+        if: steps.build.outcome == 'success'
+        run: |
+          OUT=""
+          if [ -f auto-pipeline/build_out.txt ]; then
+            OUT=$(cat auto-pipeline/build_out.txt)
+          fi
+          if [ -z "$OUT" ] || [ ! -f "$OUT/index.html" ]; then
+            OUT=$(ls -dt auto-pipeline/dist_build_* auto-pipeline/dist 2>/dev/null | head -1)
+          fi
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+          test -n "$OUT" && test -d "$OUT" || { echo "::error::无法定位构建产物目录"; exit 1; }
+          echo "::notice::本次构建产物目录: $OUT"
+
+      - name: 产物完整性校验
+        id: verify
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success'
+        run: |
+          OUT="${{ steps.resolve.outputs.out }}"
+          test -f "$OUT/index.html" || { echo "::error::产物缺少站点首页 index.html ($OUT)"; exit 1; }
+          test -f "$OUT/app/index.html" || { echo "::error::产物缺少 SPA 入口 app/index.html，拒绝部署残缺产物"; exit 1; }
+          echo "产物校验通过：$OUT/index.html + $OUT/app/index.html 均在"
+
+      - name: 部署到 Cloudflare Pages
+        id: deploy
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success' && steps.verify.outcome == 'success'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BUILD_DIR: ${{ steps.resolve.outputs.out }}
+        run: |
+          npx --yes wrangler pages deploy "$BUILD_DIR" --project-name=healthlens --branch=main
