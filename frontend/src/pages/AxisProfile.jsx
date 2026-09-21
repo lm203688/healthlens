@@ -32,6 +32,38 @@ const STATUS_STYLE = {
   poor: 'bg-red-100 text-red-700',
 };
 
+/* 迷你 Turboid 可用生活方式杠杆（key 须与后端 wellness_simulator.LEVERS 一致） */
+const PROJECT_LEVERS = [
+  { key: 'sleep_hygiene',          label: '规律作息与充足睡眠' },
+  { key: 'fasting',                label: '间歇性限食' },
+  { key: 'aerobic',                label: '有氧训练' },
+  { key: 'anti_inflammatory_diet', label: '抗炎饮食' },
+  { key: 'stress_mgmt',            label: '压力管理' },
+  { key: 'protein_intake',         label: '均衡蛋白摄入' },
+  { key: 'thermal',                label: '冷热应激（如冷水浴）' },
+];
+
+/* 八轴配色（用于推演轨迹线） */
+const AXIS_COLORS = {
+  A: '#10b981', B: '#06b6d4', C: '#3b82f6', D: '#8b5cf6',
+  E: '#ec4899', F: '#f59e0b', G: '#84cc16', H: '#ef4444',
+};
+
+/* 迷你轨迹图：在 0-100 区间画一条轴的健康信号演化折线（无第三方依赖） */
+function Sparkline({ points, color, width = 220, height = 40 }) {
+  if (!points || points.length < 2) return null;
+  const max = 100, min = 0;
+  const stepX = width / (points.length - 1);
+  const y = (v) => height - ((v - min) / (max - min)) * height;
+  const d = points.map((v, i) => `${i === 0 ? 'M' : 'L'}${(i * stepX).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  return (
+    <svg width={width} height={height} className="overflow-visible">
+      <line x1="0" y1={y(50)} x2={width} y2={y(50)} stroke="#e2e8f0" strokeDasharray="3 3" />
+      <path d={d} fill="none" stroke={color} strokeWidth="2" />
+    </svg>
+  );
+}
+
 function scoreColor(score) {
   if (score >= 75) return 'bg-emerald-500';
   if (score >= 60) return 'bg-amber-500';
@@ -49,6 +81,13 @@ export default function AxisProfile() {
   const [error, setError] = useState(null);
   const [evidence, setEvidence] = useState(null);   // 证据卡弹窗数据
   const [evidenceOpen, setEvidenceOpen] = useState(false);
+
+  /* 迷你 Turboid 养生方案虚拟推演 */
+  const [projLevers, setProjLevers] = useState([]);
+  const [projWeeks, setProjWeeks] = useState(12);
+  const [projection, setProjection] = useState(null);
+  const [projLoading, setProjLoading] = useState(false);
+  const [projError, setProjError] = useState(null);
 
   useEffect(() => {
     api.axesMeta()
@@ -85,6 +124,31 @@ export default function AxisProfile() {
   }
 
   const mapped = meta?.mapped_axes || ['A', 'F'];
+
+  async function runProject() {
+    setProjLoading(true);
+    setProjError(null);
+    try {
+      // 基线弱轴取自八轴评估结论（若有），否则由后端默认推导
+      const body = {
+        weak_axes: assess?.weak_axes || [],
+        levers: projLevers,
+        weeks: Number(projWeeks) || 12,
+      };
+      const resp = await api.axesProject(body);
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.detail || '推演失败');
+      setProjection(data.data);
+    } catch (e) {
+      setProjError(e.message);
+    } finally {
+      setProjLoading(false);
+    }
+  }
+
+  function toggleLever(key) {
+    setProjLevers((p) => (p.includes(key) ? p.filter((k) => k !== key) : [...p, key]));
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -355,6 +419,147 @@ export default function AxisProfile() {
           )}
         </div>
       )}
+
+      {/* 迷你 Turboid：养生方案虚拟推演 */}
+      <div className="bg-white rounded-2xl shadow-sm p-6 space-y-4">
+        <div>
+          <h3 className="font-semibold text-slate-800">🌀 养生方案虚拟推演（迷你 Turboid）</h3>
+          <p className="text-slate-500 text-sm mt-1">
+            基于八轴耦合网络，前向推演「若坚持某些生活方式，健康信号可能如何演化」。纯虚拟推演，非诊断、非个体结果预测。
+          </p>
+        </div>
+
+        <div>
+          <p className="text-sm font-medium text-slate-700 mb-2">选择生活方式杠杆</p>
+          <div className="flex flex-wrap gap-2">
+            {PROJECT_LEVERS.map((lv) => (
+              <button
+                key={lv.key}
+                type="button"
+                onClick={() => toggleLever(lv.key)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                  projLevers.includes(lv.key)
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100'
+                }`}
+              >
+                {lv.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="text-sm text-slate-600">
+            推演周数
+            <select
+              value={projWeeks}
+              onChange={(e) => setProjWeeks(Number(e.target.value))}
+              className="ml-2 px-3 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
+            >
+              {[4, 8, 12, 24, 52].map((w) => (
+                <option key={w} value={w}>{w} 周</option>
+              ))}
+            </select>
+          </label>
+          <button
+            onClick={runProject}
+            disabled={projLoading || projLevers.length === 0}
+            className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 disabled:opacity-50 transition"
+          >
+            {projLoading ? '推演中…' : '开始推演 →'}
+          </button>
+        </div>
+        {projLevers.length === 0 && (
+          <p className="text-xs text-amber-600">请至少选择一个生活方式杠杆。</p>
+        )}
+        {projError && <p className="text-red-500 text-sm">{projError}</p>}
+
+        {projection && (
+          <div className="space-y-4 pt-2 border-t border-slate-100">
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div className="bg-slate-50 rounded-xl py-3">
+                <p className="text-xs text-slate-500">基线养生指数</p>
+                <p className="text-xl font-semibold text-slate-800">
+                  {projection.trajectory?.[0]?.wellness_index}
+                </p>
+              </div>
+              <div className="bg-emerald-50 rounded-xl py-3">
+                <p className="text-xs text-emerald-700">推演后指数</p>
+                <p className="text-xl font-semibold text-emerald-800">
+                  {projection.final?.wellness_index}
+                </p>
+              </div>
+              <div className="bg-slate-50 rounded-xl py-3">
+                <p className="text-xs text-slate-500">变化</p>
+                <p className={`text-xl font-semibold ${projection.final?.delta_index >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>
+                  {(projection.final?.delta_index > 0 ? '+' : '') + projection.final?.delta_index}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium text-slate-700 mb-2">八轴健康信号演化轨迹</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {Object.keys(AXIS_LABELS).map((k) => (
+                  <div key={k} className="bg-slate-50 rounded-xl p-3">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ background: AXIS_COLORS[k] }} />
+                      <span className="text-xs font-medium text-slate-700">
+                        {k} · {AXIS_LABELS[k].name}
+                      </span>
+                    </div>
+                    <Sparkline
+                      points={projection.trajectory?.map((t) => t.scores[k])}
+                      color={AXIS_COLORS[k]}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {projection.rate_limiting && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <p className="text-sm font-semibold text-amber-800">
+                  ⏳ 限速轴：{projection.rate_limiting.axis} · {projection.rate_limiting.label}
+                </p>
+                <p className="text-xs text-amber-700 mt-1">{projection.rate_limiting.reason}</p>
+              </div>
+            )}
+
+            {projection.prioritized_levers?.length > 0 && (
+              <div>
+                <p className="text-sm font-medium text-slate-700 mb-1">建议优先补充的杠杆</p>
+                <div className="flex flex-wrap gap-2">
+                  {projection.prioritized_levers.map((p) => (
+                    <span key={p.lever} className="text-xs px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700">
+                      {p.label}（+{p.projected_gain}）
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {projection.bridges_activated?.length > 0 && (
+              <div>
+                <p className="text-sm font-medium text-slate-700 mb-1">已激活的轴间机制链</p>
+                <div className="space-y-1.5">
+                  {projection.bridges_activated.map((b, i) => (
+                    <div key={i} className="text-xs text-slate-600 bg-slate-50 rounded-lg px-3 py-2 leading-relaxed">
+                      <span className="font-semibold text-sky-700">{b.from_label}</span> →{' '}
+                      <span className="font-semibold text-sky-700">{b.to_label}</span>：{b.mechanism}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {projection.disclaimer && (
+              <p className="text-xs text-slate-400 leading-relaxed">{projection.disclaimer}</p>
+            )}
+          </div>
+        )}
+      </div>
 
       <Modal open={evidenceOpen} title="证据来源与健康参考" onClose={() => setEvidenceOpen(false)}>
         {evidence && (
