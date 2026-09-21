@@ -41,6 +41,22 @@ class AxisAssessInput(BiomarkerInput):
     top_k: int = 8
 
 
+class ProjectInput(BaseModel):
+    """迷你 Turboid 养生方案虚拟推演输入。
+
+    wellness 框架：仅接收基线健康信号分与生活方式杠杆，输出虚拟演化轨迹，
+    绝不含诊断/治疗/药物/个体结果预测。
+    """
+    baseline_scores: dict[str, float] = Field(
+        default_factory=dict,
+        description="可选，各轴(字母 A-H) 0-100 基线分；缺省由 weak_axes 推导",
+    )
+    weak_axes: list[str] = Field(default_factory=list, description="偏弱轴字母列表，用于推导基线")
+    levers: list[str] = Field(default_factory=list, description="启用的生活方式杠杆 key")
+    weeks: int = Field(12, ge=1, le=52, description="推演周数")
+    lever_scale: float = Field(1.0, ge=0.0, le=1.0, description="执行一致性系数 0-1")
+
+
 # ---------------------------------------------------------------------------
 # 元信息（前端渲染轴位与阈值用）
 # ---------------------------------------------------------------------------
@@ -198,6 +214,43 @@ async def get_evidence(case_id: str):
         "data": {
             "case_id": case_id,
             "evidence": evidence_detail(case),
+        },
+    }
+
+
+# ---------------------------------------------------------------------------
+# 迷你 Turboid：养生方案虚拟推演（八轴耦合动力学，wellness 框架）
+# ---------------------------------------------------------------------------
+
+@router.post("/project", response_model=dict)
+async def project_wellness(
+    body: ProjectInput,
+    current_user: User = Depends(get_current_user),
+):
+    """基于八轴耦合网络，前向推演「若坚持某些生活方式，健康信号可能如何演化」。
+
+    纯虚拟推演（not_clinical=True），不含诊断/治疗/个体结果预测。结果含逐周轨迹、
+    养生综合指数、限速轴、优先杠杆与已激活机制链，供用户做养生方案参考。
+    """
+    from app.lib.wellness_simulator import derive_baseline, simulate
+
+    baseline = derive_baseline(
+        weak_axes=body.weak_axes,
+        provided=body.baseline_scores or None,
+    )
+    result = simulate(
+        baseline=baseline,
+        levers=body.levers,
+        weeks=body.weeks,
+        lever_scale=body.lever_scale,
+    )
+
+    return {
+        "success": True,
+        "data": result,
+        "meta": {
+            "disclaimer": result.get("disclaimer"),
+            "not_clinical": True,
         },
     }
 
