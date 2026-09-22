@@ -117,7 +117,7 @@ export default function AxisProfile() {
         ? await api.axesBioage(payload())
         : await api.axesAssess({ ...payload(), top_k: 8 });
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || '分析失败');
+      if (!resp.ok) throw new Error(data.detail || t('axis.analysisFailed'));
       if (kind === 'bioage') setBioage(data.data);
       else setAssess(data.data);
     } catch (e) {
@@ -148,10 +148,10 @@ export default function AxisProfile() {
         });
         setCheckinApplied(true);
       } else {
-        setProjError('暂无自测数据，请先在「每日打卡」页完成健康自测。');
+        setProjError(t('axis.noCheckinData'));
       }
     } catch (e) {
-      setProjError('获取自测数据失败，请检查网络。');
+      setProjError(t('axis.checkinFetchError'));
     } finally {
       setCheckinLoading(false);
     }
@@ -174,7 +174,7 @@ export default function AxisProfile() {
       }
       const resp = await api.axesProject(body);
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || '推演失败');
+      if (!resp.ok) throw new Error(data.detail || t('axis.projectionFailed'));
       setProjection(data.data);
     } catch (e) {
       setProjError(e.message);
