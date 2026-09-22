@@ -146,6 +146,7 @@ async def sleep_summaries(
 ):
     if not _check_key(x_open_wearables_api_key):
         return {"error": "Unauthorized"}
+    # Accept any user_id (mock mode: generate data for any user)
     days = 7
     try:
         if start_date and end_date:
