@@ -1,4 +1,5 @@
 import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Dashboard from './pages/Dashboard';
 import HealthAssess from './pages/HealthAssess';
 import TCMConstitution from './pages/TCMConstitution';
@@ -9,20 +10,22 @@ import Knowledge from './pages/Knowledge';
 import AgentChat from './pages/AgentChat';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import LanguageSwitcher from './components/LanguageSwitcher';
 
 const NAV_ITEMS = [
-  { to: '/',           label: '首页',        icon: '🏠' },
-  { to: '/assess',     label: '健康评估',    icon: '🩺' },
-  { to: '/tcm',        label: '体质辨识',    icon: '🏥' },
-  { to: '/axes',       label: '八轴评估',    icon: '🧭' },
-  { to: '/checkin',    label: '每日打卡',    icon: '📅' },
-  { to: '/reports',    label: '健康报告',    icon: '📊' },
-  { to: '/knowledge',  label: '知识探索',    icon: '📚' },
-  { to: '/agent',      label: 'AI 对话',     icon: '🤖' },
-  { to: '/profile',    label: '个人档案',    icon: '👤' },
+  { to: '/',           key: 'nav.dashboard', icon: '🏠' },
+  { to: '/assess',     key: 'nav.healthAssess', icon: '🩺' },
+  { to: '/tcm',        key: 'nav.tcm', icon: '🏥' },
+  { to: '/axes',       key: 'nav.axis', icon: '🧭' },
+  { to: '/checkin',    key: 'nav.checkin', icon: '📅' },
+  { to: '/reports',    key: 'nav.reports', icon: '📊' },
+  { to: '/knowledge',  key: 'nav.knowledge', icon: '📚' },
+  { to: '/agent',      key: 'nav.agent', icon: '🤖' },
+  { to: '/profile',    key: 'nav.profile', icon: '👤' },
 ];
 
 export default function App() {
+  const { t } = useTranslation();
   const token = localStorage.getItem('token');
   const user = localStorage.getItem('user_email');
   const navigate = useNavigate();
@@ -56,12 +59,13 @@ export default function App() {
                   }`
                 }
               >
-                <span className="mr-1">{item.icon}</span> {item.label}
+                <span className="mr-1">{item.icon}</span> {t(item.key)}
               </NavLink>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             {token && user ? (
               <>
                 <span className="text-xs text-slate-500 hidden sm:inline">{user}</span>
@@ -69,7 +73,7 @@ export default function App() {
                   onClick={logout}
                   className="px-3 py-1.5 bg-slate-100 text-slate-600 text-sm rounded-lg hover:bg-slate-200 transition"
                 >
-                  退出
+                  {t('nav.logout')}
                 </button>
               </>
             ) : (
@@ -77,7 +81,7 @@ export default function App() {
                 onClick={() => navigate('/login')}
                 className="px-3 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition"
               >
-                登录
+                {t('nav.login')}
               </button>
             )}
           </div>
