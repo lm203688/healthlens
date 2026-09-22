@@ -129,6 +129,57 @@ def derive_baseline(weak_axes: list[str] | None = None,
     return {k: _clamp(v) for k, v in base.items()}
 
 
+def derive_baseline_from_checkin(energy: int | None = None,
+                                  digestion: int | None = None,
+                                  sleep: int | None = None,
+                                  weak_axes: list[str] | None = None) -> dict[str, float]:
+    """从 SIIV 自测数据（1-5 分）推导 8 轴基线分（0-100）。
+
+    映射逻辑（wellness 主观感受 → 八轴健康信号）：
+      energy_score → A（自噬/能量代谢）、B（线粒体/能量）
+      digestion_score → F（炎症/消化）
+      sleep_score → D（昼夜节律/睡眠）、G（情志/情绪）
+
+    1 分 = 20 分基线，5 分 = 90 分基线（线性映射，留余量）。
+    未提供的维度给中性 68。弱项轴若高于阈值则压到 45。
+    """
+    base = dict.fromkeys(AXES, 68.0)
+
+    # 1-5 分 → 0-100 分线性映射：score * 17.5 + 5
+    def _map1_5_to_0_100(s: int | None) -> float | None:
+        if s is None or not isinstance(s, (int, float)):
+            return None
+        return _clamp(float(s) * 17.5 + 5.0)
+
+    # energy → A, B
+    if energy is not None:
+        v = _map1_5_to_0_100(energy)
+        if v is not None:
+            base["A"] = v
+            base["B"] = v
+
+    # digestion → F
+    if digestion is not None:
+        v = _map1_5_to_0_100(digestion)
+        if v is not None:
+            base["F"] = v
+
+    # sleep → D, G
+    if sleep is not None:
+        v = _map1_5_to_0_100(sleep)
+        if v is not None:
+            base["D"] = v
+            base["G"] = v
+
+    # 弱项轴压制（覆盖自测推导）
+    for ax in (weak_axes or []):
+        ax = ax.upper()
+        if ax in base and base[ax] > WEAK_THRESHOLD:
+            base[ax] = 45.0
+
+    return {k: _clamp(v) for k, v in base.items()}
+
+
 def simulate(baseline: dict[str, float],
              levers: list[str],
              weeks: int = 12,
