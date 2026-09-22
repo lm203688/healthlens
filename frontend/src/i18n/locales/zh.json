@@ -64,6 +64,9 @@
     "describeSituation": "或描述您的情况",
     "describeHint": "点击下方常见问题，或在框中自由输入",
     "describePlaceholder": "例如：最近容易疲劳，晚上睡不好，胃口也一般…",
+    "answerPrefix": "答:",
+    "freeDescription": "自由描述:",
+    "recentTwoWeeks": "近2周",
     "sectionEnergy": "精力与睡眠",
     "sectionMood": "情绪与压力",
     "sectionDigest": "消化与代谢",
@@ -247,7 +250,11 @@
     "leverDiet": "抗炎饮食",
     "leverStress": "压力管理",
     "leverProtein": "均衡蛋白摄入",
-    "leverThermal": "冷热应激（如冷水浴）"
+    "leverThermal": "冷热应激（如冷水浴）",
+    "analysisFailed": "分析失败",
+    "noCheckinData": "暂无自测数据，请先在「每日打卡」页完成健康自测。",
+    "checkinFetchError": "获取自测数据失败，请检查网络。",
+    "projectionFailed": "推演失败"
   },
   "selfCheck": {
     "title": "每周健康自测",
@@ -531,5 +538,36 @@
     "syncFailed": "同步失败",
     "lastSync": "上次同步: {{time}}",
     "notSynced": "未同步"
+  },
+  "totp": {
+    "title": "验证器 App 绑定",
+    "subtitle": "绑定后可用 Google Authenticator / FreeOTP 等生成的动态码登录，无需短信验证码。",
+    "bindFailed": "绑定失败",
+    "codeRequired": "请输入验证器 App 显示的 6 位动态码",
+    "verifyFailed": "验证失败",
+    "enabled": "验证器已启用，下次可用动态码登录",
+    "opFailed": "操作失败",
+    "disabled": "验证器已禁用",
+    "preferredSet": "已设为验证器优先登录方式",
+    "btnEnroll": "＋ 绑定验证器 App",
+    "processing": "处理中…",
+    "scanHint": "用 Google Authenticator / FreeOTP 扫描下方二维码，或手动输入密钥：",
+    "secretLabel": "密钥（手动输入用）：",
+    "accountLabel": "账号：",
+    "otpauthLink": "otpauth 链接（备用）",
+    "codePlaceholder": "输入 App 显示的 6 位码",
+    "btnConfirm": "确认启用",
+    "verifying": "验证中…",
+    "cancel": "取消",
+    "enabledStatus": "已启用验证器 App",
+    "btnDisable": "禁用",
+    "btnSetPreferred": "设为首选登录方式"
+  },
+  "disclaimer": {
+    "defaultText": "本页面提供的信息仅供健康管理与养生参考，不构成医疗诊断、治疗建议或处方。如有具体健康问题，请咨询专业医师。",
+    "closeHint": "关闭提示"
+  },
+  "modal": {
+    "close": "关闭"
   }
 }
