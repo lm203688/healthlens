@@ -176,7 +176,7 @@ class OpenWearablesConnector(BaseConnector):
             sleep_events_data = await self._get(
                 self.EVENTS_SLEEP.format(user_id=ow_user_id), params
             )
-            sleep_events = sleep_events_data.get("records", sleep_events.get("data", []))
+            sleep_events = sleep_events_data.get("records", sleep_events_data.get("data", []))
             results["sleep_events"] = sleep_events
             results["items_count"] += len(sleep_events)
         except Exception as e:
