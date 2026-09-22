@@ -12,9 +12,11 @@
   "dependencies": {
     "@tanstack/react-query": "^5.51.21",
     "@tanstack/react-query-devtools": "^5.51.21",
+    "i18next": "^26.4.2",
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-i18next": "^17.0.15",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
