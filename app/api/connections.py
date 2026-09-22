@@ -1,6 +1,6 @@
 """数据连接路由 - 数据源管理、同步"""
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,7 +28,7 @@ def decrypt_token(encrypted: str) -> str:
     return _get_cipher().decrypt(encrypted.encode()).decode()
 
 
-ALLOWED_SOURCE_TYPES = {"huawei_health", "apple_health", "withings", "xiaomi_health", "hospital_lis"}
+ALLOWED_SOURCE_TYPES = {"huawei_health", "apple_health", "withings", "xiaomi_health", "hospital_lis", "open_wearables"}
 
 router = APIRouter(tags=["connections"])
 
@@ -205,7 +205,7 @@ async def sync_connection(
             user_id=str(current_user.id),
             since=connection.last_sync_at,
         )
-        connection.last_sync_at = datetime.now(timezone.utc)
+        connection.last_sync_at = datetime.utcnow()
         connection.sync_status = "completed"
         await db.commit()
 
@@ -220,7 +220,7 @@ async def sync_connection(
         }
     except NotImplementedError:
         connection.sync_status = "pending"
-        connection.last_sync_at = datetime.now(timezone.utc)
+        connection.last_sync_at = datetime.utcnow()
         await db.commit()
         return {
             "success": True,
