@@ -46,12 +46,29 @@ class ProjectInput(BaseModel):
 
     wellness 框架：仅接收基线健康信号分与生活方式杠杆，输出虚拟演化轨迹，
     绝不含诊断/治疗/药物/个体结果预测。
+
+    基线推导优先级（高→低）：
+      1. baseline_scores（直接提供 8 轴分）
+      2. checkin_energy/digestion/sleep（SIIV 自测 1-5 分 → 映射 0-100）
+      3. weak_axes（仅弱项轴压到 45，其余中性 68）
     """
     baseline_scores: dict[str, float] = Field(
         default_factory=dict,
-        description="可选，各轴(字母 A-H) 0-100 基线分；缺省由 weak_axes 推导",
+        description="可选，各轴(字母 A-H) 0-100 基线分；缺省由 checkin 或 weak_axes 推导",
     )
     weak_axes: list[str] = Field(default_factory=list, description="偏弱轴字母列表，用于推导基线")
+    checkin_energy: int | None = Field(
+        None, ge=1, le=5,
+        description="可选，精力/活力自评 (1-5)，映射 A/B 轴",
+    )
+    checkin_digestion: int | None = Field(
+        None, ge=1, le=5,
+        description="可选，消化/肠胃自评 (1-5)，映射 F 轴",
+    )
+    checkin_sleep: int | None = Field(
+        None, ge=1, le=5,
+        description="可选，睡眠/休息自评 (1-5)，映射 D/G 轴",
+    )
     levers: list[str] = Field(default_factory=list, description="启用的生活方式杠杆 key")
     weeks: int = Field(12, ge=1, le=52, description="推演周数")
     lever_scale: float = Field(1.0, ge=0.0, le=1.0, description="执行一致性系数 0-1")
@@ -231,13 +248,27 @@ async def project_wellness(
 
     纯虚拟推演（not_clinical=True），不含诊断/治疗/个体结果预测。结果含逐周轨迹、
     养生综合指数、限速轴、优先杠杆与已激活机制链，供用户做养生方案参考。
-    """
-    from app.lib.wellness_simulator import derive_baseline, simulate
 
-    baseline = derive_baseline(
-        weak_axes=body.weak_axes,
-        provided=body.baseline_scores or None,
-    )
+    基线推导优先级：baseline_scores > checkin 自测数据 > weak_axes。
+    """
+    from app.lib.wellness_simulator import derive_baseline, derive_baseline_from_checkin, simulate
+
+    # 优先级：直接提供 > checkin 自测 > weak_axes 推导
+    if body.baseline_scores:
+        baseline = derive_baseline(
+            weak_axes=body.weak_axes,
+            provided=body.baseline_scores,
+        )
+    elif any([body.checkin_energy, body.checkin_digestion, body.checkin_sleep]):
+        baseline = derive_baseline_from_checkin(
+            energy=body.checkin_energy,
+            digestion=body.checkin_digestion,
+            sleep=body.checkin_sleep,
+            weak_axes=body.weak_axes,
+        )
+    else:
+        baseline = derive_baseline(weak_axes=body.weak_axes)
+
     result = simulate(
         baseline=baseline,
         levers=body.levers,
@@ -251,6 +282,11 @@ async def project_wellness(
         "meta": {
             "disclaimer": result.get("disclaimer"),
             "not_clinical": True,
+            "baseline_source": (
+                "direct" if body.baseline_scores
+                else "checkin" if any([body.checkin_energy, body.checkin_digestion, body.checkin_sleep])
+                else "weak_axes"
+            ),
         },
     }
 
