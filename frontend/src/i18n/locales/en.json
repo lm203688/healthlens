@@ -64,6 +64,9 @@
     "describeSituation": "Or describe your situation",
     "describeHint": "Click common issues below, or type freely",
     "describePlaceholder": "e.g., Recently feeling tired, poor sleep, average appetite…",
+    "answerPrefix": "Answer:",
+    "freeDescription": "Free description:",
+    "recentTwoWeeks": "past 2 weeks",
     "sectionEnergy": "Energy & Sleep",
     "sectionMood": "Mood & Stress",
     "sectionDigest": "Digestion & Metabolism",
@@ -247,7 +250,11 @@
     "leverDiet": "Anti-inflammatory Diet",
     "leverStress": "Stress Management",
     "leverProtein": "Balanced Protein Intake",
-    "leverThermal": "Thermal Stress (e.g., Cold Bath)"
+    "leverThermal": "Thermal Stress (e.g., Cold Bath)",
+    "analysisFailed": "Analysis failed",
+    "noCheckinData": "No self-check data available. Please complete a health check-in on the Daily Check-in page first.",
+    "checkinFetchError": "Failed to fetch self-check data. Please check your network.",
+    "projectionFailed": "Projection failed"
   },
   "selfCheck": {
     "title": "Weekly Health Self-Check",
@@ -531,5 +538,36 @@
     "syncFailed": "Sync failed",
     "lastSync": "Last sync: {{time}}",
     "notSynced": "Not synced"
+  },
+  "totp": {
+    "title": "Authenticator App Setup",
+    "subtitle": "After binding, log in with time-based codes from Google Authenticator / FreeOTP — no SMS required.",
+    "bindFailed": "Binding failed",
+    "codeRequired": "Please enter the 6-digit code from your authenticator app",
+    "verifyFailed": "Verification failed",
+    "enabled": "Authenticator enabled. You can now log in with time-based codes.",
+    "opFailed": "Operation failed",
+    "disabled": "Authenticator disabled",
+    "preferredSet": "Set as preferred login method",
+    "btnEnroll": "＋ Add Authenticator App",
+    "processing": "Processing…",
+    "scanHint": "Scan the QR code with Google Authenticator / FreeOTP, or enter the secret manually:",
+    "secretLabel": "Secret (manual entry):",
+    "accountLabel": "Account:",
+    "otpauthLink": "otpauth link (backup)",
+    "codePlaceholder": "Enter the 6-digit code",
+    "btnConfirm": "Confirm & Enable",
+    "verifying": "Verifying…",
+    "cancel": "Cancel",
+    "enabledStatus": "Authenticator app enabled",
+    "btnDisable": "Disable",
+    "btnSetPreferred": "Set as Preferred Login Method"
+  },
+  "disclaimer": {
+    "defaultText": "The information on this page is for general health and wellness reference only and does not constitute medical advice, diagnosis, or treatment. For specific health concerns, please consult a qualified healthcare professional.",
+    "closeHint": "Dismiss notification"
+  },
+  "modal": {
+    "close": "Close"
   }
 }
