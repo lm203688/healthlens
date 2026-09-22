@@ -76,6 +76,9 @@ export const api = {
   axesAssess: (body) => request('/axes/assess', { method: 'POST', body: JSON.stringify(body) }),
   axesProject: (body) => request('/axes/project', { method: 'POST', body: JSON.stringify(body) }),
 
+  /* ===== 数据连接（可穿戴设备）===== */
+  connections: () => request('/connections/'),
+
   /* ===== wellness 自测闭环（SIIV V 端：能量/消化/睡眠 1-5）===== */
   checkinPost:    (body) => request('/checkin',        { method: 'POST', body: JSON.stringify(body) }),
   checkinHistory: ()     => request('/checkin/history'),
