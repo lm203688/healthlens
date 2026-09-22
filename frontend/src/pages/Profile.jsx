@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import TotpManager from '../components/TotpManager';
 
 export default function Profile() {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -49,7 +51,7 @@ export default function Profile() {
           notes: p.notes || '',
         });
       }
-    }).catch(() => setError('获取用户信息失败')).finally(() => setLoading(false));
+    }).catch(() => setError(t('profile.fetchFailed'))).finally(() => setLoading(false));
   }, [token]);
 
   async function saveProfile() {
@@ -80,8 +82,8 @@ export default function Profile() {
         body: JSON.stringify(body),
       });
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || data.message || '保存失败');
-      setSuccess('健康档案已保存');
+      if (!resp.ok) throw new Error(data.detail || data.message || t('profile.saveFailed'));
+      setSuccess(t('profile.saved'));
       setProfile(data.data || data);
     } catch (err) {
       setError(err.message);
@@ -90,11 +92,11 @@ export default function Profile() {
     }
   }
 
-  if (loading) return <div className="text-center py-16 text-slate-400">加载中…</div>;
+  if (loading) return <div className="text-center py-16 text-slate-400">{t('common.loading')}</div>;
   if (!user) {
     return (
       <div className="text-center py-16">
-        <p className="text-slate-600">请先<a href="/login" className="text-emerald-600 font-medium">登录</a>后查看个人档案</p>
+        <p className="text-slate-600">{t('profile.loginFirst')}<a href="/login" className="text-emerald-600 font-medium">{t('nav.login')}</a></p>
       </div>
     );
   }
@@ -105,8 +107,8 @@ export default function Profile() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">👤 个人健康档案</h2>
-        <p className="text-slate-500 text-sm mt-1">完善您的基本信息，让 AI 评估更精准</p>
+        <h2 className="text-2xl font-bold">👤 {t('profile.title')}</h2>
+        <p className="text-slate-500 text-sm mt-1">{t('profile.subtitle')}</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm p-6">
@@ -124,7 +126,7 @@ export default function Profile() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
-            placeholder="姓名"
+            placeholder={t('profile.namePlaceholder')}
             value={form.name}
             onChange={(e) => setForm(p => ({ ...p, name: e.target.value }))}
             className="px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
@@ -135,14 +137,14 @@ export default function Profile() {
               onChange={(e) => setForm(p => ({ ...p, gender: e.target.value }))}
               className="flex-1 px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
             >
-              <option value="">性别</option>
-              <option value="male">男</option>
-              <option value="female">女</option>
-              <option value="other">其他</option>
+              <option value="">{t('profile.gender')}</option>
+              <option value="male">{t('profile.male')}</option>
+              <option value="female">{t('profile.female')}</option>
+              <option value="other">{t('profile.other')}</option>
             </select>
             <input
               type="number"
-              placeholder="年龄"
+              placeholder={t('profile.agePlaceholder')}
               value={form.age}
               onChange={(e) => setForm(p => ({ ...p, age: e.target.value }))}
               className="w-24 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
@@ -150,14 +152,14 @@ export default function Profile() {
           </div>
           <input
             type="number"
-            placeholder="身高 (cm)"
+            placeholder={t('profile.heightPlaceholder')}
             value={form.height}
             onChange={(e) => setForm(p => ({ ...p, height: e.target.value }))}
             className="px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
           />
           <input
             type="number"
-            placeholder="体重 (kg)"
+            placeholder={t('profile.weightPlaceholder')}
             value={form.weight}
             onChange={(e) => setForm(p => ({ ...p, weight: e.target.value }))}
             className="px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
@@ -172,7 +174,7 @@ export default function Profile() {
           )}
           <input
             type="text"
-            placeholder="职业"
+            placeholder={t('profile.occupationPlaceholder')}
             value={form.occupation}
             onChange={(e) => setForm(p => ({ ...p, occupation: e.target.value }))}
             className="px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none md:col-span-2"
@@ -181,43 +183,43 @@ export default function Profile() {
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="font-semibold text-slate-800 mb-4">健康状况</h3>
+        <h3 className="font-semibold text-slate-800 mb-4">{t('profile.healthConditions')}</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">过敏史</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.allergies')}</label>
             <input
               type="text"
-              placeholder="如：青霉素、花生等（无则留空）"
+              placeholder={t('profile.allergiesPlaceholder')}
               value={form.allergies}
               onChange={(e) => setForm(p => ({ ...p, allergies: e.target.value }))}
               className="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">慢性疾病</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.chronicConditions')}</label>
             <input
               type="text"
-              placeholder="如：高血压、糖尿病等（无则留空）"
+              placeholder={t('profile.chronicPlaceholder')}
               value={form.chronic_conditions}
               onChange={(e) => setForm(p => ({ ...p, chronic_conditions: e.target.value }))}
               className="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">正在服用的药物</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.medications')}</label>
             <textarea
               rows={2}
-              placeholder="如：阿司匹林、降压药等（无则留空）"
+              placeholder={t('profile.medicationsPlaceholder')}
               value={form.medications}
               onChange={(e) => setForm(p => ({ ...p, medications: e.target.value }))}
               className="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">其他备注</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.notes')}</label>
             <textarea
               rows={2}
-              placeholder="其他您想告诉我们的健康信息…"
+              placeholder={t('profile.notesPlaceholder')}
               value={form.notes}
               onChange={(e) => setForm(p => ({ ...p, notes: e.target.value }))}
               className="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-emerald-400 outline-none"
@@ -232,7 +234,7 @@ export default function Profile() {
           disabled={saving}
           className="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-semibold hover:bg-emerald-700 disabled:opacity-50 transition"
         >
-          {saving ? '保存中…' : '💾 保存档案'}
+          {saving ? t('profile.saving') : '💾 ' + t('profile.saveProfile')}
         </button>
       </div>
 
