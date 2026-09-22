@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
-import MedicalDisclaimer from '../components/MedicalDisclaimer';
+import MedicalDisclaimer from '../components/HealthDisclaimer';
 
 export default function Reports() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -18,13 +20,13 @@ export default function Reports() {
       const resp = await api.reports();
       const d = await resp.json();
       setData(d);
-      // 也加载观察指标汇总
+      // Also load observation summary
       try {
         const obsResp = await api.observationSummary();
         const obsData = await obsResp.json();
         setData((prev) => ({ ...prev, observations: obsData }));
       } catch {
-        // 非致命错误
+        // non-fatal
       }
     } catch (e) {
       setError(e.message);
@@ -38,28 +40,28 @@ export default function Reports() {
       <MedicalDisclaimer />
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">健康报告</h2>
-          <p className="text-slate-500 text-sm mt-1">查看您的健康概览与指标趋势</p>
+          <h2 className="text-2xl font-bold">{t('reports.title')}</h2>
+          <p className="text-slate-500 text-sm mt-1">{t('reports.subtitle')}</p>
         </div>
         <button
           onClick={fetchReports}
           disabled={loading}
           className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
         >
-          {loading ? '加载…' : '🔄 刷新'}
+          {loading ? t('reports.loading') : `🔄 ${t('reports.refreshBtn')}`}
         </button>
       </div>
 
       {error && <div className="bg-red-50 text-red-700 p-4 rounded-lg">{error}</div>}
-      {loading && <div className="text-center py-8 text-slate-500">加载报告中…</div>}
+      {loading && <div className="text-center py-8 text-slate-500">{t('reports.loadingReport')}</div>}
 
       {data && !error && !loading && <ReportContent data={data} />}
 
       {!data && !error && !loading && (
         <div className="text-center py-12 text-slate-400">
           <div className="text-4xl mb-3">📊</div>
-          <p>暂无健康报告数据</p>
-          <a href="/assess" className="text-emerald-600 underline mt-2 inline-block">前往健康评估 →</a>
+          <p>{t('reports.noReportData')}</p>
+          <a href="/assess" className="text-emerald-600 underline mt-2 inline-block">{t('reports.goToAssess')}</a>
         </div>
       )}
     </div>
@@ -67,20 +69,18 @@ export default function Reports() {
 }
 
 function ReportContent({ data }) {
+  const { t } = useTranslation();
   const overview = data.overview || data.data || data;
   const obs = data.observations;
 
   return (
     <div className="space-y-6">
-      {/* 健康总览卡片 */}
       <OverviewCard data={overview} />
 
-      {/* 观察指标 */}
       {obs && <ObservationSummary data={obs} />}
 
-      {/* 原始数据（折叠） */}
       <details className="bg-white rounded-xl shadow-sm p-5">
-        <summary className="cursor-pointer font-medium text-slate-700">📋 原始数据</summary>
+        <summary className="cursor-pointer font-medium text-slate-700">📋 {t('reports.rawData')}</summary>
         <pre className="mt-3 text-xs text-slate-600 bg-slate-50 rounded-lg p-3 overflow-auto max-h-72">
           {JSON.stringify(data, null, 2)}
         </pre>
@@ -90,6 +90,7 @@ function ReportContent({ data }) {
 }
 
 function OverviewCard({ data }) {
+  const { t } = useTranslation();
   const axes = data.weak_axes || data.axes || data.axis_scores || {};
   const score = data.fusion_score || data.score || data.total_score;
   const risk = data.risk_level || data.risk || '—';
@@ -97,19 +98,18 @@ function OverviewCard({ data }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
-      <h3 className="font-semibold text-slate-800 mb-4">📈 健康总览</h3>
+      <h3 className="font-semibold text-slate-800 mb-4">📈 {t('reports.overviewTitle')}</h3>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <MiniStat label="综合评分" value={score} color="emerald" />
-        <MiniStat label="慢病风险" value={risk} color="rose" />
-        <MiniStat label="中医体质" value={tcm} color="blue" />
-        <MiniStat label="关注维度" value={Array.isArray(axes) ? axes.join(', ') : Object.keys(axes).join(', ')} color="amber" />
+        <MiniStat label={t('reports.scoreLabel')} value={score} color="emerald" />
+        <MiniStat label={t('reports.riskLabel')} value={risk} color="rose" />
+        <MiniStat label={t('reports.tcmLabel')} value={tcm} color="blue" />
+        <MiniStat label={t('reports.focusLabel')} value={Array.isArray(axes) ? axes.join(', ') : Object.keys(axes).join(', ')} color="amber" />
       </div>
 
-      {/* 8 轴雷达条 */}
       {typeof axes === 'object' && !Array.isArray(axes) && Object.keys(axes).length > 0 && (
         <div className="mt-5">
-          <h4 className="text-sm font-medium text-slate-600 mb-2">八轴评分</h4>
+          <h4 className="text-sm font-medium text-slate-600 mb-2">{t('reports.axesTitle')}</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {Object.entries(axes).map(([key, val]) => (
               <div key={key} className="flex items-center gap-2">
@@ -146,21 +146,22 @@ function MiniStat({ label, value, color }) {
 }
 
 function ObservationSummary({ data }) {
+  const { t } = useTranslation();
   const total = data.total_items || data.total || 0;
   const abnormal = data.abnormal_count || data.abnormal || 0;
   const categories = data.categories || [];
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6">
-      <h3 className="font-semibold text-slate-800 mb-4">📋 健康指标</h3>
+      <h3 className="font-semibold text-slate-800 mb-4">📋 {t('reports.observationTitle')}</h3>
 
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="bg-slate-50 rounded-xl p-3">
-          <p className="text-xs text-slate-500">已记录指标</p>
+          <p className="text-xs text-slate-500">{t('reports.recordedCount')}</p>
           <p className="text-xl font-bold">{total}</p>
         </div>
         <div className="bg-amber-50 rounded-xl p-3">
-          <p className="text-xs text-slate-500">异常指标</p>
+          <p className="text-xs text-slate-500">{t('reports.abnormalCount')}</p>
           <p className="text-xl font-bold text-amber-700">{abnormal}</p>
         </div>
       </div>
@@ -175,7 +176,7 @@ function ObservationSummary({ data }) {
               </div>
               <div className="text-right">
                 <span className="text-sm font-bold">{cat.latest} {cat.unit || ''}</span>
-                {cat.is_abnormal && <span className="text-xs text-red-500 ml-2">⚠️ 异常</span>}
+                {cat.is_abnormal && <span className="text-xs text-red-500 ml-2">⚠️ {t('reports.abnormal')}</span>}
               </div>
             </div>
           ))}
@@ -183,7 +184,7 @@ function ObservationSummary({ data }) {
       )}
 
       {categories.length === 0 && (
-        <p className="text-sm text-slate-400 text-center py-4">暂无指标数据，前往「每日打卡」记录</p>
+        <p className="text-sm text-slate-400 text-center py-4">{t('reports.noObservationData')}</p>
       )}
     </div>
   );
