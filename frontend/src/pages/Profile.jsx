@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import TotpManager from '../components/TotpManager';
+import WearableDevices from '../components/WearableDevices';
 
 export default function Profile() {
   const { t } = useTranslation();
@@ -239,6 +240,8 @@ export default function Profile() {
       </div>
 
       <TotpManager />
+
+      <WearableDevices />
 
       {error && <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm">{error}</div>}
       {success && <div className="bg-emerald-50 text-emerald-700 p-4 rounded-lg text-sm">{success}</div>}
