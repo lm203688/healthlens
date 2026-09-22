@@ -87,11 +87,11 @@ export default function Dashboard() {
     for (const s of SECTIONS) {
       for (let i = 0; i < s.questionKeys.length; i++) {
         const a = answers[`${s.key}-${i}`];
-        if (a) lines.push(`【${t(s.titleKey)}】${t(s.questionKeys[i])} 答:${t(a)}`);
+        if (a) lines.push(`【${t(s.titleKey)}】${t(s.questionKeys[i])} ${t('dashboard.answerPrefix')}${t(a)}`);
       }
     }
-    if (answers._free) lines.push(`自由描述:${answers._free}`);
-    return `${t('dashboard.quizTitle')}(近2周):\n${lines.join('\n')}`;
+    if (answers._free) lines.push(`${t('dashboard.freeDescription')}${answers._free}`);
+    return `${t('dashboard.quizTitle')}(${t('dashboard.recentTwoWeeks')}):\n${lines.join('\n')}`;
   }
 
   function startAnalysis() {
