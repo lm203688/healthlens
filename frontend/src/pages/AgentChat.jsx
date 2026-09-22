@@ -1,15 +1,17 @@
-/** AI 对话 — 四角色 Agent 团队 */
+/** AI Chat — Four-role Agent team */
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../api/client";
 
 const ROLES = [
-  { key: "Planner", color: "#6366f1", label: "规划师" },
-  { key: "Executor", color: "#10b981", label: "执行者" },
-  { key: "Critic", color: "#f59e0b", label: "批评者" },
-  { key: "Referee", color: "#ef4444", label: "仲裁者" },
+  { key: "Planner", color: "#6366f1", labelKey: "agent.rolePlanner" },
+  { key: "Executor", color: "#10b981", labelKey: "agent.roleExecutor" },
+  { key: "Critic", color: "#f59e0b", labelKey: "agent.roleCritic" },
+  { key: "Referee", color: "#ef4444", labelKey: "agent.roleReferee" },
 ];
 
 export default function AgentChat() {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ export default function AgentChat() {
           metadata: msg.metadata || {},
         }))]);
       } else if (data.plan || data.result || data.summary) {
-        // team_run 返回的格式可能是 { plan, result, summary }
+        // team_run may return { plan, result, summary }
         const parts = [];
         if (data.plan) parts.push({ role: "Planner", content: JSON.stringify(data.plan, null, 2) });
         if (data.result) parts.push({ role: "Executor", content: typeof data.result === 'string' ? data.result : JSON.stringify(data.result, null, 2) });
@@ -42,7 +44,7 @@ export default function AgentChat() {
         setMessages((m) => [...m, { role: "assistant", content: JSON.stringify(data, null, 2) }]);
       }
     } catch {
-      setMessages((m) => [...m, { role: "assistant", content: "Agent 服务暂不可用，请刷新重试。" }]);
+      setMessages((m) => [...m, { role: "assistant", content: t("agent.agentError") }]);
     }
     setLoading(false);
   }
@@ -54,15 +56,15 @@ export default function AgentChat() {
 
   return (
     <div className="flex flex-col h-full" style={{ height: "calc(100vh - 140px)" }}>
-      <h2>🤖 AI 健康顾问</h2>
+      <h2>🤖 {t("agent.title")}</h2>
       <p style={{ color: "#888", marginBottom: "12px" }}>
-        四角色 Agent 团队协作（Planner → Executor → Critic → Referee）
+        {t("agent.subtitle")}
       </p>
 
       <div className="flex-1 overflow-y-auto border rounded-lg p-4 mb-3" style={{ maxHeight: "500px" }}>
         {messages.length === 0 && (
           <p style={{ color: "#aaa", textAlign: "center", padding: "40px 0" }}>
-            输入您的症状或健康问题，AI 团队将为您分析
+            {t("agent.emptyHint")}
           </p>
         )}
         {messages.map((m, i) => {
@@ -80,7 +82,7 @@ export default function AgentChat() {
                 }}
               >
                 <div style={{ fontSize: "11px", color, fontWeight: "bold", marginBottom: "4px" }}>
-                  {isUser ? "您" : (m.role || "Agent")}
+                  {isUser ? t("agent.you") : (m.role || "Agent")}
                 </div>
                 <div style={{ fontSize: "13px", lineHeight: "1.5" }}>{m.content}</div>
               </div>
@@ -90,7 +92,7 @@ export default function AgentChat() {
         {loading && (
           <div className="text-left mb-3">
             <div className="inline-block px-3 py-2 rounded-lg bg-gray-50 border border-gray-200" style={{ color: "#6b7280", fontSize: "13px" }}>
-              ⏳ Agent 团队思考中...
+              {t("agent.thinking")}
             </div>
           </div>
         )}
@@ -102,17 +104,17 @@ export default function AgentChat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="描述您的症状，例如：最近容易疲劳、怕冷..."
+          placeholder={t("agent.placeholder")}
         />
         <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50" onClick={send} disabled={loading}>
-          发送
+          {t("agent.sendBtn")}
         </button>
       </div>
 
       <div className="mt-3 flex gap-2 flex-wrap">
         {ROLES.map((r) => (
           <span key={r.key} className="px-2 py-1 rounded text-xs" style={{ background: r.color + "22", color: r.color, border: `1px solid ${r.color}` }}>
-            {r.key}: {r.label}
+            {r.key}: {t(r.labelKey)}
           </span>
         ))}
       </div>
