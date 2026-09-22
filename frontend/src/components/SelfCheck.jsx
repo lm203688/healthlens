@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 
-/** 主观健康感受自评（SIIV 自测闭环 V 端）
- * 维度：精力 / 消化 / 睡眠，各 1-5 分；可选备注与日期。
- * 长期记录用于观察自身变化趋势（数据飞轮）。非体检、非诊断。 */
+/** Subjective health self-check (SIIV V-end)
+ * Dimensions: energy / digestion / sleep, each 1-5; optional note and date.
+ * Long-term tracking for observing personal change trends (data flywheel). Not a medical exam or diagnosis. */
 const DIMENSIONS = [
-  { key: 'energy_score',   label: '精力 / 活力',  emoji: '⚡' },
-  { key: 'digestion_score', label: '消化 / 肠胃',  emoji: '🍃' },
-  { key: 'sleep_score',    label: '睡眠 / 休息',  emoji: '🌙' },
+  { key: 'energy_score',   labelKey: 'selfCheck.dimEnergy',   emoji: '⚡' },
+  { key: 'digestion_score', labelKey: 'selfCheck.dimDigestion', emoji: '🍃' },
+  { key: 'sleep_score',    labelKey: 'selfCheck.dimSleep',    emoji: '🌙' },
 ];
 
-function ScorePicker({ value, onChange }) {
+function ScorePicker({ value, onChange, t }) {
   return (
     <div className="flex gap-1.5">
       {[1, 2, 3, 4, 5].map((n) => (
@@ -23,7 +24,7 @@ function ScorePicker({ value, onChange }) {
               ? 'bg-emerald-600 text-white'
               : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
           }`}
-          aria-label={`${n} 分`}
+          aria-label={t('selfCheck.scoreLabel', { n })}
         >
           {n}
         </button>
@@ -33,6 +34,7 @@ function ScorePicker({ value, onChange }) {
 }
 
 export default function SelfCheck() {
+  const { t, i18n } = useTranslation();
   const [scores, setScores] = useState({ energy_score: 3, digestion_score: 3, sleep_score: 3 });
   const [note, setNote] = useState('');
   const [date, setDate] = useState('');
@@ -77,27 +79,28 @@ export default function SelfCheck() {
     try {
       const resp = await api.checkinPost(payload);
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data?.detail?.message || data?.message || data?.detail || '提交失败');
-      setSuccess(data.message || '自测已记录');
+      if (!resp.ok) throw new Error(data?.detail?.message || data?.message || data?.detail || t('selfCheck.submitFailed'));
+      setSuccess(data.message || t('selfCheck.recorded'));
       setNote('');
       setDate('');
       loadSummary();
       loadHistory();
     } catch (err) {
-      setError(err.message || '提交失败');
+      setError(err.message || t('selfCheck.submitFailed'));
     } finally {
       setLoading(false);
     }
   }
 
   const trend = summary?.trend;
+  const dateLocale = i18n.language === 'zh' ? 'zh-CN' : 'en-US';
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 space-y-5">
       <div>
-        <h3 className="font-semibold text-slate-800">每周健康自测</h3>
+        <h3 className="font-semibold text-slate-800">{t('selfCheck.title')}</h3>
         <p className="text-xs text-slate-500 mt-1">
-          凭主观感受给精力 / 消化 / 睡眠打分（1–5）。坚持记录可观察自身变化趋势，非体检、非诊断。
+          {t('selfCheck.subtitle')}
         </p>
       </div>
 
@@ -105,29 +108,30 @@ export default function SelfCheck() {
         {DIMENSIONS.map((d) => (
           <div key={d.key} className="flex items-center justify-between gap-4">
             <span className="text-sm font-medium text-slate-700">
-              {d.emoji} {d.label}
+              {d.emoji} {t(d.labelKey)}
             </span>
             <ScorePicker
               value={scores[d.key]}
               onChange={(n) => setScores((p) => ({ ...p, [d.key]: n }))}
+              t={t}
             />
           </div>
         ))}
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">备注（可选）</label>
+          <label className="block text-sm font-medium text-slate-700 mb-1">{t('selfCheck.noteLabel')}</label>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={500}
             rows={2}
-            placeholder="今天的状态、饮食、情绪等"
+            placeholder={t('selfCheck.notePlaceholder')}
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">日期（可选，默认今天）</label>
+          <label className="block text-sm font-medium text-slate-700 mb-1">{t('selfCheck.dateLabel')}</label>
           <input
             type="date"
             value={date}
@@ -142,27 +146,27 @@ export default function SelfCheck() {
             disabled={loading}
             className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 transition"
           >
-            {loading ? '提交中…' : '记录本次自测'}
+            {loading ? t('selfCheck.submitting') : t('selfCheck.submitBtn')}
           </button>
           <button
             type="button"
             onClick={() => setShowHistory(!showHistory)}
             className="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-lg font-medium hover:bg-slate-200 transition text-sm"
           >
-            📋 历史记录
+            📋 {t('selfCheck.historyBtn')}
           </button>
         </div>
 
         {error && <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>}
-        {success && <div className="bg-emerald-50 text-emerald-700 text-sm p-3 rounded-lg">{success}</div>}
+        {success && <div className="mt-3 bg-emerald-50 text-emerald-700 text-sm p-3 rounded-lg">{success}</div>}
       </form>
 
-      {/* 趋势概览 */}
+      {/* Trend overview */}
       {summary && summary.count > 0 && (
         <div className="border-t border-slate-100 pt-4 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-slate-700">
-              近 {summary.count} 次均值
+              {t('selfCheck.trendTitle', { count: summary.count })}
             </span>
             {summary.averages?.overall != null && (
               <span className="text-lg font-bold text-emerald-700">
@@ -174,7 +178,7 @@ export default function SelfCheck() {
           <div className="grid grid-cols-3 gap-2 text-center">
             {DIMENSIONS.map((d) => (
               <div key={d.key} className="bg-slate-50 rounded-lg py-2">
-                <p className="text-[11px] text-slate-500">{d.label}</p>
+                <p className="text-[11px] text-slate-500">{t(d.labelKey)}</p>
                 <p className="text-sm font-semibold text-slate-800">
                   {summary.averages?.[d.key] ?? '—'}
                   {trend && (
@@ -188,23 +192,23 @@ export default function SelfCheck() {
             ))}
           </div>
           {!trend && summary.count < 4 && (
-            <p className="text-xs text-slate-400">累计 4 次后可显示变化趋势（目前 {summary.count} 次）。</p>
+            <p className="text-xs text-slate-400">{t('selfCheck.trendHint', { count: summary.count })}</p>
           )}
         </div>
       )}
 
-      {/* 历史 */}
+      {/* History */}
       {showHistory && (
         <div className="border-t border-slate-100 pt-4">
-          <h4 className="text-sm font-medium text-slate-700 mb-3">最近自测</h4>
+          <h4 className="text-sm font-medium text-slate-700 mb-3">{t('selfCheck.historyTitle')}</h4>
           {history.length === 0 ? (
-            <p className="text-sm text-slate-400 text-center py-6">暂无记录</p>
+            <p className="text-sm text-slate-400 text-center py-6">{t('selfCheck.noRecords')}</p>
           ) : (
             <div className="space-y-2 max-h-72 overflow-y-auto">
               {history.map((h) => (
                 <div key={h.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg text-sm">
                   <span className="text-xs text-slate-500">
-                    {h.checkin_date ? new Date(h.checkin_date).toLocaleDateString('zh-CN') : ''}
+                    {h.checkin_date ? new Date(h.checkin_date).toLocaleDateString(dateLocale) : ''}
                   </span>
                   <div className="flex gap-3 text-slate-700">
                     <span>⚡{h.energy_score}</span>
