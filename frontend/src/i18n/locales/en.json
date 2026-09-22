@@ -18,7 +18,9 @@
     "submit": "Submit",
     "retry": "Retry",
     "noData": "No data",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "connecting": "Connecting…",
+    "syncing": "Syncing…"
   },
   "login": {
     "title": "Sign In",
@@ -509,5 +511,25 @@
     "serverError": "Server error",
     "unauthorized": "Please sign in first",
     "forbidden": "Access denied"
+  },
+  "wearable": {
+    "title": "Wearable Devices",
+    "owOnline": "Connected",
+    "owMock": "Mock Mode",
+    "owOffline": "Offline",
+    "addDevice": "Add Device",
+    "selectProvider": "Select Device Brand",
+    "connect": "Connect",
+    "connecting": "Connecting…",
+    "connected": "Connected {{provider}}",
+    "connectFailed": "Connection failed",
+    "disconnect": "Disconnect",
+    "disconnectFailed": "Disconnection failed",
+    "syncAll": "Sync All",
+    "syncing": "Syncing…",
+    "syncDone": "Sync complete, updated {{count}} data sources",
+    "syncFailed": "Sync failed",
+    "lastSync": "Last sync: {{time}}",
+    "notSynced": "Not synced"
   }
 }
