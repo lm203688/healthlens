@@ -59,6 +59,14 @@ class Settings(BaseSettings):
     # 站点主域（canonical / og:url / 分享链接统一使用，避免 SEO 权重分散）
     PUBLIC_BASE_URL: str = "https://healthlens.cc"
 
+    # ------------------------------------------------------------------
+    # Open Wearables 可穿戴设备集成
+    # 统一接入 14 个设备提供商（Garmin/Oura/WHOOP/Polar/Suunto/Strava/...）
+    # 详见 docs/open-wearables-integration-plan.md
+    # ------------------------------------------------------------------
+    OPEN_WEARABLES_API_URL: str = "http://localhost:8001"
+    OPEN_WEARABLES_API_KEY: str = ""
+
     
     # Celery
     CELERY_BROKER_URL: str = "redis://redis:6379/1"
