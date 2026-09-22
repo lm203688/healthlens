@@ -18,7 +18,9 @@
     "submit": "提交",
     "retry": "重试",
     "noData": "暂无数据",
-    "comingSoon": "敬请期待"
+    "comingSoon": "敬请期待",
+    "connecting": "连接中…",
+    "syncing": "同步中…"
   },
   "login": {
     "title": "登录",
@@ -509,5 +511,25 @@
     "serverError": "服务器错误",
     "unauthorized": "请先登录",
     "forbidden": "无权限访问"
+  },
+  "wearable": {
+    "title": "可穿戴设备",
+    "owOnline": "已连接",
+    "owMock": "模拟模式",
+    "owOffline": "离线",
+    "addDevice": "添加设备",
+    "selectProvider": "选择设备品牌",
+    "connect": "连接",
+    "connecting": "连接中…",
+    "connected": "已连接 {{provider}}",
+    "connectFailed": "连接失败",
+    "disconnect": "断开",
+    "disconnectFailed": "断开失败",
+    "syncAll": "同步全部",
+    "syncing": "同步中…",
+    "syncDone": "同步完成，已更新 {{count}} 个数据源",
+    "syncFailed": "同步失败",
+    "lastSync": "上次同步: {{time}}",
+    "notSynced": "未同步"
   }
 }
