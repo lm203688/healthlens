@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /** 轻量受控弹窗。用法：<Modal open={open} title="..." onClose={...}>内容</Modal>
  * 点击遮罩或按 Esc 关闭；打开时锁定背景滚动。 */
 export default function Modal({ open, title, onClose, children, maxWidth = 'max-w-lg' }) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!open) return undefined;
     function onKey(e) {
@@ -35,7 +37,7 @@ export default function Modal({ open, title, onClose, children, maxWidth = 'max-
           <button
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600 text-xl leading-none"
-            aria-label="关闭"
+            aria-label={t('modal.close')}
           >
             ✕
           </button>
