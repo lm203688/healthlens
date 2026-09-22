@@ -88,6 +88,9 @@ export default function AxisProfile() {
   const [projection, setProjection] = useState(null);
   const [projLoading, setProjLoading] = useState(false);
   const [projError, setProjError] = useState(null);
+  const [checkinApplied, setCheckinApplied] = useState(false);
+  const [checkinLoading, setCheckinLoading] = useState(false);
+  const [checkinData, setCheckinData] = useState(null);
 
   useEffect(() => {
     api.axesMeta()
@@ -125,16 +128,49 @@ export default function AxisProfile() {
 
   const mapped = meta?.mapped_axes || ['A', 'F'];
 
+  async function applyCheckin() {
+    setCheckinLoading(true);
+    try {
+      const resp = await api.checkinSummary();
+      const data = await resp.json();
+      if (data?.success && data.data?.averages) {
+        const a = data.data.averages;
+        // 取最近一次自测数据（若有）
+        const histResp = await api.checkinHistory({ limit: 1 });
+        const histData = await histResp.json();
+        const latest = histData?.data?.items?.[0] || null;
+        setCheckinData({
+          energy: latest?.energy_score || Math.round((a.energy_score || 3) * 10) / 10,
+          digestion: latest?.digestion_score || Math.round((a.digestion_score || 3) * 10) / 10,
+          sleep: latest?.sleep_score || Math.round((a.sleep_score || 3) * 10) / 10,
+          source: latest ? 'latest' : 'average',
+        });
+        setCheckinApplied(true);
+      } else {
+        setProjError('暂无自测数据，请先在「每日打卡」页完成健康自测。');
+      }
+    } catch (e) {
+      setProjError('获取自测数据失败，请检查网络。');
+    } finally {
+      setCheckinLoading(false);
+    }
+  }
+
   async function runProject() {
     setProjLoading(true);
     setProjError(null);
     try {
-      // 基线弱轴取自八轴评估结论（若有），否则由后端默认推导
       const body = {
         weak_axes: assess?.weak_axes || [],
         levers: projLevers,
         weeks: Number(projWeeks) || 12,
       };
+      // 若已应用自测数据，优先用 checkin 基线
+      if (checkinApplied && checkinData) {
+        body.checkin_energy = Math.round(Math.min(5, Math.max(1, checkinData.energy)));
+        body.checkin_digestion = Math.round(Math.min(5, Math.max(1, checkinData.digestion)));
+        body.checkin_sleep = Math.round(Math.min(5, Math.max(1, checkinData.sleep)));
+      }
       const resp = await api.axesProject(body);
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.detail || '推演失败');
@@ -447,6 +483,31 @@ export default function AxisProfile() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* 个性化基线：使用自测数据 */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={applyCheckin}
+            disabled={checkinLoading || checkinApplied}
+            className="px-4 py-2 text-sm font-medium rounded-lg border border-sky-300 text-sky-700 bg-sky-50 hover:bg-sky-100 disabled:opacity-50 transition"
+          >
+            {checkinLoading ? '加载中…' : checkinApplied ? '✓ 已应用自测数据' : '📊 使用我的自测数据'}
+          </button>
+          {checkinData && (
+            <span className="text-xs text-slate-500">
+              基线来源：{checkinData.source === 'latest' ? '最近一次自测' : '近 N 次均值'}
+              （精力 {checkinData.energy} / 消化 {checkinData.digestion} / 睡眠 {checkinData.sleep}）
+            </span>
+          )}
+          {checkinApplied && (
+            <button
+              onClick={() => { setCheckinApplied(false); setCheckinData(null); }}
+              className="text-xs text-slate-400 hover:text-slate-600"
+            >
+              清除
+            </button>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
