@@ -5,6 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 
 const PHONE_RE = /^1[3-9]\d{9}$/;
@@ -26,20 +27,21 @@ function maskAccount(value, kind) {
 }
 
 /** 后端 4xx 的 detail 可能是字符串，也可能是 { message, retry_after } */
-async function readError(resp) {
+async function readError(resp, t) {
   let payload = {};
   try {
     payload = await resp.json();
   } catch {
-    return '网络异常，请稍后重试';
+    return t('common.error');
   }
   const detail = payload?.detail;
   if (typeof detail === 'string') return detail;
   if (detail?.message) return detail.message;
-  return payload?.message || '请求失败，请稍后重试';
+  return payload?.message || t('common.requestFailed');
 }
 
 export default function Login() {
+  const { t, i18n } = useTranslation();
   // 通道：'otp' = 验证码登录（手机/邮箱）；'totp' = 验证器 App（仅 6 位码）
   const [channel, setChannel] = useState('otp');
   const [account, setAccount] = useState('');
@@ -71,14 +73,14 @@ export default function Login() {
     setError(null);
     setNotice(null);
     if (!kind) {
-      setError(account.includes('@') ? '邮箱格式不正确' : '请输入正确的手机号或邮箱');
+      setError(account.includes('@') ? t('login.invalidEmail') : t('login.invalidAccount'));
       return;
     }
     setSending(true);
     try {
       const resp = await api.otpSend({ account: account.trim() });
       const data = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error(await readError(resp));
+      if (!resp.ok) throw new Error(await readError(resp, t));
 
       const payload = data.data || {};
       setSent(true);
@@ -90,18 +92,18 @@ export default function Login() {
         setCode(String(payload.dev_code));
         setNotice(
           payload.channel === 'email'
-            ? `验证码已发往 ${maskAccount(account.trim(), kind)}（当前为自测模式，已自动填入）`
-            : `验证码已发往 ${maskAccount(account.trim(), kind)}（当前为自测模式，已自动填入）`
+            ? `${t('login.otpSuccessEmail', { account: maskAccount(account.trim(), kind) })}${t('login.otpDevMode')}`
+            : `${t('login.otpSuccessPhone', { account: maskAccount(account.trim(), kind) })}${t('login.otpDevMode')}`
         );
       } else {
         setNotice(
           payload.channel === 'email'
-            ? `验证码已发送至邮箱 ${maskAccount(account.trim(), kind)}，5 分钟内有效`
-            : `验证码已短信发送至 ${maskAccount(account.trim(), kind)}，5 分钟内有效`
+            ? t('login.otpSuccessEmail', { account: maskAccount(account.trim(), kind) })
+            : t('login.otpSuccessPhone', { account: maskAccount(account.trim(), kind) })
         );
       }
     } catch (err) {
-      setError(err.message || '验证码发送失败');
+      setError(err.message || t('login.sendFailed'));
     } finally {
       setSending(false);
     }
@@ -111,23 +113,23 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     if (code.trim().length < 4) {
-      setError('请输入收到的验证码');
+      setError(t('login.codeTooShort'));
       return;
     }
     setVerifying(true);
     try {
       const resp = await api.otpVerify({ account: account.trim(), code: code.trim() });
       const data = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error(await readError(resp));
+      if (!resp.ok) throw new Error(await readError(resp, t));
 
       const { access_token, refresh_token, user } = data.data || {};
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('user_email', user?.email || account.trim());
-      setNotice('验证成功，正在进入…');
+      setNotice(t('login.verifySuccess'));
       setTimeout(() => navigate('/'), 600);
     } catch (err) {
-      setError(err.message || '验证失败');
+      setError(err.message || t('login.verifyFailed'));
     } finally {
       setVerifying(false);
     }
@@ -146,22 +148,22 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     if (code.trim().length !== 6) {
-      setError('请输入验证器 App 显示的 6 位动态码');
+      setError(t('login.totpCodeInvalid'));
       return;
     }
     setVerifying(true);
     try {
       const resp = await api.totpVerify({ code: code.trim() });
       const data = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error(await readError(resp));
+      if (!resp.ok) throw new Error(await readError(resp, t));
       const { access_token, refresh_token, user } = data.data || {};
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('user_email', user?.email || user?.phone || '');
-      setNotice('验证成功，正在进入…');
+      setNotice(t('login.verifySuccess'));
       setTimeout(() => navigate('/'), 600);
     } catch (err) {
-      setError(err.message || '验证失败');
+      setError(err.message || t('login.verifyFailed'));
     } finally {
       setVerifying(false);
     }
@@ -177,20 +179,20 @@ export default function Login() {
           <h1 className="text-3xl font-bold text-slate-800">
             Health<span className="text-emerald-600">Lens</span>
           </h1>
-          <p className="text-slate-500 mt-2 text-sm">融合引擎 · 中医古籍 · 智能体</p>
+          <p className="text-slate-500 mt-2 text-sm">{t('common.tagline')}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-          <h2 className="text-lg font-semibold text-slate-800 mb-1">登录</h2>
+          <h2 className="text-lg font-semibold text-slate-800 mb-1">{t('login.title')}</h2>
           <p className="text-sm text-slate-500 mb-4">
-            无需注册，验证后即自动创建账号
+            {t('login.subtitle')}
           </p>
 
           {/* 通道切换 */}
           <div className="flex p-1 bg-slate-100 rounded-xl mb-5">
             {[
-              { id: 'otp',  label: '验证码登录' },
-              { id: 'totp', label: '验证器 App' },
+              { id: 'otp',  label: t('login.channelOtp') },
+              { id: 'totp', label: t('login.channelTotp') },
             ].map((c) => (
               <button
                 key={c.id}
@@ -211,7 +213,7 @@ export default function Login() {
             <form onSubmit={sent ? handleVerify : (e) => { e.preventDefault(); handleSendCode(); }} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  手机号 / 邮箱
+                  {t('login.phoneOrEmail')}
                 </label>
                 <div className="relative">
                   <input
@@ -219,7 +221,7 @@ export default function Login() {
                     value={account}
                     onChange={(e) => { setAccount(e.target.value); setError(null); }}
                     onKeyDown={(e) => { if (e.key === 'Enter' && sent) handleVerify(e); }}
-                    placeholder="国内请输入手机号，其他地区请输入邮箱"
+                    placeholder={t('login.phoneOrEmailPlaceholder')}
                     className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent pr-20"
                     disabled={sent}
                     autoComplete="username"
@@ -231,20 +233,20 @@ export default function Login() {
                       onClick={resetAccount}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1"
                     >
-                      更换
+                      {t('login.changeAccount')}
                     </button>
                   )}
                 </div>
                 {account && !kind && (
                   <p className="mt-1 text-xs text-amber-600">
-                    请输入 11 位手机号或正确的邮箱地址
+                    {t('login.invalidPhoneEmail')}
                   </p>
                 )}
               </div>
 
               {sent && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">验证码</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">{t('login.otpCode')}</label>
                   <div className="flex gap-2">
                     <input
                       ref={codeRef}
@@ -253,7 +255,7 @@ export default function Login() {
                       maxLength={6}
                       value={code}
                       onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder="6 位数字"
+                      placeholder={t('login.otpCodePlaceholder')}
                       className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       autoComplete="one-time-code"
                       required
@@ -264,7 +266,7 @@ export default function Login() {
                       disabled={countdown > 0 || sending}
                       className="px-4 py-2.5 text-sm rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed whitespace-nowrap"
                     >
-                      {countdown > 0 ? `${countdown}s` : sending ? '发送中…' : '重新发送'}
+                      {countdown > 0 ? `${countdown}s` : sending ? t('common.sending') : t('login.resendCode')}
                     </button>
                   </div>
                 </div>
@@ -286,15 +288,15 @@ export default function Login() {
                 className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
               >
                 {sent
-                  ? verifying ? '验证中…' : '进入应用'
-                  : sending ? '发送中…' : '获取验证码'}
+                  ? verifying ? t('common.verifying') : t('login.enterApp')
+                  : sending ? t('common.sending') : t('login.sendCode')}
               </button>
             </form>
           ) : (
             <form onSubmit={handleTotpLogin} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  验证器动态码
+                  {t('login.totpLabel')}
                 </label>
                 <input
                   ref={codeRef}
@@ -303,13 +305,13 @@ export default function Login() {
                   maxLength={6}
                   value={code}
                   onChange={(e) => { setCode(e.target.value.replace(/\D/g, '')); setError(null); }}
-                  placeholder="验证器 App 显示的 6 位动态码"
+                  placeholder={t('login.totpPlaceholder')}
                   className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   autoComplete="one-time-code"
                   required
                 />
                 <p className="mt-1 text-xs text-slate-400">
-                  已绑定验证器 App 的用户，输入当前动态码即可登录。
+                  {t('login.totpHint')}
                 </p>
               </div>
 
@@ -325,18 +327,18 @@ export default function Login() {
                 disabled={verifying || code.trim().length !== 6}
                 className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
               >
-                {verifying ? '验证中…' : '进入应用'}
+                {verifying ? t('common.verifying') : t('login.enterApp')}
               </button>
             </form>
           )}
 
           <p className="text-center text-xs text-slate-400 mt-4">
-            首次验证将自动创建账号，无需设置密码
+            {t('login.firstLogin')}
           </p>
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-6">
-          使用前请阅读《用户协议》与《隐私政策》
+          {t('login.terms')}
         </p>
       </div>
     </div>
