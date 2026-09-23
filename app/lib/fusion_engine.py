@@ -264,10 +264,33 @@ def _contra_hit(case: dict, user_contra: set[str]) -> str | None:
 
 
 def _llm_enhance_prescription(text: str, context: str) -> str:
-    """用本地 LLM 对处方文本做个人化语义增强。失败返回原文。"""
+    """用本地 LLM 对处方文本做个人化语义增强。失败返回原文。
+
+    配置（均可用环境变量覆盖）：
+      - USE_LLM=1                       启用本增强，否则完全走规则引擎
+      - HEALTHLENS_LLM_URL               Ollama 根地址，默认 http://127.0.0.1:11434
+      - HEALTHLENS_LLM_MODEL             模型名
+
+    诚实标注：默认模型原为 `qwen3.8`，该模型已于 2026-09-04 从本机 Ollama
+    删除，故默认值改为当前实际存在的 `ornith-1.5:35b`。另需注意
+    `127.0.0.1` 是**应用所在进程**的视角 —— ECS 的 web 容器内并没有 Ollama，
+    所以生产环境 USE_LLM 保持关闭（未设置即关闭），此处只会静默回退规则引擎。
+    若要把 LLM 增强真正用于生产，需把 URL 指向可达的推理服务（如宿主机
+    Docker gateway IP 或独立推理网关）并显式设置 USE_LLM=1。
+    """
     try:
-        model = os.environ.get("HEALTHLENS_LLM_MODEL", "qwen3.8")
-        url = "http://127.0.0.1:11434/api/generate"
+        model = os.environ.get("HEALTHLENS_LLM_MODEL", "ornith-1.5:35b")
+        base = os.environ.get("HEALTHLENS_LLM_URL", "http://127.0.0.1:11434").rstrip("/")
+        url = f"{base}/api/generate"
+        # 出站脱敏：这段文本会离开本进程，送出去之前先摘掉 PII（手机号/身份证/
+        # 邮箱/银行卡/护照/社交账号等）。脱敏失败也不阻断（sanitize 自身不抛异常）。
+        try:
+            from app.utils.pii_sanitizer import sanitize as _sanitize
+
+            context = _sanitize(context)
+            text = _sanitize(text)
+        except Exception:
+            pass
         prompt = (
             f"你是一个中医健康顾问。用户的健康背景：{context}\n"
             f"请基于以下建议，生成一段更自然、更个人化的表述（不超过 80 字），"
