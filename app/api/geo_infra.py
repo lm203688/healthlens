@@ -3,6 +3,7 @@
 整合 sitemap.xml 和 robots.txt，覆盖知识页面 + 免费工具页面。
 """
 from datetime import datetime
+import logging
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import PlainTextResponse, Response
@@ -12,6 +13,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
 from app.models.seo import SeoPage
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 # 统一主域（可通过环境变量 PUBLIC_BASE_URL 覆盖，默认 https://healthlens.cc）
 GEO_BASE = settings.PUBLIC_BASE_URL
@@ -181,7 +184,12 @@ async def robots_txt():
 
 @geo_router.get("/sitemap.xml", summary="动态 sitemap (知识页 + 工具页)")
 async def sitemap_xml(db: AsyncSession = Depends(get_db)):
-    """构建 sitemap：SEO 知识页面 + 免费工具页面"""
+    """构建 sitemap：SEO 知识页面 + 免费工具页面
+
+    hreflang alternates 只为**真实存在英文译本**的页面输出（判定依据
+    SeoPage.structured_data.i18n.en 有非空 title）。绝不输出指向不存在
+    页面的 alternate —— 软 404 会直接损害 SEO。
+    """
     result = await db.execute(
         select(SeoPage).where(SeoPage.status == "published")
     )
@@ -189,14 +197,28 @@ async def sitemap_xml(db: AsyncSession = Depends(get_db)):
 
     xml_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+        '        xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ]
+
+    def _has_en(p: SeoPage) -> bool:
+        sd = p.structured_data or {}
+        if not isinstance(sd, dict):
+            return False
+        i18n = sd.get("i18n") or {}
+        if not isinstance(i18n, dict):
+            return False
+        en = i18n.get("en")
+        return bool(isinstance(en, dict) and (en.get("title") or "").strip())
+
+    en_alternate_count = 0
 
     # 免费工具页面（高优先级）
     today = datetime.utcnow().strftime("%Y-%m-%d")
     for tool in _TOOL_PAGES:
+        loc = tool['loc'].replace('https://healthlens.app', GEO_BASE)
         xml_lines.append("  <url>")
-        xml_lines.append(f"    <loc>{tool['loc'].replace('https://healthlens.app', GEO_BASE)}</loc>")
+        xml_lines.append(f"    <loc>{loc}</loc>")
         xml_lines.append(f"    <lastmod>{today}</lastmod>")
         xml_lines.append(f"    <changefreq>{tool['changefreq']}</changefreq>")
         xml_lines.append(f"    <priority>{tool['priority']}</priority>")
@@ -211,14 +233,22 @@ async def sitemap_xml(db: AsyncSession = Depends(get_db)):
     for p in pages:
         prefix = _PREFIX_BY_CATEGORY.get(p.category, "/knowledge/")
         lastmod = (p.updated_at or p.created_at).strftime("%Y-%m-%d") if (p.updated_at or p.created_at) else today
+        zh_url = f"{GEO_BASE}{prefix}{p.slug}"
         xml_lines.append("  <url>")
-        xml_lines.append(f"    <loc>{GEO_BASE}{prefix}{p.slug}</loc>")
+        xml_lines.append(f"    <loc>{zh_url}</loc>")
+        if _has_en(p):
+            en_url = f"{GEO_BASE}/en{prefix}{p.slug}"
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="{zh_url}"/>')
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>')
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" href="{zh_url}"/>')
+            en_alternate_count += 1
         xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
         xml_lines.append("    <changefreq>weekly</changefreq>")
         xml_lines.append("    <priority>0.7</priority>")
         xml_lines.append("  </url>")
 
     xml_lines.append("</urlset>")
+    logger.info(f"sitemap.xml: {len(pages)} pages, {en_alternate_count} with zh/en alternates")
     return Response(
         content="\n".join(xml_lines),
         media_type="application/xml",
