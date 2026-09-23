@@ -403,23 +403,30 @@ async def get_sitemap(
     xml_lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"')
     xml_lines.append('        xmlns:xhtml="http://www.w3.org/1999/xhtml">')
 
+    def _en_title(p: SeoPage) -> str | None:
+        """页面是否存在真实英文译本（structured_data.i18n.en.title）。"""
+        sd = p.structured_data or {}
+        if not isinstance(sd, dict):
+            return None
+        i18n = sd.get("i18n") or {}
+        if not isinstance(i18n, dict):
+            return None
+        en = i18n.get("en")
+        if isinstance(en, dict) and (en.get("title") or "").strip():
+            return en["title"]
+        return None
+
     for p in pages:
         lastmod = (p.updated_at or p.created_at).strftime("%Y-%m-%d") if (p.updated_at or p.created_at) else datetime.utcnow().strftime("%Y-%m-%d")
         zh_url = f"https://healthlens.cc/knowledge/{p.slug}"
-        en_url = f"https://healthlens.cc/en/knowledge/{p.slug}"
         xml_lines.append("  <url>")
         xml_lines.append(f"    <loc>{zh_url}</loc>")
-        xml_lines.append(f"    <xhtml:link rel=\"alternate\" hreflang=\"zh-CN\" href=\"{zh_url}\"/>")
-        xml_lines.append(f"    <xhtml:link rel=\"alternate\" hreflang=\"en-US\" href=\"{en_url}\"/>")
-        xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
-        xml_lines.append("    <changefreq>weekly</changefreq>")
-        xml_lines.append("    <priority>0.7</priority>")
-        xml_lines.append("  </url>")
-        # English alternate
-        xml_lines.append("  <url>")
-        xml_lines.append(f"    <loc>{en_url}</loc>")
-        xml_lines.append(f"    <xhtml:link rel=\"alternate\" hreflang=\"en-US\" href=\"{en_url}\"/>")
-        xml_lines.append(f"    <xhtml:link rel=\"alternate\" hreflang=\"zh-CN\" href=\"{zh_url}\"/>")
+        # 只为真实存在的英文译本输出 alternate —— 绝不指向不存在的页面
+        if _en_title(p):
+            en_url = f"https://healthlens.cc/en/knowledge/{p.slug}"
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="{zh_url}"/>')
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>')
+            xml_lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" href="{zh_url}"/>')
         xml_lines.append(f"    <lastmod>{lastmod}</lastmod>")
         xml_lines.append("    <changefreq>weekly</changefreq>")
         xml_lines.append("    <priority>0.7</priority>")
