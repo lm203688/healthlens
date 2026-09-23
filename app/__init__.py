@@ -95,7 +95,14 @@ def create_app() -> FastAPI:
     from app.api.growth_enhanced import router as growth_enhanced_router
     from app.api.points import router as points_router
     from app.api.seo import router as seo_router
-    from app.api.seo_public import seo_knowledge_router, health_router, health_tools_router
+    from app.api.seo_public import (
+        seo_knowledge_router,
+        health_router,
+        health_tools_router,
+        en_knowledge_router,
+        en_health_router,
+        en_health_tools_router,
+    )
     from app.api.health_tools import tools_public_router
     from app.api.geo_infra import geo_router
     from app.api.share_report import router as share_report_router
@@ -137,6 +144,10 @@ def create_app() -> FastAPI:
     app.include_router(seo_knowledge_router, prefix="/knowledge", tags=["SEO公开"])
     app.include_router(health_router, prefix="/health", tags=["SEO公开"])
     app.include_router(health_tools_router, prefix="/health-tools", tags=["SEO公开"])
+    # 英文镜像路由：只为真实存在英文译本的页面返回 200（见 seo_public._en_payload）
+    app.include_router(en_knowledge_router, prefix="/en/knowledge", tags=["SEO公开EN"])
+    app.include_router(en_health_router, prefix="/en/health", tags=["SEO公开EN"])
+    app.include_router(en_health_tools_router, prefix="/en/health-tools", tags=["SEO公开EN"])
     # 免费健康工具（SEO 引流核心）
     app.include_router(tools_public_router, prefix="/health-tools", tags=["免费工具"])
     # GEO 基础设施（llms.txt, ai.txt, robots.txt）
