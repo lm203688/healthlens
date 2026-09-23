@@ -68,3 +68,31 @@ async def test_withings_sync():
     loinc_codes = [o["loinc_code"] for o in result["observations"]]
     assert "29463-7" in loinc_codes  # 体重
     assert "8480-6" in loinc_codes   # 收缩压
+
+
+@pytest.mark.asyncio
+async def test_google_health_json_parse():
+    """测试 Google Health Connect JSON 解析"""
+    import app.connectors.google_health
+    connector = ConnectorRegistry.get("google_health")
+    
+    json_content = b'''{
+        "records": [
+            {"type": "org.healthconnect.TotalStepsRecord", "count": 8500, "startTimeNanos": 1721184000000000000},
+            {"type": "org.healthconnect.HeartRateRecord", "floatVal": 72, "startTimeNanos": 1721184300000000000}
+        ]
+    }'''
+    
+    result = await connector.parse_health_json(json_content)
+    assert result["items_count"] == 2
+    assert result["items"][0]["loinc_code"] == "90536-5"  # 步数
+    assert result["items"][1]["loinc_code"] == "8867-4"   # 心率
+
+
+def test_google_health_connector_registered():
+    """测试 Google Health 连接器已注册"""
+    sources = ConnectorRegistry.available_sources()
+    assert "google_health" in sources
+    connector = ConnectorRegistry.get("google_health")
+    assert connector is not None
+    assert connector.SOURCE_TYPE == "google_health"
