@@ -4,19 +4,18 @@
 轻量异常检测，命中写入 audit_events 表，供 /api/v1/audit 端点巡检。
 
 检测范围（不是全量安全系统，只是护栏）：
-  1. sensitive_info_leak   输出疑似泄露 手机号/邮箱/身份证
+  1. sensitive_info_leak   输出疑似泄露 手机号/邮箱/身份证 等
   2. out_of_bounds_evidence 个性化推荐出现越界证据等级（L4 等不应进个性化）
   3. input_anomaly         用户输入超长 / 含控制字符
   4. output_anomaly        输出超长 / 高重复，疑似失控生成
+
+2026-09-23 收敛：本文件原先自带一套 PII 正则（与 app/utils/pii_sanitizer.py
+重复且都未被调用）。现统一委托给 pii_sanitizer，避免两套规则各自漂移；
+落库前对 detail 再做一次脱敏，确保审计表本身不会成为 PII 的二次存储点。
 """
 import re
 
-# 手机号（中国大陆）
-_RE_PHONE = re.compile(r"1[3-9]\d{9}")
-# 邮箱
-_RE_EMAIL = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
-# 身份证（18 位，末位可为 X）
-_RE_IDCARD = re.compile(r"\b\d{17}[\dXx]\b")
+from app.utils.pii_sanitizer import detect_pii, sanitize
 
 # 控制字符（除常见空白外）
 _RE_CTRL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
@@ -27,15 +26,12 @@ REPETITION_THRESHOLD = 0.6  # 单 token 重复占比阈值
 
 
 def scan_sensitive(text: str) -> list[str]:
-    """扫描文本中的敏感信息模式，返回命中类型列表。"""
-    hits = []
-    if _RE_PHONE.search(text or ""):
-        hits.append("phone")
-    if _RE_EMAIL.search(text or ""):
-        hits.append("email")
-    if _RE_IDCARD.search(text or ""):
-        hits.append("idcard")
-    return hits
+    """扫描文本中的敏感信息模式，返回命中类型列表。
+
+    委托给 app.utils.pii_sanitizer（唯一实现），覆盖大陆手机号 / 身份证
+    （含校验位验证）/ 邮箱 / 银行卡（Luhn）/ 护照 / 通行证 / QQ / 微信 等。
+    """
+    return detect_pii(text or "")
 
 
 def detect_input_anomaly(text: str) -> str | None:
@@ -134,13 +130,19 @@ def build_events(
 
 
 async def persist_events(db, events: list[dict]) -> int:
-    """将审计事件写入数据库，返回写入条数。失败静默返回 0。"""
+    """将审计事件写入数据库，返回写入条数。失败静默返回 0。
+
+    detail 落库前统一脱敏 —— 审计表不应成为 PII 的二次存储点。
+    """
     if not events:
         return 0
     from app.models.audit_event import AuditEvent
     try:
         for e in events:
-            db.add(AuditEvent(**e))
+            safe = dict(e)
+            if isinstance(safe.get("detail"), str):
+                safe["detail"] = sanitize(safe["detail"])
+            db.add(AuditEvent(**safe))
         await db.commit()
         return len(events)
     except Exception:
