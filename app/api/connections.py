@@ -1,7 +1,7 @@
 """数据连接路由 - 数据源管理、同步"""
 import uuid
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Form
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -380,3 +380,71 @@ async def sync_all_ow_connections(
             })
 
     return {"success": True, "data": {"results": results, "synced": len([r for r in results if r["status"] == "completed"])}}
+
+
+# ===========================================================================
+# 文件上传端点（Apple Health XML / Google Health JSON）
+# ===========================================================================
+
+@router.post("/upload")
+async def upload_health_file(
+    file: UploadFile = File(...),
+    source_type: str = Form("apple_health"),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """上传健康数据文件并解析
+
+    支持的格式：
+    - apple_health: Apple Health XML 导出
+    - google_health: Google Health Connect JSON 导出
+    """
+    from app.connectors.base import ConnectorRegistry
+
+    connector = ConnectorRegistry.get(source_type)
+    if not connector:
+        raise HTTPException(status_code=400, detail=f"不支持的数据源类型: {source_type}")
+
+    content = await file.read()
+
+    # 调用连接器解析
+    if hasattr(connector, 'parse_health_xml'):
+        result = await connector.parse_health_xml(content)
+    elif hasattr(connector, 'parse_health_json'):
+        result = await connector.parse_health_json(content)
+    else:
+        raise HTTPException(status_code=400, detail="该连接器不支持文件上传")
+
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    # 存储到数据库
+    items = result.get("items", [])
+    for item in items:
+        item["source_type"] = source_type
+        item["user_id"] = str(current_user.id)
+        # 创建 HealthObservation 记录
+        from app.models.observation import HealthObservation
+        obs = HealthObservation(
+            user_id=str(current_user.id),
+            loinc_code=item.get("loinc_code"),
+            loinc_name=item.get("loinc_name"),
+            value_numeric=item.get("value_numeric"),
+            value_string=item.get("value_string"),
+            value_unit=item.get("value_unit"),
+            source=source_type,
+            recorded_at=item.get("recorded_at"),
+        )
+        db.add(obs)
+
+    await db.commit()
+
+    return {
+        "success": True,
+        "data": {
+            "filename": file.filename,
+            "source_type": source_type,
+            "items_count": len(items),
+            "message": f"成功导入 {len(items)} 条健康数据",
+        },
+    }
