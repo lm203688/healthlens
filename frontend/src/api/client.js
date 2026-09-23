@@ -63,6 +63,25 @@ export const api = {
   /* ===== 健康仪表盘 ===== */
   dashboard: () => request('/dashboard/overview'),
 
+  /* ===== 支付与会员 ===== */
+  paymentFeatures: () => request('/payment/features'),
+  paymentCreate: (body) => request('/payment/create', { method: 'POST', body: JSON.stringify(body) }),
+  paymentStatus: (orderNo) => request(`/payment/status/${orderNo}`),
+  paymentBalance: () => request('/points/balance'),
+  freemiumFeatures: () => request('/freemium/features'),
+  freemiumBalanceInfo: () => request('/freemium/balance-info'),
+  freemiumCheck: (featureCode) => request(`/freemium/check?feature_code=${featureCode}`),
+
+  /* ===== 基因组上传 ===== */
+  genomeUpload: (formData) => fetch(`${API_BASE}/genome/upload`, { method: 'POST', body: formData }),
+  genomeProfile: () => request('/genome/profile'),
+  genomePgx: () => request('/genome/pgx'),
+
+  /* ===== 报告分享 ===== */
+  reportShare: (body) => request('/reports/share', { method: 'POST', body: JSON.stringify(body) }),
+  myShares: (page) => request(`/reports/my-shares?page=${page || 1}`),
+  revokeShare: (reportId) => request(`/reports/${reportId}/revoke`, { method: 'POST' }),
+
   /* ===== 慢病风险评估 ===== */
   riskAsc: (body) => request('/diagnosis/risk/ascvd', { method: 'POST', body: JSON.stringify(body) }),
 
