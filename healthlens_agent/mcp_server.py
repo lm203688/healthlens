@@ -621,30 +621,19 @@ def _run_jsonrpc_mode() -> None:
     """无 mcp package 时的 JSON-RPC stdio 模式。"""
     tools = _active_tools()
 
-    # 首次响应工具清单
-    print(
-        json.dumps({
-            "jsonrpc": "2.0",
-            "result": {
-                "tools": [
-                    {
-                        "name": name,
-                        "description": spec["description"],
-                        "inputSchema": {
-                            "type": "object",
-                            "properties": {k: {"type": "string"} for k in spec["args"]},
-                        },
-                    }
-                    for name, spec in tools.items()
-                ],
-                "server": "healthlens-mcp",
-                "version": _SERVER_VERSION,
-                "private_exposed": _EXPOSE_PRIVATE,
-            },
-        }),
-        flush=True,
-    )
-    sys.stdout.flush()
+    def _tool_defs() -> list[dict]:
+        """MCP-spec tools array: each entry has name/description/inputSchema."""
+        return [
+            {
+                "name": name,
+                "description": spec["description"],
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {k: {"type": "string"} for k in spec["args"]},
+                },
+            }
+            for name, spec in tools.items()
+        ]
 
     for line in sys.stdin:
         line = line.strip()
@@ -654,12 +643,13 @@ def _run_jsonrpc_mode() -> None:
             req = json.loads(line)
             method = req.get("method", "")
             params = req.get("params", {})
+            req_id = req.get("id")
             if method == "tools/list":
                 resp = {
                     "jsonrpc": "2.0",
-                    "id": req.get("id"),
+                    "id": req_id,
                     "result": {
-                        "tools": list(tools.keys()),
+                        "tools": _tool_defs(),
                         "server": "healthlens-mcp",
                         "version": _SERVER_VERSION,
                     },
@@ -671,19 +661,19 @@ def _run_jsonrpc_mode() -> None:
                     result = tools[tool_name]["handler"](**args)
                     resp = {
                         "jsonrpc": "2.0",
-                        "id": req.get("id"),
+                        "id": req_id,
                         "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]},
                     }
                 else:
                     resp = {
                         "jsonrpc": "2.0",
-                        "id": req.get("id"),
+                        "id": req_id,
                         "error": {"code": -32602, "message": f"unknown tool: {tool_name}"},
                     }
             elif method == "initialize":
                 resp = {
                     "jsonrpc": "2.0",
-                    "id": req.get("id"),
+                    "id": req_id,
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "serverInfo": {"name": "healthlens-mcp", "version": _SERVER_VERSION},
@@ -693,7 +683,7 @@ def _run_jsonrpc_mode() -> None:
             else:
                 resp = {
                     "jsonrpc": "2.0",
-                    "id": req.get("id"),
+                    "id": req_id,
                     "error": {"code": -32601, "message": f"unknown method: {method}"},
                 }
         except Exception as exc:
