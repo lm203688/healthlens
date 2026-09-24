@@ -68,51 +68,51 @@
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:10.267602",
-      "completed_at": "2026-09-23T22:38:11.997186",
-      "output_file": "reports/analysis/2026-09-23_feedback_a.json",
+      "started_at": "2026-09-24T02:48:55.118303",
+      "completed_at": "2026-09-24T02:48:56.759277",
+      "output_file": "reports/analysis/2026-09-24_feedback_a.json",
       "items_processed": 3,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:12.029237",
-      "completed_at": "2026-09-23T22:38:12.032642",
-      "output_file": "reports/analysis/2026-09-23_conversion_b.json",
+      "started_at": "2026-09-24T02:48:56.796335",
+      "completed_at": "2026-09-24T02:48:56.801059",
+      "output_file": "reports/analysis/2026-09-24_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:12.079220",
-      "completed_at": "2026-09-23T22:38:15.526268",
-      "output_file": "reports/analysis/2026-09-23_data_asset_c.json",
+      "started_at": "2026-09-24T02:48:56.860515",
+      "completed_at": "2026-09-24T02:48:59.365828",
+      "output_file": "reports/analysis/2026-09-24_data_asset_c.json",
       "items_processed": 6,
       "error": null,
       "quality_issues": 4
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:15.577929",
-      "completed_at": "2026-09-23T22:38:16.490844",
-      "output_file": "reports/analysis/2026-09-23_promotion_d.json",
+      "started_at": "2026-09-24T02:48:59.429860",
+      "completed_at": "2026-09-24T02:49:01.024332",
+      "output_file": "reports/analysis/2026-09-24_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:16.839056",
-      "completed_at": "2026-09-23T22:38:16.842827",
-      "output_file": "reports/analysis/2026-09-23_finance_e.json",
+      "started_at": "2026-09-24T02:49:01.207527",
+      "completed_at": "2026-09-24T02:49:01.212471",
+      "output_file": "reports/analysis/2026-09-24_finance_e.json",
       "items_processed": 1,
       "error": null,
       "alerts": 1
     },
     "ops_health_f": {
       "status": "completed",
-      "started_at": "2026-09-23T22:38:16.901501",
-      "completed_at": "2026-09-23T22:38:19.895418",
-      "output_file": "reports/analysis/2026-09-23_ops_health_f.json",
+      "started_at": "2026-09-24T02:49:01.284674",
+      "completed_at": "2026-09-24T02:49:05.513982",
+      "output_file": "reports/analysis/2026-09-24_ops_health_f.json",
       "items_processed": 4,
       "error": null
     }
@@ -860,7 +860,7 @@
   ],
   "feedback_metrics": {
     "ops_health": {
-      "checked_at": "2026-09-23T22:38:19.893813",
+      "checked_at": "2026-09-24T02:49:05.511673",
       "overall": "healthy",
       "endpoints_ok": 4,
       "endpoints_error": 0,
@@ -870,7 +870,7 @@
       "medical_terms_found": 0
     },
     "content_pipeline": {
-      "checked_at": "2026-09-23T22:38:11.995037",
+      "checked_at": "2026-09-24T02:48:56.756339",
       "data_source": "http_probe",
       "total_deployed": 2,
       "success_rate": 33.3,
@@ -894,7 +894,7 @@
       }
     },
     "user_conversion": {
-      "checked_at": "2026-09-23T22:38:12.031027",
+      "checked_at": "2026-09-24T02:48:56.798726",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -903,7 +903,7 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-09-23T22:38:15.524286",
+      "checked_at": "2026-09-24T02:48:59.363336",
       "total_records": 1201774750,
       "quality_issues": 4,
       "estimated_value": 1201774.75,
@@ -911,7 +911,7 @@
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-09-23T22:38:16.488952",
+      "checked_at": "2026-09-24T02:49:01.021747",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -920,7 +920,7 @@
       "channel_actions": 0
     },
     "finance": {
-      "checked_at": "2026-09-23T22:38:16.841201",
+      "checked_at": "2026-09-24T02:49:01.210289",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
@@ -1313,6 +1313,13 @@
       "run_id": "run_20260923_223808",
       "started_at": "2026-09-23T22:38:08.854287",
       "finished_at": "2026-09-23T22:38:19.946427",
+      "verdict": "SUCCESS",
+      "failed_count": 0
+    },
+    {
+      "run_id": "run_20260924_024853",
+      "started_at": "2026-09-24T02:48:53.815675",
+      "finished_at": "2026-09-24T02:49:05.576175",
       "verdict": "SUCCESS",
       "failed_count": 0
     }
