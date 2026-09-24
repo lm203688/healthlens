@@ -31,81 +31,63 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install package (no MCP dep required — JSON-RPC fallback)
+      - name: Install package (no MCP dep required - JSON-RPC fallback)
         run: |
           python -m pip install --upgrade pip
           pip install -e .
-          # do NOT install `mcp` — we're testing the JSON-RPC stdio fallback
           python -c "import healthlens_agent; print('import ok')"
 
       - name: Tool listing (--demo)
         run: |
           python -m healthlens_agent mcp --demo > demo_out.txt
-          echo "=== demo output ==="
           cat demo_out.txt
-          # Structural assertions:
           grep -q "HealthLens MCP Server" demo_out.txt
           grep -q "hl_health_check" demo_out.txt
           grep -q "hl_search_knowledge" demo_out.txt
           grep -q "hl_get_axis_detail" demo_out.txt
           grep -q "hl_suggest_general_diet" demo_out.txt
           grep -q "hl_suggest_general_motion" demo_out.txt
-          # L3 must be locked by default
           grep -q "\[LOCKED\] hl_fusion_engine" demo_out.txt
           grep -q "Private tools exposed: False" demo_out.txt
 
       - name: JSON-RPC tools/list
         run: |
-          RESP=$(echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | python -m healthlens_agent mcp --jsonrpc | tail -n 1)
-          echo "$RESP" | python -c "
-import sys, json
-lines = sys.stdin.read().strip().splitlines()
-r = json.loads(lines[-1])
-tools = [t['name'] for t in r['result']['tools']]
-print('tools:', tools)
-assert 'hl_health_check' in tools
-assert 'hl_search_knowledge' in tools
-assert 'hl_get_axis_detail' in tools
-assert 'hl_get_wellness_article' in tools
-assert 'hl_suggest_general_diet' in tools
-assert 'hl_suggest_general_motion' in tools
-# L3 must NOT be present when HL_MCP_EXPOSE_PRIVATE is unset
-assert 'hl_fusion_engine' not in tools, 'L3 leaked without env flag'
-assert 'hl_risk_assess' not in tools, 'L3 leaked without env flag'
-print('OK: 6 L1+L2 tools, L3 gated')
-"
+          RESP=$(echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
+            | python -m healthlens_agent mcp --jsonrpc | tail -n 1)
+          echo "$RESP" | python -c 'import sys, json; lines = sys.stdin.read().strip().splitlines(); r = json.loads(lines[-1]); tools = [t["name"] for t in r["result"]["tools"]]; print("tools:", tools); assert "hl_health_check" in tools; assert "hl_search_knowledge" in tools; assert "hl_get_axis_detail" in tools; assert "hl_get_wellness_article" in tools; assert "hl_suggest_general_diet" in tools; assert "hl_suggest_general_motion" in tools; assert "hl_fusion_engine" not in tools, "L3 leaked without env flag"; assert "hl_risk_assess" not in tools, "L3 leaked without env flag"; print("OK: 6 L1+L2 tools, L3 gated")'
 
       - name: JSON-RPC tool call (hl_get_axis_detail)
         run: |
-          RESP=$(echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"hl_get_axis_detail","arguments":{"axis_id":"A"}}}' | python -m healthlens_agent mcp --jsonrpc | tail -n 1)
-          echo "$RESP" | python -c "
-import sys, json
-lines = sys.stdin.read().strip().splitlines()
-r = json.loads(lines[-1])
-assert 'result' in r
-content = json.loads(r['result']['content'][0]['text'])
-assert content['axis_id'] == 'A'
-assert 'mechanism' in content
-print('OK: axis A returned, mechanism field present')
-"
+          RESP=$(echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"hl_get_axis_detail","arguments":{"axis_id":"A"}}}' \
+            | python -m healthlens_agent mcp --jsonrpc | tail -n 1)
+          echo "$RESP" | python -c 'import sys, json; lines = sys.stdin.read().strip().splitlines(); r = json.loads(lines[-1]); assert "result" in r; content = json.loads(r["result"]["content"][0]["text"]); assert content["axis_id"] == "A"; assert "mechanism" in content; print("OK: axis A returned, mechanism field present")'
+
+      - name: JSON-RPC tool call (hl_search_knowledge)
+        run: |
+          RESP=$(echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"hl_search_knowledge","arguments":{"query":"qi deficiency"}}}' \
+            | python -m healthlens_agent mcp --jsonrpc | tail -n 1)
+          echo "$RESP" | python -c 'import sys, json; lines = sys.stdin.read().strip().splitlines(); r = json.loads(lines[-1]); assert "result" in r; print("OK: hl_search_knowledge returns result")'
 
       - name: L3 gate opens only when HL_MCP_EXPOSE_PRIVATE=1
         run: |
           HL_MCP_EXPOSE_PRIVATE=1 python -m healthlens_agent mcp --demo > demo_private.txt
-          echo "=== demo output (private) ==="
           cat demo_private.txt
           grep -q "Private tools exposed: True" demo_private.txt
           grep -q "hl_fusion_engine" demo_private.txt
           grep -q "hl_risk_assess" demo_private.txt
           grep -q "hl_tcm_constitution" demo_private.txt
           grep -q "hl_evidence_grade" demo_private.txt
-          # and must NOT contain [LOCKED] now
           ! grep -q "\[LOCKED\]" demo_private.txt
 
-      - name: Rate limit env var is respected (parse only)
+      - name: Env vars parse without error
         run: |
-          HL_MCP_RATE_LIMIT=5 HL_MCP_EXPOSE_PRIVATE=1 python -m healthlens_agent mcp --demo > /dev/null
+          HL_MCP_RATE_LIMIT=5 HL_MCP_EXPOSE_PRIVATE=1 HL_MCP_OAUTH_ENABLED=1 \
+            python -m healthlens_agent mcp --demo > /dev/null
           echo "OK: env vars parse without error"
+
+      - name: server.json validity
+        run: |
+          python -c 'import json; d = json.load(open("mcp-server/server.json")); assert d["name"].startswith("io.github.lm203688/"); assert d["packages"][0]["registryType"] == "pypi"; assert d["packages"][0]["transport"]["type"] == "stdio"; print("OK: server.json valid, tools:", len(d["packages"][0]["tools"]) if "tools" in d["packages"][0] else "n/a")'
 
       - name: Upload smoke test artifacts
         if: always()
