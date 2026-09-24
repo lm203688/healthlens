@@ -44,7 +44,7 @@ MCP server exposing HealthLens wellness knowledge as tools for AI agents.
 ### Install
 
 ```bash
-pip install healthlens-mcp-server
+pip install healthlens
 # Or from source:
 git clone https://github.com/lm203688/healthlens
 cd healthlens
