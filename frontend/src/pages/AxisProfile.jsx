@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import MedicalDisclaimer from '../components/HealthDisclaimer';
 import Modal from '../components/Modal';
+import AxisRadar from '../components/AxisRadar';
+import TrendChart from '../components/TrendChart';
 
 /* 八轴稳态模型（A–H）。代谢-炎症轴按假说级映射落点 A / F。i18n: 使用 key 而非硬编码中文 */
 const AXIS_KEYS = {
@@ -366,6 +368,12 @@ export default function AxisProfile() {
                 );
               })}
             </div>
+
+            {/* 八轴雷达可视化（零依赖 SVG） */}
+            <div className="mt-5 flex justify-center">
+              <AxisRadar scores={assess.axis_scores || {}} colors={AXIS_COLORS} />
+            </div>
+
             <p className="text-xs text-slate-400 mt-3">
               {t('axis.noGenomeNote')}
             </p>
@@ -562,21 +570,17 @@ export default function AxisProfile() {
 
             <div>
               <p className="text-sm font-medium text-slate-700 mb-2">{t('axis.trajectory')}</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {Object.keys(AXIS_KEYS).map((k) => (
-                  <div key={k} className="bg-slate-50 rounded-xl p-3">
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="w-2.5 h-2.5 rounded-full" style={{ background: AXIS_COLORS[k] }} />
-                      <span className="text-xs font-medium text-slate-700">
-                        {k} · {t(AXIS_KEYS[k])}
-                      </span>
-                    </div>
-                    <Sparkline
-                      points={projection.trajectory?.map((t) => t.scores[k])}
-                      color={AXIS_COLORS[k]}
-                    />
-                  </div>
-                ))}
+              <div className="bg-white border border-slate-100 rounded-xl p-4">
+                <TrendChart
+                  width={640}
+                  series={Object.keys(AXIS_KEYS).map((k) => ({
+                    key: k,
+                    label: `${k}·${t(AXIS_KEYS[k])}`,
+                    color: AXIS_COLORS[k],
+                    points: (projection.trajectory || []).map((step) => step.scores?.[k]),
+                  }))}
+                  xLabels={(projection.trajectory || []).map((_, i) => `W${i + 1}`)}
+                />
               </div>
             </div>
 
