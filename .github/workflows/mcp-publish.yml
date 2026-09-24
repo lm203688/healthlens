@@ -63,12 +63,4 @@ jobs:
         if: ${{ (github.event_name == 'release') || (github.event_name == 'workflow_dispatch' && !inputs.dry_run) }}
         run: |
           sleep 20
-          python -c "
-import json, urllib.request
-with urllib.request.urlopen('https://pypi.org/pypi/healthlens/json') as r:
-    data = json.loads(r.read())
-info = data['info']
-print('name:', info['name'])
-print('version:', info['version'])
-print('requires_dist:', len(info.get('requires_dist', []) or []))
-"
+          python -c 'import json, urllib.request; r = urllib.request.urlopen("https://pypi.org/pypi/healthlens/json"); data = json.loads(r.read()); info = data["info"]; print("name:", info["name"]); print("version:", info["version"]); print("requires_dist:", len(info.get("requires_dist", []) or []))'
