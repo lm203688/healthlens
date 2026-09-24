@@ -58,7 +58,18 @@ def main(argv=None):
         multimodal.main()
     elif cmd == "mcp":
         from . import mcp_server
-        mcp_server.demo()
+        # 支持子参数：--demo / --jsonrpc / --tools（默认启动 MCP server）
+        sub = argv[1:]
+        if sub and sub[0] == "--demo":
+            mcp_server.demo()
+        elif sub and sub[0] == "--jsonrpc":
+            mcp_server._run_jsonrpc_mode()
+        elif sub and sub[0] == "--tools":
+            tools = mcp_server._active_tools()
+            for name in tools:
+                print(name)
+        else:
+            mcp_server.main()
     elif cmd in ("all", "help", "-h", "--help"):
         if cmd != "all":
             print(__doc__)
