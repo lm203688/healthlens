@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.0-mcp] - 2026-09-24
+
+### Added
+- **HealthLens MCP Server (v0.2)**: 分层 MCP Server，安全默认暴露 L1+L2（无个人数据），L3（个性化）需 `HL_MCP_EXPOSE_PRIVATE=1` 环境变量
+- **6 个 L1+L2 公开 tool**：`hl_health_check`、`hl_search_knowledge`、`hl_get_axis_detail`、`hl_get_wellness_article`、`hl_suggest_general_diet`、`hl_suggest_general_motion`
+- **4 个 L3 私有 tool**（默认关闭）：`hl_fusion_engine`、`hl_risk_assess`、`hl_tcm_constitution`、`hl_evidence_grade`
+- **MCP 分发元数据**：`mcp-server/server.json`（Registry schema）、`README.md`（安装+使用）、`.mcp.json`（客户端配置模板）、`LICENSE`、`test_install.sh`（验证脚本）
+- **设计文档**：`docs/healthlens-mcp-design.md`（分层策略、数据边界、GDPR 影响、部署方案、注册市场清单）
+- **上架指南**：`docs/mcp-marketplace-submission.md`（Glama/Registry/Smithery/mcp.so/PulseMCP 提交步骤 + 监控指标 + 回滚方案）
+- **CLI 支持**：`python -m healthlens_agent mcp --demo / --jsonrpc / --tools`（JSON-RPC stdio fallback）
+- **GDPR 免责声明**：每个 tool 描述嵌入 "not medical advice" 声明
+
+### Changed
+- `healthlens_agent/__main__.py`：转发 `mcp` 子命令参数给 `mcp_server`
+- `healthlens_agent/mcp_server.py`：从扁平 tool 列表重构为分层注册表（L1/L2/L3）
+
+### Security
+- L1+L2 默认暴露，L3 关闭（`HL_MCP_EXPOSE_PRIVATE=0`）
+- 每个 tool 明确标注数据边界（"No personal data" / "GDPR Art. 9"）
+- 红线清单：checkin 记录、账号密码、中医处方判定、诊断输出永不通过 MCP 暴露
+
 ## [0.8.2] - 2026-07-20
 
 ### Added
