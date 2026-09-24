@@ -20,7 +20,8 @@
     "noData": "No data",
     "comingSoon": "Coming soon",
     "connecting": "Connecting…",
-    "syncing": "Syncing…"
+    "syncing": "Syncing…",
+    "saving": "Saving…"
   },
   "login": {
     "title": "Sign In",
@@ -514,7 +515,8 @@
     "profile": "Profile",
     "logout": "Sign Out",
     "login": "Sign In",
-    "language": "Language"
+    "language": "Language",
+    "retention": "Goals"
   },
   "errors": {
     "notFound": "Page not found",
@@ -643,5 +645,75 @@
     "revokeConfirm": "Revoke this sharing link?",
     "revoked": "Revoked",
     "createNew": "Create New Share"
+  },
+  "retention": {
+    "title": "Goals & Reminders",
+    "subtitle": "Set goals, get reminders, log actions — keep your improvement plan moving",
+    "tabGoals": "Goals",
+    "tabNotifications": "Notifications",
+    "tabAdherence": "Adherence",
+    "myGoals": "My Goals",
+    "newGoal": "New Goal",
+    "noGoals": "No goals yet. Create your first goal to start tracking.",
+    "saveGoal": "Save Goal",
+    "record": "Log progress",
+    "dueBy": "Due",
+    "goalNamePlaceholder": "Goal name (e.g. Daily steps)",
+    "targetPlaceholder": "Target value",
+    "unitPlaceholder": "Unit",
+    "progressPrompt": "Enter the current value for \"{{name}}\":",
+    "statTotal": "Total goals",
+    "statActive": "In progress",
+    "statCompleted": "Completed",
+    "goalType": {
+      "weight": "Weight",
+      "steps": "Steps",
+      "bp": "Blood pressure",
+      "glucose": "Glucose",
+      "exercise": "Exercise",
+      "sleep": "Sleep"
+    },
+    "status": {
+      "active": "In progress",
+      "completed": "Completed",
+      "paused": "Paused",
+      "cancelled": "Cancelled"
+    },
+    "inbox": "Notifications",
+    "markRead": "Mark read",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No notifications",
+    "viewDetail": "View details",
+    "addPlan": "Add medication plan",
+    "addPlanBtn": "Add",
+    "noRecords": "No records",
+    "medNamePlaceholder": "Medication name",
+    "dosePlaceholder": "Dose",
+    "markTaken": "Taken",
+    "markMissed": "Missed",
+    "late": "Late",
+    "statAdherenceRate": "Adherence rate",
+    "statTaken": "Taken",
+    "statMissed": "Missed",
+    "adherenceStatus": {
+      "pending": "Pending",
+      "taken": "Taken",
+      "missed": "Missed",
+      "skipped": "Skipped"
+    },
+    "createFailed": "Failed to create",
+    "saveFailed": "Failed to save, please try again",
+    "deleteFailed": "Failed to delete, please try again",
+    "adherenceHeatmap": "Adherence heatmap",
+    "noAdherenceData": "No adherence records yet"
+  },
+  "viz": {
+    "radarAria": "Eight-axis steady-state radar",
+    "radarTitle": "Eight-axis scores (0-100)",
+    "trendAria": "Axis signal trajectory across weeks",
+    "needTwoPoints": "Need at least two data points to draw a trend",
+    "heatmapAria": "Adherence heatmap",
+    "less": "Less",
+    "more": "More"
   }
 }
