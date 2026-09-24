@@ -127,10 +127,30 @@ _AXIS_REDLINE_PATTERNS = [
 
 # PII 输出红线（借鉴 llm-healthcare-threat-modeling 第四阶段「输出 PII 清洗」）：
 # 移动手机号 / 18 位身份证 / 邮箱。命中即 BLOCK，且提供 scrub_pii 做打码清洗。
+#
+# 2026-09-23 收敛：此前只覆盖 3 类，而 app/utils/pii_sanitizer.py 覆盖 11 类，
+# 两侧规则族不一致 —— 同一条输出在 API 层被判「晒了手机号」、在 Agent 层却放行。
+# 现同步到同一族（手机/固话/身份证/邮箱/银行卡/护照/港澳通行证/微信/QQ/车牌）。
+#
+# 刻意保持「形态级」而不做校验位验证：这里是**输出拦截**，漏报的代价是 PII
+# 外泄，误报的代价只是一次 BLOCK——两害相权取严。校验位版本在
+# app/utils/pii_sanitizer.py（strict=True），供脱敏/落库使用。
 _PII_PATTERNS = [
     (r"(?<!\d)1[3-9]\d{9}(?!\d)", "手机号"),
     (r"(?<!\d)\d{17}[\dXx](?!\d)", "身份证号"),
     (r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", "邮箱"),
+    (r"(?<!\d)0\d{2,3}-?\d{7,8}(?!\d)", "固定电话"),
+    (r"(?<!\d)\d{13,19}(?!\d)", "银行卡号"),
+    (r"(?<![A-Za-z0-9])[EDSP]\d{7,8}(?![A-Za-z0-9])", "护照号"),
+    (r"(?<![A-Za-z0-9])[CW]\d{8}(?![A-Za-z0-9])", "港澳通行证"),
+    (r"(?i)wxid_[a-z0-9_\-]{6,}", "微信ID"),
+    (r"(?i)(?:微信|wechat|weixin)\s*(?:号|id)?\s*[:：]?\s*[A-Za-z][A-Za-z0-9_\-]{5,19}", "微信ID"),
+    (r"(?i)(?:qq|扣扣)\s*[:：]?\s*\d{5,11}", "QQ号"),
+    (
+        r"[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领]"
+        r"[A-HJ-NP-Z][A-HJ-NP-Z0-9]{4,5}[A-HJ-NP-Z0-9挂学警港澳]",
+        "车牌号",
+    ),
 ]
 
 _BIAS_PATTERNS = [
@@ -178,34 +198,60 @@ _ORANGE_TRIAGE = [
 
 
 def find_pii(text: str) -> list[tuple[str, str]]:
-    """返回命中的 PII 列表 [(原文, 类型)]，供清洗与审计使用。"""
-    hits: list[tuple[str, str]] = []
+    """返回命中的 PII 列表 [(原文, 类型)]，供清洗与审计使用。
+
+    做重叠去重：18 位身份证同时满足「银行卡号」的形态，若不处理会被计两次，
+    导致清洗条数虚高、且打码时前一次替换把后一次的位置打乱。
+    """
+    hits: list[tuple[int, int, str, str]] = []
     for rx, name in _pii_compiled:
         for m in rx.finditer(text):
-            hits.append((m.group(0), name))
-    return hits
+            hits.append((m.start(), m.end(), m.group(0), name))
+    hits.sort(key=lambda h: (h[0], -(h[1] - h[0])))
+    merged: list[tuple[int, int, str, str]] = []
+    for start, end, raw, name in hits:
+        if merged and start < merged[-1][1]:
+            continue
+        merged.append((start, end, raw, name))
+    return [(raw, name) for _, _, raw, name in merged]
 
 
 def scrub_pii(text: str) -> tuple[str, int]:
-    """输出 PII 清洗器：将手机号/身份证/邮箱打码为掩码。返回 (清洗后文本, 清洗条数)。
+    """输出 PII 清洗器：将命中的 PII 打码为掩码。返回 (清洗后文本, 清洗条数)。
 
     打码保留首尾少量字符以便人工复核，其余以 * 代替（PII 最小化原则）。
     """
-    count = 0
-    out = text
+    hits: list[tuple[int, int, str, str]] = []
     for rx, name in _pii_compiled:
-        def _mask(m: re.Match) -> str:
-            nonlocal count
-            count += 1
-            s = m.group(0)
-            if name == "邮箱":
-                local, _, dom = s.partition("@")
-                head = local[:2]
-                return f"{head}***@{dom}"
-            keep = 3 if name == "手机号" else 4
-            return s[:keep] + "*" * max(len(s) - keep - 2, 3) + s[-2:]
-        out = rx.sub(_mask, out)
-    return out, count
+        for m in rx.finditer(text):
+            hits.append((m.start(), m.end(), m.group(0), name))
+    hits.sort(key=lambda h: (h[0], -(h[1] - h[0])))
+    merged: list[tuple[int, int, str, str]] = []
+    for start, end, raw, name in hits:
+        if merged and start < merged[-1][1]:
+            continue
+        merged.append((start, end, raw, name))
+
+    if not merged:
+        return text, 0
+
+    def _mask_one(s: str, name: str) -> str:
+        if name == "邮箱":
+            local, _, dom = s.partition("@")
+            return f"{local[:2]}***@{dom}"
+        if name in ("微信ID", "QQ号", "车牌号", "港澳通行证", "护照号", "固定电话"):
+            return s[:2] + "*" * max(len(s) - 2, 3)
+        keep = 3 if name == "手机号" else 4
+        return s[:keep] + "*" * max(len(s) - keep - 2, 3) + s[-2:]
+
+    out_parts = []
+    cursor = 0
+    for start, end, raw, name in merged:
+        out_parts.append(text[cursor:start])
+        out_parts.append(_mask_one(raw, name))
+        cursor = end
+    out_parts.append(text[cursor:])
+    return "".join(out_parts), len(merged)
 
 
 def build_rules() -> list[GuardRule]:
