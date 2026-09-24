@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "healthlens": {
+      "command": "python",
+      "args": ["-m", "healthlens_agent", "mcp"],
+      "env": {
+        "HL_MCP_EXPOSE_PRIVATE": "0"
+      },
+      "description": "HealthLens Wellness Knowledge MCP Server — 8-axis integrative framework, TCM knowledge search, general diet & motion guidance. Safe by default.",
+      "homepage": "https://github.com/lm203688/healthlens",
+      "license": "MIT"
+    }
+  }
+}
