@@ -1,13 +1,37 @@
-# HealthLens 论文 · SCI 申请渠道与步骤（2026-08-18 核实）
+# HealthLens 论文 · SCI 申请渠道与步骤（2026-09-24 更新）
 
-## 一、目标期刊（已核实，可直接投）
+> 相较 2026-08-18 版，新增 2 家 SCIE 免费备选刊（IMR、AHM），JIM 数据已刷新。
 
-**Journal of Integrative Medicine (JIM，《结合医学学报(英文)》)**
+## 一、目标期刊（2026-09 核实，3 家作者零费用 SCIE）
+
+### ① 主投：Journal of Integrative Medicine (JIM)
 - 出版社：Elsevier ｜ ISSN 2095-4964
-- 收录：**SCIE（Science Citation Index Expanded）** ✅、PubMed、Scopus、Embase、CSCD
-- 影响因子：**2025 IF = 5.2，JCR Q1，中科院 2 区**（全科医学与补充医学）
-- 收稿类型含：**methodology papers / hypothesis / review / short report** → 本框架稿对口
+- 收录：**SCIE** ✅、PubMed、Scopus、Embase、CSCD
+- 影响因子：**2026 IF = 5.2，JCR Q1，中科院 2 区**
+- 收稿类型含：methodology / hypothesis / review / short report
 - 官网：https://www.sciencedirect.com/journal/journal-of-integrative-medicine
+- 投稿：https://www.editorialmanager.com/joim/ （2026-07 切 EM；指南页仍写 ScholarOne，以 EM 实际为准）
+- 数据：整体接受率 ~18%，初审淘汰 45–50%，median 提交→录用 228 天
+
+### ② 备胎：Integrative Medicine Research (IMR) — ⭐ 强烈推荐
+- 出版社：Elsevier（Korea Institute of Oriental Medicine 主办）
+- 收录：**SCIE、PubMed、Scopus、DOAJ、PMC、AMED、Embase、CINAHL**
+- 影响因子：**2026 IF = 4.9，JCR Q1**（中科院 3 区，新锐 1 区）
+- **费用：APC 由 KIOM 全额承担，作者零费用，100% Gold OA** ✅
+- 投稿：https://www.editorialmanager.com/IMRES/
+- 数据：12 周平均审稿，年发文 77 篇，接受率估 30–40%
+
+### ③ 高分候选：Acupuncture and Herbal Medicine (AHM)
+- 出版社：Wolters Kluwer Health/LWW（天津中医药大学 + 中华中医药学会主办）
+- 收录：**SCIE（ESCI）、PubMed、Scopus、DOAJ**
+- 影响因子：**2026 IF = 7.3，JCR Q1 整合与补充医学**（中科院 4 区，新锐 2 区）
+- **费用：钻石 OA，作者零费用** ✅
+- 投稿：https://journals.lww.com/ahm/pages/default.aspx
+- 数据：14 周平均审稿，年发文 42 篇，2021 年创刊
+
+### ④ 保底备选
+- **Journal of Traditional Chinese Medicine (JTCM)**：SCIE Q2，IF 2.2，**免版面费**，中华中医药学会主办
+- **Chinese Journal of Integrative Medicine (CJIM)**：Springer，SCIE，IF 2.5，Green OA，与本文主题最贴
 
 ## 二、费用（零成本路线属实）
 
