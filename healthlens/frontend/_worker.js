@@ -260,7 +260,8 @@ export default {
     // 说明：Cloudflare Pages 对未命中的路径会做 SPA 回退（返回首页 index.html 且 status=200），
     // 直接 proxy 后端时后端也会对未知 slug 返回 SPA 壳，二者都会把我们的静态知识页顶替成首页。
     // 故改为：直接探测 path+.html 真实静态文件，命中且非 SPA 壳即返回；否则才代理后端动态页。
-    if (path.startsWith("/knowledge/") || path.startsWith("/health/") || path.startsWith("/health-tools/")) {
+    if (path.startsWith("/knowledge/") || path.startsWith("/health/") || path.startsWith("/health-tools/")
+        || path.startsWith("/en/knowledge/") || path.startsWith("/en/health/") || path.startsWith("/en/health-tools/")) {
       const candidates = (!path.endsWith(".html") && !path.endsWith("/")) ? [path + ".html"] : [path];
       for (const c of candidates) {
         const s = await env.ASSETS.fetch(new Request(url.origin + c));
