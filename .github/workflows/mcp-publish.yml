@@ -1,0 +1,74 @@
+name: Publish to PyPI
+
+# Publish healthlens package to PyPI when a new GitHub Release is tagged.
+# Required repository secret:  PYPI_API_TOKEN  (pypi-pypi-...)
+# See https://docs.pypi.org/trusted-publishers/ for the recommended OIDC flow.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build only, do not upload (use this first time to validate secrets)"
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Only needed for trusted publisher flow; harmless without it.
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade build twine
+
+      - name: Build sdist + wheel
+        run: python -m build --sdist --wheel
+
+      - name: Check package metadata
+        run: |
+          twine check dist/*
+          ls -la dist/
+
+      - name: Dry run only (workflow_dispatch dry_run=true OR release event disabled)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          echo "Dry run only — not publishing. Inspect dist/ artifacts above."
+          twine check dist/*
+          echo "Done. To actually publish, either:"
+          echo "  1. Add repo secret PYPI_API_TOKEN (pypi-pypi-... from https://pypi.org/manage/account/token/)"
+          echo "  2. Re-run this workflow with dry_run=false"
+
+      - name: Publish to PyPI (token auth)
+        if: ${{ (github.event_name == 'release') || (github.event_name == 'workflow_dispatch' && !inputs.dry_run) }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Post-publish verify
+        if: ${{ (github.event_name == 'release') || (github.event_name == 'workflow_dispatch' && !inputs.dry_run) }}
+        run: |
+          sleep 20
+          python -c "
+import json, urllib.request
+with urllib.request.urlopen('https://pypi.org/pypi/healthlens/json') as r:
+    data = json.loads(r.read())
+info = data['info']
+print('name:', info['name'])
+print('version:', info['version'])
+print('requires_dist:', len(info.get('requires_dist', []) or []))
+"
