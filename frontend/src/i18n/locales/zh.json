@@ -20,7 +20,8 @@
     "noData": "暂无数据",
     "comingSoon": "敬请期待",
     "connecting": "连接中…",
-    "syncing": "同步中…"
+    "syncing": "同步中…",
+    "saving": "保存中…"
   },
   "login": {
     "title": "登录",
@@ -514,7 +515,8 @@
     "profile": "个人档案",
     "logout": "退出",
     "login": "登录",
-    "language": "语言"
+    "language": "语言",
+    "retention": "健康目标"
   },
   "errors": {
     "notFound": "页面不存在",
@@ -643,5 +645,75 @@
     "revokeConfirm": "确认撤销该分享链接？",
     "revoked": "已撤销",
     "createNew": "创建新分享"
+  },
+  "retention": {
+    "title": "健康目标与提醒",
+    "subtitle": "设定目标、接收提醒、记录执行 —— 让改善计划持续转起来",
+    "tabGoals": "健康目标",
+    "tabNotifications": "通知中心",
+    "tabAdherence": "依从追踪",
+    "myGoals": "我的目标",
+    "newGoal": "新建目标",
+    "noGoals": "还没有目标，创建第一个健康目标开始追踪",
+    "saveGoal": "保存目标",
+    "record": "记录进度",
+    "dueBy": "目标日期",
+    "goalNamePlaceholder": "目标名称（如：每日步数）",
+    "targetPlaceholder": "目标值",
+    "unitPlaceholder": "单位",
+    "progressPrompt": "记录「{{name}}」的当前进度值：",
+    "statTotal": "目标总数",
+    "statActive": "进行中",
+    "statCompleted": "已完成",
+    "goalType": {
+      "weight": "体重",
+      "steps": "步数",
+      "bp": "血压",
+      "glucose": "血糖",
+      "exercise": "运动",
+      "sleep": "睡眠"
+    },
+    "status": {
+      "active": "进行中",
+      "completed": "已完成",
+      "paused": "已暂停",
+      "cancelled": "已取消"
+    },
+    "inbox": "通知中心",
+    "markRead": "标为已读",
+    "markAllRead": "全部已读",
+    "noNotifications": "暂无通知",
+    "viewDetail": "查看详情",
+    "addPlan": "新增服药计划",
+    "addPlanBtn": "添加",
+    "noRecords": "暂无记录",
+    "medNamePlaceholder": "药物名称",
+    "dosePlaceholder": "剂量",
+    "markTaken": "已服用",
+    "markMissed": "漏服",
+    "late": "延误",
+    "statAdherenceRate": "依从率",
+    "statTaken": "已服用",
+    "statMissed": "漏服",
+    "adherenceStatus": {
+      "pending": "待服用",
+      "taken": "已服用",
+      "missed": "漏服",
+      "skipped": "已跳过"
+    },
+    "createFailed": "创建失败",
+    "saveFailed": "保存失败，请稍后重试",
+    "deleteFailed": "删除失败，请稍后重试",
+    "adherenceHeatmap": "依从热力图",
+    "noAdherenceData": "暂无依从记录"
+  },
+  "viz": {
+    "radarAria": "八轴稳态雷达图",
+    "radarTitle": "八轴评分（0-100）",
+    "trendAria": "各轴信号周步演化",
+    "needTwoPoints": "至少需要两个数据点才能绘制趋势",
+    "heatmapAria": "依从热力图",
+    "less": "少",
+    "more": "多"
   }
 }
