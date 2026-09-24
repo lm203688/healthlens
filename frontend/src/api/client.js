@@ -103,6 +103,28 @@ export const api = {
   checkinHistory: ()     => request('/checkin/history'),
   checkinSummary: ()     => request('/checkin/summary'),
 
+  /* ===== 留存闭环：健康目标 ===== */
+  goalsList:    ()         => request('/goals'),
+  goalCreate:   (body)     => request('/goals', { method: 'POST', body: JSON.stringify(body) }),
+  goalDetail:   (id)       => request(`/goals/${id}`),
+  goalUpdate:   (id, body) => request(`/goals/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  goalDelete:   (id)       => request(`/goals/${id}`, { method: 'DELETE' }),
+  goalProgress: (id, body) => request(`/goals/${id}/progress`, { method: 'POST', body: JSON.stringify(body) }),
+  goalsStats:   ()         => request('/goals/summary/stats'),
+
+  /* ===== 留存闭环：通知中心 ===== */
+  notifications:      (unreadOnly) => request(`/notifications?page_size=50${unreadOnly ? '&is_read=false' : ''}`),
+  notificationsUnread:()   => request('/notifications/unread/count'),
+  notificationRead:   (id) => request(`/notifications/${id}/read`, { method: 'PUT' }),
+  notificationsReadAll:()  => request('/notifications/read-all', { method: 'PUT' }),
+  notificationDelete: (id) => request(`/notifications/${id}`, { method: 'DELETE' }),
+
+  /* ===== 留存闭环：依从追踪 ===== */
+  adherenceList:  ()         => request('/adherence'),
+  adherenceCreate:(body)     => request('/adherence', { method: 'POST', body: JSON.stringify(body) }),
+  adherenceUpdate:(id, body) => request(`/adherence/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  adherenceStats: ()         => request('/adherence/stats/summary'),
+
   /* ===== 每日健康打卡（observations）===== */
   observations: () => request('/observations'),
   observationPost: (body) => request('/observations', { method: 'POST', body: JSON.stringify(body) }),
