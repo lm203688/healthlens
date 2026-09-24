@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Payment from './pages/Payment';
 import Upload from './pages/Upload';
 import Share from './pages/Share';
+import Retention from './pages/Retention';
 import LanguageSwitcher from './components/LanguageSwitcher';
 
 const NAV_ITEMS = [
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { to: '/knowledge',  key: 'nav.knowledge', icon: '📚' },
   { to: '/agent',      key: 'nav.agent', icon: '🤖' },
   { to: '/upload',     key: 'nav.upload', icon: '📤' },
+  { to: '/retention',  key: 'nav.retention', icon: '🎯' },
   { to: '/share',      key: 'nav.share', icon: '🔗' },
   { to: '/payment',    key: 'nav.payment', icon: '💎' },
   { to: '/profile',    key: 'nav.profile', icon: '👤' },
@@ -107,6 +109,7 @@ export default function App() {
           <Route path="/agent" element={<AgentChat />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/share" element={<Share />} />
+          <Route path="/retention" element={<Retention />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
