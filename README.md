@@ -5,7 +5,7 @@
 [![Tests](https://github.com/lm203688/healthlens/actions/workflows/ci.yml/badge.svg)](https://github.com/lm203688/healthlens/actions)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com)
-[![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](#license)
 
 ## 项目状态
 
