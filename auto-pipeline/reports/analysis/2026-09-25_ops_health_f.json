@@ -1,0 +1,59 @@
+{
+  "report_id": "ops_f_20260925",
+  "generated_at": "2026-09-25T03:05:34.587694",
+  "overall_status": "healthy",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 444
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 42
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 952
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "ok",
+      "http_code": 200,
+      "latency_ms": 86
+    }
+  ],
+  "server_reachable": false,
+  "server_unreachable_reason": "SSH 失败 (exit 255): Warning: Permanently added '150.158.119.19' (ED25519) to the list of known hosts.\nubuntu@150.158.119.19: Permission denied (publickey,password).",
+  "containers": [],
+  "security_issues": [
+    {
+      "severity": "warning",
+      "issue": ".gitignore 不存在"
+    }
+  ],
+  "medical_terms": [],
+  "site_identity": [
+    {
+      "path": "/",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    },
+    {
+      "path": "/robots.txt",
+      "status": "ok",
+      "detail": "身份标识匹配: ['healthlens', 'HealthLens']"
+    }
+  ],
+  "deploy_target_issues": [],
+  "actions_needed": []
+}
