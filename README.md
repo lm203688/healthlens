@@ -1,5 +1,7 @@
 # HealthLens 健康全景平台
 
+<!-- mcp-name: io.github.lm203688/healthlens -->
+
 > 跨生态健康数据聚合 → AI 双轨诊断(西医+中医) → 精准治疗 → 古籍知识库 → 基因组学
 
 [![Tests](https://github.com/lm203688/healthlens/actions/workflows/ci.yml/badge.svg)](https://github.com/lm203688/healthlens/actions)
