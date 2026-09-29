@@ -63,9 +63,42 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | python -m healthlens_age
 
 ### Configure MCP Client
 
-**Claude Desktop / Cursor / Cline / Cline / Windsurf**
+#### Option A — Hosted HTTP endpoint (recommended for overseas users)
 
-Add to your MCP config (e.g. `~/.claude/mcp.json` or Cursor's `mcp.json`):
+**One-line URL, no local install.** Works with Claude Desktop, Cursor, Cline, Windsurf, and any MCP client supporting JSON-RPC over HTTP.
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "url": "https://healthlens.cc/api/v1/mcp",
+      "transport": "http"
+    }
+  }
+}
+```
+
+For L3 (personalized) tools — you must first ask us to enable `HL_MCP_EXPOSE_PRIVATE=1` on the server side, then add the key:
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "url": "https://healthlens.cc/api/v1/mcp",
+      "transport": "http",
+      "headers": {
+        "X-HealthLens-MCP-Key": "<your-key>"
+      }
+    }
+  }
+}
+```
+
+#### Option B — Local stdio (pip install)
+
+```bash
+pip install healthlens
+```
 
 ```json
 {
