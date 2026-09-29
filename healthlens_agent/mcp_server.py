@@ -43,7 +43,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-_SERVER_VERSION = "0.2.0"
+_SERVER_VERSION = "0.3.0"
 _START_TS = time.time()
 
 # ---------------------------------------------------------------------------
