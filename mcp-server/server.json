@@ -3,7 +3,7 @@
   "name": "io.github.lm203688/healthlens",
   "title": "HealthLens Wellness Knowledge",
   "description": "MCP server exposing HealthLens wellness knowledge: 8-axis integrative framework explanations, TCM knowledge base search (TCM-MKG graph with 6,207 herbs), general diet & motion guidance, and optional personalized fusion reasoning (private mode). L1 (content) and L2 (general knowledge) tools are safe by default with no personal data exposure; L3 (personalized reasoning) is opt-in via HL_MCP_EXPOSE_PRIVATE=1. Covers hl_health_check, hl_search_knowledge, hl_get_axis_detail, hl_get_wellness_article, hl_suggest_general_diet, hl_suggest_general_motion, plus private hl_fusion_engine, hl_risk_assess, hl_tcm_constitution, hl_evidence_grade.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "websiteUrl": "https://healthlens.cc",
   "repository": {
     "url": "https://github.com/lm203688/healthlens",
@@ -13,10 +13,24 @@
     {
       "registryType": "pypi",
       "identifier": "healthlens",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       }
+    }
+  ],
+  "transports": [
+    {
+      "type": "http",
+      "url": "https://healthlens.cc/api/v1/mcp",
+      "protocol": "json-rpc-2.0",
+      "methods": ["POST"],
+      "auth": "none for L1/L2, X-HealthLens-MCP-Key header for L3 when HL_MCP_EXPOSE_PRIVATE=1"
+    },
+    {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "healthlens_agent", "mcp"]
     }
   ],
   "categories": [
@@ -36,6 +50,7 @@
     "traditional-chinese-medicine",
     "personalized-medicine",
     "healthlens",
-    "eight-axis-framework"
+    "eight-axis-framework",
+    "hosted-endpoint"
   ]
 }
