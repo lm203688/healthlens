@@ -170,10 +170,14 @@ async def mcp_rpc(request: Request, response: Response):
 
     # Batch: list of envelopes. JSON-RPC 2.0 §6.4.
     if isinstance(raw, list):
-        return JSONResponse(
-            content=[_dispatch_one(env, mcp_key) for env in raw if isinstance(env, dict)],
-            status_code=200,
-        )
+        bodies = []
+        for env in raw:
+            if not isinstance(env, dict):
+                continue
+            if _is_notification(env):
+                continue  # notifications have no response
+            bodies.append(_dispatch_one(env, mcp_key))
+        return JSONResponse(content=bodies, status_code=200)
 
     if not isinstance(raw, dict):
         return JSONResponse(
@@ -185,27 +189,43 @@ async def mcp_rpc(request: Request, response: Response):
             status_code=400,
         )
 
-    return _dispatch_one(raw, mcp_key)
+    if _is_notification(raw):
+        return JSONResponse(content=None, status_code=202)
+
+    body = _dispatch_one(raw, mcp_key)
+    status = body.get("_status", 200)
+    body.pop("_status", None)
+    return JSONResponse(content=body, status_code=status)
 
 
-def _dispatch_one(env: dict, mcp_key: str | None):
+def _is_notification(env: dict) -> bool:
+    """JSON-RPC 2.0 notification: method starting with 'notifications/' or no 'id' field."""
+    if not isinstance(env, dict):
+        return False
+    method = env.get("method", "")
+    if method.startswith("notifications/"):
+        return True
+    return "id" not in env
+
+
+def _dispatch_one(env: dict, mcp_key: str | None) -> dict:
+    """Return a plain dict — the JSON-RPC response envelope.
+
+    The dict may contain a private `_status` key that the caller reads and pops
+    to set the HTTP status. This lets batch mode collect multiple envelopes
+    (JSONResponse objects cannot be nested inside another response body).
+    """
     req_id = env.get("id")
     method = env.get("method", "")
-
-    # Notifications (JSON-RPC spec: no `id` field, or method starts with "notifications/")
-    if method.startswith("notifications/"):
-        return JSONResponse(content=None, status_code=202)
-    if "id" not in env:
-        return JSONResponse(content=None, status_code=202)
 
     try:
         _check_auth_for_method(method, mcp_key)
     except HTTPException:
-        return JSONResponse(
-            content={"jsonrpc": "2.0", "id": req_id,
-                     "error": {"code": -32001, "message": "auth required"}},
-            status_code=401,
-        )
+        return {
+            "jsonrpc": "2.0", "id": req_id,
+            "error": {"code": -32001, "message": "auth required"},
+            "_status": 401,
+        }
 
     try:
         if method == "initialize":
@@ -217,24 +237,33 @@ def _dispatch_one(env: dict, mcp_key: str | None):
         elif method == "ping":
             result = {}
         else:
-            return JSONResponse(
-                content={"jsonrpc": "2.0", "id": req_id,
-                         "error": {"code": -32601, "message": f"unknown method: {method}"}},
-                status_code=400,
-            )
+            return {
+                "jsonrpc": "2.0", "id": req_id,
+                "error": {"code": -32601, "message": f"unknown method: {method}"},
+                "_status": 400,
+            }
     except HTTPException as exc:
-        # Preserve JSON-RPC error code from _handle_tools_call
+        # Re-wrap as JSON-RPC error envelope (FastAPI's default detail shape
+        # lacks jsonrpc/id fields that MCP clients expect).
         detail = exc.detail if isinstance(exc.detail, dict) else {"message": str(exc.detail)}
-        return JSONResponse(content=detail, status_code=exc.status_code)
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "error": {
+                "code": detail.get("jsonrpc_error", -32603),
+                "message": detail.get("message", str(exc.detail)),
+            },
+            "_status": exc.status_code,
+        }
     except Exception as exc:  # pragma: no cover - defensive
         logger.exception("mcp rpc handler error")
-        return JSONResponse(
-            content={"jsonrpc": "2.0", "id": req_id,
-                     "error": {"code": -32603, "message": str(exc)}},
-            status_code=500,
-        )
+        return {
+            "jsonrpc": "2.0", "id": req_id,
+            "error": {"code": -32603, "message": str(exc)},
+            "_status": 500,
+        }
 
-    return JSONResponse(content={"jsonrpc": "2.0", "id": req_id, "result": result})
+    return {"jsonrpc": "2.0", "id": req_id, "result": result}
 
 
 @router.get("/tools")
