@@ -693,7 +693,6 @@ def _run_jsonrpc_mode() -> None:
 
 
 def demo() -> None:
-    tools = _active_tools()
     print(f"HealthLens MCP Server v{_SERVER_VERSION}")
     print(f"Server version: {_SERVER_VERSION}")
     print(f"Private tools exposed: {_EXPOSE_PRIVATE}")
@@ -720,7 +719,7 @@ def demo() -> None:
             print(f"  [LOCKED] {name}")
     print()
     try:
-        import mcp  # type: ignore
+        import mcp  # noqa: F401  # type: ignore  (availability check only)
         print("mcp package: installed (will use MCP SDK mode)")
     except ImportError:
         print("mcp package: not installed (will use JSON-RPC stdio fallback)")
