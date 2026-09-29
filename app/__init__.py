@@ -163,6 +163,14 @@ def create_app() -> FastAPI:
     # 公开分享页面（无需登录）
     app.include_router(share_public_router, tags=["公开分享"])
 
+    # MCP over HTTP（海外 Agent 一行 URL 接入，无需 pip install）
+    try:
+        from app.api.mcp_http import router as mcp_http_router
+
+        app.include_router(mcp_http_router)
+    except Exception as _mcp_err:  # noqa: BLE001
+        logger.warning(f"[MCP-HTTP] MCP HTTP 路由未加载: {_mcp_err}")
+
     # 智能体能力路由（GOAI 借鉴落地）
     # 注意：app/api/agent.py 内已写死 "/api/v1/agent/..." 全路径，
     # 故此处的 include_router 不能再传 prefix，否则会变成 /api/v1/api/v1/agent/...
