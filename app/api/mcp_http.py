@@ -31,7 +31,6 @@ import time
 
 from fastapi import APIRouter, Header, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
 
 from healthlens_agent.mcp_server import (
     _SERVER_VERSION,
@@ -49,11 +48,11 @@ _HTTP_KEY = os.environ.get("HL_MCP_HTTP_KEY", "")
 _START_TS = time.time()
 
 
-class JsonRpcRequest(BaseModel):
-    jsonrpc: str = Field("2.0", description="JSON-RPC version")
-    id: int | str | None = Field(None, description="Request id for correlation")
-    method: str = Field(..., description="MCP method: initialize | tools/list | tools/call")
-    params: dict = Field(default_factory=dict, description="Method params")
+# We intentionally do NOT declare a strict JSON-RPC Pydantic model here: the MCP
+# protocol also sends "notifications/*" messages without an `id` field and
+# supports JSON-RPC 2.0 batch requests (a list of envelopes), both of which a
+# fixed envelope schema would reject. We parse via `request.json()` and
+# dispatch each envelope manually in `_dispatch_one`.
 
 
 def _tool_defs() -> list[dict]:
@@ -141,52 +140,101 @@ def _check_auth_for_method(method: str, mcp_key: str | None) -> None:
 
 
 @router.post("")
-async def mcp_rpc(req: JsonRpcRequest, request: Request, response: Response) -> JSONResponse:
+async def mcp_rpc(request: Request, response: Response):
     """MCP JSON-RPC 2.0 over HTTP POST.
 
     Handles:
       - initialize
       - tools/list
       - tools/call
+      - ping
+      - notifications/* (fire-and-forget, returns 202 No Content)
+    Also handles JSON-RPC batch requests (a list of envelopes).
     """
-    _check_auth_for_method(req.method, request.headers.get("x-healthlens-mcp-key"))
-
-    try:
-        if req.method == "initialize":
-            result = _handle_initialize()
-        elif req.method == "tools/list":
-            result = _handle_tools_list()
-        elif req.method == "tools/call":
-            result = _handle_tools_call(req.params or {})
-        elif req.method == "ping":
-            result = {}
-        else:
-            return JSONResponse(
-                content={
-                    "jsonrpc": "2.0",
-                    "id": req.id,
-                    "error": {"code": -32601, "message": f"unknown method: {req.method}"},
-                },
-                status_code=400,
-            )
-    except HTTPException:
-        raise
-    except Exception as exc:  # pragma: no cover - defensive
-        logger.exception("mcp rpc handler error")
-        return JSONResponse(
-            content={
-                "jsonrpc": "2.0",
-                "id": req.id,
-                "error": {"code": -32603, "message": f"internal error: {exc}"},
-            },
-            status_code=500,
-        )
-
-    # Cache-bust: MCP clients may cache responses
     response.headers["Cache-Control"] = "no-store"
     response.headers["Access-Control-Allow-Origin"] = "*"
 
-    return JSONResponse(content={"jsonrpc": "2.0", "id": req.id, "result": result})
+    try:
+        raw = await request.json()
+    except Exception as exc:
+        return JSONResponse(
+            content={
+                "jsonrpc": "2.0",
+                "id": None,
+                "error": {"code": -32700, "message": f"parse error: {exc}"},
+            },
+            status_code=400,
+        )
+
+    mcp_key = request.headers.get("x-healthlens-mcp-key")
+
+    # Batch: list of envelopes. JSON-RPC 2.0 §6.4.
+    if isinstance(raw, list):
+        return JSONResponse(
+            content=[_dispatch_one(env, mcp_key) for env in raw if isinstance(env, dict)],
+            status_code=200,
+        )
+
+    if not isinstance(raw, dict):
+        return JSONResponse(
+            content={
+                "jsonrpc": "2.0",
+                "id": None,
+                "error": {"code": -32600, "message": "invalid request envelope"},
+            },
+            status_code=400,
+        )
+
+    return _dispatch_one(raw, mcp_key)
+
+
+def _dispatch_one(env: dict, mcp_key: str | None):
+    req_id = env.get("id")
+    method = env.get("method", "")
+
+    # Notifications (JSON-RPC spec: no `id` field, or method starts with "notifications/")
+    if method.startswith("notifications/"):
+        return JSONResponse(content=None, status_code=202)
+    if "id" not in env:
+        return JSONResponse(content=None, status_code=202)
+
+    try:
+        _check_auth_for_method(method, mcp_key)
+    except HTTPException:
+        return JSONResponse(
+            content={"jsonrpc": "2.0", "id": req_id,
+                     "error": {"code": -32001, "message": "auth required"}},
+            status_code=401,
+        )
+
+    try:
+        if method == "initialize":
+            result = _handle_initialize()
+        elif method == "tools/list":
+            result = _handle_tools_list()
+        elif method == "tools/call":
+            result = _handle_tools_call(env.get("params") or {})
+        elif method == "ping":
+            result = {}
+        else:
+            return JSONResponse(
+                content={"jsonrpc": "2.0", "id": req_id,
+                         "error": {"code": -32601, "message": f"unknown method: {method}"}},
+                status_code=400,
+            )
+    except HTTPException as exc:
+        # Preserve JSON-RPC error code from _handle_tools_call
+        detail = exc.detail if isinstance(exc.detail, dict) else {"message": str(exc.detail)}
+        return JSONResponse(content=detail, status_code=exc.status_code)
+    except Exception as exc:  # pragma: no cover - defensive
+        logger.exception("mcp rpc handler error")
+        return JSONResponse(
+            content={"jsonrpc": "2.0", "id": req_id,
+                     "error": {"code": -32603, "message": str(exc)}},
+            status_code=500,
+        )
+
+    return JSONResponse(content={"jsonrpc": "2.0", "id": req_id, "result": result})
 
 
 @router.get("/tools")
