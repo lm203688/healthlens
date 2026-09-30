@@ -94,7 +94,39 @@ For L3 (personalized) tools — you must first ask us to enable `HL_MCP_EXPOSE_P
 }
 ```
 
-#### Option B — Local stdio (pip install)
+#### Option B — Docker (recommended for local installs)
+
+No Python, no pip — pulls a single prebuilt image with data assets bundled.
+
+```bash
+docker pull lm203688/healthlens-mcp
+```
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "lm203688/healthlens-mcp"]
+    }
+  }
+}
+```
+
+For private tools:
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "HL_MCP_EXPOSE_PRIVATE=1", "lm203688/healthlens-mcp"]
+    }
+  }
+}
+```
+
+#### Option C — Local stdio (pip install)
 
 ```bash
 pip install healthlens
@@ -168,6 +200,17 @@ For private tools:
 - Any output that could be construed as diagnosis
 
 All L1/L2 tools return only public wellness knowledge from TCM-MKG (MIT license) and classical books.
+
+## Data corpus
+
+The server ships with a curated TCM knowledge corpus — see [`data/DATASET_CARD.md`](../data/DATASET_CARD.md) for schema and stats:
+
+- **6,207 herbal entities** aligned to ICD-11 / UMLS / MeSH / DOID
+- **~23,500 medicinal property records** across medicinal flavor / meridian tropism / therapeutic nature
+- **701 classical-book entries** (神农本草经, 食疗本草, 本草纲目, 黄帝内经)
+- **120 evidence-graded case records** (L1/L2/L3 tiered)
+
+Total ~6.5 MB, MIT-licensed, no PII.
 
 ---
 
