@@ -17,6 +17,14 @@
       "transport": {
         "type": "stdio"
       }
+    },
+    {
+      "registryType": "dockerHub",
+      "identifier": "lm203688/healthlens-mcp",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      }
     }
   ],
   "transports": [
@@ -31,6 +39,11 @@
       "type": "stdio",
       "command": "python",
       "args": ["-m", "healthlens_agent", "mcp"]
+    },
+    {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "lm203688/healthlens-mcp"]
     }
   ],
   "categories": [
@@ -51,6 +64,12 @@
     "personalized-medicine",
     "healthlens",
     "eight-axis-framework",
-    "hosted-endpoint"
+    "hosted-endpoint",
+    "tcm-mkg",
+    "herbal-medicine",
+    "classical-medicine",
+    "docker",
+    "rag",
+    "knowledge-graph"
   ]
 }
