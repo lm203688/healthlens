@@ -43,12 +43,13 @@ RUN apt-get update \
        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install the package (base) + MCP SDK. No OCR, no Postgres, no Celery.
-# Note: `pip install .` pulls FastAPI/SQLAlchemy/alembic which the MCP server
-# doesn't use — but dropping them would require a separate minimal pyproject
-# and isn't worth the complexity yet. Target image ~400 MB.
+# Install with --no-deps: healthlens_agent.mcp_server is stdlib-only at import
+# time; the MCP server never touches the web stack (FastAPI/SQLAlchemy/Celery).
+# The `docker run ... --demo` smoke test below fails the build if a real
+# dependency is missing, so this stays safe without paying for the full web
+# dependency tree (~1.5 GB -> ~180 MB image).
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir . \
+RUN pip install --no-cache-dir --no-deps . \
     && pip install --no-cache-dir "mcp>=1.0.0"
 
 # Create non-root user
