@@ -1,0 +1,96 @@
+name: Publish MCP image to Docker Hub
+
+# Builds the standalone MCP server image (mcp-server/Dockerfile, stdio transport)
+# and pushes it to Docker Hub so Smithery / mcp.so / users can pull it without
+# building anything themselves.
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions):
+#   DOCKERHUB_USERNAME   (e.g. lm203688)
+#   DOCKERHUB_TOKEN      (Docker Hub personal access token, public read scope)
+#
+# If either secret is missing the job is skipped (no failing red build).
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+    paths:
+      - "mcp-server/Dockerfile"
+      - "mcp-server/build_docker.sh"
+      - "healthlens_agent/**"
+      - "data/tcm_mkg/**"
+      - "data/tcm_structured/**"
+      - "data/classical_books.json"
+      - "data/case_evidence_db.json"
+      - "data/tcm_pathway_map.json"
+      - "pyproject.toml"
+      - ".github/workflows/docker-publish.yml"
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # `if` on secrets is allowed at job level: skip cleanly when unconfigured.
+    if: ${{ secrets.DOCKERHUB_TOKEN != '' && secrets.DOCKERHUB_USERNAME != '' }}
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/healthlens-mcp
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          flavor: |
+            latest=true
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: mcp-server/Dockerfile
+          load: true
+          tags: healthlens-mcp:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Fail the build if the stdio server cannot enumerate its tools.
+      - name: Smoke test the image
+        run: |
+          docker run --rm --entrypoint "" healthlens-mcp:ci \
+            python -m healthlens_agent.mcp_server --demo
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: mcp-server/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
