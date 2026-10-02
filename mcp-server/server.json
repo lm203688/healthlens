@@ -25,6 +25,14 @@
       "transport": {
         "type": "stdio"
       }
+    },
+    {
+      "registryType": "dockerHub",
+      "identifier": "ghcr.io/lm203688/healthlens-mcp",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      }
     }
   ],
   "transports": [
@@ -44,6 +52,11 @@
       "type": "stdio",
       "command": "docker",
       "args": ["run", "-i", "--rm", "lm203688/healthlens-mcp"]
+    },
+    {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "ghcr.io/lm203688/healthlens-mcp:latest"]
     }
   ],
   "categories": [
