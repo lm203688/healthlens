@@ -30,6 +30,7 @@
 | 1 | **Glama** | https://glama.ai/mcp | Web 表单 | P0 |
 | 2 | **Official MCP Registry** | https://github.com/modelcontextprotocol/servers | GitHub PR | P0 |
 | 3 | **Smithery** | https://smithery.ai | GitHub 仓库配置 | P0 |
+| 3b | **Official MCP Registry（发布器）** | https://github.com/modelcontextprotocol/registry | `npx @modelcontextprotocol/publisher publish` | P0 |
 | 4 | **mcp.so** | https://mcp.so | Web 表单 | P1 |
 | 5 | **PulseMCP** | https://pulsemcp.com | Web 表单 | P1 |
 
@@ -90,7 +91,7 @@ python -m twine upload dist/*
 
 ```bash
 pip install healthlens-mcp-server  # 或 pip install healthlens
-python -m healthlens_agent mcp --demo
+python -m healthlens_agent.mcp_server --demo
 ```
 
 ---
@@ -197,7 +198,7 @@ python -m healthlens_agent mcp --demo
 - [ ] `pyproject.toml` 可 `pip install`
 
 ### 功能测试
-- [ ] `python -m healthlens_agent mcp --demo` 正常输出
+- [ ] `python -m healthlens_agent.mcp_server --demo` 正常输出
 - [ ] JSON-RPC `tools/list` 返回 6 个工具（L1+L2）
 - [ ] 每个工具调用返回合法 JSON
 - [ ] `hl_health_check` 返回 `status: ok`
