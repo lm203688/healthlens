@@ -16,7 +16,17 @@ __pycache__/
 .env.production
 
 # Data & logs (mounted as volumes in production)
-data/
+# WARNING: `data/` would exclude the corpus the MCP server bundles. Gitignore
+# semantics mean a negated child can NOT re-include a path under an excluded
+# parent, so whitelist each needed asset explicitly instead.
+data/*
+!data/DATASET_CARD.md
+!data/tcm_mkg/
+!data/tcm_structured/
+!data/classical_books.json
+!data/case_evidence_db.json
+!data/case_evidence_db.md
+!data/tcm_pathway_map.json
 logs/
 
 # Tests & dev
