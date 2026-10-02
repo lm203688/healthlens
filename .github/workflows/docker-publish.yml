@@ -86,6 +86,9 @@ jobs:
           docker run --rm --entrypoint "" healthlens-mcp:ci \
             python -m healthlens_agent.mcp_server --demo
 
+      # No cache-from here: the previous step already ran `load: true`, and
+      # re-reading a type=gha cache in the same job makes buildx fail while
+      # computing cache keys ("/data/...": not found).
       - name: Build and push to GHCR
         uses: docker/build-push-action@v6
         with:
@@ -95,4 +98,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
