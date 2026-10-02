@@ -30,10 +30,20 @@ jobs:
         with:
           python-version: "3.12"
 
+      # GH_PAT lets the job write to the *other* repo lm203688/tcm-mkg; the
+      # job's own GITHUB_TOKEN cannot. When it is absent, skip cleanly with a
+      # hint instead of failing red (the corpus is already published — see
+      # data/publish_dataset_repo.py for local re-publish).
       - name: Publish dataset repo
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
+          if [ -z "$GH_PAT" ]; then
+            echo "GH_PAT not configured — skipping corpus re-publish."
+            echo "The corpus is already published at https://github.com/lm203688/tcm-mkg."
+            echo "Re-publish locally with: python data/publish_dataset_repo.py --push"
+            exit 0
+          fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             python data/publish_dataset_repo.py
           else
@@ -42,6 +52,11 @@ jobs:
 
       - name: Verify published blobs
         if: ${{ !inputs.dry_run }}
-        run: python data/verify_dataset_repo.py
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -z "$GH_PAT" ]; then
+            echo "GH_PAT not configured — nothing to verify."
+            exit 0
+          fi
+          python data/verify_dataset_repo.py
