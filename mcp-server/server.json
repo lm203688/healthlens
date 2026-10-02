@@ -38,7 +38,7 @@
     {
       "type": "stdio",
       "command": "python",
-      "args": ["-m", "healthlens_agent", "mcp"]
+      "args": ["-m", "healthlens_agent.mcp_server"]
     },
     {
       "type": "stdio",
