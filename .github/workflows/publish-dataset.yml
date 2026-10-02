@@ -1,0 +1,42 @@
+name: Publish TCM corpus dataset
+
+# Re-publishes the curated corpus (TCM-MKG alignment + evidence grading) to the
+# standalone public repo lm203688/tcm-mkg. Use it after refreshing evidence grades
+# or pulling upstream TCM-MKG, so consumers always pull a current snapshot.
+#
+# Required repo secret:
+#   GH_PAT   a classic PAT with `public_repo` scope (workflow GITHUB_TOKEN cannot
+#            write to a *different* repo).
+#
+# Run manually: Actions -> Publish TCM corpus dataset -> Run workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Plan only, do not write to GitHub"
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Publish dataset repo
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python data/publish_dataset_repo.py${{ inputs.dry_run && '' || ' --push' }}
+
+      - name: Verify published blobs
+        if: ${{ !inputs.dry_run }}
+        run: python data/verify_dataset_repo.py
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
