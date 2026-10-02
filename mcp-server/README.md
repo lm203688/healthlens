@@ -212,6 +212,26 @@ The server ships with a curated TCM knowledge corpus — see [`data/DATASET_CARD
 
 Total ~6.5 MB, MIT-licensed, no PII.
 
+### Standalone dataset mirror
+
+The corpus is also published on its own repo — you can use it without HealthLens at all:
+
+- **https://github.com/lm203688/tcm-mkg** — `git clone`, then:
+  ```python
+  import json
+  corpus = json.load(open("data/chp_entities.json", encoding="utf-8"))
+  ```
+- Hugging Face: one-click import from the GitHub mirror, then
+  ```python
+  from datasets import load_dataset
+  load_dataset("lm203688/tcm-mkg", data_files="data/chp_entities.json")
+  ```
+- Build your own MCP server on it in minutes:
+  `docker run -i --rm lm203688/healthlens-mcp` (image built from [`Dockerfile`](./Dockerfile))
+
+Re-sync the mirror with `python data/publish_dataset_repo.py --push`, or run the
+*Publish TCM corpus dataset* GitHub Action.
+
 ---
 
 ## Disclaimer
