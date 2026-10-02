@@ -10,13 +10,19 @@
 
 | # | 任务 | 耗时 | 需要什么凭证 | 依赖 |
 |---|---|---:|---|---|
-| 1 | Docker Hub 仓库 + 自动构建 | 15 min | Docker Hub 账号 | — |
+| 1 | **GHCR 镜像自动构建** | **3 min** | **无**（用 GITHUB_TOKEN，AI 已配好 workflow） | — |
+| 1b | Docker Hub 镜像（可选，大陆不可达） | 15 min | Docker Hub 账号 | — |
 | 2 | 语料镜像自动重发 | 5 min | GitHub PAT（public_repo） | — |
 | 3 | PyPI 包发布 | 20 min | PyPI API token | — |
 | 4 | Hugging Face 数据集 | 10 min | HF write token | — |
 | 5 | MCP 官方 Registry | 10 min | 无（npx 登录） | **必须先完成 3** |
 | 6 | 表单类市场（Glama / Smithery / mcp.so） | 30 min | 无 | 建议先做 3 |
 | 7 | 工具重命名 `hl_*` → `healthlens_*` | 20 min | 你的产品决策 | 建议先做 5 |
+
+> ⚠️ **任务 1b 说明**：`hub.docker.com` 与 `registry-1.docker.io` 在中国大陆 TLS 握手直接失败
+> （curl 返回 000 / CONNECT 502），网页打开就是打不开，Docker Hub 仓库建了也 `push` 不上去。
+> 所以**默认走 GHCR**（`ghcr.io/lm203688/healthlens-mcp`），workflow 已配好，`GITHUB_TOKEN`
+> 自带 push 权限，**你一个 secret 都不用配**。任务 1b 是加分项，不是必需。
 
 **建议顺序：1 → 2 → 3 → 4 → 5 → 6**（1/2/3/4 互不依赖，可穿插；5 强依赖 3）。
 
@@ -26,11 +32,53 @@
 
 ---
 
-## 任务 1 — Docker Hub 镜像自动构建
+## 任务 1 — GHCR 镜像自动构建（**零配置，勾一下就完事**）
 
-目标：让 `lm203688/healthlens-mcp` 镜像能自动 build + push，目录站可以直接 `docker pull`。
+目标：镜像自动 build + push 到 `ghcr.io/lm203688/healthlens-mcp`。
 
-### 1.1 建 Docker Hub 仓库
+**你只需要一步**：打开 👉 **https://github.com/lm203688/healthlens/actions/workflows/docker-publish.yml**
+→ 右侧 **Run workflow** → 绿色 Run 按钮。
+
+workflow 已经配好：`packages: write` 权限 + GHCR login + 构建 + smoke test + push，
+不用建仓库、不用 secret、不用 Docker Hub 账号。
+
+**判成功**（约 6-10 分钟）：
+1. Actions 页面该 job 显示绿勾，步骤 `Build and push to GHCR` 出现
+2. 打开 👉 **https://github.com/lm203688/healthlens/pkgs/container/healthlens-mcp** 能看到 `latest` tag
+
+**本机拉下来验证**（PowerShell）：
+
+```powershell
+docker login ghcr.io                      # 匿名读也行，按提示输用户名+PAT 或先跳过
+docker pull ghcr.io/lm203688/healthlens-mcp:latest
+docker run --rm ghcr.io/lm203688/healthlens-mcp:latest python -m healthlens_agent.mcp_server --demo
+```
+
+最后一行应打印 6 个 L1/L2 工具。客户端配置：
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "ghcr.io/lm203688/healthlens-mcp:latest"]
+    }
+  }
+}
+```
+
+> 拉 GHCR 镜像若报 `unauthorized: authentication required`（匿名读被拒），执行一次
+> `docker login ghcr.io` 即可，之后不用再配。
+> 中国大陆访问 `ghcr.io` 是通的（实测返回 401 而非超时），`docker pull` 走的是
+> `ghcr.io` 边缘节点，比 Docker Hub 可靠得多。
+
+---
+
+## 任务 1b — Docker Hub 镜像（可选，建议在海外网络下做）
+
+> 中国大陆跳过。下面步骤保留是为了你有代理 / 在海外时补一个镜像源。
+
+### 1b.1 建 Docker Hub 仓库
 
 1. 打开 👉 **https://hub.docker.com/repositories/new**
 2. Namespace：`lm203688`
@@ -38,7 +86,7 @@
 4. 勾 **Public**
 5. 点 **Create**
 
-### 1.2 生成 Docker Hub Access Token
+### 1b.2 生成 Docker Hub Access Token
 
 1. 打开 👉 **https://hub.docker.com/settings/security**
    （新版会自动跳到 https://app.docker.com/settings/profile/personal-access-tokens）
@@ -46,7 +94,7 @@
 3. Name 随便填 `healthlens-ci`，**权限勾 Read / Write / Delete**
 4. 生成后页面只显示这一次 —— **马上复制存好**
 
-### 1.3 加两个 GitHub secret
+### 1b.3 加两个 GitHub secret
 
 同一页面 👉 https://github.com/lm203688/healthlens/settings/secrets/actions
 
@@ -55,11 +103,10 @@
 | `DOCKERHUB_USERNAME` | `lm203688` |
 | `DOCKERHUB_TOKEN` | 上一步复制的 token |
 
-### 1.4 触发构建
+### 1b.4 触发构建
 
 👉 **https://github.com/lm203688/healthlens/actions/workflows/docker-publish.yml** → 右侧 **Run workflow** → 点绿色按钮。
-
-> 注意：缺任一 secret 时 job 会**静默 skip**（不红），所以必须先确认 secret 加对了。
+（任务 1 已经触发过一次了，加完 secret 再跑一次即可，Docker Hub 的那几个 step 会自动启用。）
 
 **判成功**：约 5-10 分钟后打开 👉 **https://hub.docker.com/r/lm203688/healthlens-mcp/tags**
 能看到 `latest` tag；本地再拉一次验证：
