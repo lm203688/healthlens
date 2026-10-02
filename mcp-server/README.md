@@ -98,9 +98,28 @@ For L3 (personalized) tools — you must first ask us to enable `HL_MCP_EXPOSE_P
 
 No Python, no pip — pulls a single prebuilt image with data assets bundled.
 
+**Default registry — GHCR** (`ghcr.io/lm203688/healthlens-mcp`, always built by CI).
+A Docker Hub mirror exists at `lm203688/healthlens-mcp` but Docker Hub is unreachable
+from mainland China, so prefer GHCR if you are in CN.
+
 ```bash
-docker pull lm203688/healthlens-mcp
+docker pull ghcr.io/lm203688/healthlens-mcp:latest
+# first pull only — GHCR needs an anonymous read token:
+#   docker login ghcr.io && echo "$CR_PAT" | docker login ghcr.io --username lm203688 --password-stdin
 ```
+
+```json
+{
+  "mcpServers": {
+    "healthlens": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "ghcr.io/lm203688/healthlens-mcp:latest"]
+    }
+  }
+}
+```
+
+Docker Hub equivalent:
 
 ```json
 {
@@ -113,14 +132,14 @@ docker pull lm203688/healthlens-mcp
 }
 ```
 
-For private tools:
+For private tools (set the env var in the container):
 
 ```json
 {
   "mcpServers": {
     "healthlens": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "-e", "HL_MCP_EXPOSE_PRIVATE=1", "lm203688/healthlens-mcp"]
+      "args": ["run", "-i", "--rm", "-e", "HL_MCP_EXPOSE_PRIVATE=1", "ghcr.io/lm203688/healthlens-mcp:latest"]
     }
   }
 }
