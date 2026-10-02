@@ -33,7 +33,12 @@ jobs:
       - name: Publish dataset repo
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-        run: python data/publish_dataset_repo.py${{ inputs.dry_run && '' || ' --push' }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python data/publish_dataset_repo.py
+          else
+            python data/publish_dataset_repo.py --push
+          fi
 
       - name: Verify published blobs
         if: ${{ !inputs.dry_run }}
