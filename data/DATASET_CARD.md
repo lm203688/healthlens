@@ -6,6 +6,17 @@ A curated, structured corpus of Traditional Chinese Medicine (TCM) knowledge for
 
 **Downstream consumer**: [HealthLens](https://healthlens.cc) MCP Server — this corpus is what powers `hl_search_knowledge`, `hl_get_axis_detail`, and (when enabled) `hl_tcm_constitution`.
 
+## Distribution
+
+| Channel | Location | How to load |
+|---|---|---|
+| **GitHub mirror (canonical)** | [lm203688/tcm-mkg](https://github.com/lm203688/tcm-mkg) | `git clone` / raw fetch, or the `datasets` snippets below |
+| Hugging Face | one-click import from the GitHub mirror (see [publish_hf.py](publish_hf.py)) | `load_dataset("lm203688/tcm-mkg", data_files="data/chp_entities.json")` |
+| Docker (MCP runtime) | `lm203688/healthlens-mcp` | `docker run -i --rm lm203688/healthlens-mcp` |
+| Live HTTP endpoint | `https://healthlens.cc/api/v1/mcp` | JSON-RPC 2.0, no install |
+
+Re-publish the mirror with `python data/publish_dataset_repo.py --push` (needs a PAT with `public_repo` scope); automate it via *Actions → Publish TCM corpus dataset*.
+
 ## Contents
 
 | File | Records | Size | Description |
@@ -85,7 +96,7 @@ The corpus is bundled read-only in the [HealthLens MCP Server](../mcp-server/) D
   title   = {HealthLens TCM-MKG Structured Corpus},
   author  = {HealthLens contributors},
   year    = {2026},
-  url     = {https://github.com/lm203688/healthlens/tree/main/data},
+  url     = {https://github.com/lm203688/tcm-mkg},
   note    = {Curated from TCM-MKG (Zenodo 10.5281/zenodo.13763953), evidence-graded by HealthLens}
 }
 ```
