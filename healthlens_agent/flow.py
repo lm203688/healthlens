@@ -21,10 +21,22 @@ from dataclasses import dataclass, field
 
 from ._loader import load_fusion_engine, repo_root
 
+# 融合引擎是可选能力：瘦发行版（MCP 镜像）里没有 app/lib/fusion_engine.py，
+# _loader 会返回 None。此时 flow 的其余算子（tcm_parse / gene_weak / pathway_map
+# / grade / report）照常工作，只有 fusion 算子产出 unavailable 标记。
+# 【2026-10-03 修复】此前 _fe 为 None 会在 import 期直接 AttributeError。
 _fe = load_fusion_engine()
-recommend = _fe.recommend
-UserProfile = _fe.UserProfile
-disclaimer = _fe.disclaimer
+HAS_FUSION = _fe is not None
+recommend = _fe.recommend if HAS_FUSION else None
+UserProfile = _fe.UserProfile if HAS_FUSION else dict
+_FUSION_MISSING_MSG = "fusion_engine_unavailable: app/lib/fusion_engine.py not shipped in this build"
+
+
+def disclaimer() -> str:
+    """融合引擎缺失时返回空串（下游 op_report 用），否则返回原始免责声明。"""
+    if not HAS_FUSION:
+        return ""
+    return _fe.disclaimer()
 
 _MAP_PATH = os.path.join(repo_root(), "data", "tcm_pathway_map.json")
 with open(_MAP_PATH, encoding="utf-8") as _f:
@@ -107,6 +119,9 @@ def op_pathway_map(s: Storage) -> Storage:
 def op_fusion(s: Storage) -> Storage:
     pathway_scores = s.read("pathway_scores") or {}
     axes = set(s.read("axis_candidates") or [])
+    if not HAS_FUSION:
+        s.write("fusion_output", {"_unavailable": _FUSION_MISSING_MSG})
+        return s
     profile = UserProfile(pathway_scores=pathway_scores, weak_axes=axes)
     s.write("fusion_output", recommend(profile))
     return s
