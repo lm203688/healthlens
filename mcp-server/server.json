@@ -19,17 +19,10 @@
       }
     },
     {
-      "registryType": "dockerHub",
-      "identifier": "lm203688/healthlens-mcp",
+      "registryType": "oci",
+      "identifier": "ghcr.io/lm203688/healthlens-mcp:latest",
       "version": "0.3.0",
-      "transport": {
-        "type": "stdio"
-      }
-    },
-    {
-      "registryType": "dockerHub",
-      "identifier": "ghcr.io/lm203688/healthlens-mcp",
-      "version": "0.3.0",
+      "registryBaseUrl": "https://ghcr.io",
       "transport": {
         "type": "stdio"
       }
@@ -40,23 +33,28 @@
       "type": "http",
       "url": "https://healthlens.cc/api/v1/mcp",
       "protocol": "json-rpc-2.0",
-      "methods": ["POST"],
+      "methods": [
+        "POST"
+      ],
       "auth": "none for L1/L2, X-HealthLens-MCP-Key header for L3 when HL_MCP_EXPOSE_PRIVATE=1"
     },
     {
       "type": "stdio",
       "command": "python",
-      "args": ["-m", "healthlens_agent.mcp_server"]
+      "args": [
+        "-m",
+        "healthlens_agent.mcp_server"
+      ]
     },
     {
       "type": "stdio",
       "command": "docker",
-      "args": ["run", "-i", "--rm", "lm203688/healthlens-mcp"]
-    },
-    {
-      "type": "stdio",
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "ghcr.io/lm203688/healthlens-mcp:latest"]
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/lm203688/healthlens-mcp:latest"
+      ]
     }
   ],
   "categories": [
