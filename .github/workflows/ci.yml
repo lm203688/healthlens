@@ -79,6 +79,18 @@ jobs:
           BASELINE=29
           FAILED=$(grep -oE '[0-9]+ failed' pytest.out 2>/dev/null | tail -1 | grep -oE '^[0-9]+' || true)
           PASSED=$(grep -oE '[0-9]+ passed' pytest.out 2>/dev/null | tail -1 | grep -oE '^[0-9]+' || true)
+          # 【2026-10-03 修复】收集期崩溃（如 conftest 里 ModuleNotFoundError）时
+          # pytest.out 里根本没有 "N failed" 汇总，旧逻辑把 FAILED 兜底成 99999，
+          # 于是「收集器都起不来」和「真跑了 30 个失败」在 CI 里长得一模一样，
+          # 都报同一条「超过基线」——真正的信息（谁 import 崩了）被吞掉。
+          # 现在显式区分：完全没跑起来 → 直接报红并打印 conftest 的错误行。
+          if [ -z "$PASSED" ]; then
+            echo "::error::pytest 未完成收集（无 passed 汇总），无法与基线比较"
+            grep -E "ImportError|ModuleNotFoundError|^E  " pytest.out 2>/dev/null | head -10
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "| pytest 收集 | **未完成（conftest 或导入阶段崩溃）** |" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
           if [ -z "$FAILED" ]; then FAILED=99999; fi
           {
             echo "| 测试通过 | ${PASSED:-0} |"
