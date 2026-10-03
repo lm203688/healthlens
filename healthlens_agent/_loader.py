@@ -21,7 +21,20 @@ _cached = None
 
 
 def load_fusion_engine():
-    """加载并返回 fusion_engine 模块（带缓存）。"""
+    """加载并返回 fusion_engine 模块（带缓存）。
+
+    融合引擎位于 app/lib/fusion_engine.py，属于**可选**依赖：
+    - 完整仓库（含 app/）→ 返回真实模块；
+    - 瘦发行版（如 mcp-server/Dockerfile 只带 healthlens_agent/ + data/）→
+      返回 None 而不是抛异常。
+
+    历史 bug：这里原本直接 raise FileNotFoundError，而 healthlens_agent/__init__.py
+    在 import 期就 `from .flow import ...`，flow.py 顶层又执行
+    `load_fusion_engine()`。于是在任何不含 app/ 的环境里（MCP 容器、Agent
+    库测试环境）`import healthlens_agent` 直接崩，smoke test 与 CI 双双报红。
+    改为返回 None 后，调用方按「能力缺失」处理：工具返回
+    fusion_engine_unavailable，其余能力照常可用。
+    """
     global _cached
     existing = sys.modules.get("fusion_engine")
     if existing is not None and hasattr(existing, "recommend"):
@@ -29,9 +42,7 @@ def load_fusion_engine():
     if _cached is not None:
         return _cached
     if not os.path.exists(_FE_PATH):
-        raise FileNotFoundError(
-            f"未找到融合引擎：{_FE_PATH}。请确认 healthlens_agent 位于仓库根目录。"
-        )
+        return None
     spec = importlib.util.spec_from_file_location("fusion_engine", _FE_PATH)
     mod = importlib.util.module_from_spec(spec)
     sys.modules["fusion_engine"] = mod  # 预注册，避免模块内相对导入问题
