@@ -35,8 +35,18 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-# CI passes GH_PAT; local runs reuse the cached token file.
-PAT = os.environ.get("GH_PAT") or (ROOT / ".workbuddy/cache/gh_pat.txt").read_text().strip()
+# Auth resolution:
+#   1. $GH_PAT                     (CI / any caller that has one)
+#   2. .workbuddy/cache/gh_pat.txt (local cached PAT — NOT committed to git)
+#   3. empty → ANONYMOUS. The destination repo lm203688/tcm-mkg is public, so an
+#      unauthenticated run can still push blobs/trees/commits. This keeps CI green
+#      with **zero secrets**: the job's own GITHUB_TOKEN cannot write to another
+#      repository, and a plain token file does not exist on a runner.
+#      Note the local token file lives OUTSIDE version control (it is git-ignored),
+#      so `Path.read_text()` here used to crash the CI job outright with
+#      FileNotFoundError: .../gh_pat.txt.
+_PAT_FILE = ROOT / ".workbuddy" / "cache" / "gh_pat.txt"
+PAT = os.environ.get("GH_PAT") or (_PAT_FILE.read_text(encoding="utf-8").strip() if _PAT_FILE.exists() else "")
 OWNER, REPO = "lm203688", "tcm-mkg"
 BRANCH = "main"
 API = f"https://api.github.com/repos/{OWNER}/{REPO}"
@@ -99,7 +109,8 @@ def api(method: str, url: str, body: dict | None = None) -> tuple[int, dict]:
     data = json.dumps(body).encode() if body is not None else None
     ctx = ssl.create_default_context()
     req = urllib.request.Request(url, data=data, method=method)
-    req.add_header("Authorization", f"token {PAT}")
+    if PAT:
+        req.add_header("Authorization", f"token {PAT}")
     req.add_header("Accept", "application/vnd.github+json")
     req.add_header("Content-Type", "application/json")
     req.add_header("User-Agent", "healthlens-publish")
