@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -62,8 +62,8 @@ async def api_generate_report(req: ReportRequest):
 
     return {
         "status": "ok",
-        "report_id": f"RPT-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "report_id": f"RPT-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
+        "generated_at": datetime.now(UTC).isoformat(),
         "user_id": req.user_id,
         "report": data,
         "disclaimer": (
