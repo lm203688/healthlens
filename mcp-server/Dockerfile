@@ -58,6 +58,15 @@ RUN groupadd -r mcpuser && useradd -r -g mcpuser -d /app -s /sbin/nologin mcpuse
 # Copy application code (only what MCP needs — not the full web stack)
 COPY healthlens_agent/ ./healthlens_agent/
 
+# 八轴融合引擎（纯标准库，~24 KB）。打进镜像后 hl_fusion_engine / hl_tcm_constitution
+# 在容器里是真能算的，而不是返回 unavailable。
+# 【2026-09-29】healthlens_agent/__init__.py 在 import 期就经 flow.py 触发
+# load_fusion_engine()，此前镜像里缺这个文件，导致 `python -m healthlens_agent.mcp_server
+# --demo` 直接 FileNotFoundError、整个 GHCR 构建被 smoke test 判红。
+# 【2026-10-03】_loader.load_fusion_engine() 已改为「缺失返回 None」，
+# 这里再 COPY 一份让瘦镜像具备完整能力（两者不冲突，缺哪个都能启动）。
+COPY app/lib/fusion_engine.py ./app/lib/fusion_engine.py
+
 # Bundle read-only data assets (all MIT / public domain, no PII)
 # - tcm_mkg: 6207 entities aligned to ICD-11 / UMLS / MeSH / DOID
 # - classical_books: 701 entries
