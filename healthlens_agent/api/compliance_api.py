@@ -12,7 +12,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -118,7 +118,7 @@ async def api_record_consent(req: ConsentRequest):
         if pid not in valid_ids:
             raise HTTPException(400, f"无效政策 ID: {pid}")
 
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     record = {
         "user_id": req.user_id,
         "policies": req.policy_ids,
