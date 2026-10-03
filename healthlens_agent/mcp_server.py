@@ -365,11 +365,15 @@ def _tool_suggest_general_motion(intensity: str = "moderate") -> dict:
 # L3 用户层（默认关闭，需 HL_MCP_EXPOSE_PRIVATE=1）
 # ---------------------------------------------------------------------------
 def _lazy_load_fusion_engine():
+    """返回 fusion_engine 模块；缺失（瘦发行版）时返回 _error 字典而非抛异常。"""
     try:
         from . import _loader
-        return _loader.load_fusion_engine()
+        fe = _loader.load_fusion_engine()
     except Exception as exc:
         return {"_error": f"fusion_engine_unavailable: {exc}"}
+    if fe is None:
+        return {"_error": "fusion_engine_unavailable: app/lib/fusion_engine.py not shipped in this build"}
+    return fe
 
 
 def _tool_fusion_engine(user_input: str = "", gene_scores: dict | None = None) -> dict:
