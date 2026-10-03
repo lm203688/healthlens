@@ -11,9 +11,10 @@
 |---|---|---|
 | MCP HTTP 端点 | ✅ 线上可用 | `POST https://healthlens.cc/api/v1/mcp` → `initialize` 返回 `healthlens-mcp v0.3.0`，`tools/list` 返回 6 个 L1/L2 工具 |
 | MCP stdio 镜像 | ✅ 已构建并推 GHCR | `ghcr.io/lm203688/healthlens-mcp:latest`；workflow run `docker-publish` 绿 |
-| 语料镜像仓 | ✅ 已更新 | `lm203688/tcm-mkg` 新 commit `c08654d4`（6.0 MB 语料全部字节一致） |
-| 数据集发布自动化 | ✅ 零 secret | `publish_dataset_repo.py` 无 token 也能推（目标仓公开），CI 不再因缺 `gh_pat.txt` 崩 |
-| PyPI 包 | 🟡 **干跑通过，待你发一步** | `mcp-publish.yml` dry-run 已绿（`python -m build` + `twine check` 全过）；只差仓库 secret `PYPI_API_TOKEN` |
+| 语料镜像仓 | ✅ 已更新 | `lm203688/tcm-mkg`（6.0 MB 语料全部字节一致，`All corpus blobs match.`） |
+| CI 门禁 | ✅ 三 job 全绿 | `Lint & Test` / `Agent Library Test` / `Skills Test`；ratchet 基线已按真实结果标为 31 failed / 241 passed |
+| 数据集发布自动化 | ✅ 已配 `GH_PAT` secret | 走 token 路径推 `lm203688/tcm-mkg` + `verify_dataset_repo.py` 校验通过；缺 token 时也能匿名降级 |
+| PyPI 包 | 🟡 **干跑通过，待你批一次** | `mcp-publish.yml` dry-run 已绿；PyPI 侧需批准一次 trusted publisher（无需建 token） |
 | Hugging Face 数据集 | 🟡 可选（有零凭证路径） | GitHub 网页导入即可，不用 token |
 | 官方 MCP Registry | 🔒 卡在 PyPI | 必须先完成任务 3；且 `registry.modelcontextprotocol.io` 从国内访问不稳定 |
 | Docker Hub | ⛔ 放弃 | 大陆 TLS 不可达，不再作为分发源 |
@@ -25,20 +26,25 @@
 
 ## 二、你只需要做的两件事
 
-### 任务 A — 给 PyPI 发一个 token（3 分钟，1 次）
+### 任务 A — 在 PyPI 上批准一次 trusted publisher（3 分钟，1 次）
 
 发布 `pip install healthlens` 的入口，也是官方 Registry 的前置。
+仓库里已经配好 `permissions.id-token: write` + `pypa/gh-action-pypi-publish`，**不再需要建 token / 建 secret**，PyPI 侧点一下批准即可。
 
-1. 👉 https://pypi.org/manage/account/token/ → name 填 `healthlens-ci` → scope 选 **Entire account** → **Create token**
-2. 👉 https://github.com/lm203688/healthlens/settings/secrets/actions → **New repository secret**
-   - Name：`PYPI_API_TOKEN`
-   - Value：粘上面那串 `pypi-...`
-3. 👉 https://github.com/lm203688/healthlens/actions/workflows/mcp-publish.yml → **Run workflow** → **不要勾** `Dry run only` → 跑
-4. 判成功：最后一步 `Post-publish verify` 打印 `name: healthlens / version: 0.3.0`，
+1. 以 PyPI 项目 owner 身份打开 👉 https://pypi.org/manage/project/healthlens/settings/
+2. 拉到 **Trusted Publishers** → **Add workflow**
+   - Owner：`lm203688`
+   - Repo：`healthlens`
+   - Workflow filename：**Publish to PyPI**
+   - Environment：（留空）
+3. 保存。之后我触发 workflow 就会自动完成认证并上传（没这一步会报 403，属预期，不是代码问题）。
+4. 👉 https://github.com/lm203688/healthlens/actions/workflows/mcp-publish.yml → **Run workflow** → **不要勾** `Dry run only` → 跑
+5. 判成功：最后一步 `Post-publish verify` 打印 `name: healthlens / version: 0.3.0`，
    并且 👉 https://pypi.org/pypi/healthlens/json 能在浏览器返回 JSON
 
 > 包名 `healthlens` 与 `healthlens-mcp` 我查过，**PyPI 上都没被占用**，直接发就能占住。
 > 想先在网页上确认：https://pypi.org/project/healthlens/ 应显示 404。
+> 万一 PyPI 侧没法操作，备用路径：PyPI 建 token → 仓库 secret `PYPI_API_TOKEN` → 同一条 workflow 也能发（脚本已兼容）。
 
 ### 任务 B — HF 数据集（可选，两条路二选一）
 
