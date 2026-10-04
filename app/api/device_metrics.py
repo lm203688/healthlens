@@ -1,15 +1,22 @@
 """边缘网关指标接收口
 
-设备（家庭里的常开小盒子）把「日粒度健康指标」推上来，云端只做三件事：
+设备（家庭里的常开小盒子）把「日粒度健康指标」推上来，云端只做四件事：
 1. 验令牌 + nonce 去重（重放窗口内同一条只收一次）；
-2. 结构白名单校验（key 字符集、指标条数、数值有界）——拒绝“词级放行”，
-   避免出现带控制字符或超长 payload 的东西进来；
-3. 落进进程内最近指标缓存，供 app.connectors.edge_gateway 转成 HealthObservation。
+2. 结构白名单校验（key 字符集、指标条数、数值有界、day 必须是真日期）—— 拒绝
+   “词级放行”，避免出现带控制字符或超长 payload 的东西进来；
+3. 落进指标存储（Redis 优先），供 app.connectors.edge_gateway 转成 HealthObservation；
+4. 回显 dedup_backend，让监控能发现「去重已降级」。
 
-注意缓存是进程内的：多 worker 部署时要换 Redis，迁移点在 ingest() 最后一行。
+为什么必须在 Redis 而不是进程内存
+--------------------------------
+生产 web 是多 worker 进程，进程内的 dict 互不相通。2026-10-04 线上实测：同一
+nonce 连打 6 次，返回 200/200/409/409/200/200 —— 有 4 次绕过去重。所以 nonce
+去重和指标缓存都必须是跨进程的。Redis 不可用时降级为内存（上报不中断），但重放
+防护随之失效，因此每次返回都带 dedup_backend 字段，监控要盯这个值。
 """
 from __future__ import annotations
 
+import json
 import re
 import time
 import uuid
@@ -25,10 +32,94 @@ router = APIRouter(tags=["边缘网关"])
 
 MAX_METRICS = 64
 METRIC_KEY_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
+DAY_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# user_ref 会拼进 Redis key，必须限定字符集，否则 "a*" 之类的值会污染 scan 前缀、越权命中别的_ref
+REF_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
 DAY_FORMAT = "%Y-%m-%d"
 
-_store: dict[tuple[str, str], dict[str, Any]] = {}
-_nonces: dict[str, float] = {}
+NONCE_KEY = "hl:edge:nonce:{nonce}"
+METRIC_KEY = "hl:edge:metrics:{user_ref}:{day}"
+METRIC_TTL_SECONDS = 30 * 86400
+
+_backend_state: _StateBackend | None = None
+
+
+class _StateBackend:
+    """跨进程的 nonce 去重 + 指标存储后端。
+
+    Redis 优先（多 worker 必需）；不可用时降级内存——此时去重力只对当前进程有效，
+    返回体里的 backend 字段会显示 "memory"，运维应据此告警。
+    """
+
+    def __init__(self, url: str) -> None:
+        self._redis = None
+        self.backend = "memory"
+        try:
+            import redis  # type: ignore
+
+            client = redis.Redis.from_url(
+                url,
+                socket_timeout=1.5,
+                socket_connect_timeout=1.5,
+                decode_responses=True,
+            )
+            client.ping()
+            self._redis = client
+            self.backend = "redis"
+        except Exception:
+            self._redis = None
+        # 仅降级时使用
+        self._fallback_nonces: dict[str, float] = {}
+        self._fallback_store: dict[str, dict] = {}
+
+    def claim_nonce(self, nonce: str, ttl_seconds: int) -> bool:
+        """首次返回 True（收下）；重放返回 False（409）。Redis 挂了不阻断上报。"""
+        if self._redis is None:
+            cutoff = time.time() - ttl_seconds
+            for stale in [n for n, ts in self._fallback_nonces.items() if ts < cutoff]:
+                self._fallback_nonces.pop(stale, None)
+            if nonce in self._fallback_nonces:
+                return False
+            self._fallback_nonces[nonce] = time.time()
+            return True
+        # nx=True 保证原子：多 worker 同时到达也只有一个能抢到
+        return bool(self._redis.set(NONCE_KEY.format(nonce=nonce), "1", nx=True, ex=max(1, ttl_seconds)))
+
+    def save_metrics(self, row: dict[str, Any]) -> None:
+        key = METRIC_KEY.format(user_ref=row["user_ref"], day=row["day"])
+        raw = json.dumps(row, ensure_ascii=False)
+        if self._redis is not None:
+            self._redis.set(key, raw, ex=METRIC_TTL_SECONDS)
+        else:
+            self._fallback_store[row["user_ref"]] = row
+
+    def load_metrics(self, user_ref: str, days: int) -> list[dict[str, Any]]:
+        if self._redis is not None:
+            rows: list[dict[str, Any]] = []
+            for key in self._redis.scan_iter(match=METRIC_KEY.format(user_ref=user_ref, day="*"), count=200):
+                raw = self._redis.get(key)
+                if raw:
+                    rows.append(json.loads(raw))
+        else:
+            row = self._fallback_store.get(user_ref)
+            rows = [row] if row else []
+        rows.sort(key=lambda r: r.get("day", ""), reverse=True)
+        return rows[:days]
+
+
+def _backend() -> _StateBackend:
+    """懒加载：import 阶段不连 Redis，避免拖慢启动。"""
+    global _backend_state
+    if _backend_state is None:
+        url = getattr(settings, "REDIS_URL", "") or "redis://redis:6379/0"
+        _backend_state = _StateBackend(url)
+    return _backend_state
+
+
+def reset_backend() -> None:
+    """仅供测试：丢弃已建立的后端连接。"""
+    global _backend_state
+    _backend_state = None
 
 
 class EdgeMetric(BaseModel):
@@ -41,64 +132,67 @@ class EdgeMetric(BaseModel):
 
 class EdgePayload(BaseModel):
     gateway_id: str = Field(..., max_length=64)
-    user_ref: str = Field(..., max_length=64)
-    day: str = Field(..., max_length=10)
+    user_ref: str = Field(..., pattern=REF_PATTERN)
+    # day 不在这里限长：形状与真实性统一交给端点校验（统一 400），
+    # 否则 pydantic 的 max_length 会先截成 422，"2026-10-04; rm -rf /" 就永远拿不到 400。
+    day: str
     device: dict[str, Any] = Field(default_factory=dict)
     metrics: list[EdgeMetric] = Field(default_factory=list, max_length=MAX_METRICS)
     stats: dict[str, Any] = Field(default_factory=dict)
 
 
-def _clean_nonces(window_minutes: int) -> None:
-    cutoff = time.time() - window_minutes * 60
-    for nonce in [n for n, ts in _nonces.items() if ts < cutoff]:
-        _nonces.pop(nonce, None)
-
-
-def ingest(payload: EdgePayload, gateway_id: str, user_ref: str, day: str, metrics: list) -> dict:
-    """把一条上报写进缓存并返回确认信息（迁移到 Redis 时改这里就够）"""
-    _store[(user_ref, day)] = {
-        "gateway_id": gateway_id,
-        "user_ref": user_ref,
-        "day": day,
+def ingest(payload: EdgePayload, metrics: list[EdgeMetric]) -> dict[str, Any]:
+    """把一条上报写进存储并返回确认信息（迁库时主要改这里）"""
+    row = {
+        "gateway_id": payload.gateway_id,
+        "user_ref": payload.user_ref,
+        "day": payload.day,
         "device": payload.device,
         "metrics": [m.model_dump() for m in metrics],
         "stats": payload.stats,
         "received_at": datetime.now(UTC).isoformat(),
     }
-    return {"ok": True, "day": day, "metrics": len(metrics)}
+    _backend().save_metrics(row)
+    return {"ok": True, "day": payload.day, "metrics": len(metrics)}
 
 
-def recent(user_ref: str, days: int = 7) -> list[dict]:
+def recent(user_ref: str, days: int = 7) -> list[dict[str, Any]]:
     """取最近 N 天该 user_ref 的边缘指标（按日倒序）"""
-    rows = [v for (ur, _), v in _store.items() if ur == user_ref]
-    rows.sort(key=lambda r: r.get("day", ""), reverse=True)
-    return rows[:days]
+    return _backend().load_metrics(user_ref, days)
 
 
 @router.post("/device-metrics")
-async def receive_edge_metrics(payload: EdgePayload, request: Request, x_hl_edge_token: str | None = Header(default=None)):
+async def receive_edge_metrics(
+    payload: EdgePayload,
+    request: Request,
+    x_hl_edge_token: str | None = Header(default=None),
+):
     if not getattr(settings, "EDGE_GATEWAY_TOKEN", ""):
         raise HTTPException(status_code=503, detail="边缘网关接收口未启用（EDGE_GATEWAY_TOKEN 为空）")
     if x_hl_edge_token != settings.EDGE_GATEWAY_TOKEN:
         raise HTTPException(status_code=401, detail="边缘令牌无效")
 
     nonce = request.headers.get("X-HL-Edge-Nonce") or uuid.uuid4().hex
-    window = int(getattr(settings, "EDGE_GATEWAY_REPLAY_WINDOW_MINUTES", 30) or 30)
-    _clean_nonces(window)
-    if nonce in _nonces:
+    window_minutes = int(getattr(settings, "EDGE_GATEWAY_REPLAY_WINDOW_MINUTES", 30) or 30)
+    if not _backend().claim_nonce(nonce, window_minutes * 60):
         raise HTTPException(status_code=409, detail="重复上报已被去重")
-    _nonces[nonce] = time.time()
 
-    try:  # 日期必须真是 YYYY-MM-DD，拒绝 "2026-10-04; rm -rf /" 这种拼装
+    # day 先过形状（400），再过真日期（400）—— 两者都在去重之后，
+    # 这样 "2026-10-04; rm -rf /" 拿到的是 400「day 格式非法」而不是串味的 422。
+    if not DAY_PATTERN.match(payload.day):
+        raise HTTPException(status_code=400, detail=f"day 格式非法: {payload.day!r}")
+    try:  # 2026-02-31 这种形状合法但不存在，交给 strptime 兜
         datetime.strptime(payload.day, DAY_FORMAT)
     except ValueError as exc:
-        raise HTTPException(status_code=400, detail=f"day 格式非法: {payload.day}") from exc
+        raise HTTPException(status_code=400, detail=f"day 不是有效日期: {payload.day!r}") from exc
 
     bad = [m.key for m in payload.metrics if not METRIC_KEY_PATTERN.match(m.key)]
     if bad:
         raise HTTPException(status_code=422, detail=f"指标 key 含非法字符: {bad[:3]}")
 
-    result = ingest(payload, payload.gateway_id, payload.user_ref, payload.day, payload.metrics)
+    backend = _backend()
+    result = ingest(payload, payload.metrics)
+    result["dedup_backend"] = backend.backend
     return result
 
 
@@ -108,3 +202,9 @@ async def list_edge_metrics(user_ref: str, days: int = 7, x_hl_edge_token: str |
     if not getattr(settings, "EDGE_GATEWAY_TOKEN", "") or x_hl_edge_token != settings.EDGE_GATEWAY_TOKEN:
         raise HTTPException(status_code=401, detail="边缘令牌无效")
     return {"ok": True, "user_ref": user_ref, "items": recent(user_ref, days)}
+
+
+@router.get("/device-metrics/backend")
+async def edge_backend_status():
+    """健康检查：告诉运维去重现在是不是还跨进程有效"""
+    return {"ok": True, "backend": _backend().backend, "token_configured": bool(getattr(settings, "EDGE_GATEWAY_TOKEN", ""))}
