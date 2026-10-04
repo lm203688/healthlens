@@ -67,6 +67,15 @@ class Settings(BaseSettings):
     OPEN_WEARABLES_API_URL: str = "http://localhost:8001"
     OPEN_WEARABLES_API_KEY: str = ""
 
+    # ------------------------------------------------------------------
+    # 边缘网关（edge gateway / healthgateway）
+    # 家庭内常开的小盒子把「日粒度健康指标」推上来。
+    # EDGE_GATEWAY_TOKEN 由云端签发后写回设备的 /etc/healthlens/edge.env，
+    # 不进仓库、不进镜像；留空即整个接收口关闭。
+    # ------------------------------------------------------------------
+    EDGE_GATEWAY_TOKEN: str = ""
+    EDGE_GATEWAY_REPLAY_WINDOW_MINUTES: int = 30
+
     
     # Celery
     CELERY_BROKER_URL: str = "redis://redis:6379/1"
