@@ -110,6 +110,7 @@ def create_app() -> FastAPI:
     from app.api.tiered_growth import router as tiered_growth_router
     from app.api.payment import router as payment_router
     from app.api.gdpr import router as gdpr_router
+    from app.api.device_metrics import router as device_metrics_router
 
     app.include_router(auth_router, prefix="/api/v1/auth", tags=["认证"])
     app.include_router(records_router, prefix="/api/v1/records", tags=["数据接入"])
@@ -160,6 +161,8 @@ def create_app() -> FastAPI:
     app.include_router(payment_router, prefix="/api/v1/payment", tags=["支付"])
     # GDPR 合规（数据导出/删除/同意管理）
     app.include_router(gdpr_router, prefix="/api/v1/gdpr", tags=["GDPR"])
+    # 边缘网关（家庭小盒子推上来的日粒度健康指标）
+    app.include_router(device_metrics_router, prefix="/api/v1", tags=["边缘网关"])
     # 公开分享页面（无需登录）
     app.include_router(share_public_router, tags=["公开分享"])
 
