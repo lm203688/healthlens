@@ -6,7 +6,7 @@
 """
 from __future__ import annotations
 
-import os
+import json
 from pathlib import Path
 
 GATEWAY_LOG = "gateway.log"
@@ -75,7 +75,16 @@ def _read_state(data_dir: Path) -> dict:
     path = _state_path(data_dir)
     if not path.exists():
         return {"data_dir": str(data_dir), "sources": {}, "last_report": {}}
-    return dict(path.read_text(encoding="utf-8"))
+    raw = path.read_text(encoding="utf-8")
+    # 曾经写过两套格式：纯状态体 / {"ok":..,"command":..,"result":{..}} 包装体。
+    # 这里两种都认，避免升级期间旧文件直接把 status 打挂。
+    try:
+        data = json.loads(raw)
+    except ValueError as exc:  # 不是 JSON：坏文件，返回空状态而不是崩掉命令
+        raise ValueError(f"state.json 解析失败({path}): {exc}") from exc
+    if isinstance(data, dict) and isinstance(data.get("result"), dict):
+        return data["result"]
+    return data
 
 
 def _write_state(data_dir: Path, state: dict) -> None:
@@ -84,8 +93,6 @@ def _write_state(data_dir: Path, state: dict) -> None:
 
 
 def _json(payload) -> str:
-    import json
-
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
@@ -94,10 +101,7 @@ def _query_metrics(data_dir: Path, day: str | None, key: str | None) -> dict:
     path = data_dir / "metrics" / f"{day}.json"
     if not path.exists():
         return {"day": day, "found": False}
-    payload = path.read_text(encoding="utf-8")
-    import json
-
-    data = json.loads(payload)
+    data = json.loads(path.read_text(encoding="utf-8"))
     if key:
         data = [m for m in data.get("metrics", []) if m.get("key") == key]
     return {"day": day, "found": True, "data": data}
