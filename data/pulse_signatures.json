@@ -1,0 +1,921 @@
+{
+  "meta": {
+    "name": "HealthLens 脉象参考知识库（脉象信号 → 养生参考）",
+    "version": "0.1.0",
+    "updated": "2026-10-05",
+    "disclaimer": "本库为健康信号参考与养生引导用途，不构成任何医学诊断、治疗建议。脉象判读需结合望闻问三诊并由注册中医师完成。平台定位为 wellness（健康管理），所有结论均带健康护栏。",
+    "framework": "脉象六纲：位（显现深度）、数（频率）、形（波形形态）、势（力度）、律（节律），外加平脉（正常基准）。",
+    "source_notes": [
+      "传统定义：百度百科《二十八脉》、腾讯医典（滑脉/弦脉词条）、《古今医鉴·脉体捷法》。",
+      "现代映射：ScienceDirect《Objective analysis of human pulse based on TCM pulse matrix》（h1–h5 时域参数）、脉波科普（升支/降支/重搏切迹）。",
+      "硬件方案：中国医疗器械杂志《脉搏与呼吸信号检测系统设计》（MAX30102 反射式 PPG）、专利 CN105147261A（寸关尺柔性阵列定位）。",
+      "寸关尺定位：百度百科《寸口脉》《尺部》（桡骨茎突为关，寸 distal / 尺 proximal）。"
+    ]
+  },
+  "normal_pulse": {
+    "id": "ping",
+    "name": "平脉（常脉）",
+    "pinyin": "píng mài",
+    "definition": "一息四至五至（约 60–90 次/分），不大不小、不浮不沉、和缓有力、节律均匀。随季节略有变化（春略弦、夏略洪、秋略浮、冬略沉），为气血调和之象。",
+    "ppg_features": {
+      "rate_bpm": [
+        60,
+        90
+      ],
+      "h3_h1_ratio": [
+        0.4,
+        0.75
+      ],
+      "h4_h1_ratio": [
+        0.35,
+        0.7
+      ],
+      "dicrotic_notch": "清晰但不过分突出",
+      "rhythm": "绝对规整"
+    },
+    "wellness_ref": "平脉是养生状态的参考基线，提示当前作息、饮食、情绪处于相对平衡状态。",
+    "guardrail": "孕期、运动员、婴幼儿心率可超出 60–90 区间仍属生理范围，需结合年龄与体质判断。"
+  },
+  "cun_guan_chi": {
+    "anatomy": "腕横纹上桡动脉搏动点；以桡骨茎突（高骨）定为关，关向手掌方向为寸，关向肘方向为尺。三指间距随前臂长短调整（臂长则疏，臂短则密），成人约 0.5–1 cm。",
+    "positions": [
+      {
+        "name": "左寸",
+        "corresponds": "心（膻中/上焦心肺）",
+        "axis_hint": "B气血/神志、F正邪"
+      },
+      {
+        "name": "左关",
+        "corresponds": "肝、胆",
+        "axis_hint": "A气化、F正邪"
+      },
+      {
+        "name": "左尺",
+        "corresponds": "肾阴、膀胱",
+        "axis_hint": "H先天肾精"
+      },
+      {
+        "name": "右寸",
+        "corresponds": "肺（胸以上）",
+        "axis_hint": "A气化、E脏腑"
+      },
+      {
+        "name": "右关",
+        "corresponds": "脾、胃",
+        "axis_hint": "E脏腑、B气血"
+      },
+      {
+        "name": "右尺",
+        "corresponds": "肾阳、命门",
+        "axis_hint": "H先天肾精、D阴阳昼夜"
+      }
+    ],
+    "device_implication": "单点 PPG 可采整体脉率与波形；要区分寸关尺需三探头或机械移位。V0 器械以单点桡动脉为主，三才定位作为后续增强（参考专利 CN105147261A 柔性阵列）。",
+    "guardrail": "寸关尺脏腑对应属中医理论框架，现代研究对其解剖特异性仍有争议；本平台仅作信号分区参考，不主张定位诊断。"
+  },
+  "ppg_feature_dictionary": {
+    "rate_bpm": "每分钟搏动次数 → 数纲（迟<60 / 正常60-90 / 数>90 / 疾>100）。",
+    "h1": "收缩期叩击波（percussion wave）振幅，反映心搏出量与动脉充盈 → 形纲（洪大 / 细弱 / 微）。",
+    "h3_h1_ratio": "重搏前波/叩击波，反映外周阻力与血管弹性；比值偏高、出现偏早 → 弦（血管张力高）。",
+    "h4_h1_ratio": "重搏切迹/叩击波，反映外周阻力与舒张压水平。",
+    "h5_h1_ratio": "重搏波/叩击波，反映大动脉弹性与主动脉瓣功能。",
+    "dicrotic_notch": "降支上的重搏切迹清晰度；缺如/模糊 → 涩（血管壁弹性差、血流不畅）。",
+    "ascending_slope": "升支斜率（dP/dt）；陡直 → 实/洪，平缓 → 虚/弱。",
+    "perfusion_index": "收缩期/舒张期供血差异或取脉压力下信号强度 → 位纲（浮=轻压即得 / 沉=需重压）。",
+    "rhythm_regularity": "RR 间期变异；规整=常，偶发不齐=结/促，规律停顿=代。",
+    "contact_pressure_sweep": "扫描取脉压力，信号最强处对应浮/中/沉。"
+  },
+  "pulses": [
+    {
+      "id": "fu",
+      "name": "浮脉",
+      "pinyin": "fú",
+      "category": "位",
+      "tags": [
+        "位",
+        "阳"
+      ],
+      "definition": "轻取即得，重按稍减而不空，如水漂木。",
+      "sensation": "手指轻触皮肤表面即明显搏动，稍用力反减弱。",
+      "ppg_features": {
+        "contact_pressure_sweep": "轻压（浅层）信号最强",
+        "depth": "superficial"
+      },
+      "wellness_ref": "传统多关联体表、外感等因素；亦可见于气血外浮、体虚者。养生上关注休息与保暖。",
+      "common_context": [
+        "外感",
+        "表证",
+        "虚阳浮越（需结合其他信号警惕）"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "浮脉不等于生病；瘦人、运动后、夏季可生理性偏浮。"
+    },
+    {
+      "id": "chen",
+      "name": "沉脉",
+      "pinyin": "chén",
+      "category": "位",
+      "tags": [
+        "位",
+        "阴"
+      ],
+      "definition": "轻取不应，重按始得，如石投水。",
+      "sensation": "需用力按压至筋骨附近才清晰。",
+      "ppg_features": {
+        "contact_pressure_sweep": "重压（深层）信号最强",
+        "depth": "deep"
+      },
+      "wellness_ref": "传统关联里证、气血内敛；体型偏胖或冬季亦可见生理性沉。",
+      "common_context": [
+        "里证",
+        "气血内收",
+        "痰湿内盛"
+      ],
+      "axes": [
+        "B气血",
+        "E脏腑"
+      ],
+      "guardrail": "肥胖者脉多沉属生理；单凭沉脉不能判定疾病。"
+    },
+    {
+      "id": "chi",
+      "name": "迟脉",
+      "pinyin": "chí",
+      "category": "数",
+      "tags": [
+        "数",
+        "寒"
+      ],
+      "definition": "一息不足四至（成人 <60 次/分）。",
+      "sensation": "搏动缓慢。",
+      "ppg_features": {
+        "rate_bpm": "<60"
+      },
+      "wellness_ref": "传统关联寒象、气血运行偏缓；运动员静息心率可偏低属生理。",
+      "common_context": [
+        "寒证",
+        "气血偏缓",
+        "运动员生理"
+      ],
+      "axes": [
+        "D阴阳昼夜",
+        "B气血"
+      ],
+      "guardrail": "运动员、睡眠中、老年人心率偏低可为正常；伴头晕乏力需就医。"
+    },
+    {
+      "id": "shu",
+      "name": "数脉",
+      "pinyin": "shù",
+      "category": "数",
+      "tags": [
+        "数",
+        "热"
+      ],
+      "definition": "一息六至（成人 >90 次/分）。",
+      "sensation": "搏动急促。",
+      "ppg_features": {
+        "rate_bpm": ">90"
+      },
+      "wellness_ref": "传统关联热象、代谢偏旺；运动、情绪、咖啡后亦可一过性增快。",
+      "common_context": [
+        "热证",
+        "情绪紧张",
+        "运动后",
+        "发热"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "小儿、运动后、焦虑时数脉可属生理；持续>100伴不适需排查。"
+    },
+    {
+      "id": "huan",
+      "name": "缓脉",
+      "pinyin": "huǎn",
+      "category": "数",
+      "tags": [
+        "数",
+        "平"
+      ],
+      "definition": "一息四至，来去和缓。",
+      "sensation": "频率正常而柔和。",
+      "ppg_features": {
+        "rate_bpm": [
+          60,
+          70
+        ],
+        "rhythm": "规整",
+        "ascending_slope": "平缓有力"
+      },
+      "wellness_ref": "多属平脉或脾胃调和之象；若缓而无力则关联湿困、脾胃弱。",
+      "common_context": [
+        "平脉",
+        "湿困",
+        "脾胃气虚"
+      ],
+      "axes": [
+        "E脏腑"
+      ],
+      "guardrail": "缓脉本身多为良性参考。"
+    },
+    {
+      "id": "ji",
+      "name": "疾脉",
+      "pinyin": "jí",
+      "category": "数",
+      "tags": [
+        "数",
+        "危"
+      ],
+      "definition": "一息七至以上（>100 次/分且急疾）。",
+      "sensation": "极快而急。",
+      "ppg_features": {
+        "rate_bpm": ">100",
+        "ascending_slope": "陡"
+      },
+      "wellness_ref": "传统关联阳极阴竭、元气将脱之危象参考；现代多对应重度心动过速。",
+      "common_context": [
+        "高热极期",
+        "重度心动过速"
+      ],
+      "axes": [
+        "A气化",
+        "H先天肾精"
+      ],
+      "guardrail": "属需警惕的信号，持续疾脉应立即就医，非养生可调范围。"
+    },
+    {
+      "id": "hua",
+      "name": "滑脉",
+      "pinyin": "huá",
+      "category": "形",
+      "tags": [
+        "形",
+        "实"
+      ],
+      "definition": "往来流利，应指圆滑，如盘走珠。",
+      "sensation": "搏动圆滑流畅。",
+      "ppg_features": {
+        "dicrotic_notch": "清晰、波形流畅",
+        "h1": "饱满",
+        "ascending_slope": "圆润"
+      },
+      "wellness_ref": "传统关联痰湿、食积、实热；育龄女性停经见滑脉可为妊娠生理。健康青壮年滑而和缓属荣卫充实。",
+      "common_context": [
+        "痰湿",
+        "食积",
+        "实热",
+        "妊娠生理"
+      ],
+      "axes": [
+        "E脏腑",
+        "B气血"
+      ],
+      "guardrail": "滑脉可见于健康人与孕妇，非病脉；病理性滑数需结合其他信号。"
+    },
+    {
+      "id": "se",
+      "name": "涩脉",
+      "pinyin": "sè",
+      "category": "形",
+      "tags": [
+        "形",
+        "虚"
+      ],
+      "definition": "往来艰涩，细而迟滞，如轻刀刮竹。",
+      "sensation": "搏动不流畅、有滞涩感。",
+      "ppg_features": {
+        "dicrotic_notch": "模糊或缺如",
+        "h5_h1_ratio": "偏低",
+        "ascending_slope": "不平滑"
+      },
+      "wellness_ref": "传统关联精伤、血少、气滞血瘀；现代多对应血管弹性下降、微循环不畅。",
+      "common_context": [
+        "血瘀",
+        "精伤血少",
+        "气滞"
+      ],
+      "axes": [
+        "B气血",
+        "F正邪"
+      ],
+      "guardrail": "涩脉需与年龄相关血管老化区分；持续伴胸痛等需就医。"
+    },
+    {
+      "id": "hong",
+      "name": "洪脉",
+      "pinyin": "hóng",
+      "category": "形",
+      "tags": [
+        "形",
+        "热"
+      ],
+      "definition": "脉体阔大，来盛去衰，状如波涛汹涌。",
+      "sensation": "宽大有力，起盛落衰。",
+      "ppg_features": {
+        "h1": "高大",
+        "h3_h1_ratio": "偏低（主波独大）",
+        "rate_bpm": "可偏快"
+      },
+      "wellness_ref": "传统关联阳热亢盛；夏季或运动后亦可一时性洪大。",
+      "common_context": [
+        "热盛",
+        "外感极期",
+        "运动后生理"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "洪大有力伴高热为需关注信号；运动后一时性洪属生理。"
+    },
+    {
+      "id": "xi",
+      "name": "细脉",
+      "pinyin": "xì",
+      "category": "形",
+      "tags": [
+        "形",
+        "虚"
+      ],
+      "definition": "脉细如线，但应指明显。",
+      "sensation": "脉管细窄但清晰。",
+      "ppg_features": {
+        "h1": "低小",
+        "perfusion_index": "偏低",
+        "ascending_slope": "平缓"
+      },
+      "wellness_ref": "传统关联气血两虚、湿邪；冬季或消瘦者可见生理性细。",
+      "common_context": [
+        "气血两虚",
+        "湿证",
+        "久病"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "细脉本身非特异；持续细弱伴乏力需关注营养与休息。"
+    },
+    {
+      "id": "wei",
+      "name": "微脉",
+      "pinyin": "wēi",
+      "category": "形",
+      "tags": [
+        "形",
+        "危"
+      ],
+      "definition": "极细极软，似有似无，按之欲绝。",
+      "sensation": "几乎触不到。",
+      "ppg_features": {
+        "h1": "极微弱",
+        "perfusion_index": "极低"
+      },
+      "wellness_ref": "传统关联气血大虚、阳气衰微之危象参考；现代多对应严重循环不足。",
+      "common_context": [
+        "气血大虚",
+        "阳气衰微"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "属需紧急关注的信号，出现微脉应立即就医。"
+    },
+    {
+      "id": "ruo",
+      "name": "弱脉",
+      "pinyin": "ruò",
+      "category": "形",
+      "tags": [
+        "形",
+        "虚"
+      ],
+      "definition": "极软而沉细，举之无有，按之乃得。",
+      "sensation": "沉、细、软三者兼具。",
+      "ppg_features": {
+        "h1": "低",
+        "depth": "deep",
+        "ascending_slope": "平缓"
+      },
+      "wellness_ref": "传统关联阳气虚衰、气血俱虚；老年人可生理性偏弱。",
+      "common_context": [
+        "里虚",
+        "气血亏虚",
+        "阳气虚"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "老年偏弱可属生理；进行性减弱需关注。"
+    },
+    {
+      "id": "xian",
+      "name": "弦脉",
+      "pinyin": "xián",
+      "category": "形",
+      "tags": [
+        "形",
+        "肝"
+      ],
+      "definition": "端直以长，如按琴弦，挺然指下。",
+      "sensation": "脉管紧张、直长、有绷紧感。",
+      "ppg_features": {
+        "h3_h1_ratio": "偏高（重搏前波早现/突出）",
+        "ascending_slope": "紧张",
+        "vessel_tension": "高"
+      },
+      "wellness_ref": "传统关联肝、胆、痛证、痰饮；现代多对应血管紧张度增高（如高血压、动脉硬化）。春季可生理性略弦。",
+      "common_context": [
+        "肝气郁结",
+        "高血压倾向",
+        "疼痛",
+        "痰饮"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "老年人脉弦硬可属退行性；持续弦硬伴血压偏高应监测血压，非本平台诊断范围。"
+    },
+    {
+      "id": "jin",
+      "name": "紧脉",
+      "pinyin": "jǐn",
+      "category": "形",
+      "tags": [
+        "形",
+        "寒"
+      ],
+      "definition": "脉来绷急，左右弹手，如牵绳转索。",
+      "sensation": "紧张而弹出感。",
+      "ppg_features": {
+        "vessel_tension": "高",
+        "rhythm": "可偏快",
+        "ascending_slope": "紧绷"
+      },
+      "wellness_ref": "传统关联寒证、痛证；现代多对应血管痉挛、交感兴奋。",
+      "common_context": [
+        "寒证",
+        "痛证",
+        "表寒"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "紧脉多为一过性，持续紧张状态建议关注保暖与情绪。"
+    },
+    {
+      "id": "chang",
+      "name": "长脉",
+      "pinyin": "cháng",
+      "category": "形",
+      "tags": [
+        "形",
+        "实"
+      ],
+      "definition": "首尾端直，超过本位，如循长竿。",
+      "sensation": "脉波超过寸关尺三部。",
+      "ppg_features": {
+        "wave_width": "宽",
+        "h1": "充实"
+      },
+      "wellness_ref": "平人亦可见和缓之长脉（正气充盛）；若硬满劲急则关联阳亢。",
+      "common_context": [
+        "阳盛",
+        "肝阳亢",
+        "平脉（和缓）"
+      ],
+      "axes": [
+        "A气化"
+      ],
+      "guardrail": "和缓长脉为良性；硬满长脉需结合血压。"
+    },
+    {
+      "id": "duan",
+      "name": "短脉",
+      "pinyin": "duǎn",
+      "category": "形",
+      "tags": [
+        "形",
+        "虚"
+      ],
+      "definition": "首尾俱短，不能满部。",
+      "sensation": "搏动范围短促。",
+      "ppg_features": {
+        "wave_width": "窄"
+      },
+      "wellness_ref": "传统关联气虚（短而无力）或气壅（短而有力）；多作复合参考。",
+      "common_context": [
+        "气虚",
+        "气壅"
+      ],
+      "axes": [
+        "B气血"
+      ],
+      "guardrail": "短脉少单独判读，需结合整体。"
+    },
+    {
+      "id": "kou",
+      "name": "芤脉",
+      "pinyin": "kōu",
+      "category": "形",
+      "tags": [
+        "形",
+        "虚"
+      ],
+      "definition": "浮大而软，按之中空，如按葱管。",
+      "sensation": "外实内空。",
+      "ppg_features": {
+        "depth": "superficial",
+        "h1": "大",
+        "dicrotic_notch": "中空感"
+      },
+      "wellness_ref": "传统关联失血、伤阴；现代多对应血容量不足。",
+      "common_context": [
+        "失血",
+        "伤阴",
+        "大汗后"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "明显失血后见芤脉为需关注的信号。"
+    },
+    {
+      "id": "ge",
+      "name": "革脉",
+      "pinyin": "gé",
+      "category": "形",
+      "tags": [
+        "形",
+        "危"
+      ],
+      "definition": "浮大搏指，外坚中空，如按鼓皮。",
+      "sensation": "浮取弦急，按之表坚里虚。",
+      "ppg_features": {
+        "depth": "superficial",
+        "vessel_tension": "高",
+        "h1": "大"
+      },
+      "wellness_ref": "传统关联亡血、失精、半产、崩漏之虚象参考。",
+      "common_context": [
+        "亡血",
+        "失精"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "属需结合临床的信号，非养生可调。"
+    },
+    {
+      "id": "lao",
+      "name": "牢脉",
+      "pinyin": "láo",
+      "category": "形",
+      "tags": [
+        "形",
+        "实"
+      ],
+      "definition": "沉按实大弦长，坚牢不移。",
+      "sensation": "深在、大而有力、弦长。",
+      "ppg_features": {
+        "depth": "deep",
+        "h1": "大",
+        "vessel_tension": "高"
+      },
+      "wellness_ref": "传统关联阴寒内盛、癥积；现代多对应深层血管阻力高。",
+      "common_context": [
+        "阴寒内盛",
+        "积聚"
+      ],
+      "axes": [
+        "A气化",
+        "E脏腑"
+      ],
+      "guardrail": "牢脉为里实参考，需专业判读。"
+    },
+    {
+      "id": "ru",
+      "name": "濡脉",
+      "pinyin": "rú",
+      "category": "位",
+      "tags": [
+        "位",
+        "虚"
+      ],
+      "definition": "浮细而软，轻取即得，重按不显，如絮浮水。",
+      "sensation": "浮、细、软。",
+      "ppg_features": {
+        "depth": "superficial",
+        "h1": "低",
+        "ascending_slope": "软"
+      },
+      "wellness_ref": "传统关联虚证、湿困；体瘦者可见生理性浮细。",
+      "common_context": [
+        "虚证",
+        "湿邪"
+      ],
+      "axes": [
+        "B气血",
+        "E脏腑"
+      ],
+      "guardrail": "濡脉需与生理性浮细区分。"
+    },
+    {
+      "id": "san",
+      "name": "散脉",
+      "pinyin": "sàn",
+      "category": "位",
+      "tags": [
+        "位",
+        "危"
+      ],
+      "definition": "浮散无根，至数不清，涣散不收。",
+      "sensation": "浮而无根，渐不可得。",
+      "ppg_features": {
+        "depth": "superficial",
+        "rhythm": "紊乱",
+        "h1": "渐消"
+      },
+      "wellness_ref": "传统关联元气离散、脏腑精气衰败之危象参考。",
+      "common_context": [
+        "元气涣散"
+      ],
+      "axes": [
+        "H先天肾精",
+        "B气血"
+      ],
+      "guardrail": "属需紧急关注的信号。"
+    },
+    {
+      "id": "fu_v",
+      "name": "伏脉",
+      "pinyin": "fú",
+      "category": "位",
+      "tags": [
+        "位",
+        "闭"
+      ],
+      "definition": "脉位深伏，重手推按至骨始得。",
+      "sensation": "极深，需重压至骨。",
+      "ppg_features": {
+        "depth": "very_deep"
+      },
+      "wellness_ref": "传统关联实邪内闭、剧烈疼痛；亦可见于阳衰厥证。",
+      "common_context": [
+        "寒闭",
+        "痛极",
+        "阳衰"
+      ],
+      "axes": [
+        "A气化",
+        "E脏腑"
+      ],
+      "guardrail": "伏脉需排除取脉压力不足导致的假象。"
+    },
+    {
+      "id": "dong",
+      "name": "动脉",
+      "pinyin": "dòng",
+      "category": "形",
+      "tags": [
+        "形",
+        "实"
+      ],
+      "definition": "脉来滑数，形如豆，厥厥动摇，多见于关部。",
+      "sensation": "短滑数、跳动明显。",
+      "ppg_features": {
+        "rate_bpm": ">90",
+        "wave_width": "窄",
+        "h1": "突跳"
+      },
+      "wellness_ref": "传统关联惊恐、痛证；现代多对应一过性交感兴奋。",
+      "common_context": [
+        "惊恐",
+        "痛证"
+      ],
+      "axes": [
+        "G神情志",
+        "F正邪"
+      ],
+      "guardrail": "多为一过性，情绪平复后应恢复。"
+    },
+    {
+      "id": "xu",
+      "name": "虚脉",
+      "pinyin": "xū",
+      "category": "势",
+      "tags": [
+        "势",
+        "虚"
+      ],
+      "definition": "举之无力，按之空虚，迟大而软。",
+      "sensation": "整体无力、空虚。",
+      "ppg_features": {
+        "h1": "低",
+        "ascending_slope": "缓弱",
+        "vessel_tension": "低"
+      },
+      "wellness_ref": "传统关联阴阳气血诸虚；现代多对应循环动力偏弱。",
+      "common_context": [
+        "气血两虚",
+        "伤暑"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "虚脉为总体偏弱参考，需结合生活方式。"
+    },
+    {
+      "id": "shi",
+      "name": "实脉",
+      "pinyin": "shí",
+      "category": "势",
+      "tags": [
+        "势",
+        "实"
+      ],
+      "definition": "脉大且长，坚实有力，举按皆然。",
+      "sensation": "三部皆有力。",
+      "ppg_features": {
+        "h1": "大",
+        "ascending_slope": "陡",
+        "vessel_tension": "高"
+      },
+      "wellness_ref": "传统关联实证、阳热内盛；健康人亦可正气充盛见实脉。",
+      "common_context": [
+        "实证",
+        "热盛",
+        "正气充盛"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "实而有力伴高热为需关注信号；平人实脉属良性。"
+    },
+    {
+      "id": "jie",
+      "name": "结脉",
+      "pinyin": "jié",
+      "category": "律",
+      "tags": [
+        "律",
+        "阴"
+      ],
+      "definition": "脉来缓慢，时一止，止无定数。",
+      "sensation": "慢而不规则停顿。",
+      "ppg_features": {
+        "rate_bpm": "<60",
+        "rhythm": "不规则停顿",
+        "pause": "无定数"
+      },
+      "wellness_ref": "传统关联阴盛气结、痰凝血瘀；现代多对应早搏等心律不齐。",
+      "common_context": [
+        "气结",
+        "血瘀",
+        "痰凝"
+      ],
+      "axes": [
+        "B气血",
+        "F正邪"
+      ],
+      "guardrail": "偶发结脉可见于健康人；频繁或伴不适需心电图排查。"
+    },
+    {
+      "id": "dai",
+      "name": "代脉",
+      "pinyin": "dài",
+      "category": "律",
+      "tags": [
+        "律",
+        "虚"
+      ],
+      "definition": "脉来迟缓，止有定数，不能自还。",
+      "sensation": "规律停顿（如二联/三联律）。",
+      "ppg_features": {
+        "rate_bpm": "<60",
+        "rhythm": "规律停顿",
+        "pause": "定数"
+      },
+      "wellness_ref": "传统关联脏气衰微；现代多对应规律性传导阻滞/早搏。",
+      "common_context": [
+        "脏气衰微",
+        "规律性心律不齐"
+      ],
+      "axes": [
+        "B气血",
+        "H先天肾精"
+      ],
+      "guardrail": "规律停顿属需就医排查的信号，不可作养生参考。"
+    },
+    {
+      "id": "cu",
+      "name": "促脉",
+      "pinyin": "cù",
+      "category": "律",
+      "tags": [
+        "律",
+        "阳"
+      ],
+      "definition": "脉来急数，时一止，止无定数。",
+      "sensation": "快而不规则停顿。",
+      "ppg_features": {
+        "rate_bpm": ">90",
+        "rhythm": "不规则停顿",
+        "pause": "无定数"
+      },
+      "wellness_ref": "传统关联阳热亢盛、瘀滞痰食；现代多对应快速型心律不齐。",
+      "common_context": [
+        "热盛",
+        "痰食停积",
+        "心律不齐"
+      ],
+      "axes": [
+        "A气化",
+        "F正邪"
+      ],
+      "guardrail": "促脉伴心悸胸闷需就医；运动后一过性可观察。"
+    }
+  ],
+  "compound_examples": [
+    {
+      "name": "浮紧",
+      "compose": [
+        "fu",
+        "jin"
+      ],
+      "ref": "传统关联风寒束表。"
+    },
+    {
+      "name": "沉细",
+      "compose": [
+        "chen",
+        "xi"
+      ],
+      "ref": "传统关联脾肾阳虚、湿困。"
+    },
+    {
+      "name": "弦数",
+      "compose": [
+        "xian",
+        "shu"
+      ],
+      "ref": "传统关联肝阳上亢、郁热。"
+    },
+    {
+      "name": "滑数",
+      "compose": [
+        "hua",
+        "shu"
+      ],
+      "ref": "传统关联痰热、食积化热。"
+    },
+    {
+      "name": "细涩",
+      "compose": [
+        "xi",
+        "se"
+      ],
+      "ref": "传统关联血虚血瘀。"
+    },
+    {
+      "name": "弦细",
+      "compose": [
+        "xian",
+        "xi"
+      ],
+      "ref": "传统关联肝血不足、阴虚。"
+    }
+  ],
+  "device_output_contract": {
+    "description": "号脉硬件（V0）经边缘盒上送的特征载荷，键名走 hl.pulse.* 命名空间，不冒充 LOINC。",
+    "metrics": {
+      "hl.pulse.rate_bpm": "估得脉率（次/分）",
+      "hl.pulse.h1": "叩击波振幅（归一化 0-1）",
+      "hl.pulse.h3_h1": "重搏前波比",
+      "hl.pulse.h4_h1": "重搏切迹比",
+      "hl.pulse.h5_h1": "重搏波比",
+      "hl.pulse.dicrotic_present": "重搏切迹是否清晰 (0/1)",
+      "hl.pulse.ascending_slope": "升支斜率（归一化）",
+      "hl.pulse.perfusion_index": "灌注指数（浮沉参考）",
+      "hl.pulse.rhythm_regularity": "节律规整度 0(乱)-1(齐)",
+      "hl.pulse.pause_pattern": "停顿模式: none/irregular/regular",
+      "hl.pulse.sampling_hz": "采样率",
+      "hl.pulse.quality": "信号质量 0-1",
+      "hl.pulse.depth": "取脉深度: superficial(浮)/\"\"(中)/deep(沉)；由压力扫描或设备判定，V0 单点可留空"
+    }
+  }
+}
