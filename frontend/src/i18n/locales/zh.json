@@ -516,7 +516,8 @@
     "logout": "退出",
     "login": "登录",
     "language": "语言",
-    "retention": "健康目标"
+    "retention": "健康目标",
+    "pulse": "号脉"
   },
   "errors": {
     "notFound": "页面不存在",
@@ -715,5 +716,43 @@
     "heatmapAria": "依从热力图",
     "less": "少",
     "more": "多"
+  },
+  "pulse": {
+    "title": "号脉解读",
+    "subtitle": "录入或接收号脉终端采集的脉搏波特征，得到脉象参考与养生引导。",
+    "disclaimer": "本页解读基于脉搏波信号特征，属健康管理范畴的养生参考，不构成医学诊断。脉象判读需结合望闻问三诊，建议由注册中医师确认。",
+    "formTitle": "脉搏波特征",
+    "loadSample": "载入示例数据",
+    "interpret": "开始解读",
+    "interpreting": "解读中…",
+    "resultTitle": "解读结果",
+    "noLabels": "本次特征处于常见范围，未触发明显偏态脉象。",
+    "compounds": "相兼脉",
+    "axes": "关联八轴信号",
+    "wellnessTitle": "养生参考",
+    "guardrailTitle": "健康护栏",
+    "sevNormal": "范围常见",
+    "sevWatch": "值得关注",
+    "sevAlert": "需尽快关注",
+    "errRequest": "解读请求失败，请稍后再试。",
+    "depthLabel": "取脉深度",
+    "depthAuto": "自动（按灌注推断）",
+    "depthSuperficial": "浮（轻取即得）",
+    "depthDeep": "沉（重按始得）",
+    "pauseLabel": "节律停顿",
+    "pauseNone": "无停顿",
+    "pauseIrregular": "不规则停顿",
+    "pauseRegular": "规律停顿",
+    "fRate": "脉率 (次/分)",
+    "hRate": "heart rate",
+    "fH1": "叩击波 h1",
+    "hH1": "percussion wave",
+    "fH3H1": "重搏前波比 h3/h1",
+    "fH4H1": "重搏切迹比 h4/h1",
+    "fH5H1": "重搏波比 h5/h1",
+    "fDicrotic": "重搏切迹清晰 (0/1)",
+    "fSlope": "升支斜率",
+    "fPerf": "灌注指数",
+    "fRhythm": "节律规整度"
   }
 }
