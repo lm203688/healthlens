@@ -52,6 +52,12 @@ export const api = {
   tcmSyndrome:       (body) => request('/tcm/syndrome', { method: 'POST', body: JSON.stringify(body) }),
   tcmDiagnose:       (body) => request('/tcm/diagnose', { method: 'POST', body: JSON.stringify(body) }),
 
+  /* ===== 号脉解读 =====
+   * interpret 直传一组成熟特征（即时解读，硬件/演示都可）；
+   * byUser 按 user_ref 拉边缘盒最近上报（需登录态）。 */
+  pulseInterpret:  (body) => request('/pulse/interpret', { method: 'POST', body: JSON.stringify(body) }),
+  pulseByUser:     (body) => request('/agent/pulse', { method: 'POST', body: JSON.stringify(body) }),
+
   /* ===== 健康报告 ===== */
   reports: () => request('/reports/health'),
 
