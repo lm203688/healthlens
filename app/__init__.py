@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
+
 from app.config import settings
 
 
@@ -41,6 +43,7 @@ def create_app() -> FastAPI:
 
     from slowapi import _rate_limit_exceeded_handler
     from slowapi.errors import RateLimitExceeded
+
     from app.api.auth import limiter
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
@@ -66,51 +69,52 @@ def create_app() -> FastAPI:
     app.middleware("http")(emergency_interceptor_middleware)
 
     # 注册路由
-    from app.api.auth import router as auth_router
-    from app.api.records import router as records_router
-    from app.api.observations import router as observations_router
-    from app.api.diagnosis import router as diagnosis_router
-    from app.api.medications import router as medications_router
-    from app.api.tcm import router as tcm_router
-    from app.api.connections import router as connections_router
-    from app.api.genome import router as genome_router
-    from app.api.reports import router as reports_router
-    from app.api.profiles import router as profiles_router
-    from app.api.dashboard import router as dashboard_router
-    from app.api.goals import router as goals_router
-    from app.api.notifications import router as notifications_router
-    from app.api.medication_adherence import router as adherence_router
-    from app.api.knowledge import router as knowledge_router
-    from app.api.axes import router as axes_router
-    from app.api.repair import router as repair_router
-    from app.api.fusion import router as fusion_router
-    from app.api.v1.diagnosis_agent import router as diagnosis_agent_router
-    from app.api.frequency import router as frequency_router
-    from app.api.feedback import router as feedback_router
-    from app.api.checkin import router as checkin_router
-    from app.api.audit import router as audit_router
     from app.api.analytics import router as analytics_router
-    from app.api.growth import router as growth_router
+    from app.api.audit import router as audit_router
+    from app.api.auth import router as auth_router
+    from app.api.axes import router as axes_router
+    from app.api.checkin import router as checkin_router
+    from app.api.connections import router as connections_router
+    from app.api.dashboard import router as dashboard_router
+    from app.api.device_metrics import router as device_metrics_router
+    from app.api.diagnosis import router as diagnosis_router
+    from app.api.edge_ticket import router as edge_ticket_router
+    from app.api.feedback import router as feedback_router
     from app.api.freemium import router as freemium_router
+    from app.api.frequency import router as frequency_router
+    from app.api.fusion import router as fusion_router
+    from app.api.gdpr import router as gdpr_router
+    from app.api.genome import router as genome_router
+    from app.api.geo_infra import geo_router
+    from app.api.goals import router as goals_router
+    from app.api.growth import router as growth_router
     from app.api.growth_enhanced import router as growth_enhanced_router
+    from app.api.health_tools import tools_public_router
+    from app.api.knowledge import router as knowledge_router
+    from app.api.medication_adherence import router as adherence_router
+    from app.api.medications import router as medications_router
+    from app.api.notifications import router as notifications_router
+    from app.api.observations import router as observations_router
+    from app.api.payment import router as payment_router
     from app.api.points import router as points_router
+    from app.api.profiles import router as profiles_router
+    from app.api.records import router as records_router
+    from app.api.repair import router as repair_router
+    from app.api.reports import router as reports_router
     from app.api.seo import router as seo_router
     from app.api.seo_public import (
-        seo_knowledge_router,
-        health_router,
-        health_tools_router,
-        en_knowledge_router,
         en_health_router,
         en_health_tools_router,
+        en_knowledge_router,
+        health_router,
+        health_tools_router,
+        seo_knowledge_router,
     )
-    from app.api.health_tools import tools_public_router
-    from app.api.geo_infra import geo_router
-    from app.api.share_report import router as share_report_router
     from app.api.share_public import router as share_public_router
+    from app.api.share_report import router as share_report_router
+    from app.api.tcm import router as tcm_router
     from app.api.tiered_growth import router as tiered_growth_router
-    from app.api.payment import router as payment_router
-    from app.api.gdpr import router as gdpr_router
-    from app.api.device_metrics import router as device_metrics_router
+    from app.api.v1.diagnosis_agent import router as diagnosis_agent_router
 
     app.include_router(auth_router, prefix="/api/v1/auth", tags=["认证"])
     app.include_router(records_router, prefix="/api/v1/records", tags=["数据接入"])
@@ -163,6 +167,8 @@ def create_app() -> FastAPI:
     app.include_router(gdpr_router, prefix="/api/v1/gdpr", tags=["GDPR"])
     # 边缘网关（家庭小盒子推上来的日粒度健康指标）
     app.include_router(device_metrics_router, prefix="/api/v1", tags=["边缘网关"])
+    # 路由内部自带 /edge 前缀，这里补的 /api/v1 拼上去才是 /api/v1/edge/tickets
+    app.include_router(edge_ticket_router, prefix="/api/v1", tags=["边缘网关票据"])
     # 公开分享页面（无需登录）
     app.include_router(share_public_router, tags=["公开分享"])
 
@@ -185,10 +191,11 @@ def create_app() -> FastAPI:
         logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
 
     # 静态前端文件服务 (frontend/) - 带缓存控制
-    from fastapi.staticfiles import StaticFiles
-    from fastapi.responses import FileResponse
-    from starlette.middleware.base import BaseHTTPMiddleware
     import os
+
+    from fastapi.responses import FileResponse
+    from fastapi.staticfiles import StaticFiles
+    from starlette.middleware.base import BaseHTTPMiddleware
 
     frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
     if os.path.isdir(frontend_dir):
@@ -221,7 +228,7 @@ def create_app() -> FastAPI:
 
     @app.get("/metrics")
     async def metrics():
-        from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+        from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
         from starlette.responses import Response
         return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
