@@ -1,8 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
-    
+
     # App
     APP_NAME: str = "HealthLens"
     APP_VERSION: str = "0.22.0"
@@ -14,35 +15,35 @@ class Settings(BaseSettings):
     # 生产护栏依赖它：只有 ENV=production 才会拦截 mock 验证码通道，
     # 因此本地/开发环境保持原样可用，不会误伤联调。
     ENV: str = "development"
-    
+
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://healthlens:healthlens@db:5432/healthlens"
     DATABASE_POOL_SIZE: int = 10
     DATABASE_MAX_OVERFLOW: int = 20
-    
+
     # Redis
     REDIS_URL: str = "redis://redis:6379/0"
-    
+
     # MinIO
     MINIO_ENDPOINT: str = "minio:9000"
     MINIO_ACCESS_KEY: str = "minioadmin"
     MINIO_SECRET_KEY: str = "minioadmin"
     MINIO_BUCKET: str = "healthlens"
     MINIO_SECURE: bool = False
-    
+
     # JWT
     JWT_SECRET_KEY: str = "change-me-in-production"
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440    # 24h
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 30
-    
+
     # FHIR
     FHIR_BASE_URL: str = ""
-    
+
     # OCR
     OCR_ENGINE: str = "mock"  # mock / tesseract / paddleocr / smart
     OCR_LANGUAGE: str = "chi_sim+eng"
-    
+
     # AI Model
     AI_MODEL_PATH: str = "./models"
 
@@ -75,8 +76,11 @@ class Settings(BaseSettings):
     # ------------------------------------------------------------------
     EDGE_GATEWAY_TOKEN: str = ""
     EDGE_GATEWAY_REPLAY_WINDOW_MINUTES: int = 30
+    # per-device 短期票据的签名密钥，独立轮换，不与登录体系共用。生产必须换成强随机值。
+    EDGE_TICKET_SECRET: str = "change-me-in-production"
+    EDGE_TICKET_TTL_SECONDS: int = 30 * 86400
 
-    
+
     # Celery
     CELERY_BROKER_URL: str = "redis://redis:6379/1"
     CELERY_RESULT_BACKEND: str = "redis://redis:6379/2"
@@ -243,6 +247,11 @@ class Settings(BaseSettings):
             warnings.append(f"JWT_SECRET_KEY 使用不安全默认值: '{self.JWT_SECRET_KEY}'")
         if self.MINIO_SECRET_KEY in self._INSECURE_SECRETS:
             warnings.append(f"MINIO_SECRET_KEY 使用不安全默认值: '{self.MINIO_SECRET_KEY}'")
+        if self.EDGE_TICKET_SECRET in self._INSECURE_SECRETS:
+            warnings.append(
+                "EDGE_TICKET_SECRET 使用不安全默认值：任何人都能自己签发设备票据。"
+                "签发前务必换成强随机值（openssl rand -hex 32）"
+            )
         if self.CORS_ORIGINS == ["*"] and not self.DEBUG:
             warnings.append("CORS_ORIGINS=['*'] 在非调试模式下不安全")
         # 生产环境跑 mock 验证码 = 任何人凭回显码登录任意账号。
