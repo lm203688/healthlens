@@ -116,7 +116,8 @@ supervisor/restart web                  # 记忆里的正规操作：docker comp
 
 - 这是**健康管理平台，不是医疗产品**：边缘网关只产生"健康信号"，不产生诊断结论。
 - 不做：原始波形上传、长期波形存储、任何"治疗建议"。
-- 不做设备认证体系（token 是共享密钥形态；要多用户得换成每设备一密钥 + 证书）。
+- **设备认证原来只有共享静态 token**（一台盒子泄露 = 全量轮换），现已换成 per-gateway 短期票据，
+  见第 8.1 节；静态令牌保留为兼容路径，但响应里会回显 `auth: "token"`，运维应盯它归零。
 - **去重与缓存必须跨进程**：生产 web 是多 worker，进程内 dict 互不相通。2026-10-04 线上实测同一
   nonce 连打 6 次返回 `200 200 409 409 200 200` —— 4 次绕过去重。现已改用 Redis（nonce 走 `SET NX EX`），
   修复后同一批请求是 `200 409 409 409 409 409`。Redis 不可用时降级内存（上报不中断），但重放防护随之失效，
@@ -125,14 +126,41 @@ supervisor/restart web                  # 记忆里的正规操作：docker comp
   `2026-10-04; rm -rf /` 截成 422，让"格式非法"的 400 永远走不到。
 - `user_ref` 会拼进 Redis key，已限定 `^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$`——否则 `a*` 会污染 scan 前缀、越权命中别的 ref。
 
+### 8.1 设备票据（per-gateway 身份，2026-10-05）
+
+共享静态 token 解决不了三件事：一台盒子泄露就得全量轮换、云端看不出数据来自哪台设备、
+设备报废后无法单独吊销。票据把这些拆成 per-gateway 的：
+
+```
+POST /api/v1/edge/tickets       登录用户给自己（或 admin 代他人）的盒子签一张票据
+GET  /api/v1/edge/tickets       列举自己名下票据 + 吊销状态
+POST /api/v1/edge/tickets/{jti}/revoke   即时吊销（jti 进 Redis 失效清单）
+```
+
+- 票据是 JWT（同 `JWT_ALGORITHM`），但多一道 `typ=edge` 隔离 —— 用户 access token 不能拿来当设备票据冒用。
+- 签名密钥独立 `EDGE_TICKET_SECRET`，不复用 `JWT_SECRET_KEY`：登录体系轮换不会连带踢掉所有盒子。
+  留默认值 `change-me-in-production` 会在启动安全检查里告警（否则任何人都能自签票据）。
+- 默认 TTL 30 天，可在 `60s ~ 365d` 间指定；默认 30 天是为了让"长期驻留"也不至于一张票用到天荒地老。
+- 上报时票据头的 `user_ref` / `gateway_id` 必须与请求体完全一致，否则 403 —— 否则「拿 A 的票据把数据
+  标成 B 的 user_ref」就是一条越权写入通道。
+- 吊销靠 jti 失效清单（签名票据本身无状态）。清单 TTL 对齐票据 TTL，否则先被清掉的清单会让已吊销票据复活。
+
+边缘侧用法（有票据就走票据，无则回落静态令牌）：
+
+```bash
+# 云端口令签发后，把 token 写进 /etc/healthlens/edge.env
+echo "HL_EDGE_TICKET=$(...)" | sudo tee -a /etc/healthlens/edge.env
+python healthgateway/main.py report --endpoint https://healthlens.cc/api/v1/device-metrics
+```
+
 ## 9. 路线建议
 
 | 优先级 | 动作 | 依赖 | 状态 |
 |---|---|---|---|
 | P0 | 用 `--kind synthetic` 跑通整条链路 + 频谱真值验证 | 无 | 已落地（本地 + ECS 线上验证） |
 | P0 | nonce 去重改 Redis（多 worker 下曾 4/6 失效）+ day 校验语义 | 无 | 已修复并线上复验 |
+| P1 | per-gateway 短期票据 + 吊销（替掉共享明文 token） | 登录体系（已复用 `get_current_user`） | ✅ 已落地（12 项自测）+ 线上待部署 |
 | P1 | 真机接 Muse S，采集 7 天，看 α/θ 比是否能在日间波动上区分"作息变化" | 需要一台 Muse 头环 | 待硬件 |
-| P1 | 云端 token 签发流程（现在 handoff 成明文 .env） | 一个管理员端点 | 未做（见下） |
 | P2 | HRV（RMSSD）启用 + 与 OW 的睡眠数据做交叉校验 | Muse 2 的 PPG |
 | P2 | 边缘盒子镜像化（树莓派 hazel 预装） | 时间 |
 | 不做 | 接 Meta Muse Gadgets SDK | 见第 2 节 |
