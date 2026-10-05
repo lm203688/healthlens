@@ -516,7 +516,8 @@
     "logout": "Sign Out",
     "login": "Sign In",
     "language": "Language",
-    "retention": "Goals"
+    "retention": "Goals",
+    "pulse": "Pulse"
   },
   "errors": {
     "notFound": "Page not found",
@@ -715,5 +716,43 @@
     "heatmapAria": "Adherence heatmap",
     "less": "Less",
     "more": "More"
+  },
+  "pulse": {
+    "title": "Pulse Reading",
+    "subtitle": "Enter or receive pulse-wave features from the pulse sensor to get a pulse reference and wellness guidance.",
+    "disclaimer": "This reading is based on pulse-wave signal features and is a wellness reference, not a medical diagnosis. Pulse interpretation should be combined with other observations and confirmed by a qualified practitioner.",
+    "formTitle": "Pulse-wave features",
+    "loadSample": "Load sample data",
+    "interpret": "Interpret",
+    "interpreting": "Interpreting…",
+    "resultTitle": "Reading result",
+    "noLabels": "These features sit in the common range; no notable deviation was flagged.",
+    "compounds": "Combined patterns",
+    "axes": "Related axis signals",
+    "wellnessTitle": "Wellness reference",
+    "guardrailTitle": "Health guardrail",
+    "sevNormal": "Common range",
+    "sevWatch": "Worth watching",
+    "sevAlert": "Needs attention soon",
+    "errRequest": "Reading request failed. Please try again later.",
+    "depthLabel": "Pulse depth",
+    "depthAuto": "Auto (from perfusion)",
+    "depthSuperficial": "Superficial (light pressure)",
+    "depthDeep": "Deep (heavy pressure)",
+    "pauseLabel": "Rhythm pause",
+    "pauseNone": "No pause",
+    "pauseIrregular": "Irregular pause",
+    "pauseRegular": "Regular pause",
+    "fRate": "Pulse rate (bpm)",
+    "hRate": "",
+    "fH1": "Percussion wave h1",
+    "hH1": "amplitude",
+    "fH3H1": "Pre-dicrotic ratio h3/h1",
+    "fH4H1": "Dicrotic notch ratio h4/h1",
+    "fH5H1": "Dicrotic wave ratio h5/h1",
+    "fDicrotic": "Dicrotic notch present (0/1)",
+    "fSlope": "Ascending slope",
+    "fPerf": "Perfusion index",
+    "fRhythm": "Rhythm regularity"
   }
 }
