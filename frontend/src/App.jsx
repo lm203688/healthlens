@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Dashboard from './pages/Dashboard';
 import HealthAssess from './pages/HealthAssess';
 import TCMConstitution from './pages/TCMConstitution';
+import PulseDevice from './pages/PulseDevice';
 import AxisProfile from './pages/AxisProfile';
 import CheckIn from './pages/CheckIn';
 import Reports from './pages/Reports';
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { to: '/',           key: 'nav.dashboard', icon: '🏠' },
   { to: '/assess',     key: 'nav.healthAssess', icon: '🩺' },
   { to: '/tcm',        key: 'nav.tcm', icon: '🏥' },
+  { to: '/pulse',      key: 'nav.pulse', icon: '🫀' },
   { to: '/axes',       key: 'nav.axis', icon: '🧭' },
   { to: '/checkin',    key: 'nav.checkin', icon: '📅' },
   { to: '/reports',    key: 'nav.reports', icon: '📊' },
@@ -102,6 +104,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/assess" element={<HealthAssess />} />
           <Route path="/tcm" element={<TCMConstitution />} />
+          <Route path="/pulse" element={<PulseDevice />} />
           <Route path="/axes" element={<AxisProfile />} />
           <Route path="/checkin" element={<CheckIn />} />
           <Route path="/reports" element={<Reports />} />
