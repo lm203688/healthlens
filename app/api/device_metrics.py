@@ -5,7 +5,7 @@
 2. 结构白名单校验（key 字符集、指标条数、数值有界、day 必须是真日期）—— 拒绝
    “词级放行”，避免出现带控制字符或超长 payload 的东西进来；
 3. 落进指标存储（Redis 优先），供 app.connectors.edge_gateway 转成 HealthObservation；
-4. 回显 dedup_backend，让监控能发现「去重已降级」。
+4. 回显 dedup_backend / auth，让监控能发现「去重已降级」和「还在用共享静态令牌」。
 
 为什么必须在 Redis 而不是进程内存
 --------------------------------
@@ -26,6 +26,7 @@ from typing import Any
 from fastapi import APIRouter, Header, HTTPException, Request
 from pydantic import BaseModel, Field
 
+from app.api.edge_ticket import decode_ticket
 from app.config import settings
 
 router = APIRouter(tags=["边缘网关"])
@@ -161,16 +162,40 @@ def recent(user_ref: str, days: int = 7) -> list[dict[str, Any]]:
     return _backend().load_metrics(user_ref, days)
 
 
+def _resolve_credentials(
+    payload: EdgePayload,
+    token_header: str | None,
+    ticket_header: str | None,
+) -> dict[str, Any]:
+    """确定这条上报的身份，返回 {"auth": "ticket"|"token", "user_ref", "gateway_id"}。
+
+    票据路径优先：票据本身就绑死 user_ref 和 gateway_id，上报体必须和它一致 ——
+    否则「我拿 A 的票据，把数据标成 B 的 user_ref」就成了一条越权写入通道。
+    """
+    if ticket_header:
+        claims = decode_ticket(ticket_header)
+        ref, gw = str(claims.get("user_ref") or ""), str(claims.get("gateway_id") or "")
+        if not ref or not gw:
+            raise HTTPException(status_code=401, detail="票据缺少 user_ref 或 gateway_id")
+        if payload.user_ref != ref or payload.gateway_id != gw:
+            raise HTTPException(status_code=403, detail="上报体与票据身份不一致")
+        return {"auth": "ticket", "user_ref": ref, "gateway_id": gw}
+
+    if not getattr(settings, "EDGE_GATEWAY_TOKEN", ""):
+        raise HTTPException(status_code=503, detail="边缘网关接收口未启用（无静态令牌也无票据）")
+    if token_header != settings.EDGE_GATEWAY_TOKEN:
+        raise HTTPException(status_code=401, detail="边缘令牌无效")
+    return {"auth": "token", "user_ref": payload.user_ref, "gateway_id": payload.gateway_id}
+
+
 @router.post("/device-metrics")
 async def receive_edge_metrics(
     payload: EdgePayload,
     request: Request,
     x_hl_edge_token: str | None = Header(default=None),
+    x_hl_edge_ticket: str | None = Header(default=None),
 ):
-    if not getattr(settings, "EDGE_GATEWAY_TOKEN", ""):
-        raise HTTPException(status_code=503, detail="边缘网关接收口未启用（EDGE_GATEWAY_TOKEN 为空）")
-    if x_hl_edge_token != settings.EDGE_GATEWAY_TOKEN:
-        raise HTTPException(status_code=401, detail="边缘令牌无效")
+    identity = _resolve_credentials(payload, x_hl_edge_token, x_hl_edge_ticket)
 
     nonce = request.headers.get("X-HL-Edge-Nonce") or uuid.uuid4().hex
     window_minutes = int(getattr(settings, "EDGE_GATEWAY_REPLAY_WINDOW_MINUTES", 30) or 30)
@@ -193,6 +218,7 @@ async def receive_edge_metrics(
     backend = _backend()
     result = ingest(payload, payload.metrics)
     result["dedup_backend"] = backend.backend
+    result["auth"] = identity["auth"]
     return result
 
 
@@ -206,5 +232,10 @@ async def list_edge_metrics(user_ref: str, days: int = 7, x_hl_edge_token: str |
 
 @router.get("/device-metrics/backend")
 async def edge_backend_status():
-    """健康检查：告诉运维去重现在是不是还跨进程有效"""
-    return {"ok": True, "backend": _backend().backend, "token_configured": bool(getattr(settings, "EDGE_GATEWAY_TOKEN", ""))}
+    """健康检查：告诉运维去重现在是不是还跨进程有效、票据签名密钥配了没"""
+    return {
+        "ok": True,
+        "backend": _backend().backend,
+        "token_configured": bool(getattr(settings, "EDGE_GATEWAY_TOKEN", "")),
+        "ticket_configured": bool(getattr(settings, "EDGE_TICKET_SECRET", "")),
+    }
