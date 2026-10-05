@@ -15,14 +15,25 @@ import json
 import os
 import sys
 import time
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from aggregate import WINDOW_SECONDS, MetricWindow, build_payload, compute_band_metrics  # noqa: E402
+from aggregate import (  # noqa: E402
+    WINDOW_SECONDS,
+    MetricWindow,
+    build_payload,
+    compute_band_metrics,
+)
 from command_whitelist import dispatch  # noqa: E402
-from reporter import drain_queue, endpoint_from_env, push, token_from_env  # noqa: E402
+from reporter import (  # noqa: E402
+    drain_queue,
+    endpoint_from_env,
+    push,
+    ticket_from_env,
+    token_from_env,
+)
 from signal_source import build_source  # noqa: E402
 
 DEFAULT_DATA_DIR = os.getenv("HL_EDGE_DATA_DIR", "./data")
@@ -92,7 +103,7 @@ def cmd_collect(args) -> int:
         "frames": metrics.get("frames", 0),
         "band_relative": metrics.get("band_relative"),
         "alpha_asymmetry": metrics.get("alpha_asymmetry"),
-        "saved_at": datetime.now(timezone.utc).isoformat(),
+        "saved_at": datetime.now(UTC).isoformat(),
         "sources": {args.kind: True},
     }
     (data_dir / "state.json").write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")  # noqa: E501
@@ -122,9 +133,18 @@ def cmd_report(args) -> int:
     queue = data_dir / "offline.jsonl"
     endpoint = args.endpoint or endpoint_from_env()
     token = args.token or token_from_env()
+    ticket = ticket_from_env()
 
-    if not token:
-        print(json.dumps({"ok": False, "error": "缺少 HL_EDGE_TOKEN（云端签发）", "endpoint": endpoint}))
+    if not token and not ticket:
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "error": "缺上报凭据：设 HL_EDGE_TICKET（推荐，网页端签发）或 HL_EDGE_TOKEN（静态令牌）",
+                    "endpoint": endpoint,
+                }
+            )
+        )
         return 2
 
     day = args.day or _day()
@@ -133,12 +153,12 @@ def cmd_report(args) -> int:
         print(json.dumps({"ok": False, "error": f"{day} 无聚合指标，先跑 collect"}))
         return 3
 
-    result = push(endpoint, token, payload, queue)
+    result = push(endpoint, token, payload, queue, ticket=ticket)
     if result["ok"]:
         result["sent_day"] = day
     else:
         result["queued"] = str(queue)
-    result["drained"] = drain_queue(endpoint, token, queue)
+    result["drained"] = drain_queue(endpoint, token, queue, ticket=ticket)
     print(json.dumps(result, ensure_ascii=False))
     return 0
 
