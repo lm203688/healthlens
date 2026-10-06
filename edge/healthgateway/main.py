@@ -27,6 +27,13 @@ from aggregate import (  # noqa: E402
     compute_band_metrics,
 )
 from command_whitelist import dispatch  # noqa: E402
+from pulse_source import (
+    WINDOW_SECONDS as PULSE_WINDOW,
+)
+from pulse_source import (  # noqa: E402
+    PulsePpgSource,
+    PulseSerialSource,
+)
 from reporter import (  # noqa: E402
     drain_queue,
     endpoint_from_env,
@@ -70,6 +77,8 @@ def _load_metrics(data_dir: Path, day: str) -> dict:
 
 
 def cmd_collect(args) -> int:
+    if args.kind == "pulse":
+        return _collect_pulse(args)
     source = build_source({"kind": args.kind, "path": args.path,
                            "sample_rate": args.sample_rate, "noise": args.noise})
     data_dir = Path(args.data_dir)
@@ -111,6 +120,61 @@ def cmd_collect(args) -> int:
 
     if args.loop:
         time.sleep(args.interval)
+    return 0
+
+
+def _collect_pulse(args) -> int:
+    """号脉采集：每窗取一次 hl.pulse.* 特征，多窗平均后上送。
+
+    源优先级：--serial-file（回放固件输出）> --port（真实串口读固件）> --profile（合成波形）。
+    """
+    data_dir = Path(args.data_dir)
+    data_dir.mkdir(parents=True, exist_ok=True)
+    if getattr(args, "serial_file", None):
+        src = PulseSerialSource(file=args.serial_file, sample_rate=args.sample_rate)
+    elif getattr(args, "port", None):
+        src = PulseSerialSource(port=args.port, baudrate=115200, sample_rate=args.sample_rate)
+    else:
+        src = PulsePpgSource(profile=getattr(args, "profile", "normal") or "normal",
+                             sample_rate=args.sample_rate, noise=args.noise, seed=None)
+    frames = max(1, int(round(args.seconds / PULSE_WINDOW)))
+    agg: dict[str, list[float]] = {}
+    for _ in range(frames):
+        feats = src.read(seconds=PULSE_WINDOW)
+        for k, v in feats.items():
+            if isinstance(v, (int, float)):
+                agg.setdefault(k, []).append(v)
+    metrics = []
+    for k, vals in agg.items():
+        metrics.append({
+            "key": k,
+            "value": round(sum(vals) / len(vals), 4),
+            "unit": "ratio" if ("ratio" in k or k.endswith("_bpm") or "slope" in k or "index" in k or "regularity" in k) else None,
+            "evidence": "edge-derived",
+            "sample_count": len(vals),
+        })
+    # 注：depth / pause_pattern 为字符串，不满足接收口 value:float 约束，
+    # V0 单点常规定律不强制上送；云端引擎对缺失项取默认值（none/""）。
+    day = args.day or _day()
+    payload = build_payload(
+        day=day,
+        gateway_id=args.gateway_id,
+        user_ref=args.user_ref,
+        metrics={"metrics": metrics, "frames": frames},
+        device={"type": "pulse", "label": "HealthLens 号脉终端 (PPG)"},
+    )
+    path = _write_metrics(data_dir, day, payload)
+    state = dispatch("status", data_dir=data_dir).get("result", {}) or {}
+    state.update({"gateway_id": args.gateway_id, "user_ref": args.user_ref})
+    state["last_collect"] = {
+        "day": day,
+        "frames": frames,
+        "pulse_features": {m["key"]: m["value"] for m in metrics if isinstance(m["value"], (int, float))},
+        "saved_at": datetime.now(UTC).isoformat(),
+        "sources": {"pulse": True},
+    }
+    (data_dir / "state.json").write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"ok": True, "saved": str(path), "metrics_count": len(metrics)}, ensure_ascii=False, indent=2))
     return 0
 
 
@@ -184,7 +248,13 @@ def build_parser() -> argparse.ArgumentParser:
         return sub_parser
 
     collect = sub.add_parser("collect")
-    collect.add_argument("--kind", default="synthetic", choices=["synthetic", "replay", "muse_lsl"])
+    collect.add_argument("--kind", default="synthetic", choices=["synthetic", "replay", "muse_lsl", "pulse"])
+    collect.add_argument("--profile", default="normal",
+                        help="pulse 源波形形态: normal/xian/shu/chi/ji/hong/se/hua")
+    collect.add_argument("--port", default=None,
+                        help="号脉固件串口(COM3 / /dev/ttyUSB0)；指定则读真实硬件而非合成")
+    collect.add_argument("--serial-file", default=None,
+                        help="号脉固件输出回放文件(JSONL)，无硬件验证整条链路用")
     collect.add_argument("--path")
     collect.add_argument("--sample-rate", type=int, default=256)
     collect.add_argument("--noise", type=float, default=0.1)
