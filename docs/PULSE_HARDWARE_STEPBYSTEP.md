@@ -132,20 +132,29 @@ curl -X POST https://healthlens.cc/api/v1/pulse/interpret \
 
 ESP32 输出的 JSON 交给树莓派（边缘盒），由边缘盒上送云端 —— 固件**不直接联网**，原因：原始数据处理、票据管理都在边缘盒，且 ESP32 直连公网会暴露长期凭据。
 
-**方式 A（推荐，有线）**：ESP32 USB → 树莓派，Python 读串口
-```python
-import serial, json
-s = serial.Serial('/dev/ttyUSB0', 115200)
-for line in s:
-    feats = json.loads(line)
-    if 'hl.pulse.quality' in feats and feats['hl.pulse.quality'] < 0.5:
-        continue          # 信号不合格就不上报，不编造
-    ...  # 交给 edge/healthgateway 的 reporter 上送
+边侧网关已内置串口读取能力（`edge/healthgateway/pulse_source.py` 的 `PulseSerialSource`），不用自己写串口代码：
+
+```bash
+# 1) 装可选依赖（只在用真实串口时需要，回放模式不用装）
+pip install pyserial
+
+# 2) 边缘盒读固件串口 → 多窗平均 → 写本地日指标
+python edge/healthgateway/main.py collect --kind pulse --port /dev/ttyUSB0 --seconds 60 --loop
+
+# 3) 上送云端（用网页端签发的票据，或静态令牌 HL_EDGE_TOKEN）
+python edge/healthgateway/main.py report --day $(date +%F)
 ```
 
-**方式 B（无线）**：ESP32 用 WiFi POST 到边缘盒的本地 HTTP（`server.py` 已在监听）。
+> 无硬件也能验证这条链路：把固件每行输出存成 `fw.jsonl`，用 `--serial-file fw.jsonl` 代替 `--port`，走的是**完全相同的解析与上报路径**。
 
-**通过标准**：云端 `POST /api/v1/agent/pulse {"user_ref":"你的ref"}` 返回 `available: true`，`pulse_interpretation.labels` 有中文脉名与八轴信号。
+**方式 B（无线，进阶）**：ESP32 用 WiFi POST 到边缘盒本地 HTTP（`server.py` 已在监听）。固件目前走串口，WiFi 直推需另改固件。
+
+**通过标准**（全链路）：
+```bash
+curl -X POST https://healthlens.cc/api/v1/agent/pulse \
+  -H 'Content-Type: application/json' -d '{"user_ref":"你的ref"}'
+```
+返回 `available: true` 且 `pulse_interpretation.labels` 里有中文脉名与八轴信号，即说明「固件 → 串口 → 边缘盒 → 云端 → 解读」整条链路闭合。
 
 ---
 
@@ -164,3 +173,12 @@ curl https://healthlens.cc/api/v1/device-metrics/backend
 
 ## 下一步（Phase 4：前端展示）
 硬件打通后，解读结果要能在网页上看到 —— 对应 `PULSE_DEVICE.md` §10 Phase 4。
+
+---
+
+## 已知边界（务必先看，避免误用）
+
+1. **阈值未用真人数据标定**：引擎阈值来自文献区间 + 合成波形自测，**没有**经过真人 7 天数据校准。可靠性上限如实标注，买到硬件后需用真实数据回流校准。
+2. **固件不输出 `h4_h1`**：ESP32 端只算 `h3_h1`、`h5_h1`、`dicrotic_present`，没算重搏切迹比 `h4_h1`（板上难稳定检测切迹）。因此真实设备走「`h4_h1` 偏低判涩脉」这条分支不会触发，涩脉改由 `dicrotic<0.5` 或 `h5_h1<0.2` 触发。如需固件端判涩，后续在固件加切迹检测。
+3. **三才（寸/关/尺）与浮/沉压力扫描未做**：单探头只能采一处。浮/沉需 FSR402 做压力扫描（第 5 步），寸关尺需三探头或机械移位，均为硬件依赖。
+4. **PPG 的固有天花板**：单点外周脉搏波能可靠反映「数/形/律」，但医生三指按压的浮沉语义无法被单点传感器完全复现。本系统定位为健康信号参考，非替代中医师判断。
