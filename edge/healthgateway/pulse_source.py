@@ -7,8 +7,11 @@ V0 用「合成波形 + 真实特征提取」让整条链路在没有实体硬�
 """
 from __future__ import annotations
 
+import json
 import math
 import random
+import time
+from pathlib import Path
 from typing import Any
 
 WINDOW_SECONDS = 8.0
@@ -187,3 +190,85 @@ class PulsePpgSource:
         feats = extract_features(samples, self.sr)
         feats["hl.pulse.depth"] = ""  # V0 单点，无显式浮沉扫描
         return feats
+
+
+class PulseSerialSource:
+    """读取号脉固件(ESP32)经串口输出的聚合特征 JSON。
+
+    固件每个采集窗（默认 8s）输出一行 ``{"hl.pulse.*": ...}``，本源按行解析后原样返回，
+    不在边缘做二次特征提取（固件内已用 MAX30102 ADC 算好）。两种后端：
+    - 真实串口：``port="COM3"`` / ``"/dev/ttyUSB0"``（需 pyserial，可选依赖，缺失不炸进程）；
+    - 文件回放：``file="firmware_out.jsonl"``（无硬件也能验证整条链路，测试用）。
+
+    与 PulsePpgSource 同接口（``read()`` 返回一窗特征 dict），``_collect_pulse`` 多窗平均逻辑不变。
+    """
+
+    def __init__(self, port: str | None = None, baudrate: int = 115200,
+                 timeout: float = 10.0, file: str | None = None, sample_rate: float = 100.0):
+        self.port = port
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.file = file
+        self.sr = sample_rate
+        self._ser = None
+        self._fobj = None
+
+    @property
+    def available(self) -> bool:
+        if self.file:
+            return Path(self.file).is_file()
+        try:
+            import serial  # noqa: F401  lazy optional dep
+        except Exception:
+            return False
+        return True
+
+    def _open(self) -> None:
+        if self.file:
+            if self._fobj is None:
+                self._fobj = open(self.file, encoding="utf-8")
+            return
+        if self._ser is None:
+            import serial
+            self._ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+
+    def _readline(self) -> str:
+        self._open()
+        if self.file:
+            return self._fobj.readline() if self._fobj else ""
+        return self._ser.readline().decode("utf-8", "ignore")
+
+    def read(self, seconds: float = WINDOW_SECONDS) -> dict[str, Any]:
+        deadline = time.time() + max(seconds, self.timeout)
+        while time.time() < deadline:
+            raw = self._readline()
+            line = raw.strip()
+            if not line:
+                # 串口空读 = 超时，继续等；文件空读 = EOF，直接收尾
+                if self.file:
+                    return {"hl.pulse.quality": 0.0}
+                continue
+            if not line.startswith("{"):
+                continue
+            try:
+                feats = json.loads(line)
+            except Exception:
+                continue
+            feats = {k: v for k, v in feats.items() if k.startswith("hl.pulse.")}
+            feats.setdefault("hl.pulse.quality", 1.0)
+            return feats
+        return {"hl.pulse.quality": 0.0}
+
+    def close(self) -> None:
+        if self._ser:
+            try:
+                self._ser.close()
+            except Exception:
+                pass
+            self._ser = None
+        if self._fobj:
+            try:
+                self._fobj.close()
+            except Exception:
+                pass
+            self._fobj = None
