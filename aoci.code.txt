@@ -1,0 +1,37 @@
+#AOCI-CODE-VOLUME: 1
+
+===C:/Users/xing/Desktop/healthlens/===
+
+===C:/Users/xing/Desktop/healthlens/app/lib/===
+fusion_engine.py[KB9L]: F:Eight-axis TCM-fusion wellness engine (axes A-H): scores evidence, returns evidence_detail; single source of truth for health-signal fusion. | R:code:data/case_evidence_db.json code:app/lib/pulse_engine.py | A:app/api/agent.py app/lib/wellness_simulator.py | S:Wellness/health reference only; never a medical diagnosis; every downstream output must carry guardrails and the non-medical disclaimer.
+pulse_engine.py[KH9M]: F:Classifies PPG time-domain features into 28 TCM pulse labels plus compound (xiangjian) pulse synthesis; maps to eight-axis signals and guardrails. | R:code:data/pulse_signatures.json code:app/lib/fusion_engine.py | A:app/api/pulse.py edge/healthgateway/pulse_source.py | S:On missing knowledge base it MUST raise PulseKnowledgeBaseError (503); never return id-instead-of-name fake readings or empty axes.
+wellness_simulator.py[KB7M]: F:Week-step dynamics simulator projecting axis trajectories from checkin baselines; backs POST /api/v1/axes/project. | R:code:app/lib/fusion_engine.py | A:app/api/agent.py | S:Simulation is illustrative only; must not be presented as a prediction of clinical outcomes.
+
+===C:/Users/xing/Desktop/healthlens/app/core/===
+bioage_engine.py[KA7M]: F:Estimates biological age from wellness inputs and derives delta versus chronological age. | R:code:app/lib/fusion_engine.py | A:app/api/agent.py | S:Bioage is a wellness heuristic, not a diagnostic biomarker result.
+tcm_safety.py[SS8L]: F:Encodes TCM contraindication rules: shibafan / shijiufei / pregnancy taboo / herb-drug interactions; gates recommendations. | R:code:data/tcm_structured/ | A:app/lib/fusion_engine.py app/api/agent.py | S:Safety gate is fail-closed; when a conflict is detected the recommendation must be suppressed, not merely flagged.
+
+===C:/Users/xing/Desktop/healthlens/app/api/===
+agent.py[AN8T]: F:Agent orchestration router under /api/v1/agent/; dispatches intents to engines and aggregates responses. | R:code:app/lib/fusion_engine.py code:app/api/pulse.py | A:frontend app/api/mcp_http.py | S:Route prefix is hard-coded as /api/v1/agent/; include_router must NOT re-add the prefix or endpoints 404.
+pulse.py[AH8T]: F:Exposes POST /pulse/interpret and POST /agent/pulse; returns pulse labels, axes, wellness_ref, guardrail. | R:code:app/lib/pulse_engine.py | A:frontend/src/pages/PulseDevice.jsx | S:Catches PulseKnowledgeBaseError and returns 503; never a 200 with empty or placeholder interpretation.
+checkin.py[AB7S]: F:Checkin ingestion API; derives baselines and triggers projection. | R:code:app/models/wellness_checkin.py code:app/lib/wellness_simulator.py | A:frontend | S:Must persist before computing projection; partial checkins must not silently produce full-axis results.
+mcp_http.py[IN7M]: F:Self-implemented MCP HTTP endpoint at POST /api/v1/mcp; exposes project capabilities to MCP clients. | R:code:app/api/agent.py | A:external MCP clients | S:On ECS the endpoint runs without a healthlens_agent/ subdir; loader returns None on missing engine and HAS_FUSION guards the route.
+
+===C:/Users/xing/Desktop/healthlens/app/connectors/===
+edge_gateway.py[IH8S]: F:Connector translating edge-device metrics (hl.* namespace) into eight-axis signals via POST /api/v1/device-metrics. | R:code:edge/healthgateway/main.py code:app/lib/fusion_engine.py | A:edge/healthgateway/main.py | S:Accepts both legacy X-HL-Edge-Token and per-gateway X-HL-Edge-Ticket; mismatched sub/gateway_id must 403.
+
+===C:/Users/xing/Desktop/healthlens/edge/healthgateway/===
+main.py[RH7M]: F:Edge gateway collector: pulls device frames, extracts features, reports to cloud; supports --kind pulse with serial/file/synthetic sources. | R:code:edge/healthgateway/pulse_source.py code:app/connectors/edge_gateway.py | A:cloud reporter | S:Source priority is serial-file > port > profile(synthetic); a synthetic source must never be used when real serial data is available.
+pulse_source.py[KH7M]: F:Pulse feature extraction: NMS peak search plus windowed h3/h5 local-max; PulseSerialSource reads firmware JSON, PulsePpgSource synthesizes PPG. | R:code:edge/healthgateway/firmware/pulse_esp32.ino code:app/lib/pulse_engine.py | A:edge/healthgateway/main.py | S:Firmware does NOT emit h4_h1; se-pulse detection relies on dicrotic<0.5 or h5_h1<0.2, not h4_h1.
+
+===C:/Users/xing/Desktop/healthlens/app/===
+main.py[AB6T]: F:FastAPI application entry; mounts routers and middleware; wires CORS and lifespan. | R:code:app/api/agent.py code:app/api/pulse.py | A:server | S:Bind mount ./app:/app/app means container runs host /opt/healthlens/app; restart alone does not re-read .env, must --force-recreate web.
+
+===C:/Users/xing/Desktop/healthlens/frontend/src/pages/===
+PulseDevice.jsx[AU7M]: F:Frontend page for the pulse-hardware product: calls interpret endpoints, shows labels/axes/guardrails, zh/en i18n. | R:code:frontend/src/api/client.js code:app/api/pulse.py | A:user | S:Displays only wellness references; must render guardrail text and never imply medical diagnosis.
+
+===C:/Users/xing/Desktop/healthlens/data/===
+pulse_signatures.json[DD9L]: F:Canonical 28-pulse plus ping-mai knowledge base: PPG feature dictionary, cun-guan-chi, compound_examples, device_output_contract (13 keys incl hl.pulse.depth). | R:- | A:app/lib/pulse_engine.py | S:Loaded via multi-candidate path detection (HL_PULSE_DB / repo data / CWD /app/data); absence must surface as 503, not silent degradation.
+
+===C:/Users/xing/Desktop/healthlens/app/models/===
+wellness_checkin.py[PD7T]: F:SIIV self-checkin ORM model; persisted wellness signals feeding baseline derivation. | R:code:app/lib/fusion_engine.py | A:app/api/checkin.py | S:Day strings validated at endpoint (DAY_PATTERN + strptime to 400); pydantic max_length truncates to 422, not a business error.
