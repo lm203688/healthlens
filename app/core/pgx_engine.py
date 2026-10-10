@@ -33,11 +33,11 @@ PGX_RULES = {
             "*17": 0.5,  # 下降
             "*41": 0.5,  # 下降
         },
-        "phenotype_map": {  # 活性评分→表型
-            (0, 0.5): ("PM", "差代谢者(Poor Metabolizer)"),
-            (0.5, 1.0): ("IM", "中间代谢者(Intermediate Metabolizer)"),
-            (1.0, 2.25): ("NM", "正常代谢者(Normal Metabolizer)"),
-            (2.25, 3.0): ("UM", "超快代谢者(Ultrarapid Metabolizer)"),
+        "phenotype_map": {  # 活性评分→代谢倾向（wellness 措辞，非临床表型）
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.0): ("IM", "代谢倾向中偏慢"),
+            (1.1, 2.25): ("NM", "代谢倾向常规"),
+            (2.3, 3.0): ("UM", "代谢倾向偏快"),
         },
         "drugs": [
             {"name": "可待因(Codeine)", "class": "镇痛药"},
@@ -56,10 +56,10 @@ PGX_RULES = {
             "*17": 1.5,  # 增强
         },
         "phenotype_map": {
-            (0, 0.5): ("PM", "差代谢者(Poor Metabolizer)"),
-            (0.5, 1.99): ("IM", "中间代谢者(Intermediate Metabolizer)"),
-            (2.0, 2.49): ("NM", "正常代谢者(Normal Metabolizer)"),
-            (2.5, 3.1): ("RM", "快速代谢者(Rapid Metabolizer)"),
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.99): ("IM", "代谢倾向中偏慢"),
+            (2.0, 2.49): ("NM", "代谢倾向常规"),
+            (2.5, 3.1): ("RM", "代谢倾向偏快"),
         },
         "drugs": [
             {"name": "氯吡格雷(Clopidogrel)", "class": "抗血小板"},
@@ -76,9 +76,9 @@ PGX_RULES = {
             "*3": 0.0,
         },
         "phenotype_map": {
-            (0, 0.5): ("PM", "差代谢者"),
-            (0.5, 1.0): ("IM", "中间代谢者"),
-            (1.0, 2.0): ("NM", "正常代谢者"),
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.0): ("IM", "代谢倾向中偏慢"),
+            (1.1, 2.0): ("NM", "代谢倾向常规"),
         },
         "drugs": [
             {"name": "华法林(Warfarin)", "class": "抗凝"},
@@ -94,8 +94,8 @@ PGX_RULES = {
             "AA": 0.0,
         },
         "phenotype_map": {
-            (0, 0.5): ("高敏感性", "华法林高敏感性"),
-            (0.5, 1.0): ("中等敏感性", "华法林中等敏感性"),
+            (0, 0.4): ("高敏感性", "华法林高敏感性"),
+            (0.5, 0.9): ("中等敏感性", "华法林中等敏感性"),
             (1.0, 1.5): ("正常敏感性", "华法林正常敏感性"),
         },
         "drugs": [
@@ -110,9 +110,9 @@ PGX_RULES = {
             "HapB3": 0.5,
         },
         "phenotype_map": {
-            (0, 0.5): ("PM", "差代谢者"),
-            (0.5, 1.0): ("IM", "中间代谢者"),
-            (1.0, 2.0): ("NM", "正常代谢者"),
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.0): ("IM", "代谢倾向中偏慢"),
+            (1.1, 2.0): ("NM", "代谢倾向常规"),
         },
         "drugs": [
             {"name": "5-氟尿嘧啶(5-FU)", "class": "化疗"},
@@ -129,9 +129,9 @@ PGX_RULES = {
             "*3C": 0.0,
         },
         "phenotype_map": {
-            (0, 0.5): ("PM", "差代谢者"),
-            (0.5, 1.0): ("IM", "中间代谢者"),
-            (1.0, 2.0): ("NM", "正常代谢者"),
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.0): ("IM", "代谢倾向中偏慢"),
+            (1.1, 2.0): ("NM", "代谢倾向常规"),
         },
         "drugs": [
             {"name": "硫唑嘌呤(Azathioprine)", "class": "免疫抑制"},
@@ -148,7 +148,7 @@ PGX_RULES = {
         },
         "phenotype_map": {
             (0, 0.5): ("低功能", "低转运功能"),
-            (0.5, 1.0): ("中功能", "中等转运功能"),
+            (0.5, 0.9): ("中功能", "中等转运功能"),
             (1.0, 2.0): ("正常功能", "正常转运功能"),
         },
         "drugs": [
@@ -165,9 +165,9 @@ PGX_RULES = {
             "*60": 0.5,
         },
         "phenotype_map": {
-            (0, 0.5): ("PM", "差代谢者"),
-            (0.5, 1.0): ("IM", "中间代谢者"),
-            (1.0, 2.0): ("NM", "正常代谢者"),
+            (0, 0.5): ("PM", "代谢倾向偏慢"),
+            (0.6, 1.0): ("IM", "代谢倾向中偏慢"),
+            (1.1, 2.0): ("NM", "代谢倾向常规"),
         },
         "drugs": [
             {"name": "伊立替康(Irinotecan)", "class": "化疗"},
@@ -177,32 +177,38 @@ PGX_RULES = {
 }
 
 
-# 用药建议规则
+# 基因-代谢倾向说明（去医疗化：仅作「代谢倾向提示」，不给出具体剂量指令）。
+# 守住 wellness 边界：不诊断、不开方、不指定剂量；任何用药调整须由医师决定。
+PGX_DISCLAIMER = (
+    "基因-代谢倾向参考，非医学诊断、非用药处方。具体用药与剂量调整"
+    "必须由持证医师结合完整临床情况决定。"
+)
+
 DRUG_ADVICE = {
     "PM": {
-        "advice": "避免使用或大幅降低剂量",
-        "dose_adjustment": "考虑替代药物或剂量降至常规的25-50%",
-        "monitoring": "密切监测药物不良反应",
+        "advice": "代谢偏慢倾向：常规剂量下该药物体内暴露可能偏高，建议与医师沟通个体化评估",
+        "dose_adjustment": "是否调整剂量须由医师决定",
+        "monitoring": "关注身体反应，必要时复诊",
     },
     "IM": {
-        "advice": "适当降低剂量",
-        "dose_adjustment": "剂量降至常规的50-75%",
-        "monitoring": "监测疗效和不良反应",
+        "advice": "代谢中等偏慢倾向：常规剂量可能略偏高，可与医师沟通",
+        "dose_adjustment": "是否调整剂量须由医师决定",
+        "monitoring": "常规关注疗效与耐受",
     },
     "NM": {
-        "advice": "正常剂量",
-        "dose_adjustment": "按标准剂量给药",
-        "monitoring": "常规监测",
+        "advice": "代谢倾向常规，无特殊提示",
+        "dose_adjustment": "按标准方案即可",
+        "monitoring": "常规即可",
     },
     "RM": {
-        "advice": "可能需要增加剂量",
-        "dose_adjustment": "考虑增加剂量或更换药物",
-        "monitoring": "监测疗效，可能无效",
+        "advice": "代谢偏快倾向：常规剂量下暴露可能偏低、效果可能减弱，可与医师沟通",
+        "dose_adjustment": "是否调整须由医师决定",
+        "monitoring": "关注实际效果",
     },
     "UM": {
-        "advice": "避免使用或增加剂量",
-        "dose_adjustment": "可能无效，考虑替代药物或增加剂量",
-        "monitoring": "密切监测疗效",
+        "advice": "代谢偏快倾向：常规剂量下暴露可能明显偏低，建议与医师沟通",
+        "dose_adjustment": "是否调整须由医师决定",
+        "monitoring": "关注实际效果",
     },
 }
 
@@ -235,14 +241,21 @@ class PGxEngine:
                 for p in parts:
                     score += allele_scores.get(p.strip(), 1.0)
 
-        # 确定表型 (左闭右闭区间)
-        phenotype = "NM"
-        phenotype_desc = "正常代谢者(Normal Metabolizer)"
-        for (low, high), (ph, desc) in gene_rule["phenotype_map"].items():
-            if low <= score <= high:
-                phenotype = ph
-                phenotype_desc = desc
-                break
+        # 确定表型：phenotype_map 的区间已改为「互不重叠」的显式边界
+        # （对齐 CPIC：CYP2D6 AS 0.6–1.0 判 IM、1.1–3.0 判 NM；VKORC1 GA=0.5
+        # 判中等敏感性）。因此每个活性评分只落进唯一区间，0.5 / 1.0 这类
+        # 共享边界不再存在「同时命中两档」的歧义（P1 修复）。
+        bands = [(low, high, ph, desc)
+                 for (low, high), (ph, desc) in gene_rule["phenotype_map"].items()]
+        matched = [b for b in bands if b[0] <= score <= b[1]]
+        if len(matched) == 1:
+            _, _, phenotype, phenotype_desc = matched[0]
+        else:
+            # 评分落在全部分档之外（未知等位基因组合）→ 就近归入边界最近的
+            # 区间，而非静默降级成 NM，避免低活性基因型被误判为正常。
+            _, _, phenotype, phenotype_desc = min(
+                bands, key=lambda b: min(abs(score - b[0]), abs(score - b[1]))
+            )
 
         # 生成药物建议
         drug_recs = []
@@ -279,9 +292,11 @@ class PGxEngine:
                     "gene": result.gene_symbol,
                     "genotype": result.genotype,
                     "phenotype": result.phenotype,
+                    "phenotype_note": "基因-代谢倾向参考（非诊断）",
                     "activity_score": result.activity_score,
                     "drug_count": len(result.drug_recommendations),
                     "top_drugs": [d["drug_name"] for d in result.drug_recommendations[:3]],
+                    "disclaimer": PGX_DISCLAIMER,
                 })
 
         logger.info(f"PGx analysis: {len(results)} genes interpreted from {len(variants)} variants")
@@ -318,7 +333,7 @@ class PGxEngine:
         return results
 
     def get_drug_interactions(self, gene_results: list[dict]) -> list[dict]:
-        """获取药物-基因相互作用摘要"""
+        """获取药物-基因代谢倾向交互摘要（wellness 措辞，非临床严重度）"""
         interactions = []
         for result in gene_results:
             gene = result.get("gene")
@@ -329,14 +344,16 @@ class PGxEngine:
             pgx_result = self.interpret_genotype(gene, genotype)
             if pgx_result:
                 for drug_rec in pgx_result.drug_recommendations:
-                    if pgx_result.phenotype != "NM":  # 只报告非正常的
+                    if pgx_result.phenotype != "NM":  # 只报告非常规的
                         interactions.append({
                             "gene": gene,
                             "drug": drug_rec["drug_name"],
                             "drug_class": drug_rec["drug_class"],
                             "phenotype": pgx_result.phenotype,
                             "advice": drug_rec["advice"],
-                            "severity": "high" if pgx_result.phenotype in ("PM", "UM") else "medium",
+                            # wellness 措辞：不用 high/medium 临床严重度
+                            "attention": "建议留意" if pgx_result.phenotype in ("PM", "UM") else "常规关注",
+                            "disclaimer": PGX_DISCLAIMER,
                         })
 
         return interactions
