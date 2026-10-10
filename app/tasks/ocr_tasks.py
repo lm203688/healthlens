@@ -1,7 +1,7 @@
 """异步 OCR 任务"""
 import uuid
 import json
-from datetime import datetime, timezone
+from datetime import datetime
 from decimal import Decimal
 from loguru import logger
 from app.worker import celery_app
@@ -58,7 +58,7 @@ def process_report_async(self, record_id: str, user_id: str, file_path: str):
                         reference_range_low=Decimal(str(obs_item["reference_range_low"])) if obs_item.get("reference_range_low") is not None else None,
                         reference_range_high=Decimal(str(obs_item["reference_range_high"])) if obs_item.get("reference_range_high") is not None else None,
                         source="ocr",
-                        recorded_at=datetime.now(timezone.utc),
+                        recorded_at=datetime.utcnow(),
                     )
                     db.add(observation)
                     created_count += 1
