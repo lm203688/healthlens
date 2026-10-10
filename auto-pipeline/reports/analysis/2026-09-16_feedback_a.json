@@ -1,0 +1,89 @@
+{
+  "report_id": "feedback_a_20260916",
+  "generated_at": "2026-09-16T07:46:51.504121",
+  "data_source": "http_probe",
+  "success_rate": 100.0,
+  "feedback_count": 6,
+  "adjustments_made": true,
+  "adjustments": {
+    "source_count": {
+      "current": 45,
+      "suggested": 45,
+      "reason": "内容表现优秀，可适当放宽筛选标准增加产出"
+    }
+  },
+  "feedback_details": [
+    {
+      "slug": "__core_health__",
+      "title": "核心页面健康度",
+      "deployed_days": 0,
+      "metrics": {
+        "core_pages_ok": 4,
+        "core_pages_total": 4,
+        "avg_latency_ms": 1080
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "repowise-devrepowise",
+      "title": "repowise-dev/repowise",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 750,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "codewithcjsparkyfitness",
+      "title": "CodeWithCJ/SparkyFitness",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 798,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "qixing-jkall-api-hub",
+      "title": "qixing-jk/all-api-hub",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 804,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "the-momentumopen-wearables",
+      "title": "the-momentum/open-wearables",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 838,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    },
+    {
+      "slug": "thetahealthmirobody",
+      "title": "thetahealth/mirobody",
+      "deployed_days": 0,
+      "metrics": {
+        "http_code": 200,
+        "latency_ms": 788,
+        "body_size": 50000
+      },
+      "performance": "above_average",
+      "data_source": "http_probe"
+    }
+  ]
+}
