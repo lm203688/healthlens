@@ -20,7 +20,7 @@ SMTP_HOST = settings.SMTP_HOST if hasattr(settings, "SMTP_HOST") else ""
 SMTP_PORT = int(settings.SMTP_PORT) if hasattr(settings, "SMTP_PORT") else 587
 SMTP_USER = settings.SMTP_USER if hasattr(settings, "SMTP_USER") else ""
 SMTP_PASSWORD = settings.SMTP_PASSWORD if hasattr(settings, "SMTP_PASSWORD") else ""
-SMTP_FROM = settings.SMTP_FROM if hasattr(settings, "SMTP_FROM") else "noreply@healthlens.app"
+SMTP_FROM = settings.SMTP_FROM if hasattr(settings, "SMTP_FROM") else "noreply@healthlens.cc"
 SMTP_USE_TLS = True
 
 # ──────────────────────────────────────────────
@@ -90,7 +90,7 @@ _EMAIL_SHELL = """\
           <td style="background-color:#f9fafb;padding:20px 36px;border-top:1px solid #e8ecec;text-align:center;">
             <p style="margin:0;font-size:12px;color:#999999;line-height:1.6;">
               此邮件由 HealthLens 系统自动发送，请勿直接回复。<br>
-              如有问题，请联系 <a href="mailto:support@healthlens.app" style="color:#0d8a6a;text-decoration:none;">support@healthlens.app</a>
+              如有问题，请联系 <a href="mailto:support@healthlens.cc" style="color:#0d8a6a;text-decoration:none;">support@healthlens.cc</a>
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#bbbbbb;">
               &copy; {year} HealthLens. All rights reserved.
