@@ -15,6 +15,19 @@ class OCRResult:
     page_count: int
 
 
+class OCRUnavailableError(RuntimeError):
+    """真实 OCR 后端不可用（缺 pytesseract / pdf2image / PaddleOCR 等依赖）。
+
+    设计红线：HealthLens 在任何情况下都**绝不返回伪造的检验数值**。
+    当真实 OCR 后端缺失时抛出本异常，由调用方转为明确的「服务不可用」响应，
+    而不是静默回退到 MockOCREngine 输出假的血糖/胆固醇。
+    """
+
+
+# 仅当 .env 显式 `OCR_ENGINE=mock` 时才会使用 MockOCREngine（本地开发）。
+# 生产环境未安装真实后端时必须失败上报，禁止任何固定数值回落。
+
+
 class BaseOCREngine(ABC):
     @abstractmethod
     async def parse(self, file_path: str | bytes) -> OCRResult:
@@ -40,7 +53,11 @@ class TesseractOCREngine(BaseOCREngine):
 
     async def parse(self, file_path: str | bytes) -> OCRResult:
         if not self._check_available():
-            return MockOCREngine().await_parse(file_path)
+            raise OCRUnavailableError(
+                "Tesseract OCR 后端不可用（未安装 pytesseract）。"
+                "HealthLens 不会返回伪造的检验数值；请安装 pytesseract 后重试，"
+                "或显式设置 OCR_ENGINE=mock 仅用于本地开发。"
+            )
 
         if isinstance(file_path, bytes):
             import tempfile
@@ -110,11 +127,12 @@ class TesseractOCREngine(BaseOCREngine):
             from pdf2image import convert_from_path
             images = convert_from_path(file_path, dpi=200)
         except ImportError:
-            logger.warning("pdf2image not installed, falling back to MockOCR")
-            return MockOCREngine()._mock_physical_examination()
+            raise OCRUnavailableError(
+                "PDF 解析依赖 pdf2image 未安装，无法进行 OCR。"
+                "HealthLens 不会返回伪造的检验数值；请安装 pdf2image+poppler 后重试。"
+            )
         except Exception as e:
-            logger.error(f"PDF conversion failed: {e}")
-            return MockOCREngine()._mock_physical_examination()
+            raise OCRUnavailableError(f"PDF 解析失败，无法进行 OCR：{e}")
 
         import pytesseract
 
@@ -210,8 +228,11 @@ class PaddleOCREngine(BaseOCREngine):
     async def _parse_file(self, file_path: str) -> OCRResult:
         engine = self._get_engine()
         if engine is None:
-            # PaddleOCR 不可用，回退到 MockOCR
-            return MockOCREngine().await_parse(file_path)
+            raise OCRUnavailableError(
+                "PaddleOCR 后端不可用（未安装 paddleocr）。"
+                "HealthLens 不会返回伪造的检验数值；请安装 paddleocr 后重试，"
+                "或显式设置 OCR_ENGINE=mock 仅用于本地开发。"
+            )
 
         # PDF 需要先转图片
         if file_path.lower().endswith(".pdf"):
@@ -262,11 +283,12 @@ class PaddleOCREngine(BaseOCREngine):
             from pdf2image import convert_from_path
             images = convert_from_path(file_path, dpi=200)
         except ImportError:
-            logger.warning("pdf2image not installed, falling back to MockOCR")
-            return MockOCREngine()._mock_physical_examination()
+            raise OCRUnavailableError(
+                "PDF 解析依赖 pdf2image 未安装，无法进行 OCR。"
+                "HealthLens 不会返回伪造的检验数值；请安装 pdf2image+poppler 后重试。"
+            )
         except Exception as e:
-            logger.error(f"PDF conversion failed: {e}")
-            return MockOCREngine()._mock_physical_examination()
+            raise OCRUnavailableError(f"PDF 解析失败，无法进行 OCR：{e}")
 
         all_lines = []
         total_confidence = 0
