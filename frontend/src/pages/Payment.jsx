@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../api/client';
+import { api, apiBase } from '../api/client';
 
 export default function Payment() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [packages, setPackages] = useState([]);
+  const [packagesFromBackend, setPackagesFromBackend] = useState([]);
   const [balance, setBalance] = useState(0);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  // P0-12：价格从后端加载，不再硬编码
+  const pkgMap = {};
+  packagesFromBackend.forEach(p => { pkgMap[p.code] = p; });
+  const basicPkg = pkgMap['basic'] || {};
+  const ultimatePkg = pkgMap['ultimate'] || {};
 
   useEffect(() => {
     Promise.all([
@@ -24,6 +31,18 @@ export default function Payment() {
         setBalance(balRes.data?.balance || 0);
       }
     }).finally(() => setLoading(false));
+  }, []);
+
+  // P0-12：从后端 /payment/packages 加载套餐价格（替代硬编码）
+  useEffect(() => {
+    fetch(`${apiBase()}/payment/packages`, {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || ''}` }
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data?.success) setPackagesFromBackend(data.data || []);
+      })
+      .catch(() => {});
   }, []);
 
   async function handlePayment(packageCode) {
@@ -95,8 +114,12 @@ export default function Payment() {
             {t('payment.recommended')}
           </div>
           <div className="text-sm text-emerald-600 mb-1">{t('payment.proPlan')}</div>
-          <div className="text-3xl font-bold mb-1">¥39.9<span className="text-sm font-normal text-slate-500">/月</span></div>
-          <div className="text-xs text-slate-500 mb-4 line-through">¥79.9/月</div>
+          <div className="text-3xl font-bold mb-1">
+            ¥{basicPkg.price_cny ?? 39.9}<span className="text-sm font-normal text-slate-500">/月</span>
+          </div>
+          {basicPkg.original_price && (
+            <div className="text-xs text-slate-500 mb-4 line-through">¥{basicPkg.original_price}/月</div>
+          )}
           <ul className="space-y-2 text-sm text-slate-700">
             <li>✓ {t('payment.featureAxes')}</li>
             <li>✓ {t('payment.featureGenome')}</li>
@@ -125,8 +148,12 @@ export default function Payment() {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <div className="text-sm text-amber-600 mb-1">{t('payment.lifetimePlan')}</div>
-              <div className="text-3xl font-bold">¥199<span className="text-sm font-normal text-slate-500"> {t('payment.oneTime')}</span></div>
-              <div className="text-xs text-slate-500 mt-1">{t('payment.saveCalc', { saved: '¥279' })}</div>
+              <div className="text-3xl font-bold">
+                ¥{ultimatePkg.price_cny ?? 199}<span className="text-sm font-normal text-slate-500"> {t('payment.oneTime')}</span>
+              </div>
+              {ultimatePkg.original_price && (
+                <div className="text-xs text-slate-500 mt-1">{t('payment.saveCalc', { saved: `¥${ultimatePkg.original_price}` })}</div>
+              )}
             </div>
             <button
               onClick={() => handlePayment('ultimate')}
