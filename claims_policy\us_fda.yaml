@@ -1,0 +1,63 @@
+# US - 美国 FDA General Wellness（2026-01-06 定稿）
+# 判定逻辑：看 claims 实质，不看品牌。
+# 允许：健康习惯维持、状态改善、一般健康管理
+# 禁止：诊断/治疗/缓解特定疾病；风险分层；疾病预测
+jurisdiction: us
+display_name: 美国
+regime: FDA General Wellness + CDS + HIPAA
+wellness_boundary_strict: true
+
+# 允许输出（US wellness 边界内）
+allowed_fields:
+  - tcm_constitution          # 中医体质倾向（作为"健康画像"）
+  - axis_scores               # 八轴分数
+  - axis_labels               # 八轴标签
+  - pathway_signals           # 通路信号（作为"生物特征"）
+  - wellness_recommendations  # 生活方式建议
+  - lifestyle_advice          # 生活方式建议
+  - sleep_patterns            # 睡眠模式
+  - fitness_signals           # 体能信号
+
+# 必须屏蔽的字段（触发越线）
+blocked_fields:
+  - icd_code                  # ICD-11 编码 = "命名一种疾病" → 直接越线
+  - severity                  # "严重/中度/轻微" 分级 = 分诊特征
+  - pgx_pathogenic_grading    # 致病性分级 = 诊断性输出
+  - risk_probability          # 10 年风险概率 = 预测疾病
+  - diagnosis_status          # 诊断状态（flagged_abnormal 等）
+
+# 拦截的功能开关
+feature_toggles:
+  diagnosis_endpoint: false      # /diagnosis 直接返回 403 或 wellness 措辞替代
+  risk_assessment_endpoint: false # /risk 关闭，触发"最清晰的越线点"
+  icd_mapping: false
+  pgx_pathogenic_grading: false   # 禁用致病性分级输出
+  risk_scoring: false
+  triage_scoring: false
+  cds_hooks: false
+  fhir_export: false              # SMART on FHIR = "回传临床记录" → 越线
+  clinical_record_writeback: false
+
+# 必须附加的免责声明（按字段类型）
+required_disclaimers:
+  general: "This is a general wellness product. It is not intended to diagnose, treat, cure, or prevent any disease. Consult a qualified healthcare provider for medical advice."
+  pgx: "Pharmacogenomic information shown is for general wellness reference only. Always consult your physician before changing medications."
+
+# 敏感词拦截
+banned_terms:
+  medical_claim_patterns:
+    - "diagnosis"
+    - "treatment plan"
+    - "clinical guidelines recommend"
+    - "evidence-based medicine shows"
+    - "confirmed by medicine"
+    - "pathogenic"
+    - "clinical diagnosis"
+    - "disease classification"
+    - "risk score for"
+    - "10-year risk"
+  allowed_context_terms:
+    - "wellness"
+    - "general health"
+    - "health trends"
+    - "lifestyle patterns"
