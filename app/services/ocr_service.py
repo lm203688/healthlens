@@ -1,10 +1,10 @@
 """OCR 服务 - 协调 OCR 引擎与数据存储"""
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from decimal import Decimal
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
-from app.core.ocr_engine import get_ocr_engine, OCRResult
+from app.core.ocr_engine import get_ocr_engine, OCRResult, OCRUnavailableError
 from app.models.observation import HealthObservation
 from app.config import settings
 
@@ -17,6 +17,14 @@ async def process_report(file_content: bytes, filename: str, user_id: str, db: A
     # OCR 解析
     try:
         ocr_result: OCRResult = await engine.parse(file_content)
+    except OCRUnavailableError as e:
+        # 失败上报：绝不返回伪造的检验数值（P0-6 医疗级事故隐患修复）
+        logger.warning(f"OCR engine unavailable: {e}")
+        return {
+            "status": "unavailable",
+            "message": f"OCR 服务不可用：{e}。请配置真实 OCR 后端（pytesseract/PaddleOCR）后重试。",
+            "extracted_items": 0,
+        }
     except NotImplementedError as e:
         logger.warning(f"OCR engine not implemented: {e}")
         return {
@@ -49,7 +57,7 @@ async def process_report(file_content: bytes, filename: str, user_id: str, db: A
                 reference_range_low=Decimal(str(obs_item["reference_range_low"])) if obs_item.get("reference_range_low") is not None else None,
                 reference_range_high=Decimal(str(obs_item["reference_range_high"])) if obs_item.get("reference_range_high") is not None else None,
                 source="ocr",
-                recorded_at=datetime.now(timezone.utc),
+                recorded_at=datetime.utcnow(),
             )
             db.add(observation)
             created_count += 1
