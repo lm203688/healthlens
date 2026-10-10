@@ -72,35 +72,104 @@ class WithingsConnector(BaseConnector):
             return resp.json().get("body", {})
 
     async def fetch_health_data(self, access_token: str, days: int = 7) -> dict:
-        """拉取 Withings 测量数据"""
+        """拉取 Withings 测量数据（真实 API）
+
+        P0-7：配置凭据后调用 Withings 真实 API 拉取数据。
+        缺凭据时诚实报错，绝不返回 mock。
+        """
         import httpx
 
         now = datetime.now(timezone.utc)
         start = int((now - timedelta(days=days)).timestamp())
         end = int(now.timestamp())
 
-        # Phase 1: 返回模拟数据结构
-        # Phase 2: 真实调用 withings API
-        logger.info(f"Fetching Withings data for {days} days (mock)")
+        if not self.client_id or not self.client_secret:
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": "Withings 未配置：请在环境变量设置 WITHINGS_CLIENT_ID 和 WITHINGS_CLIENT_SECRET",
+                "message": "连接器不可用——需先配置 OAuth2 凭据",
+            }
 
-        items = []
-        for i in range(days):
-            date = now - timedelta(days=i)
-            items.append({
-                "date": date.strftime("%Y-%m-%d"),
-                "weight_kg": 70.0 + (i % 5) * 0.3,
-                "body_fat_pct": 22.0 + (i % 3) * 0.5,
-                "systolic": 118 + (i % 10),
-                "diastolic": 78 + (i % 8),
-                "heart_rate": 68 + (i % 6),
-                "source": "withings_mock",
-            })
+        logger.info(f"Fetching Withings data for {days} days (real API)")
 
-        return {
-            "items_count": len(items),
-            "items": items,
-            "message": f"Fetched {days} days (Phase 1 mock)",
-        }
+        try:
+            async with httpx.AsyncClient(timeout=30) as client:
+                resp = await client.post(
+                    self.DATA_URL,
+                    data={
+                        "access_token": access_token,
+                        "measured_kind": "250,524,3025,3026",  # weight(250), systolic(524), heart_rate(3025), diastolic(3026)
+                        "date": start,
+                        "enddate": end,
+                        "category": "all",
+                        "details": "false",
+                    },
+                )
+                resp.raise_for_status()
+                data = resp.json()
+
+                if data.get("status") != 0:
+                    return {
+                        "items_count": 0,
+                        "items": [],
+                        "error": f"Withings API error: status={data.get('status')}",
+                        "message": "Withings API 返回错误",
+                    }
+
+                items = []
+                for series in data.get("body", {}).get("measuregrps", []):
+                    date_ts = series.get("date")
+                    if not date_ts:
+                        continue
+                    date_str = datetime.fromtimestamp(date_ts, tz=timezone.utc).strftime("%Y-%m-%d")
+
+                    measurements = {}
+                    for m in series.get("measurement", []):
+                        cat = m.get("type", {}).get("category", -1)
+                        unit = m.get("type", {}).get("unit", 1)
+                        value = m.get("value", 0)
+
+                        # 重量单位：1=0.1kg, 2=0.01kg
+                        if cat == 250:  # Weight
+                            weight_kg = value / 10 if unit == 1 else value / 100
+                            measurements["weight_kg"] = round(weight_kg, 1)
+                        elif cat == 251:  # Body Fat
+                            measurements["body_fat_pct"] = round(value / 10, 1)
+                        elif cat == 524:  # Systolic BP
+                            measurements["systolic"] = value
+                        elif cat == 3026:  # Diastolic BP
+                            measurements["diastolic"] = value
+                        elif cat == 3025:  # Heart Rate
+                            measurements["heart_rate"] = value
+
+                    if measurements:
+                        measurements["date"] = date_str
+                        measurements["source"] = "withings"
+                        items.append(measurements)
+
+                return {
+                    "items_count": len(items),
+                    "items": items,
+                    "message": f"Fetched {len(items)} measurements from Withings ({days} days)",
+                }
+
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"Withings API HTTP error: {exc.response.status_code}")
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": f"Withings API HTTP {exc.response.status_code}",
+                "message": "Withings API 请求失败",
+            }
+        except Exception as exc:
+            logger.error(f"Withings API error: {exc}")
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": str(exc),
+                "message": "Withings API 异常",
+            }
 
     async def sync_data(self, access_token: str, user_id: str, since: datetime | None = None) -> dict:
         days = 7
