@@ -413,10 +413,11 @@ def _tool_evidence_grade(recommendations_json: str) -> dict:
 
 
 def _tool_risk_assess(age: int, gender: str, sbp: float, tc: float) -> dict:
-    """L3 — 慢病风险评估（ASCVD 简化模型）。
+    """L3 — 慢病风险自评量表（ASCVD 自评，非 China-PAR 模型）。
 
-    数据边界警告：返回慢病风险等级，可能被视为医疗建议，
-    调用方应仅用于教育/参考，不用于诊断。
+    诚实边界（P0-4）：这是**透明启发式自评量表**，输出的是"倾向百分比"
+    （无量纲 0-100 指数），**不是 10 年心血管事件发病概率**。调用方应仅
+    用于教育/生活方式干预参考，不用于诊断或治疗决策。
     """
     if not _EXPOSE_PRIVATE:
         return {"error": "tool_disabled_by_default", "message": "Requires HL_MCP_EXPOSE_PRIVATE=1"}
@@ -425,11 +426,13 @@ def _tool_risk_assess(age: int, gender: str, sbp: float, tc: float) -> dict:
         eng = ASCVDRiskEngine()
         r = eng.assess(age=age, gender=gender, sbp=sbp, tc=tc)
         return {
+            "risk_type": r.risk_type,
             "risk_level": r.risk_level,
             "risk_score": r.risk_score,
             "risk_probability": r.risk_probability,
             "factors": [f.name for f in r.risk_factors],
-            "disclaimer": _DISCLAIMER,
+            "references": r.references,
+            "disclaimer": r.disclaimer,
         }
     except ImportError:
         return {"error": "risk_engine_unavailable"}
@@ -528,8 +531,9 @@ _TOOLS_L3 = {
     "hl_risk_assess": {
         "handler": _tool_risk_assess,
         "description": (
-            "[PRIVATE] ASCVD chronic disease risk assessment. Requires HL_MCP_EXPOSE_PRIVATE=1. "
-            "Educational use only, not for diagnosis. " + _DISCLAIMER
+            "[PRIVATE] ASCVD chronic disease self-assessment scale (启发式, NOT the China-PAR model). "
+            "Returns a 0-100 dimensionless tendency index, NOT a 10-year incidence probability. "
+            "Requires HL_MCP_EXPOSE_PRIVATE=1. Educational use only. " + _DISCLAIMER
         ),
         "args": {"age": int, "gender": str, "sbp": float, "tc": float},
     },
