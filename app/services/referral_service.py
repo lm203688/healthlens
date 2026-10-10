@@ -10,6 +10,7 @@ from sqlalchemy import select, func, and_, desc
 from loguru import logger
 
 from app.models.referral import InviteCode, ShareRecord
+from app.config import settings
 
 
 async def generate_invite_code(db: AsyncSession, user_id: str) -> dict:
@@ -151,7 +152,7 @@ async def record_share(
     return {
         "success": True,
         "share_id": str(record.id),
-        "share_url": f"https://healthlens.app/register?ref={user_id[:8]}",
+        "share_url": f"{settings.PUBLIC_BASE_URL}/register?ref={user_id[:8]}",
     }
 
 
