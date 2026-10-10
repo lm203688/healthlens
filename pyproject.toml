@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "healthlens"
-version = "0.8.2"
+version = "0.25.0"
 description = "HealthLens - 中西医融合健康管理平台"
 requires-python = ">=3.11"
 dependencies = [
@@ -27,6 +27,7 @@ dependencies = [
     "pydantic-settings>=2.0",
     "email-validator>=2.0",
     "cryptography>=41.0",
+    "pyyaml>=6.0",
     "pytesseract>=0.3.10",
     "pdf2image>=1.16.0",
     "prometheus-client>=0.19.0",
