@@ -1,4 +1,13 @@
-"""西医诊断路由 - AI 诊断触发、诊断历史、诊断审核"""
+"""西医诊断路由 - AI 诊断触发、诊断历史、诊断审核
+
+**管辖感知（Claims Engine 集成，2026-10-10 阶段 A3）**：
+- 每个端点在返回前调用 `filter_output(payload, jurisdiction, endpoint)`，
+  按用户法域过滤掉越线字段（icd_code / severity / risk_probability /
+  pgx_pathogenic_grading 等），并附加按法域定制的免责声明。
+- 端点级开关被策略禁用时（如 EU 的 diagnosis_endpoint=false），
+  直接 403 拒绝响应，fail-closed 而非降级放行。
+- 完整引擎见 `app/lib/claims_engine.py` + `claims_policy/*.yaml`。
+"""
 import uuid
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -10,6 +19,7 @@ from app.models.user import User
 from app.models.diagnosis import DiagnosisResult
 from app.models.medication import MedicationRecommendation
 from app.api.deps import get_current_user, require_doctor_or_admin
+from app.lib.claims_engine import filter_output, check_endpoint_allowed, ClaimsPolicyError
 
 router = APIRouter(tags=["diagnosis"])
 
@@ -46,7 +56,26 @@ async def trigger_analysis(
     - 收集用户的 HealthObservation 数据
     - 调用规则引擎进行诊断分析
     - 分析完成后写入 DiagnosisResult 表
+
+    管辖感知：按用户 jurisdiction 检查 diagnosis_endpoint 开关，
+    EU/US/UK 等严监管法域下会返回 403 拒绝响应。
     """
+    jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
+    ok, reason = check_endpoint_allowed("/diagnosis/analyze", jurisdiction)
+    if not ok:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "endpoint_blocked_by_jurisdiction",
+                "jurisdiction": jurisdiction,
+                "reason": reason,
+                "message": (
+                    "This endpoint is not available under the claims policy for your jurisdiction. "
+                    "HealthLens operates under strict wellness-only boundaries outside the China mainland market."
+                ),
+            },
+        )
+
     from app.services.diagnosis_service import trigger_diagnosis
     from app.services.runtime_audit import build_events, persist_events
 
@@ -65,10 +94,15 @@ async def trigger_analysis(
     except Exception:
         pass
 
-    return {
-        "success": True,
-        "data": result,
-    }
+    payload = {"success": True, "data": result}
+    try:
+        fr = filter_output(payload, jurisdiction, endpoint="/diagnosis/analyze")
+        return fr.payload
+    except ClaimsPolicyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "claims_policy_violation", "jurisdiction": jurisdiction, "message": str(e)},
+        )
 
 
 @router.get("/results", response_model=dict)
@@ -81,7 +115,11 @@ async def list_diagnosis_results(
 ):
     """
     获取诊断结果历史列表
+
+    管辖感知：列表返回的每条诊断记录都会按用户法域过滤 ICD/severity 等越线字段。
     """
+    jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
+
     query = select(DiagnosisResult).where(DiagnosisResult.user_id == current_user.id)
     count_query = select(func.count()).select_from(DiagnosisResult).where(
         DiagnosisResult.user_id == current_user.id
@@ -113,7 +151,7 @@ async def list_diagnosis_results(
             "created_at": d.created_at.isoformat() if d.created_at else None,
         })
 
-    return {
+    payload = {
         "success": True,
         "data": data,
         "meta": {
@@ -123,6 +161,14 @@ async def list_diagnosis_results(
             "total_pages": (total + page_size - 1) // page_size,
         },
     }
+    try:
+        fr = filter_output(payload, jurisdiction, endpoint="/diagnosis/results")
+        return fr.payload
+    except ClaimsPolicyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "claims_policy_violation", "jurisdiction": jurisdiction, "message": str(e)},
+        )
 
 
 @router.get("/results/{result_id}", response_model=dict)
@@ -133,7 +179,11 @@ async def get_diagnosis_result(
 ):
     """
     获取诊断结果详情
+
+    管辖感知：详情返回同样按法域过滤 ICD/severity 等字段。
     """
+    jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
+
     result = await db.execute(
         select(DiagnosisResult).where(
             DiagnosisResult.id == result_id,
@@ -152,7 +202,7 @@ async def get_diagnosis_result(
     )
     medications = med_result.scalars().all()
 
-    return {
+    payload = {
         "success": True,
         "data": {
             "id": str(diagnosis.id),
@@ -179,6 +229,14 @@ async def get_diagnosis_result(
             ],
         },
     }
+    try:
+        fr = filter_output(payload, jurisdiction, endpoint="/diagnosis/results")
+        return fr.payload
+    except ClaimsPolicyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "claims_policy_violation", "jurisdiction": jurisdiction, "message": str(e)},
+        )
 
 
 @router.put("/results/{result_id}", response_model=dict)
