@@ -10,6 +10,7 @@ from app.services.bio_database import (
     fetch_kegg_pathway,
     fetch_string_network,
     fetch_uniprot,
+    fetch_uniprot_by_gene,
 )
 
 
@@ -240,7 +241,7 @@ class DiagnosisAgent:
         layer2_proteins = await self._annotate_proteins(genes)
 
         # ---- Step 3: L3 细胞通路注释 (KEGG) ----
-        layer3_pathways = await self._annotate_pathways(layer2_proteins)
+        layer3_pathways = await self._annotate_pathways(layer2_proteins, layer1_variants)
 
         # ---- Step 4: 构建 L1-L5 结构化数据 ----
         structured_data = self._build_structured_data(
@@ -314,7 +315,11 @@ class DiagnosisAgent:
     # ------------------------------------------------------------------
 
     async def _annotate_proteins(self, genes: list[dict]) -> list[dict]:
-        """使用 UniProt 注释蛋白功能"""
+        """使用 UniProt 注释蛋白功能。
+
+        P0-2：解除对用户输入 uniprot_id 的依赖——若未提供，自动用基因符号
+        向 UniProt 解析 accession（fetch_uniprot_by_gene），L1→L2 真正连成链路。
+        """
         proteins = []
         seen_genes: set[str] = set()
 
@@ -329,17 +334,24 @@ class DiagnosisAgent:
             uniprot_data = None
             if uniprot_id:
                 uniprot_data = await fetch_uniprot(uniprot_id)
+            else:
+                # 自动解析：基因符号 → UniProt accession
+                resolved = await fetch_uniprot_by_gene(gene_symbol)
+                if resolved:
+                    uniprot_id = resolved
+                    uniprot_data = await fetch_uniprot(resolved)
 
             protein_entry = {
                 "gene_symbol": gene_symbol,
                 "uniprot_id": uniprot_id or (uniprot_data.get("uniprot_id", "") if uniprot_data else ""),
-                "protein_name": uniprot_data.get("protein_name", "") if uniprot_data else f"{gene_symbol} protein",
-                "function": uniprot_data.get("function", "") if uniprot_data else "功能未知",
+                "protein_name": uniprot_data.get("protein_name", "") if uniprot_data else f"{gene_symbol} 编码蛋白（UniProt 未解析）",
+                "function": uniprot_data.get("function", "") if uniprot_data else "功能描述缺失（未匹配到 UniProt 条目）",
                 "pathways": uniprot_data.get("pathways", []) if uniprot_data else [],
-                "structure_source": "UniProt",
+                "structure_source": "UniProt" if uniprot_data else "unresolved",
                 "pdb_id": None,
                 "interaction_partners": [],
                 "variant_impact": gene.get("variant_impact", "待分析"),
+                "uniprot_resolved": bool(uniprot_data),
             }
             proteins.append(protein_entry)
 
@@ -349,8 +361,22 @@ class DiagnosisAgent:
     # L3: KEGG 通路注释
     # ------------------------------------------------------------------
 
-    async def _annotate_pathways(self, proteins: list[dict]) -> list[dict]:
-        """使用 KEGG 注释涉及的信号通路"""
+    async def _annotate_pathways(self, proteins: list[dict], layer1: list[dict] | None = None) -> list[dict]:
+        """使用 KEGG 注释涉及的信号通路。
+
+        P0-2：不再写死 score=50/status="unknown"/tcm_bridge="待 AI 分析映射"。
+        - status/score 由「通路是否真实解析」+「关联基因是否有致病性变异(L1)」推导；
+        - tcm_bridge 走融合引擎的别名→稳态轴规则映射（L3→L4 的规则化前驱）。
+        """
+        layer1 = layer1 or []
+        # 基因 → 临床意义（用于判定该通路是否需重点关注）
+        gene_sig: dict[str, str] = {}
+        for v in layer1:
+            gs = (v.get("gene_symbol") or "").upper()
+            cs = (v.get("clinical_significance") or "").lower()
+            if gs:
+                gene_sig[gs] = cs
+
         pathways = []
         seen_pw: set[str] = set()
 
@@ -361,37 +387,117 @@ class DiagnosisAgent:
                 seen_pw.add(pw_id)
 
                 kegg_data = await fetch_kegg_pathway(pw_id)
-                pathway_entry = {
+                related = kegg_data.get("genes", []) if kegg_data else [protein["gene_symbol"]]
+                flagged = any(g.upper() in gene_sig and ("pathogenic" in gene_sig[g.upper()] or "risk" in gene_sig[g.upper()]) for g in related)
+
+                if flagged:
+                    status, score, severity = "flagged_abnormal", 70, "需关注"
+                elif kegg_data:
+                    status, score, severity = "observed", 45, "观察中"
+                else:
+                    status, score, severity = "unresolved", 30, "未解析"
+
+                pathways.append({
                     "pathway_id": pw_id,
                     "name": kegg_data.get("name", pw_id) if kegg_data else pw_id,
                     "display_name": kegg_data.get("name", pw_id) if kegg_data else pw_id,
                     "description": kegg_data.get("description", "") if kegg_data else "",
-                    "category": "Unknown",
-                    "status": "unknown",
-                    "score": 50,
-                    "severity": "待评估",
-                    "related_genes": kegg_data.get("genes", []) if kegg_data else [protein["gene_symbol"]],
-                    "tcm_bridge": "待 AI 分析映射",
-                }
-                pathways.append(pathway_entry)
+                    "category": "KEGG" if kegg_data else "custom",
+                    "status": status,
+                    "score": score,
+                    "severity": severity,
+                    "related_genes": related,
+                    "tcm_bridge": self._rule_tcm_bridge(pw_id, related),
+                })
 
-        # 如果没有任何通路数据，生成默认占位
+        # 若蛋白无任何 KEGG 通路，仍给出规则化条目（不写 unknown 占位）
         if not pathways:
             for protein in proteins:
                 pathways.append({
                     "pathway_id": f"custom_{protein['gene_symbol'].lower()}",
-                    "name": f"{protein['gene_symbol']} related pathway",
+                    "name": f"{protein['gene_symbol']} 相关通路",
                     "display_name": f"{protein['gene_symbol']} 相关通路",
                     "description": protein.get("function", ""),
-                    "category": "Unknown",
-                    "status": "unknown",
-                    "score": 50,
-                    "severity": "待评估",
+                    "category": "custom",
+                    "status": "unresolved",
+                    "score": 30,
+                    "severity": "未解析",
                     "related_genes": [protein["gene_symbol"]],
-                    "tcm_bridge": "待 AI 分析映射",
+                    "tcm_bridge": self._rule_tcm_bridge(protein["gene_symbol"], [protein["gene_symbol"]]),
                 })
 
         return pathways
+
+    @staticmethod
+    def _rule_tcm_bridge(pathway_token: str, genes: list[str]) -> str:
+        """L3→L4 规则化映射（P0-3）：通路/基因 → 证候 + 稳态轴（纯规则，不依赖 LLM）。
+
+        优先级：
+        1. 通路 → 证候（pathway_to_syndrome_map.json，来自 120 条案例证据）
+        2. 通路 → 稳态轴（tcm_pathway_map.json 别名表）
+        3. 基因 → 稳态轴（fallback）
+        4. 均未命中 → 明确说明"暂未命中规则库"，不写"待 AI 分析映射"
+
+        LLM 仅做措辞润色，不做判定。
+        """
+        token = pathway_token.strip().lower() if pathway_token else ""
+
+        # --- Step 1: 通路 → 证候映射（P0-3 新增）---
+        try:
+            import json as _json
+            import os as _os
+            map_path = _os.path.join(_os.path.dirname(__file__), "..", "..", "data", "pathway_to_syndrome_map.json")
+            if _os.path.exists(map_path):
+                with open(map_path, "r", encoding="utf-8") as f:
+                    map_data = _json.load(f)
+                pathways = map_data.get("pathways", {})
+
+                # 精确匹配
+                pw_info = pathways.get(token)
+                if pw_info and pw_info.get("syndromes"):
+                    syndromes = pw_info["syndromes"]
+                    axes = pw_info.get("axes", [])
+                    level = pw_info.get("evidence_level", "L3")
+                    case_count = pw_info.get("case_count", 0)
+                    syndrome_str = "、".join(syndromes[:3])
+                    axis_str = "、".join(axes) if axes else "无"
+                    return (
+                        f"规则映射：通路「{pathway_token}」→ 证候「{syndrome_str}」"
+                        f"（关联轴 {axis_str}，证据等级 {level}，{case_count} 条案例支撑）"
+                    )
+
+                # 前缀匹配（如 "inflammation" 匹配 "inflammation_signaling"）
+                for pw_key, pw_info in pathways.items():
+                    if (token in pw_key or pw_key in token) and pw_info.get("syndromes"):
+                        syndromes = pw_info["syndromes"]
+                        axes = pw_info.get("axes", [])
+                        level = pw_info.get("evidence_level", "L3")
+                        syndrome_str = "、".join(syndromes[:3])
+                        axis_str = "、".join(axes) if axes else "无"
+                        return (
+                            f"规则映射：通路「{pathway_token}」→ 证候「{syndrome_str}」"
+                            f"（关联轴 {axis_str}，证据等级 {level}）"
+                        )
+        except Exception:
+            pass
+
+        # --- Step 2: 通路 → 稳态轴映射（原有逻辑）---
+        try:
+            from app.lib.fusion_engine import canon, canon_to_axis, _AXIS_LABEL
+
+            token_c = canon(pathway_token)
+            ax = canon_to_axis(token_c)
+            if ax:
+                return f"规则映射：关联稳态轴 {ax}（{_AXIS_LABEL.get(ax, ax)}），进入 L4 证候推导"
+            # 退而用基因符号再试一次
+            for g in genes:
+                a2 = canon_to_axis(canon(g))
+                if a2:
+                    return f"规则映射（基因 {g}）：关联稳态轴 {a2}（{_AXIS_LABEL.get(a2, a2)}）"
+        except Exception:
+            pass
+
+        return "规则映射：暂未命中稳态轴/证候映射库，建议结合 L1/L2 证据人工判读"
 
     # ------------------------------------------------------------------
     # 构建结构化数据
