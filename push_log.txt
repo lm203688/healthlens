@@ -1,0 +1,216 @@
+modified=74 deleted=137 untracked=265
+
+=== PUT modified ===
+  [PUT OK]  .dockerignore
+  [PUT FAIL 404] .github/workflows/ci.yml {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/contents#create-or-update-file-contents', 'status': '404'}
+  [PUT OK]  .gitignore
+  [PUT OK]  CHANGELOG.md
+  [PUT OK]  HealthLens_SCI申请渠道与步骤.md
+  [PUT OK]  HealthLens_整合医学理论体系_架构v1.md
+  [PUT OK]  HealthLens_核心判断Agent规格_2026-08-13.md
+  [PUT OK]  HealthLens_竞赛对标评估与提升建议.md
+  [PUT OK]  HealthLens_论文_整合医学稳态轴框架_全文.md
+  [PUT OK]  HealthLens_论文发表渠道_免费SCI.md
+  [PUT OK]  PRINCIPLES.md
+  [PUT OK]  README.md
+  [PUT OK]  app/__init__.py
+  [PUT OK]  app/api/connections.py
+  [PUT OK]  app/api/dashboard.py
+  [PUT OK]  app/api/diagnosis.py
+  [PUT OK]  app/api/genome.py
+  [PUT OK]  app/api/goals.py
+  [PUT OK]  app/api/medication_adherence.py
+  [PUT OK]  app/api/observations.py
+  [PUT OK]  app/api/records.py
+  [PUT OK]  app/api/reports.py
+  [PUT OK]  app/config.py
+  [PUT OK]  app/connectors/__init__.py
+  [PUT OK]  app/connectors/withings.py
+  [PUT OK]  app/core/ocr_engine.py
+  [PUT OK]  app/core/pgx_engine.py
+  [PUT OK]  app/core/risk_engine.py
+  [PUT OK]  app/core/tcm_engine.py
+  [PUT OK]  app/database.py
+  [PUT OK]  app/lib/fusion_engine.py
+  [PUT OK]  app/main.py
+  [PUT OK]  app/models/__init__.py
+  [PUT OK]  app/models/user.py
+  [PUT OK]  app/services/email_service.py
+  [PUT OK]  app/services/ocr_service.py
+  [PUT OK]  app/services/runtime_audit.py
+  [PUT OK]  app/tasks/__init__.py
+  [PUT OK]  app/tasks/ocr_tasks.py
+  [PUT OK]  app/utils/pii_sanitizer.py
+  [PUT OK]  app/utils/security.py
+  [PUT OK]  app/worker.py
+  [PUT OK]  auto-pipeline/alerts/ACTIVE_ALERTS.md
+  [PUT OK]  auto-pipeline/alerts/alert_state.json
+  [PUT OK]  auto-pipeline/config.json
+  [PUT OK]  auto-pipeline/heal_history.json
+  [PUT OK]  auto-pipeline/pipeline_state.json
+  [PUT OK]  auto-pipeline/reports/analysis/2026-09-16_conversion_b.json
+  [PUT OK]  auto-pipeline/reports/analysis/2026-09-16_data_asset_c.json
+  [PUT OK]  auto-pipeline/reports/analysis/2026-09-16_finance_e.json
+  [PUT OK]  auto-pipeline/reports/analysis/2026-09-16_ops_health_f.json
+  [PUT OK]  auto-pipeline/reports/analysis/2026-09-16_promotion_d.json
+  [PUT OK]  data/case_evidence_db.json
+  [PUT OK]  data/feedback_db.json
+  [PUT OK]  docs/HealthLens_产品技术白皮书.md
+  [PUT OK]  frontend/src/App.jsx
+  [PUT OK]  frontend/src/api/client.js
+  [PUT OK]  frontend/src/i18n/locales/en.json
+  [PUT OK]  frontend/src/i18n/locales/zh.json
+  [PUT OK]  frontend/src/pages/AxisProfile.jsx
+  [PUT OK]  healthlens/frontend/_worker.js
+  [PUT OK]  healthlens_agent/__init__.py
+  [PUT OK]  healthlens_agent/__main__.py
+  [PUT OK]  healthlens_agent/_loader.py
+  [PUT OK]  healthlens_agent/flow.py
+  [PUT OK]  healthlens_agent/mcp_server.py
+  [PUT OK]  healthlens_agent/safety.py
+  [PUT OK]  healthlens_agent/team.py
+  [PUT OK]  healthlens_agent/tests/test_team.py
+  [PUT OK]  pyproject.toml
+  [PUT OK]  tests/api/test_dashboard.py
+  [PUT OK]  tests/core/test_pgx_engine.py
+  [PUT OK]  tests/core/test_risk_engine.py
+  [PUT OK]  tests/test_connectors.py
+
+=== PUT untracked ===
+  [PUT OK]  .aoci/.gitignore
+  [PUT OK]  .aoci/baseline.json
+  [PUT OK]  .aoci/baseline.json.bak
+  [PUT OK]  .aoci/config.json
+  [PUT OK]  .aoci/config.local.json
+  [PUT OK]  .aoci/ledger.jsonl
+  [PUT OK]  .aoci/governance/entries-0210a0a6ec219536dfad0c53c2839a86d0d885a3f63c2d21d8a36da04e38cee1.json
+  [PUT OK]  .aoci/governance/entries-22eaffb5d369f0a35777a4bdefa1400e91022ed7dfbe4d5151ced822576d3b71.json
+  [PUT OK]  .aoci/governance/entries-32113af9fc14fc0719e992755db39fe550f81daab53e76ab002ea195dd5444d8.json
+  [PUT OK]  .aoci/governance/entries-34f1334bd327cb8392626092c0b901e1f7aef1a88dfbfa7cc7d7dc577496c3b6.json
+  [PUT OK]  .aoci/governance/entries-3c914e879daf6d4554ec63dd688660f3f696a920e4066aa2a0d37a84413194c5.json
+  [PUT OK]  .aoci/governance/entries-3daba30c47524c99ff9a590689335e2c07fd9aec66cba09ab5b7b8698af7f75b.json
+  [PUT OK]  .aoci/governance/entries-5646a463b75d611d06e3036ecf39fd820a5ee1fac1a59ae81a8c5885e4183dab.json
+  [PUT OK]  .aoci/governance/entries-66b5f60133879976aea4c874e4a95e9cd4ad4b0aba4e38ef8c0a5b54cfed1280.json
+  [PUT OK]  .aoci/governance/entries-8d415e45bd5949d9d2c8637939f649c2a954fe9a85972592ccca269c6076dbf6.json
+  [PUT OK]  .aoci/governance/entries-9c3c38144a0c0025941a7bced009f2d1df4302f2e1ee2bfded4e4fccbc029a92.json
+  [PUT OK]  .aoci/governance/entries-9c7fac6cda9a8f6724fe6828f85e3f14505310d47d6211faf55d05b90609ff85.json
+  [PUT OK]  .aoci/governance/entries-9cbbe68e97fb038bc95a34dd99a76634dc13f6d0e29eadd7092a48ff90bed704.json
+  [PUT OK]  .aoci/governance/entries-a57b81588e1b6dd4b31422c2cfc0885606a14445256d123a73b9668c3c506371.json
+  [PUT OK]  .aoci/governance/entries-b56f72022f29a48c5a1eccf2eecaa91d12a26d606b273d8435a5b33b19833a3e.json
+  [PUT OK]  .aoci/governance/entries-cebb4ddeb9d1881cf6cebb19067f653150aaacb5f34a06cade40301697d752c9.json
+  [PUT OK]  .aoci/governance/entries-d942c0a17da2b56adba2e6439cc86d25a4020d9d0425e8186d9f9be6cf6920b2.json
+  [PUT OK]  .aoci/transactions/history/entries-04a9bbeb7116ac071b195aa135fe541aed279af846a191b96643d45aad9b16b2.json
+  [PUT OK]  .aoci/transactions/history/entries-0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f.json
+  [PUT OK]  .aoci/transactions/history/entries-10473d1ae32a49d6d8d2a25e048820f43526bcf6c5b83fbeacbace2cf0d99351.json
+  [PUT OK]  .aoci/transactions/history/entries-31a9ae081876529c94ef0ae9068d42818c12d6c5096f214d0a80d2fb511aac68.json
+  [PUT OK]  .aoci/transactions/history/entries-4196d1a68bb5608fb4676cad55a062908923dc20b38b3506bdfa44dc58d62cab.json
+  [PUT OK]  .aoci/transactions/history/entries-49d44f3a1d7b725a77a134c5cf9200051eda803c5160af16f6c613f3bc1bc4e8.json
+  [PUT OK]  .aoci/transactions/history/entries-50f72c3369eb677d6dd702be83ed852876c590a9dc96d3e17eb04da4bbc107aa.json
+  [PUT OK]  .aoci/transactions/history/entries-5b1f7b13fb6cbea1af9f117def78813a6cea75fd124dac8cada67c198584f62f.json
+  [PUT OK]  .aoci/transactions/history/entries-5cffc6d3737945c10e5e2fb27d81dd6b452784b24d085ef3f5394b75242d9b26.json
+  [PUT OK]  .aoci/transactions/history/entries-6c3db85d6dcba3327ef4d531947fff42099d863f40b32dde01f50512615d1587.json
+  [PUT OK]  .aoci/transactions/history/entries-74d430268f342b0322a4ccace9d3168b9975d7e7cdd7a1e32b46838238436df0.json
+  [PUT OK]  .aoci/transactions/history/entries-805c9e40d7eab090e367128a7e091d85dcd27405b75d60b68d13da38adafcbbb.json
+  [PUT OK]  .aoci/transactions/history/entries-964832d73e2d186982cf85cedfba7e005998d2d04d7678996d02a5ecf9b8f907.json
+  [PUT OK]  .aoci/transactions/history/entries-b226f27bd3a654d1cfa1871e60aba0e9199768d6e87dd20c8ae4d116c2c61fdf.json
+  [PUT OK]  .aoci/transactions/history/entries-fdf0f9f8ac0bf31f097d37ba7be59f89de846a16a61d7ec55d3696ca277f6ad5.json
+  [PUT OK]  .aoci/transactions/history/entries-fdfbba600449fde377c18ecc58962003f8e77e0ff86265b996006b0b6cc22548.json
+  [PUT OK]  .aoci/verify_history/20261007T012347Z.txt
+  [PUT OK]  .aoci/verify_history/20261007T012959Z.txt
+  [PUT OK]  .aoci/verify_history/20261007T013117Z.txt
+  [PUT OK]  .aoci/verify_history/20261007T013429Z.txt
+  [PUT OK]  .aoci/verify_history/20261007T013705Z.txt
+  [PUT OK]  .aoci/verify_history/20261007T132840Z.txt
+  [PUT OK]  .gitattributes
+  [PUT FAIL 404] .github/workflows/docker-publish.yml {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/contents#create-or-update-file-contents', 'status': '404'}
+  [PUT FAIL 404] .github/workflows/mcp-publish.yml {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/contents#create-or-update-file-contents', 'status': '404'}
+  [PUT FAIL 404] .github/workflows/mcp-test.yml {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/contents#create-or-update-file-contents', 'status': '404'}
+  [PUT FAIL 404] .github/workflows/publish-dataset.yml {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/contents#create-or-update-file-contents', 'status': '404'}
+  [PUT OK]  .workbuddy-ai/memory/2026-10-08.md
+  [PUT OK]  .workbuddy-ai/memory/2026-10-09.md
+  [PUT OK]  AGENTS.md
+  [PUT OK]  HealthLens_产品完整性评估与开源技术提升建议_2026-09-23.md
+  [PUT OK]  HealthLens_全面提升评估报告_2026-10-08.md
+  [PUT OK]  HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+  [PUT OK]  LICENSE
+  [PUT OK]  alembic/versions/005_add_gdpr_consent.py
+  [PUT OK]  alembic/versions/006_add_region_jurisdiction.py
+  [PUT OK]  aoci.code.txt
+  [PUT OK]  aoci.meta.txt
+  [PUT OK]  aoci.txt
+  [PUT OK]  app/api/analytics.py
+  [PUT OK]  app/api/device_metrics.py
+  [PUT OK]  app/api/edge_ticket.py
+  [PUT OK]  app/api/feedback.py
+  [PUT OK]  app/api/freemium.py
+  [PUT OK]  app/api/frequency.py
+  [PUT OK]  app/api/fusion.py
+  [PUT OK]  app/api/gdpr.py
+  [PUT OK]  app/api/geo_infra.py
+  [PUT OK]  app/api/growth.py
+  [PUT OK]  app/api/growth_enhanced.py
+  [PUT OK]  app/api/health_tools.py
+  [PUT OK]  app/api/llms_en.txt
+  [PUT OK]  app/api/mcp_http.py
+  [PUT OK]  app/api/payment.py
+  [PUT OK]  app/api/points.py
+  [PUT OK]  app/api/pulse.py
+  [PUT OK]  app/api/repair.py
+  [PUT OK]  app/api/seo.py
+  [PUT OK]  app/api/seo_public.py
+  [PUT OK]  app/api/share_public.py
+  [PUT OK]  app/api/share_report.py
+  [PUT OK]  app/api/tiered_growth.py
+  [PUT OK]  app/api/v1/diagnosis_agent.py
+  [PUT OK]  app/api/v1/__init__.py
+  [PUT OK]  app/connectors/edge_gateway.py
+  [PUT OK]  app/connectors/google_health.py
+  [PUT OK]  app/connectors/pulse_gateway.py
+Traceback (most recent call last):
+  File "C:\Users\xing\Desktop\healthlens\.workbuddy\cache\push_all_healthlens.py", line 168, in <module>
+    put_file(f)
+    ~~~~~~~~^^^
+  File "C:\Users\xing\Desktop\healthlens\.workbuddy\cache\push_all_healthlens.py", line 133, in put_file
+    sha = get_sha(rel)
+  File "C:\Users\xing\Desktop\healthlens\.workbuddy\cache\push_all_healthlens.py", line 81, in get_sha
+    code, data = api_req("GET", f"/contents/{path}")
+                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xing\Desktop\healthlens\.workbuddy\cache\push_all_healthlens.py", line 74, in api_req
+    with urllib.request.urlopen(req) as r:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 489, in open
+    response = self._open(req, data)
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 466, in _call_chain
+    result = func(*args)
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 1367, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        context=self._context)
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\urllib\request.py", line 1323, in do_open
+    r = h.getresponse()
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\http\client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\socket.py", line 723, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\xing\.workbuddy\binaries\python\versions\3.13.12.old.170316\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
