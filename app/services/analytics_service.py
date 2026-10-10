@@ -195,8 +195,8 @@ async def get_channel_stats(db: AsyncSession) -> dict:
                     AnalyticsEvent.referrer.ilike("%bing%"),
                     AnalyticsEvent.referrer.ilike("%baidu%"),
                     AnalyticsEvent.referrer.ilike("%sogou%"),
-                    AnalyticsEvent.referrer.ilike("%healthlens.app/knowledge%"),
-                    AnalyticsEvent.referrer.ilike("%healthlens.app/health%"),
+                    AnalyticsEvent.referrer.ilike("%healthlens.cc/knowledge%"),
+                    AnalyticsEvent.referrer.ilike("%healthlens.cc/health%"),
                 ),
             )
         )
