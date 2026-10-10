@@ -150,5 +150,61 @@
     "comment": null,
     "corrected_text": null,
     "timestamp": 1787971433.1479645
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1789466359.0742002
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1789467112.4457242
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1791043221.5624225
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1791043238.409987
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1791043262.8439298
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1791043812.5845919
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1791526647.9343767
   }
 ]
