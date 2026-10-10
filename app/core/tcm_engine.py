@@ -3,42 +3,8 @@ Phase 1: 基于中华中医药学会标准的九种体质辨识
 Phase 2: 知识图谱推理 + 大模型辅助
 """
 from dataclasses import dataclass
-import re
 
 from app.core.tcm_safety import check_safety
-
-
-def _extract_herb_names(items: list[str] | None) -> list[str]:
-    """从组成/加减项中抽取药材名。
-
-    - 剥离「加」前缀（如「加 海藻 9g」→「海藻」）
-    - 剥离剂量与单位（如「甘草 3g」「桃仁 12克」→「甘草」「桃仁」）
-    防御式：空串/纯剂量直接跳过，确保「加」不会作为药材名进入校验。
-    """
-    names: list[str] = []
-    for it in (items or []):
-        if not it:
-            continue
-        s = it.strip()
-        s = re.sub(r"^加\s*", "", s)  # 剥「加」前缀
-        s = re.sub(r"[\d]+(\.\d+)?\s*(g|克|钱|两|片|枚)?\s*$", "", s).strip()
-        if s:
-            names.append(s)
-    return names
-
-
-def _attach_safety(formula: dict) -> dict:
-    """把安全护栏结果挂到方剂 dict 上（field: safety）。
-
-    输入: formula = {"composition": ["甘草 3g"], "extra_herbs": ["加 海藻 9g"]}
-    输出: 同 dict，新增 formula["safety"] = SafetyReport.to_dict()
-    """
-    comp = _extract_herb_names(formula.get("composition"))
-    extra = _extract_herb_names(formula.get("extra_herbs"))
-    herbs = comp + extra
-    report = check_safety(herbs=herbs)
-    formula["safety"] = report.to_dict()
-    return formula
 
 
 # 九种体质标准问卷维度和评分
@@ -171,6 +137,22 @@ TCM_FORMULAS = {
 }
 
 
+def _attach_safety(formula: dict) -> None:
+    """方剂出方后做安全护栏校验，把配伍禁忌/相互作用告警挂到结果。"""
+    composition = formula.get("composition") or []
+    herb_names = [c.split()[0] for c in composition if isinstance(c, str) and c.split()]
+    extras = formula.get("extra_herbs") or []
+    extra_names = []
+    for e in extras:
+        if not isinstance(e, str) or not e.split():
+            continue
+        parts = e.split()
+        # extra_herbs 形如 "加 延胡索 9g" / "减 某某"，取真正的药名（去掉加减前缀）
+        extra_names.append(parts[1] if parts[0] in ("加", "减", "添", "去") else parts[0])
+    report = check_safety(formulas=[herb_names + extra_names])
+    formula["safety"] = report.to_dict()
+
+
 class TcmDiagnosisEngine:
 
     def analyze_constitution(self, questionnaire_data: dict) -> TcmConstitutionResult:
@@ -251,37 +233,177 @@ class TcmDiagnosisEngine:
         pulse_description: str | None = None,
         constitution: str | None = None,
     ) -> dict:
-        """AI 辨证论治 - Phase 1 简化版"""
-        # Phase 1: 基于症状关键词匹配的简化辨证
+        """AI 辨证论治 - 增强版规则引擎
+        - 症状关键词匹配
+        - 舌象信息融合
+        - 体质信息加权
+        - 脉象描述辅助
+        """
+        # 增强证候映射 - 更多证候类型，更细的关键词
         SYNDROME_MAP = {
-            "气虚证": {"keywords": ["疲劳", "气短", "乏力", "懒言", "出汗", "自汗"], "principle": "补气"},
-            "阳虚证": {"keywords": ["怕冷", "手脚凉", "腰冷", "膝冷", "畏寒"], "principle": "温阳"},
-            "阴虚证": {"keywords": ["口干", "咽干", "手足热", "盗汗", "潮热"], "principle": "滋阴"},
-            "痰湿证": {"keywords": ["肥胖", "沉重", "痰多", "嗜睡", "油腻"], "principle": "化痰祛湿"},
-            "湿热证": {"keywords": ["口苦", "口臭", "痤疮", "小便黄", "大便粘"], "principle": "清热利湿"},
-            "血瘀证": {"keywords": ["疼痛", "瘀斑", "暗沉", "舌暗", "脉涩"], "principle": "活血化瘀"},
+            "气虚证": {
+                "keywords": ["疲劳", "乏力", "气短", "懒言", "出汗", "自汗", "易感冒", "声低", "倦怠"],
+                "principle": "补气",
+                "tongue_hints": ["淡红", "胖大", "齿痕"],
+                "pulse_hints": ["虚", "弱"],
+            },
+            "阳虚证": {
+                "keywords": ["怕冷", "畏寒", "手脚凉", "腰膝冷", "喜热饮", "面色苍白", "浮肿"],
+                "principle": "温阳",
+                "tongue_hints": ["淡白", "胖大", "滑"],
+                "pulse_hints": ["沉", "细", "弱"],
+            },
+            "阴虚证": {
+                "keywords": ["口干", "咽干", "手足心热", "盗汗", "潮热", "失眠", "耳鸣", "腰酸"],
+                "principle": "滋阴",
+                "tongue_hints": ["红", "少苔", "裂纹"],
+                "pulse_hints": ["细数"],
+            },
+            "痰湿证": {
+                "keywords": ["肥胖", "沉重", "痰多", "嗜睡", "油腻", "胸闷", "纳呆", "口黏"],
+                "principle": "化痰祛湿",
+                "tongue_hints": ["胖大", "苔白腻", "苔黄腻"],
+                "pulse_hints": ["滑", "濡"],
+            },
+            "湿热证": {
+                "keywords": ["口苦", "口臭", "痤疮", "小便黄", "大便粘", "阴痒", "带下黄", "烦躁"],
+                "principle": "清热利湿",
+                "tongue_hints": ["红", "苔黄腻"],
+                "pulse_hints": ["滑数", "弦数"],
+            },
+            "血瘀证": {
+                "keywords": ["疼痛", "刺痛", "瘀斑", "暗沉", "唇暗", "舌质紫", "脉涩", "肿块"],
+                "principle": "活血化瘀",
+                "tongue_hints": ["紫暗", "瘀点", "瘀斑"],
+                "pulse_hints": ["涩", "结代"],
+            },
+            "气郁证": {
+                "keywords": ["胸闷", "胁胀", "叹气", "情绪抑郁", "易怒", "咽喉异物感", "失眠"],
+                "principle": "疏肝理气",
+                "tongue_hints": ["淡红", "苔薄白"],
+                "pulse_hints": ["弦"],
+            },
+            "血虚证": {
+                "keywords": ["面色苍白", "头晕", "眼花", "心悸", "失眠", "健忘", "唇色淡", "指甲苍白"],
+                "principle": "养血",
+                "tongue_hints": ["淡白", "瘦薄"],
+                "pulse_hints": ["细"],
+            },
+            "气血两虚证": {
+                "keywords": ["乏力", "气短", "面色苍白", "头晕", "心悸", "自汗", "食少"],
+                "principle": "气血双补",
+                "tongue_hints": ["淡白", "胖大"],
+                "pulse_hints": ["细弱"],
+            },
+            "脾肾阳虚证": {
+                "keywords": ["畏寒", "腹胀", "便溏", "五更泻", "腰膝酸冷", "浮肿", "纳呆"],
+                "principle": "温补脾肾",
+                "tongue_hints": ["淡白", "胖大", "滑"],
+                "pulse_hints": ["沉细", "弱"],
+            },
+        }
+
+        # 体质→证候映射（用于加权）
+        CONSTITUTION_SYNDROME_BOOST = {
+            "气虚质": ["气虚证", "气血两虚证"],
+            "阳虚质": ["阳虚证", "脾肾阳虚证"],
+            "阴虚质": ["阴虚证"],
+            "痰湿质": ["痰湿证", "湿热证"],
+            "湿热质": ["湿热证", "痰湿证"],
+            "血瘀质": ["血瘀证"],
+            "气郁质": ["气郁证"],
+            "特禀质": [],
+            "平和质": [],
         }
 
         matched = []
+        symptoms_text = " ".join(symptoms) if symptoms else ""
+
         for syndrome, info in SYNDROME_MAP.items():
-            match_count = sum(1 for kw in info["keywords"] if any(kw in s for s in symptoms))
-            if match_count >= 2:
-                matched.append({
-                    "syndrome_name": syndrome,
-                    "syndrome_code": f"TCD-{len(matched):03d}",
-                    "principle": info["principle"],
-                    "confidence": min(0.5 + match_count * 0.1, 0.9),
-                    "matched_symptoms": [s for s in symptoms if any(kw in s for kw in info["keywords"])],
-                })
+            # 1. 症状匹配
+            symptom_matches = []
+            for kw in info["keywords"]:
+                if any(kw in s for s in symptoms):
+                    symptom_matches.append(kw)
+
+            match_count = len(symptom_matches)
+            if match_count == 0:
+                continue
+
+            # 2. 基础置信度计算
+            base_confidence = 0.4 + min(match_count * 0.08, 0.35)
+
+            # 3. 舌象加权
+            tongue_boost = 0.0
+            if tongue_analysis:
+                tongue_desc = str(tongue_analysis.get("tongue_color", "")) + " " + \
+                             str(tongue_analysis.get("coating_color", "")) + " " + \
+                             str(tongue_analysis.get("coating_quality", ""))
+                for hint in info.get("tongue_hints", []):
+                    if hint in tongue_desc:
+                        tongue_boost += 0.05
+
+            # 4. 脉象加权
+            pulse_boost = 0.0
+            if pulse_description:
+                for hint in info.get("pulse_hints", []):
+                    if hint in pulse_description:
+                        pulse_boost += 0.03
+
+            # 5. 体质加权
+            constitution_boost = 0.0
+            if constitution:
+                boosted_syndromes = CONSTITUTION_SYNDROME_BOOST.get(constitution, [])
+                if syndrome in boosted_syndromes:
+                    constitution_boost = 0.08
+
+            confidence = min(base_confidence + tongue_boost + pulse_boost + constitution_boost, 0.92)
+
+            matched.append({
+                "syndrome_name": syndrome,
+                "syndrome_code": f"HL-{len(matched)+1:03d}",
+                "principle": info["principle"],
+                "confidence": round(confidence, 2),
+                "matched_symptoms": symptom_matches,
+                "match_count": match_count,
+                "evidence": {
+                    "symptom_match": match_count,
+                    "tongue_boost": round(tongue_boost, 2),
+                    "pulse_boost": round(pulse_boost, 2),
+                    "constitution_boost": round(constitution_boost, 2),
+                },
+            })
 
         if not matched:
-            # 默认返回气虚证
+            # 根据体质推断最可能的证候
+            fallback_syndrome = "气虚证"
+            fallback_principle = "补气"
+            fallback_confidence = 0.45
+
+            if constitution:
+                constitution_map = {
+                    "气虚质": ("气虚证", "补气", 0.55),
+                    "阳虚质": ("阳虚证", "温阳", 0.55),
+                    "阴虚质": ("阴虚证", "滋阴", 0.55),
+                    "痰湿质": ("痰湿证", "化痰祛湿", 0.55),
+                    "湿热质": ("湿热证", "清热利湿", 0.55),
+                    "血瘀质": ("血瘀证", "活血化瘀", 0.55),
+                    "气郁质": ("气郁证", "疏肝理气", 0.55),
+                }
+                if constitution in constitution_map:
+                    fallback_syndrome, fallback_principle, fallback_confidence = constitution_map[constitution]
+
             matched.append({
-                "syndrome_name": "气虚证",
-                "syndrome_code": "TCD-001",
-                "principle": "补气",
-                "confidence": 0.3,
+                "syndrome_name": fallback_syndrome,
+                "syndrome_code": "HL-001",
+                "principle": fallback_principle,
+                "confidence": fallback_confidence,
                 "matched_symptoms": [],
+                "match_count": 0,
+                "evidence": {
+                    "inferred_from_constitution": constitution,
+                    "note": "基于体质特征推断，症状信息不足",
+                },
             })
 
         matched.sort(key=lambda x: x["confidence"], reverse=True)
@@ -356,9 +478,11 @@ class TcmDiagnosisEngine:
                     if sign_key in str(patient_signs.get("symptoms", "")):
                         extra_herbs.extend(modifications)
                 formula["extra_herbs"] = extra_herbs if extra_herbs else None
+                _attach_safety(formula)
                 return formula
 
         # 默认返回四君子汤
         formula = dict(FORMULA_MAP["气虚"])
         formula["extra_herbs"] = None
+        _attach_safety(formula)
         return formula
