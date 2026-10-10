@@ -1,0 +1,640 @@
+{
+  "version": "1.0",
+  "description": "Pathway -> Syndrome mapping table (P0-3). Built from 120 case evidence entries in case_evidence_db.json. Used by diagnosis_agent._rule_tcm_bridge for L3->L4 rule-based mapping. LLM only polishes wording, does not judge.",
+  "source": "data/case_evidence_db.json (120 cases, v1.2)",
+  "stats": {
+    "total_pathways": 38,
+    "with_syndrome": 38,
+    "l1_evidence": 16,
+    "l2_evidence": 15,
+    "l3_evidence": 7
+  },
+  "pathways": {
+    "ampk_signaling": {
+      "syndromes": [
+        "气化 / 脾运化（促运化、通腑）",
+        "气化 / 节律（子午流注雏形）",
+        "食物性味：温（四气）· 温中散寒、行气"
+      ],
+      "axes": [
+        "A",
+        "B",
+        "D"
+      ],
+      "evidence_level": "L1",
+      "case_count": 3,
+      "case_ids": [
+        "CASE-001",
+        "CASE-002",
+        "CASE-014"
+      ]
+    },
+    "antioxidant": {
+      "syndromes": [
+        "食物性味：平（四气）· 清热解毒、利湿",
+        "食物性味：微寒（四气）· 滋阴养血"
+      ],
+      "axes": [
+        "B",
+        "D",
+        "F",
+        "H"
+      ],
+      "evidence_level": "L3",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-016",
+        "CASE-018"
+      ]
+    },
+    "autonomic": {
+      "syndromes": [
+        "导引 / 调神 / 和气血"
+      ],
+      "axes": [
+        "B",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-011"
+      ]
+    },
+    "autophagy": {
+      "syndromes": [
+        "气化 / 脾运化（促运化、通腑）",
+        "辟谷 / 气化重启",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：温（四气）· 温中散寒、行气"
+      ],
+      "axes": [
+        "A",
+        "B",
+        "D",
+        "G",
+        "H",
+        "I"
+      ],
+      "evidence_level": "L1",
+      "case_count": 5,
+      "case_ids": [
+        "CASE-001",
+        "CASE-003",
+        "CASE-014",
+        "CASE-020",
+        "CASE-025"
+      ]
+    },
+    "bdnf": {
+      "syndromes": [
+        "导引 / 调神 / 和气血"
+      ],
+      "axes": [
+        "B",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-011"
+      ]
+    },
+    "circadian": {
+      "syndromes": [
+        "子午流注 / 阳气当令进食",
+        "气化 / 节律（子午流注雏形）",
+        "节律饮食 / 运化痰湿",
+        "节律饮食/运化痰湿"
+      ],
+      "axes": [
+        "A",
+        "D",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 4,
+      "case_ids": [
+        "CASE-002",
+        "CASE-007",
+        "CASE-008",
+        "CASE-030"
+      ]
+    },
+    "circadian_clock_bmal1": {
+      "syndromes": [
+        "昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）",
+        "昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）"
+      ],
+      "axes": [
+        "D"
+      ],
+      "evidence_level": "L2",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-022",
+        "CASE-023"
+      ]
+    },
+    "diuretic": {
+      "syndromes": [
+        "食物性味：寒（四气）· 清热利尿、化痰湿"
+      ],
+      "axes": [
+        "D",
+        "F"
+      ],
+      "evidence_level": "L3",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-021"
+      ]
+    },
+    "epigenetic_clock": {
+      "syndromes": [
+        "辟谷 / 气化重启",
+        "食物性味：微寒（四气）· 滋阴养血"
+      ],
+      "axes": [
+        "A",
+        "B",
+        "H"
+      ],
+      "evidence_level": "L1",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-003",
+        "CASE-018"
+      ]
+    },
+    "exosome_biogenesis": {
+      "syndromes": [
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "导引/气血流通(动则气血周流)"
+      ],
+      "axes": [
+        "B",
+        "I"
+      ],
+      "evidence_level": "L2",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-024",
+        "CASE-029"
+      ]
+    },
+    "exosome_delivery": {
+      "syndromes": [
+        "药食同源 / 通络载药（经络传输药力）"
+      ],
+      "axes": [
+        "C",
+        "I"
+      ],
+      "evidence_level": "L3",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-026"
+      ]
+    },
+    "exosome_mirna": {
+      "syndromes": [
+        "辟谷 / 气化重启（断食激活全身修复信号）"
+      ],
+      "axes": [
+        "A",
+        "I"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-025"
+      ]
+    },
+    "gabaergic": {
+      "syndromes": [
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：平（四气）· 润肺安神"
+      ],
+      "axes": [
+        "A",
+        "F",
+        "G"
+      ],
+      "evidence_level": "L3",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-015",
+        "CASE-020"
+      ]
+    },
+    "glucose_metabolism": {
+      "syndromes": [
+        "子午流注 / 阳气当令进食",
+        "气化失司 / 血糖波动（未病先防）",
+        "食物性味：平（四气）· 清热解毒、利湿"
+      ],
+      "axes": [
+        "A",
+        "D",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 3,
+      "case_ids": [
+        "CASE-007",
+        "CASE-010",
+        "CASE-016"
+      ]
+    },
+    "hematopoiesis": {
+      "syndromes": [
+        "食物性味：微寒（四气）· 滋阴养血"
+      ],
+      "axes": [
+        "B",
+        "H"
+      ],
+      "evidence_level": "L3",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-018"
+      ]
+    },
+    "hepatic_lipid": {
+      "syndromes": [
+        "节律饮食 / 运化痰湿",
+        "节律饮食/运化痰湿"
+      ],
+      "axes": [
+        "D",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-008",
+        "CASE-030"
+      ]
+    },
+    "hpa_axis": {
+      "syndromes": [
+        "调息 / 安神 / 疏肝"
+      ],
+      "axes": [
+        "E",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-012"
+      ]
+    },
+    "immune_regulation": {
+      "syndromes": [
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "食物性味：寒（四气）· 清热解暑"
+      ],
+      "axes": [
+        "A",
+        "F",
+        "I"
+      ],
+      "evidence_level": "L2",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-019",
+        "CASE-025"
+      ]
+    },
+    "inflammation": {
+      "syndromes": [
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "药食同源 / 通络载药（经络传输药力）",
+        "食物性味：寒（四气）· 清热解暑",
+        "食物性味：平（四气）· 润肺安神",
+        "食物性味：平（四气）· 清肝明目、润肠"
+      ],
+      "axes": [
+        "C",
+        "D",
+        "F",
+        "G",
+        "H",
+        "I"
+      ],
+      "evidence_level": "L1",
+      "case_count": 6,
+      "case_ids": [
+        "CASE-008",
+        "CASE-009",
+        "CASE-015",
+        "CASE-017",
+        "CASE-019"
+      ]
+    },
+    "inflammation_tlr4_nfkb": {
+      "syndromes": [
+        "针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）"
+      ],
+      "axes": [
+        "E",
+        "F",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-024"
+      ]
+    },
+    "insulin_sensitivity": {
+      "syndromes": [
+        "节律饮食/运化痰湿"
+      ],
+      "axes": [
+        "D",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-030"
+      ]
+    },
+    "iprgc_scn_axis": {
+      "syndromes": [
+        "昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）"
+      ],
+      "axes": [
+        "D"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-022"
+      ]
+    },
+    "lipid_metabolism": {
+      "syndromes": [
+        "食物性味：寒（四气）· 清热利尿、化痰湿",
+        "食物性味：平（四气）· 清肝明目、润肠"
+      ],
+      "axes": [
+        "D",
+        "F"
+      ],
+      "evidence_level": "L3",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-017",
+        "CASE-021"
+      ]
+    },
+    "melatonin_signaling": {
+      "syndromes": [
+        "昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）",
+        "昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）"
+      ],
+      "axes": [
+        "D"
+      ],
+      "evidence_level": "L2",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-022",
+        "CASE-023"
+      ]
+    },
+    "mirna_signaling": {
+      "syndromes": [
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "导引/气血流通(动则气血周流)"
+      ],
+      "axes": [
+        "B",
+        "I"
+      ],
+      "evidence_level": "L2",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-024",
+        "CASE-029"
+      ]
+    },
+    "mitochondrial_biogenesis": {
+      "syndromes": [
+        "导引 / 行气（动则生阳）"
+      ],
+      "axes": [
+        "B",
+        "G"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-004"
+      ]
+    },
+    "mtor": {
+      "syndromes": [
+        "气化 / 脾运化（促运化、通腑）"
+      ],
+      "axes": [
+        "A",
+        "D"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-001"
+      ]
+    },
+    "neuroimmune_vagal_splenic": {
+      "syndromes": [
+        "针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）"
+      ],
+      "axes": [
+        "E",
+        "F",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-024"
+      ]
+    },
+    "neutrophil_chemotaxis": {
+      "syndromes": [
+        "针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）"
+      ],
+      "axes": [
+        "E",
+        "F",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-024"
+      ]
+    },
+    "p16_ink4a": {
+      "syndromes": [
+        "活血祛瘀 / 通络（清瘀滞）",
+        "药食同源 / 活血（食养清瘀）"
+      ],
+      "axes": [
+        "C",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 2,
+      "case_ids": [
+        "CASE-005",
+        "CASE-013"
+      ]
+    },
+    "p21": {
+      "syndromes": [
+        "活血祛瘀 / 通络（清瘀滞）"
+      ],
+      "axes": [
+        "C",
+        "F"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-005"
+      ]
+    },
+    "pgc1a_signaling": {
+      "syndromes": [
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "导引 / 行气（动则生阳）",
+        "导引/气血流通(动则气血周流)"
+      ],
+      "axes": [
+        "B",
+        "G",
+        "I"
+      ],
+      "evidence_level": "L1",
+      "case_count": 3,
+      "case_ids": [
+        "CASE-004",
+        "CASE-024",
+        "CASE-029"
+      ]
+    },
+    "physical_function": {
+      "syndromes": [
+        "扶正祛瘀 / 延缓衰老"
+      ],
+      "axes": [
+        "C",
+        "H"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-006"
+      ]
+    },
+    "salience_network": {
+      "syndromes": [
+        "昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）"
+      ],
+      "axes": [
+        "D"
+      ],
+      "evidence_level": "L2",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-023"
+      ]
+    },
+    "senescence": {
+      "syndromes": [
+        "扶正祛瘀 / 延缓衰老",
+        "活血祛瘀 / 通络（清瘀滞）",
+        "节律养生 / 扶正",
+        "药食同源 / 活血（食养清瘀）",
+        "药食同源 / 通络载药（经络传输药力）"
+      ],
+      "axes": [
+        "C",
+        "D",
+        "F",
+        "H",
+        "I"
+      ],
+      "evidence_level": "L1",
+      "case_count": 5,
+      "case_ids": [
+        "CASE-005",
+        "CASE-006",
+        "CASE-009",
+        "CASE-013",
+        "CASE-026"
+      ]
+    },
+    "sirt1": {
+      "syndromes": [
+        "导引 / 行气（动则生阳）"
+      ],
+      "axes": [
+        "B",
+        "G"
+      ],
+      "evidence_level": "L1",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-004"
+      ]
+    },
+    "thermogenesis": {
+      "syndromes": [
+        "食物性味：温（四气）· 温中散寒、行气"
+      ],
+      "axes": [
+        "A",
+        "B"
+      ],
+      "evidence_level": "L3",
+      "case_count": 1,
+      "case_ids": [
+        "CASE-014"
+      ]
+    },
+    "vagal_tone": {
+      "syndromes": [
+        "导引 / 调神 / 和气血",
+        "调息 / 安神 / 疏肝",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：平（四气）· 润肺安神"
+      ],
+      "axes": [
+        "A",
+        "B",
+        "E",
+        "F",
+        "G"
+      ],
+      "evidence_level": "L2",
+      "case_count": 4,
+      "case_ids": [
+        "CASE-011",
+        "CASE-012",
+        "CASE-015",
+        "CASE-020"
+      ]
+    }
+  },
+  "revision_note": "2026-10-10 A5: 删除 21 个单字符/垃圾键（['_', 'a', 'c', 'd', 'e', 'f', 'g', 'h']...），保留 38 条真通路"
+}
