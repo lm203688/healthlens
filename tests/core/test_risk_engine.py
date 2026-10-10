@@ -18,7 +18,7 @@ class TestASCVDRiskEngine:
             age=35, gender="male", sbp=115, tc=4.0,
             hdl_c=1.6, is_smoker=False, has_diabetes=False,
         )
-        assert result.risk_type == "ascvd"
+        assert result.risk_type == "ascvd_self_assess"
         assert result.risk_level == "low"
         assert result.risk_probability < 5.0
         assert len(result.recommendations) > 0
@@ -149,21 +149,21 @@ class TestRiskAssessmentEngine:
             "fpg": 6.0, "is_smoker": True,
         }
         results = engine.assess_all(profile)
-        # 40岁以上应有 ascvd + diabetes + metabolic_syndrome
-        assert "ascvd" in results
-        assert "diabetes" in results
+        # 40岁以上应有 ascvd_self_assess + diabetes_self_assess + metabolic_syndrome
+        assert "ascvd_self_assess" in results
+        assert "diabetes_self_assess" in results
         assert "metabolic_syndrome" in results
 
     def test_young_person_no_ascvd(self):
-        """40岁以下不评估 ASCVD"""
+        """40岁以下不评估 ASCVD 自评"""
         engine = RiskAssessmentEngine()
         profile = {
             "age": 30, "gender": "male", "bmi": 22,
             "waist": 78, "sbp": 115, "tc": 4.0,
         }
         results = engine.assess_all(profile)
-        assert "ascvd" not in results
-        assert "diabetes" in results
+        assert "ascvd_self_assess" not in results
+        assert "diabetes_self_assess" in results
 
     def test_overall_risk_level(self):
         """总体风险等级应取最高"""
