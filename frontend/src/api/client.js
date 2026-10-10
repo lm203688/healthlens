@@ -1,6 +1,7 @@
 /* API 客户端 — 与后端 FastAPI 服务通信 */
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api/v1';
+export function apiBase() { return API_BASE; }
 
 // SPA 部署在 /app/ 子路径下（见 vite.config.js base），登录页是 /app/login 而非 /login。
 // 写死 '/login' 会跳到域名根的 GEO 首页，用户会以为"退出后跑到别的地方去了"。
