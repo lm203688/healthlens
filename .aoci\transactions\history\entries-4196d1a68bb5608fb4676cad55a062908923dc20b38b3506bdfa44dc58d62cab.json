@@ -1,0 +1,34 @@
+{
+  "version": 4,
+  "batch_key": "4196d1a68bb5608fb4676cad55a062908923dc20b38b3506bdfa44dc58d62cab",
+  "pre_index_sha256": "5851e9b6085d386b3e0aee5e1ff6f141c294aaf66e4533d91b04abb52a2ff793",
+  "post_index_sha256": "fd8b9cdc4e28712141e8dccf9c31161d6566af0d7375ac61c523876aa87cde0c",
+  "baseline_pre_state": "present",
+  "baseline_pre_sha256": "6a31ef0bbf34d00b9c5e1730ee0eaead1890cd05c9cdfbb1576a66b4877c30a8",
+  "assets": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "pre_sha256": "b7af277d30e185653c8673e2754d48a3882dfad9f3013b3312118487f5dfeff0",
+      "post_sha256": "963b411b2c98b06a75f51f17e01b9fbee25dcaef541afff1a5796bc90e6ef79c",
+      "preimage": "I0FPQ0ktQ09ERS1WT0xVTUU6IDEKCj09PUM6L1VzZXJzL3hpbmcvRGVza3RvcC9oZWFsdGhsZW5zLz09PQoKPT09QzovVXNlcnMveGluZy9EZXNrdG9wL2hlYWx0aGxlbnMvYXBwL2xpYi89PT0KZnVzaW9uX2VuZ2luZS5weVtLQjlMXTogRjpFaWdodC1heGlzIFRDTS1mdXNpb24gd2VsbG5lc3MgZW5naW5lIChheGVzIEEtSCk6IHNjb3JlcyBldmlkZW5jZSwgcmV0dXJucyBldmlkZW5jZV9kZXRhaWw7IHNpbmdsZSBzb3VyY2Ugb2YgdHJ1dGggZm9yIGhlYWx0aC1zaWduYWwgZnVzaW9uLiB8IFI6Y29kZTpkYXRhL2Nhc2VfZXZpZGVuY2VfZGIuanNvbiBjb2RlOmFwcC9saWIvcHVsc2VfZW5naW5lLnB5IHwgQTphcHAvYXBpL2FnZW50LnB5IGFwcC9saWIvd2VsbG5lc3Nfc2ltdWxhdG9yLnB5IHwgUzpXZWxsbmVzcy9oZWFsdGggcmVmZXJlbmNlIG9ubHk7IG5ldmVyIGEgbWVkaWNhbCBkaWFnbm9zaXM7IGV2ZXJ5IGRvd25zdHJlYW0gb3V0cHV0IG11c3QgY2FycnkgZ3VhcmRyYWlscyBhbmQgdGhlIG5vbi1tZWRpY2FsIGRpc2NsYWltZXIuCg=="
+    }
+  ],
+  "guards": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "sha256": "b7af277d30e185653c8673e2754d48a3882dfad9f3013b3312118487f5dfeff0"
+    },
+    {
+      "volume_id": "meta",
+      "path": "aoci.meta.txt",
+      "sha256": "ebafbe54981dfb23686171bb5253ded8c2bbf9c697b73a1b1af9283d686a5cc4"
+    },
+    {
+      "volume_id": "root",
+      "path": "aoci.txt",
+      "sha256": "6edb677c25397187949c9840b989e4aeaee2ba0d522376bde5a59e8d1a66887e"
+    }
+  ]
+}
