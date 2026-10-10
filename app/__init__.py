@@ -144,6 +144,10 @@ def create_app() -> FastAPI:
     app.include_router(freemium_router, prefix="/api/v1/freemium", tags=["积分门禁"])
     app.include_router(growth_enhanced_router, prefix="/api/v1/growth", tags=["推广系统"])
     app.include_router(points_router, prefix="/api/v1/points", tags=["积分系统"])
+    # 号脉终端：脉象解读（agent 可调用的「号脉判断」入口）
+    from app.api.pulse import router as pulse_router
+
+    app.include_router(pulse_router, tags=["脉象解读"])
     app.include_router(seo_router, prefix="/api/v1/seo", tags=["SEO管理"])
     # SEO 公开页面
     app.include_router(seo_knowledge_router, prefix="/knowledge", tags=["SEO公开"])
