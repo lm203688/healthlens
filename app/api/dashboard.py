@@ -40,7 +40,7 @@ async def get_dashboard_overview(
     user_id = current_user.id
 
     # 1. 最近 30 天的指标数量
-    thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
     obs_count_result = await db.execute(
         select(func.count()).select_from(HealthObservation).where(
             HealthObservation.user_id == user_id,
@@ -176,7 +176,7 @@ async def get_metric_trends(
     db: AsyncSession = Depends(get_db),
 ):
     """获取指定指标的趋势数据"""
-    since = datetime.now(timezone.utc) - timedelta(days=days)
+    since = datetime.utcnow() - timedelta(days=days)
 
     result = await db.execute(
         select(HealthObservation).where(
@@ -314,7 +314,7 @@ async def trigger_risk_assessment(
             recommendations=json.dumps(result.recommendations, ensure_ascii=False),
             references=json.dumps(result.references, ensure_ascii=False),
             input_snapshot=json.dumps(risk_input, ensure_ascii=False),
-            assessed_at=datetime.now(timezone.utc),
+            assessed_at=datetime.utcnow(),
         )
         db.add(record)
         saved_records.append({
@@ -322,6 +322,8 @@ async def trigger_risk_assessment(
             "risk_level": result.risk_level,
             "risk_score": result.risk_score,
             "risk_probability": result.risk_probability,
+            "references": result.references,
+            "disclaimer": result.disclaimer,
             "risk_factors": [
                 {"name": f.name, "value": str(f.value), "status": f.status, "advice": f.advice}
                 for f in result.risk_factors
@@ -338,6 +340,13 @@ async def trigger_risk_assessment(
             "overall_risk_probability": round(overall_prob, 1),
             "assessments": saved_records,
             "input_snapshot": risk_input,
+            # P0-4：全局免责声明，避免前端把倾向百分比当作 10 年 ASCVD 概率展示
+            "disclaimer": (
+                "本评估为「自评风险量表」，仅沿用公开指南的风险因素框架做透明点分加权，"
+                "未使用 China-PAR 或 CDRS 的 Cox 回归系数与基线生存函数。"
+                "输出的百分比是无量纲倾向指数（0-100），非 10 年发病概率，"
+                "不构成诊断或治疗建议。代谢综合征判定采用 CDS 五项阈值（真实指南标准）。"
+            ),
         },
     }
 
