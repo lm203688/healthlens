@@ -1,0 +1,50 @@
+# UK - 英国 MHRA
+# 判定逻辑：Software and AI as a Medical Device (2024)
+# 有"医疗目的"即器械；症状检查器 Class I，一旦允许直接诊断升至 IIa。
+jurisdiction: uk
+display_name: 英国
+regime: UK MDR 2002 + MHRA AIaMD
+wellness_boundary_strict: true
+
+allowed_fields:
+  - tcm_constitution
+  - axis_scores
+  - axis_labels
+  - pathway_signals
+  - wellness_recommendations
+  - lifestyle_advice
+  - sleep_patterns
+  - fitness_signals
+
+# 必须屏蔽（触发 MHRA 医疗器械定义）
+blocked_fields:
+  - icd_code
+  - severity
+  - pgx_pathogenic_grading
+  - risk_probability
+  - diagnosis_status
+  - screening_recommendation
+
+feature_toggles:
+  diagnosis_endpoint: false
+  risk_assessment_endpoint: false
+  icd_mapping: false
+  pgx_pathogenic_grading: false
+  risk_scoring: false
+  triage_scoring: false
+  cds_hooks: false
+  fhir_export: false
+  clinical_record_writeback: false
+
+required_disclaimers:
+  general: "This app is a general wellness tool. It is not intended to diagnose, treat, cure or prevent any disease or condition. You should not delay seeking medical advice because of anything you have read."
+
+banned_terms:
+  medical_claim_patterns:
+    - "diagnose"
+    - "treat"
+    - "screen for"
+    - "predict risk of"
+    - "monitor condition"
+    - "medical device"
+    - "clinical assessment"
