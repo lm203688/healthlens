@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     # App
     APP_NAME: str = "HealthLens"
-    APP_VERSION: str = "0.22.0"
+    APP_VERSION: str = "0.25.0"
     DEBUG: bool = False
     CORS_ORIGINS: list[str] = ["*"]  # 生产环境应设为具体域名
     RATE_LIMIT_ENABLED: bool = True  # 认证端点限流（测试环境可禁用）
@@ -41,7 +41,7 @@ class Settings(BaseSettings):
     FHIR_BASE_URL: str = ""
 
     # OCR
-    OCR_ENGINE: str = "mock"  # mock / tesseract / paddleocr / smart
+    OCR_ENGINE: str = "tesseract"  # mock(仅本地开发) / tesseract / paddleocr / smart；默认真实引擎，缺失依赖时失败上报而非伪造数值
     OCR_LANGUAGE: str = "chi_sim+eng"
 
     # AI Model
