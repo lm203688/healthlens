@@ -1,6 +1,6 @@
 {
   "report_id": "ops_f_20260916",
-  "generated_at": "2026-09-16T22:35:47.674449",
+  "generated_at": "2026-09-16T07:47:13.439752",
   "overall_status": "healthy",
   "endpoint_checks": [
     {
@@ -8,39 +8,34 @@
       "url": "https://healthlens.cc/health",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 538
+      "latency_ms": 893
     },
     {
       "name": "Robots",
       "url": "https://healthlens.cc/robots.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 145
+      "latency_ms": 573
     },
     {
       "name": "Sitemap",
       "url": "https://healthlens.cc/sitemap.xml",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 598
+      "latency_ms": 1355
     },
     {
       "name": "SEO内容",
       "url": "https://healthlens.cc/llms.txt",
       "status": "ok",
       "http_code": 200,
-      "latency_ms": 237
+      "latency_ms": 741
     }
   ],
   "server_reachable": false,
-  "server_unreachable_reason": "SSH 失败 (exit 255): Warning: Permanently added '150.158.119.19' (ED25519) to the list of known hosts.\nubuntu@150.158.119.19: Permission denied (publickey,password).",
+  "server_unreachable_reason": "SSH 失败 (exit 255): ubuntu@150.158.119.19: Permission denied (publickey,password).",
   "containers": [],
-  "security_issues": [
-    {
-      "severity": "warning",
-      "issue": ".gitignore 不存在"
-    }
-  ],
+  "security_issues": [],
   "medical_terms": [],
   "site_identity": [
     {
