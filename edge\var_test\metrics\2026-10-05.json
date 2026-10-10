@@ -1,0 +1,85 @@
+{
+  "gateway_id": "hlgw-local",
+  "user_ref": "hltest-pulse-8831",
+  "day": "2026-10-05",
+  "device": {
+    "type": "pulse",
+    "label": "HealthLens 号脉终端 (PPG)"
+  },
+  "metrics": [
+    {
+      "key": "hl.pulse.rate_bpm",
+      "value": 374.5,
+      "unit": "ratio",
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.h1",
+      "value": 0.6685,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.h3_h1",
+      "value": 0.3015,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.h5_h1",
+      "value": 0.2285,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.dicrotic_present",
+      "value": 0.5,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.ascending_slope",
+      "value": 1.0,
+      "unit": "ratio",
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.rhythm_regularity",
+      "value": 0.0,
+      "unit": "ratio",
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.perfusion_index",
+      "value": 0.6685,
+      "unit": "ratio",
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.sampling_hz",
+      "value": 256.0,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    },
+    {
+      "key": "hl.pulse.quality",
+      "value": 1.0,
+      "unit": null,
+      "evidence": "edge-derived",
+      "sample_count": 2
+    }
+  ],
+  "stats": {
+    "frames": 2,
+    "alpha_asymmetry": 0.0
+  }
+}
