@@ -130,6 +130,36 @@ async def fetch_uniprot(uniprot_id: str) -> dict | None:
     return result
 
 
+async def fetch_uniprot_by_gene(gene_symbol: str, species: int = 9606) -> str | None:
+    """
+    通过基因符号解析 UniProt accession（P0-2：解除 L2 对用户输入 uniprot_id 的依赖）。
+
+    Args:
+        gene_symbol: 基因符号，如 "TP53"
+        species: 物种 ID，默认 9606（人类）
+
+    Returns:
+        首个匹配的 UniProt accession 字符串；未找到返回 None。
+    """
+    if not gene_symbol:
+        return None
+    cache_key = f"uniprot_gene:{gene_symbol}:{species}"
+    cached = _get_cached(cache_key)
+    if cached is not None:
+        return cached
+
+    query = f"gene:{gene_symbol} AND organism_id:{species}"
+    params = {"query": query, "format": "json", "fields": "accession", "size": 1}
+    data = await _safe_get(f"{UNIPROT_BASE}/search", params=params)
+    acc = None
+    if isinstance(data, dict):
+        results = data.get("results") or []
+        if results:
+            acc = results[0].get("primaryAccession") or results[0].get("accession")
+    _set_cached(cache_key, acc)
+    return acc
+
+
 def _extract_uniprot_name(data: dict) -> str:
     """提取蛋白推荐名称"""
     try:
