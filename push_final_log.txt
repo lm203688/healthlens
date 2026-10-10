@@ -1,0 +1,407 @@
+Total todo: 341
+[1/341] = .aoci/.gitignore
+[2/341] = .aoci/baseline.json
+[3/341] = .aoci/baseline.json.bak
+[4/341] = .aoci/config.json
+[5/341] = .aoci/config.local.json
+[6/341] = .aoci/governance/entries-0210a0a6ec219536dfad0c53c2839a86d0d885a3f63c2d21d8a36da04e38cee1.json
+[7/341] = .aoci/governance/entries-22eaffb5d369f0a35777a4bdefa1400e91022ed7dfbe4d5151ced822576d3b71.json
+[8/341] = .aoci/governance/entries-32113af9fc14fc0719e992755db39fe550f81daab53e76ab002ea195dd5444d8.json
+[9/341] = .aoci/governance/entries-34f1334bd327cb8392626092c0b901e1f7aef1a88dfbfa7cc7d7dc577496c3b6.json
+[10/341] = .aoci/governance/entries-3c914e879daf6d4554ec63dd688660f3f696a920e4066aa2a0d37a84413194c5.json
+[11/341] = .aoci/governance/entries-3daba30c47524c99ff9a590689335e2c07fd9aec66cba09ab5b7b8698af7f75b.json
+[12/341] = .aoci/governance/entries-5646a463b75d611d06e3036ecf39fd820a5ee1fac1a59ae81a8c5885e4183dab.json
+[13/341] = .aoci/governance/entries-66b5f60133879976aea4c874e4a95e9cd4ad4b0aba4e38ef8c0a5b54cfed1280.json
+[14/341] = .aoci/governance/entries-8d415e45bd5949d9d2c8637939f649c2a954fe9a85972592ccca269c6076dbf6.json
+[15/341] = .aoci/governance/entries-9c3c38144a0c0025941a7bced009f2d1df4302f2e1ee2bfded4e4fccbc029a92.json
+[16/341] = .aoci/governance/entries-9c7fac6cda9a8f6724fe6828f85e3f14505310d47d6211faf55d05b90609ff85.json
+[17/341] = .aoci/governance/entries-9cbbe68e97fb038bc95a34dd99a76634dc13f6d0e29eadd7092a48ff90bed704.json
+[18/341] = .aoci/governance/entries-a57b81588e1b6dd4b31422c2cfc0885606a14445256d123a73b9668c3c506371.json
+[19/341] = .aoci/governance/entries-b56f72022f29a48c5a1eccf2eecaa91d12a26d606b273d8435a5b33b19833a3e.json
+[20/341] = .aoci/governance/entries-cebb4ddeb9d1881cf6cebb19067f653150aaacb5f34a06cade40301697d752c9.json
+[21/341] = .aoci/governance/entries-d942c0a17da2b56adba2e6439cc86d25a4020d9d0425e8186d9f9be6cf6920b2.json
+[22/341] = .aoci/ledger.jsonl
+[23/341] = .aoci/transactions/history/entries-04a9bbeb7116ac071b195aa135fe541aed279af846a191b96643d45aad9b16b2.json
+[24/341] = .aoci/transactions/history/entries-0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f.json
+[25/341] = .aoci/transactions/history/entries-10473d1ae32a49d6d8d2a25e048820f43526bcf6c5b83fbeacbace2cf0d99351.json
+[26/341] = .aoci/transactions/history/entries-31a9ae081876529c94ef0ae9068d42818c12d6c5096f214d0a80d2fb511aac68.json
+[27/341] = .aoci/transactions/history/entries-4196d1a68bb5608fb4676cad55a062908923dc20b38b3506bdfa44dc58d62cab.json
+[28/341] = .aoci/transactions/history/entries-49d44f3a1d7b725a77a134c5cf9200051eda803c5160af16f6c613f3bc1bc4e8.json
+[29/341] = .aoci/transactions/history/entries-50f72c3369eb677d6dd702be83ed852876c590a9dc96d3e17eb04da4bbc107aa.json
+[30/341] = .aoci/transactions/history/entries-5b1f7b13fb6cbea1af9f117def78813a6cea75fd124dac8cada67c198584f62f.json
+[31/341] = .aoci/transactions/history/entries-5cffc6d3737945c10e5e2fb27d81dd6b452784b24d085ef3f5394b75242d9b26.json
+[32/341] = .aoci/transactions/history/entries-6c3db85d6dcba3327ef4d531947fff42099d863f40b32dde01f50512615d1587.json
+[33/341] = .aoci/transactions/history/entries-74d430268f342b0322a4ccace9d3168b9975d7e7cdd7a1e32b46838238436df0.json
+[34/341] = .aoci/transactions/history/entries-805c9e40d7eab090e367128a7e091d85dcd27405b75d60b68d13da38adafcbbb.json
+[35/341] = .aoci/transactions/history/entries-964832d73e2d186982cf85cedfba7e005998d2d04d7678996d02a5ecf9b8f907.json
+[36/341] = .aoci/transactions/history/entries-b226f27bd3a654d1cfa1871e60aba0e9199768d6e87dd20c8ae4d116c2c61fdf.json
+[37/341] = .aoci/transactions/history/entries-fdf0f9f8ac0bf31f097d37ba7be59f89de846a16a61d7ec55d3696ca277f6ad5.json
+[38/341] = .aoci/transactions/history/entries-fdfbba600449fde377c18ecc58962003f8e77e0ff86265b996006b0b6cc22548.json
+[39/341] = .aoci/verify_history/20261007T012347Z.txt
+[40/341] = .aoci/verify_history/20261007T012959Z.txt
+[41/341] = .aoci/verify_history/20261007T013117Z.txt
+[42/341] = .aoci/verify_history/20261007T013429Z.txt
+[43/341] = .aoci/verify_history/20261007T013705Z.txt
+[44/341] = .aoci/verify_history/20261007T132840Z.txt
+[45/341] = .dockerignore
+[46/341] = .gitattributes
+[47/341] = .github/workflows/ci.yml
+[48/341] = .github/workflows/docker-publish.yml
+[49/341] = .github/workflows/mcp-publish.yml
+[50/341] = .github/workflows/mcp-test.yml
+[51/341] = .github/workflows/publish-dataset.yml
+[52/341] = .gitignore
+[53/341] = .workbuddy-ai/memory/2026-10-08.md
+[54/341] = .workbuddy-ai/memory/2026-10-09.md
+[55/341] = AGENTS.md
+[56/341] = CHANGELOG.md
+[57/341] = HealthLens_SCI申请渠道与步骤.md
+[58/341] = HealthLens_产品完整性评估与开源技术提升建议_2026-09-23.md
+[59/341] = HealthLens_全面提升评估报告_2026-10-08.md
+[60/341] = HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+[61/341] = HealthLens_整合医学理论体系_架构v1.md
+[62/341] = HealthLens_核心判断Agent规格_2026-08-13.md
+[63/341] = HealthLens_竞赛对标评估与提升建议.md
+[64/341] = HealthLens_论文_整合医学稳态轴框架_全文.md
+[65/341] = HealthLens_论文发表渠道_免费SCI.md
+[66/341] = LICENSE
+[67/341] = PRINCIPLES.md
+[68/341] = README.md
+[69/341] = alembic/versions/005_add_gdpr_consent.py
+[70/341] = alembic/versions/006_add_region_jurisdiction.py
+[71/341] = aoci.code.txt
+[72/341] = aoci.meta.txt
+[73/341] = aoci.txt
+[74/341] = app/__init__.py
+[75/341] = app/api/analytics.py
+[76/341] = app/api/connections.py
+[77/341] = app/api/dashboard.py
+[78/341] = app/api/device_metrics.py
+[79/341] = app/api/diagnosis.py
+[80/341] = app/api/edge_ticket.py
+[81/341] = app/api/feedback.py
+[82/341] = app/api/freemium.py
+[83/341] = app/api/frequency.py
+[84/341] = app/api/fusion.py
+[85/341] = app/api/gdpr.py
+[86/341] = app/api/genome.py
+[87/341] = app/api/geo_infra.py
+[88/341] = app/api/goals.py
+[89/341] = app/api/growth.py
+[90/341] = app/api/growth_enhanced.py
+[91/341] = app/api/health_tools.py
+[92/341] = app/api/llms_en.txt
+[93/341] = app/api/mcp_http.py
+[94/341] = app/api/medication_adherence.py
+[95/341] = app/api/observations.py
+[96/341] = app/api/payment.py
+[97/341] = app/api/points.py
+[98/341] = app/api/pulse.py
+[99/341] = app/api/records.py
+[100/341] = app/api/repair.py
+[101/341] = app/api/reports.py
+[102/341] = app/api/seo.py
+[103/341] = app/api/seo_public.py
+[104/341] = app/api/share_public.py
+[105/341] = app/api/share_report.py
+[106/341] = app/api/tiered_growth.py
+[107/341] = app/api/v1/__init__.py
+[108/341] = app/api/v1/diagnosis_agent.py
+[109/341] = app/config.py
+[110/341] = app/connectors/__init__.py
+[111/341] = app/connectors/edge_gateway.py
+[112/341] = app/connectors/google_health.py
+[113/341] = app/connectors/pulse_gateway.py
+[114/341] = app/connectors/withings.py
+[115/341] = app/core/axis_scorers.py
+[116/341] = app/core/ocr_engine.py
+[117/341] = app/core/pgx_engine.py
+[118/341] = app/core/risk_engine.py
+[119/341] = app/core/tcm_engine.py
+[120/341] = app/database.py
+[121/341] = app/lib/axis_config.py
+[122/341] = app/lib/claims_engine.py
+[123/341] = app/lib/fusion_engine.py
+[124/341] = app/lib/pulse_engine.py
+[125/341] = app/lib/region_guard.py
+[126/341] = app/main.py
+[127/341] = app/middleware/__init__.py
+[128/341] = app/middleware/utm_tracker.py
+[129/341] = app/models/__init__.py
+[130/341] = app/models/analytics.py
+[131/341] = app/models/gdpr_consent.py
+[132/341] = app/models/knowledge_graph.py
+[133/341] = app/models/points.py
+[134/341] = app/models/referral.py
+[135/341] = app/models/seo.py
+[136/341] = app/models/share_report.py
+[137/341] = app/models/sleep.py
+[138/341] = app/models/tiered_referral.py
+[139/341] = app/models/user.py
+[140/341] = app/services/agnes_ai.py
+[141/341] = app/services/analytics_service.py
+[142/341] = app/services/bio_database.py
+[143/341] = app/services/creem_pay_service.py
+[144/341] = app/services/diagnosis_agent.py
+[145/341] = app/services/email_service.py
+[146/341] = app/services/freemium_service.py
+[147/341] = app/services/frequency_prescription.py
+[148/341] = app/services/ocr_service.py
+[149/341] = app/services/points_service.py
+[150/341] = app/services/referral_service.py
+[151/341] = app/services/runtime_audit.py
+[152/341] = app/services/seo_factory.py
+[153/341] = app/services/share_report_service.py
+[154/341] = app/services/tiered_referral_service.py
+[155/341] = app/services/totp_service.py
+[156/341] = app/services/xunhu_pay_service.py
+[157/341] = app/tasks/__init__.py
+[158/341] = app/tasks/acquisition_tasks.py
+[159/341] = app/tasks/engagement_tasks.py
+[160/341] = app/tasks/ocr_tasks.py
+[161/341] = app/tasks/ops_tasks.py
+[162/341] = app/utils/geo_translator.py
+[163/341] = app/utils/pii_sanitizer.py
+[164/341] = app/utils/security.py
+[165/341] = app/worker.py
+[166/341] ABSENT auto-pipeline/alerts/2026-08-31_health_route_gap.json
+  [OK via classic] auto-pipeline/alerts/2026-08-31_health_route_gap.json
+[167/341] ABSENT auto-pipeline/alerts/2026-09-06_backend_origin_down.json
+  [OK via classic] auto-pipeline/alerts/2026-09-06_backend_origin_down.json
+[168/341] = auto-pipeline/alerts/ACTIVE_ALERTS.md
+[169/341] = auto-pipeline/alerts/alert_state.json
+[170/341] ABSENT auto-pipeline/archive_W30-2026.json
+  [OK via classic] auto-pipeline/archive_W30-2026.json
+[171/341] ABSENT auto-pipeline/archive_W35-2026.json
+  [OK via classic] auto-pipeline/archive_W35-2026.json
+[172/341] ABSENT auto-pipeline/build_out.txt
+  [OK via classic] auto-pipeline/build_out.txt
+[173/341] = auto-pipeline/config.json
+[174/341] = auto-pipeline/heal_history.json
+[175/341] = auto-pipeline/pipeline_state.json
+[176/341] ABSENT auto-pipeline/pipeline_state.json.bak
+  [OK via classic] auto-pipeline/pipeline_state.json.bak
+[177/341] ABSENT auto-pipeline/pipeline_state.json.bak_2026-09-18
+  [OK via classic] auto-pipeline/pipeline_state.json.bak_2026-09-18
+[178/341] ABSENT auto-pipeline/reports/analysis/2026-08-31_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-08-31_analysis_report.json
+[179/341] ABSENT auto-pipeline/reports/analysis/2026-08-31_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-08-31_decision_report.json
+[180/341] ABSENT auto-pipeline/reports/analysis/2026-09-01_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-01_analysis_report.json
+[181/341] ABSENT auto-pipeline/reports/analysis/2026-09-01_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-01_decision_report.json
+[182/341] ABSENT auto-pipeline/reports/analysis/2026-09-01_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-01_development_report.json
+[183/341] ABSENT auto-pipeline/reports/analysis/2026-09-01_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-01_test_report.json
+[184/341] ABSENT auto-pipeline/reports/analysis/2026-09-02_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-02_analysis_report.json
+[185/341] ABSENT auto-pipeline/reports/analysis/2026-09-02_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-02_decision_report.json
+[186/341] ABSENT auto-pipeline/reports/analysis/2026-09-02_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-02_development_report.json
+[187/341] ABSENT auto-pipeline/reports/analysis/2026-09-02_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-02_test_report.json
+[188/341] ABSENT auto-pipeline/reports/analysis/2026-09-03_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-03_analysis_report.json
+[189/341] ABSENT auto-pipeline/reports/analysis/2026-09-03_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-03_decision_report.json
+[190/341] ABSENT auto-pipeline/reports/analysis/2026-09-03_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-03_development_report.json
+[191/341] ABSENT auto-pipeline/reports/analysis/2026-09-03_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-03_test_report.json
+[192/341] ABSENT auto-pipeline/reports/analysis/2026-09-04_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-04_analysis_report.json
+[193/341] ABSENT auto-pipeline/reports/analysis/2026-09-04_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-04_decision_report.json
+[194/341] ABSENT auto-pipeline/reports/analysis/2026-09-04_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-04_development_report.json
+[195/341] ABSENT auto-pipeline/reports/analysis/2026-09-04_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-04_test_report.json
+[196/341] ABSENT auto-pipeline/reports/analysis/2026-09-05_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-05_analysis_report.json
+[197/341] ABSENT auto-pipeline/reports/analysis/2026-09-05_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-05_decision_report.json
+[198/341] ABSENT auto-pipeline/reports/analysis/2026-09-05_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-05_development_report.json
+[199/341] ABSENT auto-pipeline/reports/analysis/2026-09-05_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-05_test_report.json
+[200/341] ABSENT auto-pipeline/reports/analysis/2026-09-06_analysis_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-06_analysis_report.json
+[201/341] ABSENT auto-pipeline/reports/analysis/2026-09-06_decision_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-06_decision_report.json
+[202/341] ABSENT auto-pipeline/reports/analysis/2026-09-06_development_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-06_development_report.json
+[203/341] ABSENT auto-pipeline/reports/analysis/2026-09-06_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-06_test_report.json
+[204/341] = auto-pipeline/reports/analysis/2026-09-16_conversion_b.json
+[205/341] = auto-pipeline/reports/analysis/2026-09-16_data_asset_c.json
+[206/341] ABSENT auto-pipeline/reports/analysis/2026-09-16_feedback_a.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-16_feedback_a.json
+[207/341] = auto-pipeline/reports/analysis/2026-09-16_finance_e.json
+[208/341] = auto-pipeline/reports/analysis/2026-09-16_ops_health_f.json
+[209/341] = auto-pipeline/reports/analysis/2026-09-16_promotion_d.json
+[210/341] ABSENT auto-pipeline/reports/analysis/2026-09-16_test_report.json
+  [OK via classic] auto-pipeline/reports/analysis/2026-09-16_test_report.json
+[211/341] ABSENT auto-pipeline/reports/deployed/2026-09-01_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-01_deployment_report.json
+[212/341] ABSENT auto-pipeline/reports/deployed/2026-09-02_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-02_deployment_report.json
+[213/341] ABSENT auto-pipeline/reports/deployed/2026-09-03_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-03_deployment_report.json
+[214/341] ABSENT auto-pipeline/reports/deployed/2026-09-04_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-04_deployment_report.json
+[215/341] ABSENT auto-pipeline/reports/deployed/2026-09-05_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-05_deployment_report.json
+[216/341] ABSENT auto-pipeline/reports/deployed/2026-09-06_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-06_deployment_report.json
+[217/341] ABSENT auto-pipeline/reports/deployed/2026-09-16_deployment_report.json
+  [OK via classic] auto-pipeline/reports/deployed/2026-09-16_deployment_report.json
+[218/341] ABSENT auto-pipeline/reports/health_route_fix_plan_a_2026-09-01.md
+  [OK via classic] auto-pipeline/reports/health_route_fix_plan_a_2026-09-01.md
+[219/341] ABSENT auto-pipeline/reports/health_route_reeval_2026-09-02.md
+  [OK via classic] auto-pipeline/reports/health_route_reeval_2026-09-02.md
+[220/341] ABSENT auto-pipeline/reports/health_route_rootcause_2026-09-01.md
+  [OK via classic] auto-pipeline/reports/health_route_rootcause_2026-09-01.md
+[221/341] ABSENT auto-pipeline/reports/intelligence/2026-08-31_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-08-31_intelligence_report.json
+[222/341] ABSENT auto-pipeline/reports/intelligence/2026-09-01_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-01_intelligence_report.json
+[223/341] ABSENT auto-pipeline/reports/intelligence/2026-09-02_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-02_intelligence_report.json
+[224/341] ABSENT auto-pipeline/reports/intelligence/2026-09-03_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-03_intelligence_report.json
+[225/341] ABSENT auto-pipeline/reports/intelligence/2026-09-04_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-04_intelligence_report.json
+[226/341] ABSENT auto-pipeline/reports/intelligence/2026-09-05_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-05_intelligence_report.json
+[227/341] ABSENT auto-pipeline/reports/intelligence/2026-09-06_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-06_intelligence_report.json
+[228/341] ABSENT auto-pipeline/reports/intelligence/2026-09-15_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-09-15_intelligence_report.json
+[229/341] ABSENT auto-pipeline/reports/intelligence/2026-10-04_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-10-04_intelligence_report.json
+[230/341] ABSENT auto-pipeline/reports/intelligence/2026-10-09_intelligence_report.json
+  [OK via classic] auto-pipeline/reports/intelligence/2026-10-09_intelligence_report.json
+[231/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-01.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-01.md
+[232/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-02.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-02.md
+[233/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-03.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-03.md
+[234/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-04.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-04.md
+[235/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-05.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-05.md
+[236/341] ABSENT auto-pipeline/reports/ops_brief_2026-09-06.md
+  [OK via classic] auto-pipeline/reports/ops_brief_2026-09-06.md
+[237/341] ABSENT auto-pipeline/reports/ops_briefing/2026-08-31_daily_brief.md
+  [OK via classic] auto-pipeline/reports/ops_briefing/2026-08-31_daily_brief.md
+[238/341] ABSENT auto-pipeline/runs/run_20260916_074713.json
+  [OK via classic] auto-pipeline/runs/run_20260916_074713.json
+[239/341] ABSENT claims_policy/au_tga.yaml
+  [OK via classic] claims_policy/au_tga.yaml
+[240/341] ABSENT claims_policy/cn.yaml
+  [OK via classic] claims_policy/cn.yaml
+[241/341] ABSENT claims_policy/eu_mdr.yaml
+  [OK via classic] claims_policy/eu_mdr.yaml
+[242/341] ABSENT claims_policy/intended_use_matrix.yaml
+  [OK via classic] claims_policy/intended_use_matrix.yaml
+[243/341] ABSENT claims_policy/uk_mhra.yaml
+  [OK via classic] claims_policy/uk_mhra.yaml
+[244/341] ABSENT claims_policy/us_fda.yaml
+  [OK via classic] claims_policy/us_fda.yaml
+[245/341] ABSENT config/axes/axes.yaml
+  [OK via classic] config/axes/axes.yaml
+[246/341] = data/DATASET_CARD.md
+[247/341] = data/case_evidence_db.json
+[248/341] = data/classical_books.sql
+[249/341] = data/feedback_db.json
+[250/341] ABSENT data/pathway_to_syndrome_map.json
+  [OK via classic] data/pathway_to_syndrome_map.json
+[251/341] = data/publish_dataset_repo.py
+[252/341] = data/publish_hf.py
+[253/341] = data/pulse_signatures.json
+[254/341] = data/tcm_mkg/_sample_preview.json
+[255/341] = data/verify_dataset_repo.py
+[256/341] = docs/EDGE_GATEWAY.md
+[257/341] = docs/HealthLens_产品技术白皮书.md
+[258/341] = docs/MCP_上线操作步骤_你来做.md
+[259/341] = docs/PULSE_DEVICE.md
+[260/341] DIFF docs/PULSE_HARDWARE_STEPBYSTEP.md
+  [OK via classic] docs/PULSE_HARDWARE_STEPBYSTEP.md
+[261/341] = docs/audit_archive_policy.md
+[262/341] = docs/healthlens-mcp-design.md
+[263/341] = docs/mcp-marketplace-copies.md
+[264/341] = docs/mcp-marketplace-submission.md
+[265/341] = edge/healthgateway/__init__.py
+[266/341] = edge/healthgateway/aggregate.py
+[267/341] = edge/healthgateway/command_whitelist.py
+[268/341] = edge/healthgateway/firmware/pulse_esp32.ino
+[269/341] = edge/healthgateway/main.py
+[270/341] DIFF edge/healthgateway/pulse_source.py
+  [OK via classic] edge/healthgateway/pulse_source.py
+[271/341] = edge/healthgateway/reporter.py
+[272/341] = edge/healthgateway/server.py
+[273/341] = edge/healthgateway/signal_source.py
+[274/341] = edge/healthgateway/spectrum.py
+[275/341] = edge/healthgateway/tests/test_spectrum.py
+[276/341] ABSENT edge/var_test/metrics/2026-10-05.json
+  [OK via classic] edge/var_test/metrics/2026-10-05.json
+[277/341] ABSENT edge/var_test/state.json
+  [OK via classic] edge/var_test/state.json
+[278/341] = frontend/api-contract/openapi.json
+[279/341] = frontend/src/App.jsx
+[280/341] = frontend/src/api/client.js
+[281/341] = frontend/src/components/AxisRadar.jsx
+[282/341] = frontend/src/components/CheckinHeatmap.jsx
+[283/341] = frontend/src/components/TrendChart.jsx
+[284/341] = frontend/src/i18n/locales/en.json
+[285/341] = frontend/src/i18n/locales/zh.json
+[286/341] = frontend/src/pages/AxisProfile.jsx
+[287/341] DIFF frontend/src/pages/Payment.jsx
+  [OK via classic] frontend/src/pages/Payment.jsx
+[288/341] = frontend/src/pages/PulseDevice.jsx
+[289/341] = frontend/src/pages/Retention.jsx
+[290/341] DIFF frontend/src/pages/Share.jsx
+  [OK via classic] frontend/src/pages/Share.jsx
+[291/341] DIFF frontend/src/pages/Upload.jsx
+  [OK via classic] frontend/src/pages/Upload.jsx
+[292/341] = healthlens/frontend/_worker.js
+[293/341] = healthlens_agent/__init__.py
+[294/341] = healthlens_agent/__main__.py
+[295/341] = healthlens_agent/_loader.py
+[296/341] = healthlens_agent/api/__init__.py
+[297/341] = healthlens_agent/api/compliance_api.py
+[298/341] = healthlens_agent/api/pipeline_api.py
+[299/341] = healthlens_agent/api/report_generator.py
+[300/341] = healthlens_agent/api/skills_api.py
+[301/341] = healthlens_agent/flow.py
+[302/341] ABSENT healthlens_agent/llm.py
+  [OK via classic] healthlens_agent/llm.py
+[303/341] = healthlens_agent/mcp_server.py
+[304/341] = healthlens_agent/safety.py
+[305/341] = healthlens_agent/team.py
+[306/341] = healthlens_agent/tests/test_team.py
+[307/341] ABSENT knowledge/LICENSE
+  [OK via classic] knowledge/LICENSE
+[308/341] ABSENT knowledge/MANIFEST.json
+  [OK via classic] knowledge/MANIFEST.json
+[309/341] ABSENT knowledge/README.md
+  [OK via classic] knowledge/README.md
+[310/341] ABSENT knowledge/__init__.py
+  [OK via classic] knowledge/__init__.py
+[311/341] ABSENT knowledge/loader.py
+  [OK via classic] knowledge/loader.py
+[312/341] = mcp-server/.dockerignore
+[313/341] = mcp-server/.mcp.json
+[314/341] = mcp-server/Dockerfile
+[315/341] = mcp-server/LICENSE
+[316/341] = mcp-server/README.md
+[317/341] = mcp-server/build_docker.sh
+[318/341] DIFF mcp-server/server.json
+  [OK via classic] mcp-server/server.json
+[319/341] = mcp-server/test_install.sh
+[320/341] ABSENT mcp_servers/healthlens_domain_mcp.py
+  [OK via classic] mcp_servers/healthlens_domain_mcp.py
