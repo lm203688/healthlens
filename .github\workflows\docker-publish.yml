@@ -1,0 +1,100 @@
+name: Publish MCP image to GHCR
+
+# Builds the standalone MCP server image (mcp-server/Dockerfile, stdio/HTTP transport)
+# and pushes it to GitHub Container Registry.
+#
+# ZERO configuration required: GHCR auth uses the workflow's built-in GITHUB_TOKEN,
+# so no repository secrets are needed. The only prerequisite is `packages: write`
+# below, which GitHub grants only when the job declares it (easy to miss).
+#
+# Docker Hub is NOT used: hub.docker.com and registry-1.docker.io are unreachable
+# from mainland China as of 2026-10.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+    paths:
+      - "mcp-server/Dockerfile"
+      - "mcp-server/build_docker.sh"
+      - "mcp-server/server.json"
+      - "healthlens_agent/**"
+      - "data/tcm_mkg/**"
+      - "data/tcm_structured/**"
+      - "data/classical_books.json"
+      - "data/case_evidence_db.json"
+      - "data/tcm_pathway_map.json"
+      - "pyproject.toml"
+      - ".github/workflows/docker-publish.yml"
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # packages:write is required to push the image to ghcr.io via GITHUB_TOKEN
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/healthlens-mcp
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          flavor: |
+            latest=true
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: mcp-server/Dockerfile
+          load: true
+          tags: healthlens-mcp:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Fail the build if the stdio server cannot enumerate its tools.
+      - name: Smoke test the image
+        run: |
+          docker run --rm --entrypoint "" healthlens-mcp:ci \
+            python -m healthlens_agent.mcp_server --demo
+
+      # No cache-from here: the previous step already ran `load: true`, and
+      # re-reading a type=gha cache in the same job makes buildx fail while
+      # computing cache keys ("/data/...": not found).
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: mcp-server/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
