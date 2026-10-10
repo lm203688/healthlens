@@ -1,6 +1,6 @@
 """报告导出路由 - 健康摘要、月度趋势、FHIR 导出"""
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -53,7 +53,7 @@ async def get_health_summary(
         "success": True,
         "data": {
             "user_id": str(current_user.id),
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "profile": profile_data,
             "analysis": analysis,
             "active_diagnoses": diagnosis_list,
