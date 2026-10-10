@@ -1,9 +1,10 @@
 {
   "report_id": "finance_e_20260916",
-  "generated_at": "2026-09-16T22:35:43.904331",
-  "data_source": "db_unavailable",
+  "generated_at": "2026-09-16T07:47:07.725839",
+  "data_source": "db_error",
   "real_revenue_data": {
-    "data_source": "db_unavailable",
+    "data_source": "db_error",
+    "error": "[WinError 1225] 远程计算机拒绝网络连接。",
     "weekly": {
       "revenue": 0,
       "paid_orders": 0,
