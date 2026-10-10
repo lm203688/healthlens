@@ -107,7 +107,7 @@ async def test_risk_history(client, test_user_data, db_session):
     record = RiskAssessment(
         id=str(uuid.uuid4()),
         user_id=user_id,
-        risk_type="ascvd",
+        risk_type="ascvd_self_assess",
         risk_level="moderate",
         risk_score=5.0,
         risk_probability=12.5,
@@ -120,4 +120,4 @@ async def test_risk_history(client, test_user_data, db_session):
     assert resp.status_code == 200
     data = resp.json()["data"]
     assert len(data) >= 1
-    assert data[0]["risk_type"] == "ascvd"
+    assert data[0]["risk_type"] == "ascvd_self_assess"
