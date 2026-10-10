@@ -958,8 +958,7 @@
       "intervention": "运动诱导外泌体释放（肌肉-脂肪串扰）",
       "tcm_concept": "导引 / 气血流通（动则气血周流，外达四肢百骸）",
       "axes": [
-        "B",
-        "I"
+        "B"
       ],
       "mechanism": "运动→骨骼肌/脂肪组织释放外泌体(exosome)，携带miRNA(miR-133a/miR-206/miR-126)→调节远端组织代谢、血管新生、抗炎",
       "population": "健康成人（人体运动干预研究）",
@@ -991,15 +990,15 @@
         "year": "2024",
         "doi": "运动外泌体综述（投稿前需全文复核）"
       },
-      "fusion_note": "把'导引/气血流通'机制化为外泌体胞间信号传导——运动的收益不局限于局部，而是通过外泌体实现全身性细胞间通讯。I轴核心证据。"
+      "fusion_note": "把'导引/气血流通'机制化为外泌体胞间信号传导——运动的收益不局限于局部，而是通过外泌体实现全身性细胞间通讯。I轴核心证据。",
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
     },
     {
       "id": "CASE-025",
       "intervention": "间歇性断食调节外泌体miRNA谱",
       "tcm_concept": "辟谷 / 气化重启（断食激活全身修复信号）",
       "axes": [
-        "A",
-        "I"
+        "A"
       ],
       "mechanism": "断食→细胞释放外泌体携带特定miRNA(miR-21/miR-155/miR-223)→调节免疫、代谢、自噬相关通路",
       "population": "成人（人体断食研究 + 体外机制验证）",
@@ -1031,14 +1030,14 @@
         "year": "2023",
         "doi": "断食外泌体研究（投稿前需全文复核）"
       },
-      "fusion_note": "为'辟谷/气化重启'增加外泌体维度——断食的全身修复效应部分通过外泌体miRNA实现，打通A轴与I轴。"
+      "fusion_note": "为'辟谷/气化重启'增加外泌体维度——断食的全身修复效应部分通过外泌体miRNA实现，打通A轴与I轴。",
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
     },
     {
       "id": "CASE-026",
       "intervention": "外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）",
       "tcm_concept": "药食同源 / 通络载药（经络传输药力）",
       "axes": [
-        "I",
         "C"
       ],
       "mechanism": "天然姜黄素/槲皮素被包裹进外泌体→提高生物利用度（40-50×）→靶向递送至炎症/衰老组织→增强senolytic/抗炎效果",
@@ -1071,15 +1070,15 @@
         "year": "2024",
         "doi": "外泌体药物递送综述（投稿前需全文复核）"
       },
-      "fusion_note": "为'经络/通络载药'提供外泌体载体假说——外泌体是细胞天然的'快递员'，可作为药食同源成分的生物利用度增强器。I+C轴桥接证据。"
+      "fusion_note": "为'经络/通络载药'提供外泌体载体假说——外泌体是细胞天然的'快递员'，可作为药食同源成分的生物利用度增强器。I+C轴桥接证据。",
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
     },
     {
       "id": "CASE-029",
       "intervention": "Exercise-induced exosome release (confirmed 2026)",
       "tcm_concept": "导引/气血流通(动则气血周流)",
       "axes": [
-        "B",
-        "I"
+        "B"
       ],
       "mechanism": "Exercise -> skeletal muscle/adipose tissue release exosomes carrying miRNA (miR-133a/miR-206/miR-126) -> regulate distant tissue metabolism, angiogenesis, anti-inflammation",
       "population": "Healthy adults (acute + chronic exercise studies)",
@@ -1105,7 +1104,8 @@
       ],
       "gene_link": "I axis (exosome-cell communication) weakness -> exercise as first-line non-drug intervention",
       "source": "Yu et al. J Nanobiotechnology 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985",
-      "fusion_note": "I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling"
+      "fusion_note": "I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling",
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
     },
     {
       "id": "CASE-030",
@@ -2597,5 +2597,7 @@
       "generated_at": "2026-08-27T14:31:14.683313",
       "is_synthetic": true
     }
-  ]
+  ],
+  "version": "1.3",
+  "revision_note": "2026-10-10 A5: 清理 I/J 轴残留，Canonical Count = 八轴 A-H"
 }
