@@ -1,0 +1,142 @@
+# 稳态生物学八轴阈值配置（A2 参数外置）
+# --------------------------------------------------------------
+# 阶段 A2 落地：把 axis_scorers.py 中的 56 处硬编码阈值外置到此 YAML。
+# 配置结构支持 jurisdiction 维度：默认取 default，法域可覆盖。
+#
+# **加载优先级**：jurisdiction 覆盖 > default
+#   1. 读取此文件
+#   2. 若当前 jurisdiction != default 且有覆盖 → 用覆盖值
+#   3. 否则用 default 值
+#
+# **代码兼容**：axis_scorers.py 保留硬编码值作为 fallback，
+# 配置文件加载失败时自动降级，不影响现有功能。
+#
+# **法域差异**（示例）：
+#   - CN：使用中国指南阈值（ADA 中国版）
+#   - US：使用 ADA/ACC 美国指南
+#   - EU：使用 ESC/EASD 欧洲指南
+#   当前所有法域均使用 default 值（后续可差异化配置）
+version: "1.0"
+last_updated: "2026-10-10"
+
+# 通用评分参数（跨法域共享）
+common:
+  score_range: [0, 100]
+  score_higher_better: true
+  status_thresholds:
+    normal_min: 70
+    risk_min: 40
+
+# A 气化-自噬(AMPK-mTOR)：血糖代谢稳态
+axis_a:
+  label: "气化-自噬(AMPK-mTOR)"
+  concept: "气/气化"
+  proxy: "血糖代谢稳态"
+  thresholds:
+    fpg:  # 空腹血糖（mmol/L）
+      default: { normal_max: 6.1, impaired_max: 7.0, severe_max: 11.1, optimal: 5.0 }
+    hba1c:  # HbA1c（%）
+      default: { normal_max: 5.8, impaired_max: 6.5, severe_max: 8.0, optimal: 5.2 }
+    bmi:  # BMI（kg/m²）
+      default: { normal_max: 24, overweight_max: 28, severe_min: 28, optimal: 22, severe_low: 17 }
+    waist:  # 腰围（cm，男）
+      default: { normal_max: 90, overweight_max: 100, optimal: 80 }
+    waist_female:  # 腰围（cm，女）
+      default: { normal_max: 85, overweight_max: 95, optimal: 75 }
+    tg:  # 甘油三酯（mmol/L）
+      default: { normal_max: 1.7, elevated_max: 2.3, severe_max: 5.6 }
+
+# B 气血-线粒体能量(NAD+/mtDNA)：线粒体能量代谢
+axis_b:
+  label: "气血-线粒体能量(NAD+/mtDNA)"
+  concept: "气血"
+  proxy: "线粒体能量代谢"
+  thresholds:
+    hdl:  # HDL-C（mmol/L）
+      default: { low_min: 0.9, optimal_min: 1.0, severe_low: 0.7 }
+    tg:  # 甘油三酯（mmol/L）
+      default: { elevated_max: 1.7, severe_max: 2.3 }
+    homo_cysteine:  # 同型半胱氨酸（μmol/L）
+      default: { normal_max: 10, elevated_max: 15, severe_max: 20 }
+    resting_hr:  # 静息心率（bpm）
+      default: { normal_max: 80, elevated_max: 90, optimal_max: 70 }
+
+# C 络脉-内皮微循环：血管内皮与微循环
+axis_c:
+  label: "络脉-内皮微循环"
+  concept: "络脉"
+  proxy: "血管内皮与微循环"
+  thresholds:
+    sbp:  # 收缩压（mmHg）
+      default: { normal_max: 120, elevated_max: 130, hypertensive_max: 140, optimal: 115 }
+    dbp:  # 舒张压（mmHg）
+      default: { normal_max: 80, elevated_max: 85, hypertensive_max: 90, optimal: 75 }
+    hs_crp:  # hs-CRP（mg/L）
+      default: { normal_max: 1.0, elevated_max: 3.0, severe_max: 10.0 }
+    homo_cysteine:  # 同型半胱氨酸（μmol/L）
+      default: { normal_max: 10, elevated_max: 15, severe_max: 20 }
+
+# D 阴阳-昼夜节律：昼夜节律稳态
+axis_d:
+  label: "阴阳-昼夜节律"
+  concept: "阴阳"
+  proxy: "昼夜节律稳态"
+  thresholds:
+    sleep_duration:  # 睡眠时长（小时）
+      default: { short_min: 6, long_max: 9, optimal_min: 7, optimal_max: 8 }
+    sleep_midpoint_jitter:  # 睡眠中点抖动（分钟）
+      default: { normal_max: 30, elevated_max: 60, severe_max: 90 }
+    social_time_lag:  # 社会时差（小时）
+      default: { normal_max: 1, elevated_max: 2, severe_max: 3 }
+
+# E 脏腑-神经内分泌(HPA)：HPA 轴与应激稳态
+axis_e:
+  label: "脏腑-神经内分泌(HPA)"
+  concept: "脏腑"
+  proxy: "HPA 轴与应激稳态"
+  thresholds:
+    hrv_rmssd:  # HRV RMSSD（ms）
+      default: { normal_min: 50, low_max: 30, severe_low: 20 }
+    resting_hr:  # 静息心率（bpm）
+      default: { normal_max: 80, elevated_max: 90, optimal_max: 70 }
+
+# F 正邪-炎症负荷：慢性低度炎症
+axis_f:
+  label: "正邪-炎症负荷"
+  concept: "正邪"
+  proxy: "慢性低度炎症"
+  thresholds:
+    hs_crp:  # hs-CRP（mg/L）
+      default: { normal_max: 1.0, elevated_max: 3.0, severe_max: 10.0 }
+    il6:  # IL-6（pg/mL）
+      default: { normal_max: 2.5, elevated_max: 5.0, severe_max: 10.0 }
+
+# G 神-情志(自主神经)：自主神经平衡
+axis_g:
+  label: "神-情志(自主神经)"
+  concept: "神"
+  proxy: "自主神经平衡"
+  thresholds:
+    hrv_rmssd:  # HRV RMSSD（ms）
+      default: { normal_min: 50, low_max: 30, severe_low: 20 }
+    sleep_regularity:  # 睡眠规律性（0-100）
+      default: { normal_min: 70, low_max: 50, severe_low: 30 }
+
+# H 先天-肾精(表观遗传)：表观遗传完整性
+axis_h:
+  label: "先天-肾精(表观遗传)"
+  concept: "先天之本"
+  proxy: "表观遗传完整性"
+  thresholds:
+    bioage_delta:  # 生物年龄偏移（年）
+      default: { normal_max: 2, elevated_max: 5, severe_max: 8, optimal_max: 0 }
+    telomere_length:  # 端粒长度（bp，相对）
+      default: { normal_min: 0.8, low_max: 0.7, severe_low: 0.6 }
+
+# 法域覆盖示例（当前无实际差异化，占位结构）
+jurisdiction_overrides:
+  cn: {}
+  us: {}
+  eu: {}
+  sg: {}
+  au: {}
