@@ -68,6 +68,40 @@ def _load_bioage():
     return module
 
 
+# 八轴打分器（P0-1）：同样按文件路径加载，避免触发 app 包的 FastAPI 依赖。
+_AXIS_SCORERS_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "core", "axis_scorers.py",
+)
+
+
+def _load_axis_scorers():
+    """按文件路径加载 axis_scorers（纯标准库模块，无 FastAPI 依赖）。"""
+    mod = sys.modules.get("axis_scorers")
+    if mod is not None and hasattr(mod, "score_all_axes"):
+        return mod
+    spec = importlib.util.spec_from_file_location("axis_scorers", _AXIS_SCORERS_PATH)
+    if spec is None or spec.loader is None:
+        raise FileNotFoundError(_AXIS_SCORERS_PATH)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["axis_scorers"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+try:
+    _axis_scorers = _load_axis_scorers()
+    score_all_axes = _axis_scorers.score_all_axes
+    axis_scores_to_dict = _axis_scorers.axis_scores_to_dict
+    ALL_AXES = _axis_scorers.ALL_AXES
+except Exception:  # noqa: BLE001
+    score_all_axes = None  # type: ignore[assignment]
+    axis_scores_to_dict = None  # type: ignore[assignment]
+    ALL_AXES = ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+_HAS_AXIS_SCORERS = score_all_axes is not None
+
+
 try:
     _bioage = _load_bioage()
     BioAgeEngine = _bioage.BioAgeEngine
@@ -222,6 +256,10 @@ class UserProfile:
     chrono_age: int | None = None
     is_male: bool = True
     biomarkers: dict[str, float] = field(default_factory=dict)
+    # P0-1：八轴打分器的真实输入。缺字段即对应轴 unmeasured（绝不填 0）。
+    wearable: dict = field(default_factory=dict)   # hrv_rmssd/resting_hr/sleep_* 等
+    symptoms: list[str] = field(default_factory=list)  # 中医症状文本（用于 E 轴等）
+    bioage_delta: float | None = None  # 表观遗传年龄偏移，供 H 轴（可由后端算后传入）
 
 
 @dataclass
@@ -337,6 +375,28 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         if ax:
             weak_axes.add(ax)
 
+    # P0-1：八轴真实打分（缺数据轴标 unmeasured）。measured 且低于阈值的轴并入弱项集合，
+    # 使融合引擎真正"算"出弱项，而非只靠调用方传入。
+    axis_scores_block: dict = {}
+    measured_weak_axes: set[str] = set()
+    if _HAS_AXIS_SCORERS:
+        try:
+            _scores = score_all_axes(
+                biomarkers=profile.biomarkers,
+                wearable=profile.wearable,
+                symptoms=profile.symptoms,
+                bioage_delta=profile.bioage_delta if profile.bioage_delta is not None
+                else (bioage_block.get("delta") if bioage_block else None),
+                is_male=profile.is_male,
+            )
+            axis_scores_block = axis_scores_to_dict(_scores)
+            for ax, sc in _scores.items():
+                if sc.measured and sc.score < BIOAGE_WEAK_THRESHOLD:
+                    measured_weak_axes.add(ax)
+        except Exception:
+            axis_scores_block = {}
+    weak_axes |= measured_weak_axes
+
     # has_gene 仅由基因/组学来源判定（先算，避免被体检指标污染 is_demo 三态）
     has_gene = bool(weak_canon) or bool(weak_axes)
 
@@ -449,9 +509,8 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         "weak_pathways": sorted(weak_display),
         "weak_axes": sorted(weak_axes),
         "axis_bridges": axis_bridges_for(weak_axes),
-        "axis_scores": (
-            {AXIS_KEY: bioage_block["axis_score"]} if bioage_block else {}
-        ),
+        "axis_scores": axis_scores_block,
+        "axis_measured_weak": sorted(measured_weak_axes),
         "bioage": bioage_block,
         "recommendations": rec_dicts,
         "llm_enabled": os.environ.get("USE_LLM", "0"),
