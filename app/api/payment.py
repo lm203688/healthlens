@@ -470,8 +470,9 @@ async def list_packages(
     db: AsyncSession = Depends(get_db),
 ):
     """获取所有可用积分套餐"""
-    from app.services.tiered_referral_service import get_all_packages
+    from app.services.tiered_referral_service import get_all_packages, initialize_default_packages
 
+    await initialize_default_packages(db)
     packages = await get_all_packages(db)
     data = [
         {
@@ -479,6 +480,7 @@ async def list_packages(
             "name": p.package_name,
             "points": p.points_amount,
             "bonus": p.bonus_points,
+            "total_points": p.points_amount + p.bonus_points,
             "price_cny": float(p.price_cny),
             "original_price": float(p.original_price) if p.original_price else None,
             "is_popular": p.is_popular,
@@ -487,6 +489,61 @@ async def list_packages(
         for p in packages
     ]
     return {"success": True, "data": data}
+
+
+@router.get("/features")
+async def get_payment_features(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """P0-12：支付功能与套餐后端化——返回 freemium 功能列表 + 当前套餐状态。
+
+    前端 Payment.jsx 调用此端点，不再硬编码价格与功能列表。
+    """
+    from app.services.tiered_referral_service import get_all_packages, initialize_default_packages
+
+    await initialize_default_packages(db)
+    packages = await get_all_packages(db)
+
+    # 用户当前积分余额
+    from app.services.points_service import get_user_points
+    balance_info = await get_user_points(db, str(current_user.id))
+    balance = balance_info.get("balance", 0) if balance_info else 0
+
+    premium_features = [
+        {"code": "genome", "name": "基因数据解读", "enabled": True},
+        {"code": "ai_analysis", "name": "AI 深度分析", "enabled": True},
+        {"code": "share", "name": "报告分享", "enabled": True},
+        {"code": "pulse", "name": "号脉硬件接入", "enabled": True},
+        {"code": "priority", "name": "优先客服通道", "enabled": True},
+    ]
+
+    free_features = [
+        {"code": "axes", "name": "八轴稳态评估", "enabled": True},
+        {"code": "reports", "name": "健康报告查看", "enabled": True},
+        {"code": "checkin", "name": "每日健康打卡", "enabled": True},
+    ]
+
+    return {
+        "success": True,
+        "data": {
+            "packages": [
+                {
+                    "code": p.package_code,
+                    "name": p.package_name,
+                    "price_cny": float(p.price_cny),
+                    "original_price": float(p.original_price) if p.original_price else None,
+                    "is_popular": p.is_popular,
+                    "points": p.points_amount,
+                    "bonus": p.bonus_points,
+                }
+                for p in packages
+            ],
+            "free_features": free_features,
+            "premium_features": premium_features,
+            "current_balance": balance,
+        },
+    }
 
 
 @router.post("/create")
