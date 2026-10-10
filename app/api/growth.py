@@ -10,16 +10,13 @@ from loguru import logger
 from app.api.deps import get_current_user
 from app.database import get_db
 from app.models.user import User
+from app.config import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
 
-# 演示数据
-DEMO_REFERRALS = {
-    "total_invited": 3,
-    "rewards_earned": 150,
-    "pending_rewards": 50,
-}
+# 分享/邀请链接统一使用 config.PUBLIC_BASE_URL（线上为 https://healthlens.cc），
+# 不再硬编码已失效的 healthlens.app 域名（P0-18）。绝不返回编造的邀请统计。
 
 
 class ShareRequest(BaseModel):
@@ -43,7 +40,7 @@ async def generate_share(
         logger.warning("referral_service not available, returning fallback")
         return {"success": False, "data": None, "message": "推广服务暂不可用，请稍后重试"}
 
-    base_url = "https://healthlens.app"
+    base_url = settings.PUBLIC_BASE_URL
     user_ref = ""
     if current_user:
         user_ref = f"?ref={current_user.id}"
@@ -98,7 +95,7 @@ async def generate_invite(
         return {"success": False, "data": None, "message": result.get("message", "生成邀请码失败")}
 
     code = result["invite_code"]
-    base_url = "https://healthlens.app"
+    base_url = settings.PUBLIC_BASE_URL
     invite_url = f"{base_url}/register?invite={code}"
 
     return {
@@ -151,7 +148,19 @@ async def get_referrals(
     user_id = current_user.id if current_user else None
 
     if not user_id:
-        return {"success": True, "data": DEMO_REFERRALS}
+        # 诚实空态：未登录时返回全零统计，绝不编造邀请数（P0-17）
+        return {
+            "success": True,
+            "data": {
+                "total_invited": 0,
+                "rewards_earned": 0,
+                "pending_rewards": 0,
+                "share_count": 0,
+                "total_clicks": 0,
+                "click_through_rate": 0.0,
+            },
+            "message": "未登录，暂无邀请数据",
+        }
 
     try:
         stats = await get_referral_stats(db, user_id=user_id)
@@ -168,4 +177,16 @@ async def get_referrals(
         }
     except Exception as e:
         logger.warning(f"Failed to get referral stats from service: {e}")
-        return {"success": True, "data": DEMO_REFERRALS}
+        # 失败上报诚实空态，不回退到任何编造数字（P0-17）
+        return {
+            "success": True,
+            "data": {
+                "total_invited": 0,
+                "rewards_earned": 0,
+                "pending_rewards": 0,
+                "share_count": 0,
+                "total_clicks": 0,
+                "click_through_rate": 0.0,
+            },
+            "message": "邀请数据暂不可用",
+        }
