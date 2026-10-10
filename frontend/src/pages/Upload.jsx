@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 
+// endpoint 决定走哪个后端路由；sourceType 是后端 ConnectorRegistry 的键
+// 后端：/connections/upload 支持 apple_health | google_health，/genome/upload 支持 VCF/txt
 const UPLOAD_TYPES = [
   {
     key: 'genome',
@@ -10,6 +12,8 @@ const UPLOAD_TYPES = [
     formatKey: 'upload.genomeFormat',
     icon: '🧬',
     accept: '.vcf,.txt',
+    endpoint: 'genome',
+    sourceType: 'genome',
   },
   {
     key: 'apple_health',
@@ -18,6 +22,8 @@ const UPLOAD_TYPES = [
     formatKey: 'upload.appleFormat',
     icon: '🍎',
     accept: '.xml',
+    endpoint: 'connections',
+    sourceType: 'apple_health',
   },
   {
     key: 'google_fit',
@@ -26,6 +32,8 @@ const UPLOAD_TYPES = [
     formatKey: 'upload.googleFormat',
     icon: '🤖',
     accept: '.json',
+    endpoint: 'connections',
+    sourceType: 'google_health',
   },
 ];
 
@@ -35,31 +43,31 @@ export default function Upload() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [pgxProfile, setPgxProfile] = useState(null);
-  const fileInputRef = useRef(null);
+  const fileInputRefs = useRef({});
 
-  async function handleUpload(file, type) {
+  async function handleUpload(file, typeKey, sourceType) {
     setUploading(true);
     setError(null);
     setResult(null);
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('source_type', type);
+      formData.append('source_type', sourceType);
 
       let resp;
-      if (type === 'apple_health') {
+      if (typeKey === 'genome') {
+        resp = await api.genomeUpload(formData);
+      } else {
         resp = await fetch('/api/v1/connections/upload', {
           method: 'POST',
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           body: formData,
         });
-      } else {
-        resp = await api.genomeUpload(formData);
       }
 
       const data = await resp.json();
       if (!resp.ok) throw new Error(data?.detail || t('upload.uploadFailed'));
-      setResult({ type, data });
+      setResult({ type: typeKey, data });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -99,16 +107,17 @@ export default function Upload() {
               accept={item.accept}
               className="hidden"
               ref={(el) => {
-                if (el) {
-                  el.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (file) handleUpload(file, item.key);
-                  };
-                }
+                fileInputRefs.current[item.key] = el;
+              }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleUpload(file, item.key, item.sourceType);
+                // 清空 value：允许用户重新选择同一个文件时再次触发 onChange
+                e.target.value = '';
               }}
             />
             <button
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => fileInputRefs.current[item.key]?.click()}
               disabled={uploading}
               className="w-full bg-slate-100 text-slate-700 py-2 rounded-lg text-sm font-medium hover:bg-emerald-50 hover:text-emerald-700 disabled:opacity-50 transition-colors"
             >
