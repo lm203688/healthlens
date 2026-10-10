@@ -1,0 +1,2186 @@
+{
+  "pipeline_id": "W30-2026",
+  "created_at": "2026-07-27T17:04:40.328202",
+  "status": "running_test",
+  "current_phase": "test",
+  "phases": {
+    "collect": {
+      "status": "completed",
+      "started_at": "2026-08-31T03:01:49.479036",
+      "completed_at": "2026-08-31T03:01:55.625406",
+      "output_file": "reports/intelligence/2026-08-31_intelligence_report.json",
+      "items_processed": 18,
+      "error": null
+    },
+    "analyze": {
+      "status": "completed",
+      "started_at": "2026-08-31T03:01:59.458904",
+      "completed_at": "2026-08-31T03:01:59.479655",
+      "output_file": "reports/analysis/2026-08-31_analysis_report.json",
+      "items_processed": 18,
+      "error": null,
+      "approved_count": 8,
+      "watch_count": 10,
+      "rejected_count": 0
+    },
+    "decide": {
+      "status": "completed",
+      "started_at": "2026-08-31T03:01:59.663107",
+      "completed_at": "2026-08-31T03:01:59.693308",
+      "output_file": "reports/analysis/2026-08-31_decision_report.json",
+      "items_processed": 18,
+      "error": null,
+      "tasks_created": 0,
+      "new_approved": 0
+    },
+    "develop": {
+      "status": "completed",
+      "started_at": "2026-08-31T03:02:06.588368",
+      "completed_at": "2026-08-31T03:02:06.600805",
+      "output_file": null,
+      "items_processed": 0,
+      "error": null,
+      "seo_articles": 5,
+      "education_articles": 1
+    },
+    "test": {
+      "status": "completed",
+      "started_at": "2026-08-31T03:02:06.759604",
+      "completed_at": "2026-08-31T03:02:06.772235",
+      "output_file": null,
+      "items_processed": 0,
+      "error": null,
+      "passed": 5,
+      "failed": 1,
+      "warnings": 0
+    },
+    "deploy": {
+      "status": "completed",
+      "started_at": "2026-08-27T16:27:37.479934",
+      "completed_at": "2026-08-27T16:27:37.504487",
+      "output_file": "reports/deployed/2026-08-27_deployment_report.json",
+      "items_processed": 5,
+      "error": null,
+      "deployed_count": 5,
+      "failed_count": 0
+    },
+    "feedback_a": {
+      "status": "completed",
+      "started_at": "2026-08-28T23:36:15.773067",
+      "completed_at": "2026-08-28T23:36:15.784692",
+      "output_file": null,
+      "items_processed": 0,
+      "error": null
+    },
+    "user_conversion_b": {
+      "status": "completed",
+      "started_at": "2026-08-28T23:35:32.423756",
+      "completed_at": "2026-08-28T23:35:36.819590",
+      "output_file": "reports/analysis/2026-08-28_conversion_b.json",
+      "items_processed": 0,
+      "error": null
+    },
+    "data_asset_c": {
+      "status": "completed",
+      "started_at": "2026-08-28T23:35:43.511629",
+      "completed_at": "2026-08-28T23:35:58.164128",
+      "output_file": "reports/analysis/2026-08-28_data_asset_c.json",
+      "items_processed": 6,
+      "error": null,
+      "quality_issues": 4
+    },
+    "promotion_d": {
+      "status": "completed",
+      "started_at": "2026-08-28T23:35:37.557295",
+      "completed_at": "2026-08-28T23:35:42.851565",
+      "output_file": "reports/analysis/2026-08-28_promotion_d.json",
+      "items_processed": 5,
+      "error": null
+    },
+    "finance_e": {
+      "status": "completed",
+      "started_at": "2026-08-28T23:35:58.908340",
+      "completed_at": "2026-08-28T23:36:03.108301",
+      "output_file": "reports/analysis/2026-08-28_finance_e.json",
+      "items_processed": 1,
+      "error": null,
+      "alerts": 1
+    },
+    "ops_health_f": {
+      "status": "failed",
+      "started_at": "2026-08-28T23:37:05.660956",
+      "completed_at": "2026-08-28T23:37:15.420879",
+      "output_file": "reports/analysis/2026-08-03_ops_health_f.json",
+      "items_processed": 5,
+      "error": "运维检查未通过: down (端点 4/4 正常)"
+    }
+  },
+  "approved_queue": [
+    {
+      "id": "intel_003",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "approved",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "七麦数据",
+          "url": "",
+          "relevance": 0.75
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.9,
+      "tags": [
+        "竞品分析",
+        "市场格局",
+        "差异化"
+      ],
+      "total_score": 79.7,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 9.0,
+        "feasibility": 0.9
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "行业洞察",
+          "用户教育内容"
+        ],
+        "rationale": "基因归因+量化修复是差异化核心竞争力"
+      }
+    },
+    {
+      "id": "intel_001",
+      "title": "可穿戴设备与AI健康分析的融合趋势",
+      "category": "approved",
+      "summary": "越来越多的可穿戴设备厂商开始集成AI驱动的健康分析功能，包括睡眠质量深度分析、压力水平评估等。",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/trending/health-ai",
+          "relevance": 0.85
+        },
+        {
+          "name": "arXiv",
+          "url": "https://arxiv.org/search/?query=wearable+health+ai",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可增强睡眠修复追踪模块的AI分析能力",
+      "market_signals": {
+        "github_stars_growth": "+25%/month",
+        "startup_funding": "3家获投"
+      },
+      "technical_feasibility": 0.85,
+      "tags": [
+        "可穿戴",
+        "AI分析",
+        "睡眠追踪"
+      ],
+      "total_score": 79.2,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 8.5,
+        "feasibility": 0.85
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新",
+          "睡眠修复专题"
+        ],
+        "rationale": "可增强睡眠修复追踪模块的AI分析能力"
+      }
+    },
+    {
+      "id": "intel_002",
+      "title": "表观遗传时钟与生活方式干预的临床验证",
+      "category": "approved",
+      "summary": "多项临床研究证实，综合生活方式干预（饮食+运动+睡眠）可使表观遗传年龄逆转2-5年。",
+      "sources": [
+        {
+          "name": "Nature Aging",
+          "url": "",
+          "relevance": 0.9
+        },
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "为修复年龄和修复评分提供更坚实的学术依据",
+      "market_signals": {
+        "clinical_trials": "12项进行中",
+        "consumer_interest": "上升"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "表观遗传",
+        "生活方式干预",
+        "临床验证"
+      ],
+      "total_score": 78.2,
+      "score_breakdown": {
+        "source_score": 26.7,
+        "source_count": 2,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 14.0,
+        "signal_count": 2,
+        "feasibility_score": 7.5,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "深度知识文章",
+          "科研速递"
+        ],
+        "rationale": "为修复年龄和修复评分提供更坚实的学术依据"
+      }
+    },
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "approved",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6246, Language: Python",
+      "market_signals": {
+        "github_stars": 6246,
+        "forks": 668,
+        "updated_at": "2026-08-27T07:59:13Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 6246, Language: Python"
+      }
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "approved",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 5652, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 5652,
+        "forks": 335,
+        "updated_at": "2026-08-27T06:36:17Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 5652, Language: TypeScript"
+      }
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "approved",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4801, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4801,
+        "forks": 321,
+        "updated_at": "2026-08-27T08:04:32Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 4801, Language: TypeScript"
+      }
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "approved",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2408, Language: Python",
+      "market_signals": {
+        "github_stars": 2408,
+        "forks": 454,
+        "updated_at": "2026-08-27T08:08:07Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 2408, Language: Python"
+      }
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "approved",
+      "summary": "The AI-native health data engine — collect, standardize, and reason over labs, wearables & genomics.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1060, Language: Python",
+      "market_signals": {
+        "github_stars": 1060,
+        "forks": 197,
+        "updated_at": "2026-08-27T06:01:21Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 1060, Language: Python"
+      }
+    },
+    {
+      "id": "gh_44771262",
+      "title": "microsoft/HealthClinic.biz",
+      "category": "approved",
+      "summary": "The samples contained in this repo are used to present an end-to-end demo scenario based on a fictitious B2B and multitenant system, named “HealthClinic.biz” that provides different websites, mobile a",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/microsoft/HealthClinic.biz",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 503, Language: JavaScript",
+      "market_signals": {
+        "github_stars": 503,
+        "forks": 288,
+        "updated_at": "2026-07-28T11:47:14Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 503, Language: JavaScript"
+      }
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "approved",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "total_score": 71.2,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "行业洞察",
+          "用户教育内容"
+        ],
+        "rationale": "可探索频率干预模块与现有方案的融合"
+      }
+    },
+    {
+      "id": "arx_02341",
+      "title": "FRAME: separating sampling variation from representational cause in medical imaging fairness",
+      "category": "approved",
+      "summary": "Subgroup performance differences are the standard evidence for fairness bias in medical imaging, and the usual response removes the demographic information that a model encodes. Here we introduce Fair",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.25981v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 70.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "深度知识文章",
+          "科研速递"
+        ],
+        "rationale": "发表日期: 2026-08-26"
+      }
+    }
+  ],
+  "watch_queue": [
+    {
+      "item": {
+        "id": "intel_006",
+        "title": "LLM驱动的健康助手用户体验研究",
+        "category": "watch",
+        "summary": "大语言模型在健康咨询场景的应用日益广泛，但用户信任度和准确性仍是核心挑战。",
+        "sources": [
+          {
+            "name": "HuggingFace",
+            "url": "",
+            "relevance": 0.8
+          },
+          {
+            "name": "用户研究",
+            "url": "",
+            "relevance": 0.7
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "优化AI健康助手的回答质量和可信度",
+        "market_signals": {
+          "adoption_rate": "快速增长",
+          "trust_score": "中等"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "LLM",
+          "健康助手",
+          "用户体验"
+        ],
+        "total_score": 66.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 8.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "intel_005",
+        "title": "肠道菌群检测与个性化营养推荐",
+        "category": "watch",
+        "summary": "基于肠道菌群检测的个性化营养方案成为健康管理新热点，多家创业公司进入此领域。",
+        "sources": [
+          {
+            "name": "行业报告",
+            "url": "",
+            "relevance": 0.75
+          },
+          {
+            "name": "学术论文",
+            "url": "",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "肠道菌群是汇聚节点理论的重要组成部分",
+        "market_signals": {
+          "startups": "20+家",
+          "consumer_adoption": "早期"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "肠道菌群",
+          "个性化营养",
+          "微生物组"
+        ],
+        "total_score": 65.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 7.0,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "intel_004",
+        "title": "PEMF频率疗法在家用设备中的应用增长",
+        "category": "watch",
+        "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/",
+            "relevance": 0.7
+          },
+          {
+            "name": "市场研究",
+            "url": "",
+            "relevance": 0.65
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "可探索频率干预模块与现有方案的融合",
+        "market_signals": {
+          "market_size": "12亿美元",
+          "cagr": "8.5%"
+        },
+        "technical_feasibility": 0.6,
+        "tags": [
+          "PEMF",
+          "频率疗法",
+          "线粒体"
+        ],
+        "total_score": 64.7,
+        "score_breakdown": {
+          "source_score": 26.7,
+          "source_count": 2,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 6.0,
+          "feasibility": 0.6
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-07-27T17:04:40.803424",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42649103",
+        "title": "Multi-Dimensional Barriers for Work Productivity and Possible Solutions to Overcome Presenteeism in Young-Onset Diabetes: A Mixed-Methods Study.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42649103/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42649103",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135752",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42648907",
+        "title": "Proteomic landscape of pan-tissue neuroendocrine carcinomas defines subtype-specific functional architectures, biomarkers and therapeutic targets.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42648907/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42648907",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135760",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42648887",
+        "title": "Interaction of genetic susceptibility and sunlight exposure on primary open-angle glaucoma risk and progression.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42648887/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42648887",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135762",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42648725",
+        "title": "Beyond Virtual Glucose Monitoring: Interpreting a Complex Multicomponent Intervention.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42648725/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42648725",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135762",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42648678",
+        "title": "Cellulose- and lignin-based smart hydrogels for barrier-adaptive delivery of fragile biotherapeutics: Molecular design, activity preservation, and tra",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42648678/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42648678",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135763",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_47889",
+        "title": "Planetary Prediction Engine: Autonomous Geospatial Prediction via Intelligent Data Selection and Foundation Model Embeddings",
+        "category": "watch",
+        "summary": "Addressing critical global challenges, from food security and disaster risk to disease outbreaks and socio-economic vulnerability, demands high-fidelity geospatial modeling. However, building predicti",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.26088v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-26",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-26"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135764",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_78710",
+        "title": "CardioFusion-AI: Robust ECG--PPG Fusion for Multimodal Physiological Monitoring Under Signal Degradation",
+        "category": "watch",
+        "summary": "Wearable electrocardiogram (ECG) and photoplethysmogram (PPG) sensors are complementary but individually fragile: motion artifact, poor contact, and sensor dropout can degrade one or both signals. Fus",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.26000v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-26",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-26"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135765",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_25658",
+        "title": "Why ML-based cough models do not generalize: a systematic cross-dataset evaluation for tuberculosis screening",
+        "category": "watch",
+        "summary": "Cough acoustics are promising for non-invasive tuberculosis (TB) screening, yet whether machine learning (ML) models capture disease-related acoustics or artifacts of data collection remains unresolve",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.25846v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-26",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-26"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135765",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_62859",
+        "title": "Large Language Model Few-Shot Prompting with Dilemma Training Outperforms Human Surrogates in Predicting Patient Preferences",
+        "category": "watch",
+        "summary": "In serious illness, human surrogates often struggle to accurately predict patient preferences (68% accuracy), causing decision conflict. Personalized Patient Preference Predictor (P4) agents offer a p",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.25771v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-26",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-26"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-27T16:27:36.135766",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42659555",
+        "title": "[Electroclinical recognition of SCN2A, SCN8A, KCNQ2, and KCNQ3 pathogenic variants].",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42659555/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42659555",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-28T23:19:51.751423",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42659477",
+        "title": "E-health literacy and health system distrust: exploring a nonlinear association in a cross-sectional study.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42659477/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42659477",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-28T23:19:51.751433",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42659028",
+        "title": "European Society of Cardiology (ESC) Core Curriculum for the Cardiologist: 2026 update.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug 2",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42659028/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42659028",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug 2"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-28T23:19:51.751435",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42658889",
+        "title": "Co-producing access to care with young people living in Zambia through digital and vending machine-enabled innovation in sexual and reproductive healt",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42658889/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42658889",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-28T23:19:51.751435",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42658841",
+        "title": "Methodological insights and clinical outcomes in ALS and FTLD: lessons from the SPIN cohort.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Aug",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42658841/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42658841",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Aug"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-28T23:19:51.751436",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42668978",
+        "title": "Analysis of Generative Artificial Intelligence Governance in Publicly Available Documentation of Global and Saudi Universities Offering Health Informa",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42668978/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42668978",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683482",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42668925",
+        "title": "Clinical Efficacy and Patient Adherence Hurdles of Remote Patient Monitoring (RPM) Frameworks in Managing Hypertension and Type 2 Diabetes: A Scoping ",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Jul",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42668925/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42668925",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Jul"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683490",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42668923",
+        "title": "Healthcare professionals' intention to adopt a smart diabetic foot screening system: A UTAUT-informed mixed-methods study.",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Jan-D",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42668923/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42668923",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Jan-D"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683492",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42668898",
+        "title": "Systematic Analysis of Plasma-Derived Extracellular Vesicle-Enriched Samples in Age-Related Macular Degeneration Reveals Oxidative Stress Linked to Al",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Sep",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42668898/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42668898",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Sep"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683492",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "pm_42668811",
+        "title": "Short-term BMI changes associated with self-selected weight-control dietary patterns among Chinese office-based adults using a digital health platform",
+        "category": "watch",
+        "summary": "Source: PubMed, Published: 2026 Jan-D",
+        "sources": [
+          {
+            "name": "PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42668811/",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "PubMed ID: 42668811",
+        "market_signals": {
+          "source": "PubMed",
+          "date": "2026 Jan-D"
+        },
+        "technical_feasibility": 0.7,
+        "tags": [
+          "pubmed",
+          "clinical"
+        ],
+        "total_score": 69.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 10.5,
+          "feasibility": 0.7
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683495",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_32172",
+        "title": "Learning a Continuous Sepsis Severity Score Without Hour-by-Hour Supervision: A Two-Site Retrospective Study",
+        "category": "watch",
+        "summary": "Currently used sepsis severity indices rely on fixed variables and weights established decades ago, which are coarsely discretized and calibrated to a cohort that no longer reflects contemporary criti",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.27421v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-27",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-27"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683496",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_04713",
+        "title": "QuantumBoostNet: A Hybrid Classical-Quantum Architecture for Enhanced Accuracy in Cardiac Ultrasound View Identification",
+        "category": "watch",
+        "summary": "Accurate identification of the correct view or angle in cardiac ultrasound (echocardiogram) is a critical component of cardiologic imaging. This step is essential for precise anatomical interpretation",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.27302v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-27",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-27"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683497",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_53765",
+        "title": "A Point-of-Prescription Safety-Check System for Adverse Drug Reactions in Rural Bangladeshi Hospitals: A Feasibility Study",
+        "category": "watch",
+        "summary": "Adverse drug reactions (ADRs) are a major, largely preventable source of patient harm. In high-income settings, electronic health records store a patient's allergy history and warn prescribers when a ",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.27239v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-27",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-27"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683497",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_36215",
+        "title": "Graph-Based Pseudo-multimodal Contrastive Learning for 12-Lead ECG Representations",
+        "category": "watch",
+        "summary": "12-lead electrocardiogram (ECG) is a standard, non-invasive examination widely used for diagnosing coronary artery disease, where clinical interpretation relies on comparing waveform patterns across m",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.26964v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-27",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-27"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683498",
+      "next_review": "2weeks"
+    },
+    {
+      "item": {
+        "id": "arx_77070",
+        "title": "Dose-PlanNet: Physics Based Radiotherapy Dose Prediction with Deep Learning",
+        "category": "watch",
+        "summary": "Automating prostate radiotherapy treatment planning is dosimetrically complex, particularly for extreme hypofractionated regimens. In this study, we introduce Dose-PlanNet, a physics-guided 3D deep le",
+        "sources": [
+          {
+            "name": "arXiv",
+            "url": "http://arxiv.org/abs/2608.26901v1",
+            "relevance": 0.85
+          }
+        ],
+        "relevance_to_healthlens": "medium",
+        "actionable_insight": "发表日期: 2026-08-27",
+        "market_signals": {
+          "source": "arXiv",
+          "date": "2026-08-27"
+        },
+        "technical_feasibility": 0.75,
+        "tags": [
+          "arxiv",
+          "research"
+        ],
+        "total_score": 58.4,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 18.0,
+          "relevance": "medium",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 11.2,
+          "feasibility": 0.75
+        },
+        "recommendation": {
+          "action": "monitor",
+          "review_interval": "2weeks",
+          "key_indicators": [
+            "市场接受度",
+            "技术成熟度",
+            "竞品动态"
+          ]
+        }
+      },
+      "added_at": "2026-08-31T03:01:59.683499",
+      "next_review": "2weeks"
+    }
+  ],
+  "rejected_items": [
+    {
+      "item": {
+        "id": "intel_007",
+        "title": "连续血糖监测(CGM)与代谢健康管理",
+        "category": "reject",
+        "summary": "CGM设备价格下降推动代谢健康管理普及，从糖尿病人群延伸到健康人群。",
+        "sources": [
+          {
+            "name": "市场研究",
+            "url": "",
+            "relevance": 0.75
+          }
+        ],
+        "relevance_to_healthlens": "low",
+        "actionable_insight": "可作为数据来源拓展方向",
+        "market_signals": {
+          "price_drop": "50%/3年",
+          "consumer_market": "启动"
+        },
+        "technical_feasibility": 0.5,
+        "tags": [
+          "CGM",
+          "代谢健康",
+          "数据整合"
+        ],
+        "total_score": 41.3,
+        "score_breakdown": {
+          "source_score": 13.3,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 9.0,
+          "relevance": "low",
+          "market_score": 14.0,
+          "signal_count": 2,
+          "feasibility_score": 5.0,
+          "feasibility": 0.5
+        },
+        "recommendation": {
+          "action": "archive",
+          "reason": "当前价值不高，建议后续重新评估"
+        }
+      },
+      "rejected_at": "2026-07-27T17:04:40.803928"
+    }
+  ],
+  "deployment_history": [
+    {
+      "deployment_id": "deploy_20260727_170441",
+      "timestamp": "2026-07-27T17:04:41.189633",
+      "items_deployed": 2,
+      "items_failed": 0,
+      "details": [
+        {
+          "task_id": "task_seo_002",
+          "file": "content/generated/可穿戴设备与ai健康分析的融合趋势.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/可穿戴设备与ai健康分析的融合趋势.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_003",
+          "file": "content/generated/表观遗传时钟与生活方式干预的临床验证.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/表观遗传时钟与生活方式干预的临床验证.html",
+          "note": "dry-run"
+        }
+      ]
+    },
+    {
+      "deployment_id": "deploy_20260827_162737",
+      "timestamp": "2026-08-27T16:27:37.493309",
+      "items_deployed": 5,
+      "items_failed": 0,
+      "details": [
+        {
+          "task_id": "task_seo_001",
+          "file": "content/generated/repowise-devrepowise.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/repowise-devrepowise.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_002",
+          "file": "content/generated/codewithcjsparkyfitness.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/codewithcjsparkyfitness.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_003",
+          "file": "content/generated/qixing-jkall-api-hub.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/qixing-jkall-api-hub.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_004",
+          "file": "content/generated/the-momentumopen-wearables.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/the-momentumopen-wearables.html",
+          "note": "dry-run"
+        },
+        {
+          "task_id": "task_seo_005",
+          "file": "content/generated/thetahealthmirobody.html",
+          "status": "deployed",
+          "remote_path": "/opt/healthlens/web/static/knowledge/thetahealthmirobody.html",
+          "note": "dry-run"
+        }
+      ]
+    }
+  ],
+  "feedback_metrics": {
+    "content_pipeline": {
+      "checked_at": "2026-08-04T17:34:10.532556",
+      "total_deployed": 2,
+      "success_rate": 50.0,
+      "top_performer": "可穿戴设备与ai健康分析的融合趋势",
+      "weight_adjustments": {}
+    },
+    "user_conversion": {
+      "checked_at": "2026-08-28T23:35:36.810520",
+      "data_source": "mock_zero",
+      "weekly_active_rate": 0.0,
+      "d7_retention": 0,
+      "paid_conversion": 0,
+      "biggest_dropoff": null,
+      "plan_effectiveness": 0
+    },
+    "data_asset": {
+      "checked_at": "2026-08-28T23:35:58.150177",
+      "total_records": 1201771063,
+      "quality_issues": 4,
+      "estimated_value": 1201771.06,
+      "freshness": 0.5,
+      "data_source": "real_api_probe"
+    },
+    "promotion": {
+      "checked_at": "2026-08-28T23:35:42.837193",
+      "data_source": "mixed",
+      "seo_data_source": "http_probe",
+      "total_visits": 0,
+      "total_signups": 0,
+      "overall_cac": 0.0,
+      "channel_actions": 0
+    },
+    "ops_health": {
+      "checked_at": "2026-08-28T23:37:15.409094",
+      "overall": "down",
+      "endpoints_ok": 4,
+      "endpoints_error": 0,
+      "server_reachable": false,
+      "containers_unhealthy": 0,
+      "security_issues": 0,
+      "medical_terms_found": 2
+    },
+    "finance": {
+      "checked_at": "2026-08-28T23:36:03.097619",
+      "weekly_profit": -77.5,
+      "monthly_profit_est": -333.25,
+      "unit_economics": "negative",
+      "all_time_revenue": 0,
+      "alerts": 1,
+      "data_source": "db_error"
+    },
+    "backup": {
+      "checked_at": "2026-08-04T17:33:36.681264",
+      "status": "failed",
+      "file": "backups\\healthlens_20260804_173336.sql.gz",
+      "mode": "auto"
+    }
+  },
+  "development_tasks": [],
+  "backup_history": [
+    {
+      "backup_id": "bk_20260804_173336",
+      "started_at": "2026-08-04T17:33:36.326596",
+      "finished_at": "2026-08-04T17:33:36.681264",
+      "status": "failed"
+    }
+  ],
+  "run_history": [
+    {
+      "run_id": "run_20260804_173410",
+      "started_at": "2026-08-04T17:34:10.137205",
+      "finished_at": "2026-08-04T17:37:35.705401",
+      "verdict": "FAILED",
+      "failed_count": 2
+    }
+  ]
+}
