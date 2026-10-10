@@ -119,7 +119,10 @@
     "consumer_bci": {
       "_comment": "消费级BCI/EEG设备（未来态）。",
       "enabled": false,
-      "supported_devices": ["Muse", "NeuroSky"]
+      "supported_devices": [
+        "Muse",
+        "NeuroSky"
+      ]
     }
   },
   "content_targets": {
@@ -138,7 +141,7 @@
     "approved_threshold": 70,
     "watch_threshold": 50,
     "weights": {
-      "source_count": 35,
+      "source_count": 45,
       "goal_alignment": 30,
       "market_validation": 25,
       "feasibility": 15
