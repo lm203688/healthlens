@@ -171,6 +171,65 @@ curl https://healthlens.cc/api/v1/device-metrics/backend
 
 ---
 
+## 第 8 步（Edge Gateway V1）：紧凑批量上报（弱网优化）
+
+边缘盒在家庭 NAT 后的弱网环境下，每天推 24-48 次单条上报开销大（TLS 握手 + nonce 查询 + Redis SET ≈ 5-15KB/次）。V1 提供批量端点，一次请求合并多天指标。
+
+### 8.1 云端批量端点
+
+```bash
+# 新增端点：POST /api/v1/device-metrics/batch
+curl -X POST https://healthlens.cc/api/v1/device-metrics/batch \
+  -H "Content-Type: application/json" \
+  -H "X-HL-Edge-Token: $HL_EDGE_TOKEN" \
+  -H "X-HL-Edge-Nonce-Batch: $(uuidgen)" \
+  -d '{
+    "gateway_id": "hlgw-01",
+    "user_ref": "u_abc123",
+    "items": [
+      {"day": "2026-10-08", "metrics": [{"key": "hl.pulse.rate_bpm", "value": 68.0, "unit": "ratio"}]},
+      {"day": "2026-10-09", "metrics": [{"key": "hl.pulse.rate_bpm", "value": 70.0, "unit": "ratio"}]},
+      {"day": "2026-10-10", "metrics": [{"key": "hl.pulse.rate_bpm", "value": 72.0, "unit": "ratio"}]}
+    ]
+  }'
+```
+
+**约束**：items 最多 30 条（对应 30 天补发上限）；逐条校验 day 形状/真实 + metric key 字符集；批量级 nonce 防整包重放。
+
+### 8.2 边缘侧 EE 聚合器
+
+```python
+from edge.healthgateway.pulse_source import PulseFeatureAggregator, PulsePpgSource
+
+agg = PulseFeatureAggregator(day="2026-10-10")
+src = PulsePpgSource(profile="normal", sample_rate=100.0)
+
+# 多窗采集 → 聚合
+for _ in range(6):  # 6 × 8s = 48s 采集窗
+    feats = src.read(seconds=8)
+    agg.add_window(feats)
+
+# 生成批量上报格式
+batch_items = agg.to_batch_items(gateway_id="hlgw-01", user_ref="u_abc123")
+# → [{"day": "2026-10-10", "metrics": [...], "stats": {...}}]
+```
+
+**聚合策略**：数值型特征取中位数（抗偶发噪声）；二值型取众数；字符串型保留最后一窗；元数据取第一窗。
+
+### 8.3 通过标准
+
+```bash
+# 批量上报成功
+curl -s -X POST https://healthlens.cc/api/v1/device-metrics/batch \
+  -H "Content-Type: application/json" -H "X-HL-Edge-Token: $HL_EDGE_TOKEN" \
+  -H "X-HL-Edge-Nonce-Batch: test-batch-001" \
+  -d '{"gateway_id":"test","user_ref":"test","items":[{"day":"2026-10-10","metrics":[]}]}' | \
+  python -m json.tool
+# 期望：{"ok": true, "received": 1, "rejected": 0, "dedup_backend": "redis"}
+```
+
+---
+
 ## 下一步（Phase 4：前端展示）
 硬件打通后，解读结果要能在网页上看到 —— 对应 `PULSE_DEVICE.md` §10 Phase 4。
 
