@@ -33,3 +33,4 @@ from app.models.tiered_referral import (
 from app.models.verification_code import VerificationCode
 from app.models.wellness_checkin import WellnessCheckin
 from app.models.audit_event import AuditEvent
+from app.models.gdpr_consent import GDPRConsent
