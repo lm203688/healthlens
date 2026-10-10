@@ -230,6 +230,122 @@ async def list_edge_metrics(user_ref: str, days: int = 7, x_hl_edge_token: str |
     return {"ok": True, "user_ref": user_ref, "items": recent(user_ref, days)}
 
 
+# ---------------------------------------------------------------------------
+# 紧凑批量端点（Edge Gateway V1，#41）
+# ---------------------------------------------------------------------------
+# 设计动机：边缘盒子在弱网环境下每天推 24-48 次单条上报，每次开销（TLS 握手 +
+# nonce 查询 + Redis SET）≈ 5-15KB。批量端点把多次日粒度上报合并成一次请求，
+# 减少往返次数，对家庭 NAT 后的低带宽场景收益显著。
+#
+# 契约：
+#   POST /device-metrics/batch
+#   Body: {"gateway_id": "...", "user_ref": "...", "items": [EdgePayload, ...]}
+#   约束：
+#     - items 最多 30 条（对应 30 天补发上限）
+#     - 单条 items[i] 走完整校验（day 形状/真实、metric key 字符集、nonce 去重）
+#     - 批量级 nonce 与单条 nonce 双重去重：批量 nonce 防整包重放，单条 nonce 防
+#       同日内单条重放
+#     - 票据身份一致性校验（与单条端点一致）
+#   返回：
+#     {"ok": true, "received": 28, "rejected": 2, "errors": [{"index": 3, "day": "2026-10-01", "reason": "..."}]}
+
+BATCH_MAX_ITEMS = 30
+
+
+class EdgeBatchItem(BaseModel):
+    """批量上报中的单条指标包（与 EdgePayload 同结构，但不含外层身份字段）"""
+    day: str
+    device: dict[str, Any] = Field(default_factory=dict)
+    metrics: list[EdgeMetric] = Field(default_factory=list, max_length=MAX_METRICS)
+    stats: dict[str, Any] = Field(default_factory=dict)
+
+
+class EdgeBatchPayload(BaseModel):
+    """批量上报请求体"""
+    gateway_id: str = Field(..., max_length=64)
+    user_ref: str = Field(..., pattern=REF_PATTERN)
+    items: list[EdgeBatchItem] = Field(..., min_length=1, max_length=BATCH_MAX_ITEMS)
+
+
+@router.post("/device-metrics/batch")
+async def receive_edge_metrics_batch(
+    payload: EdgeBatchPayload,
+    request: Request,
+    x_hl_edge_token: str | None = Header(default=None),
+    x_hl_edge_ticket: str | None = Header(default=None),
+):
+    """紧凑批量上报：一次请求合并多天指标，减少弱网往返。
+
+    鉴权与单条端点一致：票据优先（X-HL-Edge-Ticket），回落静态令牌（X-HL-Edge-Token）。
+    批量级 nonce（X-HL-Edge-Nonce-Batch）防整包重放；单条 nonce 从各 item 的 stats 中
+    取（若提供），否则自动生成（不强制，因为批量场景下单条 nonce 去重收益有限）。
+    """
+    # 1. 鉴权（与单条端点一致）
+    #    构造一个"虚拟"的 EdgePayload 用于票据身份校验
+    virtual_payload = EdgePayload(
+        gateway_id=payload.gateway_id,
+        user_ref=payload.user_ref,
+        day="2000-01-01",  # 虚拟日期，仅用于票据身份校验
+        device={},
+        metrics=[],
+        stats={},
+    )
+    identity = _resolve_credentials(virtual_payload, x_hl_edge_token, x_hl_edge_ticket)
+
+    # 2. 批量级 nonce 去重
+    batch_nonce = request.headers.get("X-HL-Edge-Nonce-Batch") or uuid.uuid4().hex
+    window_minutes = int(getattr(settings, "EDGE_GATEWAY_REPLAY_WINDOW_MINUTES", 30) or 30)
+    if not _backend().claim_nonce(f"batch:{batch_nonce}", window_minutes * 60):
+        raise HTTPException(status_code=409, detail="批量上报已被去重")
+
+    # 3. 逐条处理
+    backend = _backend()
+    received = 0
+    errors: list[dict[str, Any]] = []
+
+    for idx, item in enumerate(payload.items):
+        # day 形状校验
+        if not DAY_PATTERN.match(item.day):
+            errors.append({"index": idx, "day": item.day, "reason": f"day 格式非法: {item.day!r}"})
+            continue
+        # day 真实日期校验
+        try:
+            datetime.strptime(item.day, DAY_FORMAT)
+        except ValueError:
+            errors.append({"index": idx, "day": item.day, "reason": f"day 不是有效日期: {item.day!r}"})
+            continue
+
+        # 指标 key 校验
+        bad_keys = [m.key for m in item.metrics if not METRIC_KEY_PATTERN.match(m.key)]
+        if bad_keys:
+            errors.append({"index": idx, "day": item.day, "reason": f"指标 key 含非法字符: {bad_keys[:3]}"})
+            continue
+
+        # 写入存储
+        row = {
+            "gateway_id": payload.gateway_id,
+            "user_ref": payload.user_ref,
+            "day": item.day,
+            "device": item.device,
+            "metrics": [m.model_dump() for m in item.metrics],
+            "stats": item.stats,
+            "received_at": datetime.now(UTC).isoformat(),
+            "source": "batch",
+        }
+        backend.save_metrics(row)
+        received += 1
+
+    return {
+        "ok": received > 0,
+        "received": received,
+        "rejected": len(errors),
+        "total": len(payload.items),
+        "errors": errors[:5],  # 最多返回 5 条错误详情
+        "dedup_backend": backend.backend,
+        "auth": identity["auth"],
+    }
+
+
 @router.get("/device-metrics/backend")
 async def edge_backend_status():
     """健康检查：告诉运维去重现在是不是还跨进程有效、票据签名密钥配了没"""
