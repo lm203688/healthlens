@@ -53,17 +53,56 @@ class DeleteRequest(BaseModel):
 
 
 # ── Consent Store ────────────────────────────────────────────────
-# 简化实现：使用内存存储。生产环境应持久化到数据库。
+# P0-22：持久化到数据库，替代内存 dict（重启不丢、多 worker 一致）
 
 
-_consent_store: dict[str, ConsentStatus] = {}
+async def _get_consent_db(db: AsyncSession, user_id: str) -> ConsentStatus:
+    from app.models.gdpr_consent import GDPRConsent
+    from sqlalchemy import select as _select
 
+    stmt = _select(GDPRConsent).where(GDPRConsent.user_id == user_id)
+    result = await db.execute(stmt)
+    row = result.scalar_one_or_none()
 
-def _get_consent(user_id: str) -> ConsentStatus:
-    return _consent_store.get(
-        user_id,
-        ConsentStatus(accepted=False, version="2.0", purposes=[])
+    if not row:
+        return ConsentStatus(accepted=False, version="2.0", purposes=[])
+
+    purposes = json.loads(row.purposes) if row.purposes else []
+    return ConsentStatus(
+        accepted=row.accepted,
+        accepted_at=row.accepted_at,
+        version=row.version,
+        purposes=purposes,
     )
+
+
+async def _upsert_consent_db(
+    db: AsyncSession, user_id: str, consent: ConsentStatus
+) -> None:
+    from app.models.gdpr_consent import GDPRConsent
+    from sqlalchemy import select as _select
+
+    stmt = _select(GDPRConsent).where(GDPRConsent.user_id == user_id)
+    result = await db.execute(stmt)
+    row = result.scalar_one_or_none()
+
+    purposes_json = json.dumps(consent.purposes)
+
+    if row:
+        row.accepted = consent.accepted
+        row.accepted_at = consent.accepted_at
+        row.version = consent.version
+        row.purposes = purposes_json
+    else:
+        row = GDPRConsent(
+            user_id=user_id,
+            accepted=consent.accepted,
+            accepted_at=consent.accepted_at,
+            version=consent.version,
+            purposes=purposes_json,
+        )
+        db.add(row)
+    await db.commit()
 
 
 # ── Routes ───────────────────────────────────────────────────────
@@ -72,9 +111,10 @@ def _get_consent(user_id: str) -> ConsentStatus:
 @router.get("/consent")
 async def get_consent(
     user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """获取当前用户的 GDPR 同意状态"""
-    consent = _get_consent(user.id)
+    consent = await _get_consent_db(db, user.id)
     return {"success": True, "data": consent.model_dump()}
 
 
@@ -82,19 +122,21 @@ async def get_consent(
 async def update_consent(
     payload: ConsentUpdate,
     user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """更新用户 GDPR 同意状态"""
     now = datetime.now(timezone.utc).isoformat()
-    _consent_store[user.id] = ConsentStatus(
+    consent = ConsentStatus(
         accepted=payload.accepted,
         accepted_at=now if payload.accepted else None,
         version="2.0",
         purposes=payload.purposes,
     )
+    await _upsert_consent_db(db, user.id, consent)
     logger.info(
         f"GDPR consent updated | user={user.id} | accepted={payload.accepted} | purposes={payload.purposes}"
     )
-    return {"success": True, "data": _consent_store[user.id].model_dump()}
+    return {"success": True, "data": consent.model_dump()}
 
 
 @router.get("/export")
@@ -106,7 +148,7 @@ async def export_data(
 
     包含：用户信息、健康指标、同意记录
     """
-    consent = _get_consent(user.id)
+    consent = await _get_consent_db(db, user.id)
 
     # 获取所有健康观测数据
     obs_stmt = select(HealthObservation).where(
@@ -222,8 +264,9 @@ async def delete_user_data(
     del_result = await db.execute(delete_stmt)
     deleted_obs = del_result.rowcount
 
-    # 2. 清除同意记录
-    _consent_store.pop(user.id, None)
+    # 2. 删除同意记录（DB）
+    from app.models.gdpr_consent import GDPRConsent
+    await db.execute(delete(GDPRConsent).where(GDPRConsent.user_id == user.id))
 
     # 3. 停用用户账户（软删除，保留审计日志）
     user.is_active = False
