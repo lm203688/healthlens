@@ -1,0 +1,49 @@
+# AU - 澳大利亚 TGA
+# 判定逻辑：general health or wellness software exclusion
+# 排除条件：面向普通消费者、促进一般健康、不用于临床实践、
+#           不对严重疾病做诊断/筛查/预测/预后/缓解/治疗或治疗决策
+jurisdiction: au
+display_name: 澳大利亚
+regime: TGA Therapeutic Goods Act + wellness software exclusion
+wellness_boundary_strict: false  # TGA 相对宽松
+
+allowed_fields:
+  - tcm_constitution
+  - axis_scores
+  - axis_labels
+  - pathway_signals
+  - wellness_recommendations
+  - lifestyle_advice
+  - sleep_patterns
+  - fitness_signals
+  - syndrome_patterns
+  - pgx_phenotype               # AU 允许药物代谢倾向
+  - pgx_attention
+
+# 相对宽松但仍禁止
+blocked_fields:
+  - icd_code
+  - severity                    # 分级 = 分诊特征
+  - pgx_pathogenic_grading
+  - risk_probability
+  - diagnosis_status
+
+feature_toggles:
+  diagnosis_endpoint: false
+  risk_assessment_endpoint: false
+  icd_mapping: false
+  pgx_pathogenic_grading: false
+  risk_scoring: false
+  cds_hooks: false
+  fhir_export: false
+
+required_disclaimers:
+  general: "This app provides general health and wellness information. It is not intended to diagnose, treat, cure or prevent any disease. For medical advice please consult your GP."
+
+banned_terms:
+  medical_claim_patterns:
+    - "diagnose"
+    - "treat disease"
+    - "screen for cancer"
+    - "predict prognosis"
+    - "clinical decision support"
