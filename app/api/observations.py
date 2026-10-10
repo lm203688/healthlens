@@ -40,6 +40,10 @@ class ObservationBatchCreateInput(BaseModel):
     items: list[ObservationCreateInput] = Field(
         ..., min_length=1, max_length=200, description="指标列表"
     )
+    # 兼容旧版字段名
+    observations: list[ObservationCreateInput] | None = Field(
+        None, min_length=1, max_length=200, description="指标列表（兼容字段）"
+    )
 
 
 # ── POST Endpoints ────────────────────────────────────────────────
@@ -101,9 +105,18 @@ async def create_observations_batch(
     批量创建健康指标记录
     - 支持一次请求中写入多条指标数据
     - 单次最多 200 条
+    - 兼容 `items` 和 `observations` 两种字段名
     """
+    # 兼容旧版字段名 observations
+    item_list = body.items if body.items else (body.observations or [])
+    if not item_list:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Either 'items' or 'observations' must be provided",
+        )
+
     records = []
-    for item in body.items:
+    for item in item_list:
         obs = HealthObservation(
             id=str(uuid.uuid4()),
             user_id=current_user.id,
