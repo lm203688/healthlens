@@ -4,6 +4,65 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.25.0] - 2026-10-10
+
+### Added（阶段 A：国际化重评估 P0 落地）
+
+**A3 管辖感知 Claims 引擎**（核心）
+- `app/lib/claims_engine.py`：策略加载+缓存、21 类字段别名映射、端点级开关、敏感词扫描、按法域附加免责声明、审计留痕。fail-closed：未知法域回落 EU（最严）
+- `claims_policy/cn.yaml` / `us_fda.yaml` / `uk_mhra.yaml` / `au_tga.yaml` / `eu_mdr.yaml`：五法域策略文件
+- 已接入端点：`/diagnosis/analyze`、`/diagnosis/results`、`/diagnosis/results/{id}`、`/genome/pgx`
+
+**A4 区域数据驻留代码级约束**
+- `app/models/user.py`：新增 `region` / `jurisdiction` 字段（默认 cn）
+- `alembic/versions/006_add_region_jurisdiction.py`：迁移 + 2 个索引
+- `app/lib/region_guard.py`：`X-HL-Region` 请求头 → 环境变量 → 默认区域三级优先级；`enforce_region_match()` 强制拦截跨区域读写 PII
+
+**A2 八轴参数外置（YAML + jurisdiction 维度）**
+- `config/axes/axes.yaml`：8 轴 × 6+ 指标 × 5+ 阈值，支持法域覆盖
+- `app/lib/axis_config.py`：加载器（`get_thresholds` / `get_threshold` / `get_axis_config`），缓存 + 硬编码 fallback
+
+**A1 知识/数据平面分离骨架**
+- `knowledge/`：`README.md` / `__init__.py` / `loader.py` / `MANIFEST.json` / `LICENSE`
+- `KnowledgeLoader`：零 FastAPI 依赖，只读文件系统，向后兼容退化到 `data/`
+- 资产清单：evidence 120 条 / pathways 38 条 / tcm_entities 613 条 / axis_config v1.0
+
+### Changed
+
+**A5 数据质量清理**
+- `data/case_evidence_db.json` v1.3：清理 4 条 I 轴残留（CASE-024/025/026/029），加"已清理"note
+- `data/pathway_to_syndrome_map.json`：59→**38** 通路，删除 21 个单字符/垃圾键
+- 全仓轴数统一为 A-H 八轴（消除 I/J 论文漂移）
+
+**A6 PGx 输出合规**
+- `app/api/genome.py::/pgx` 接入 Claims 引擎；EU/US/UK 下 `pgx_pathogenic_grading=false` 返回 403 而非降级放行；CN 保留完整功能
+
+### Security（合规）
+- Wellness 边界从**文案纪律**升级为**代码策略**：字段过滤 + 端点级开关 + 按法域定制免责声明
+- 遵循伊利诺伊州《Wellness and Oversight for Psychological Resources Act》(2025-08-01)：免责声明不再作为合规手段
+- 未知法域 fail-closed 回落 EU（最严），跨区域读写 PII 直接 403
+
+### Dependencies
+- 新增 `pyyaml>=6.0`（Claims 引擎策略加载 + 八轴阈值加载）
+
+### Version Unification
+- `pyproject.toml` / `app/config.py` APP_VERSION / `mcp-server/server.json` / `PRINCIPLES.md` / `README.md` 同步到 **v0.25.0**
+
+## [0.24.0] - 2026-10-09
+
+### Changed (P0-4：伪 China-PAR 替换为"自评风险量表"表述)
+- `app/core/risk_engine.py`：`ASCVDRiskEngine` / `DiabetesRiskEngine` 改名为**自评量表**（透明启发式，非 China-PAR/CDRS Cox 系数与 S0(t)），`MetabolicSyndromeEngine` 保留 CDS 五项真实阈值
+- `RiskAssessmentResult` 新增 `disclaimer` 字段；`risk_type` 从 `"ascvd"`/`"diabetes"` 改为 `"ascvd_self_assess"`/`"diabetes_self_assess"`（`metabolic_syndrome` 保持不变）
+- `assess_all()` 返回字典 key 同步改为 `ascvd_self_assess`/`diabetes_self_assess`/`metabolic_syndrome`
+- `app/api/dashboard.py` `POST /risk-assessment` 响应新增全局 `disclaimer` 字段与每条 assessment 的 `references`/`disclaimer`，避免前端把倾向百分比误读为 10 年 ASCVD 概率
+- `healthlens_agent/mcp_server.py` `hl_risk_assess` 描述改为自评量表口径，返回体带 `risk_type`/`references`/`disclaimer`
+- 文档同步改口径：`README.md`、`CHANGELOG.md`、`docs/HealthLens_产品技术白皮书.md`、`healthlens/README.md`、`healthlens/CHANGELOG.md` — 全部去掉"China-PAR 模型""10 年心血管事件概率"表述
+- 测试同步：`tests/core/test_risk_engine.py`、`tests/api/test_dashboard.py` 更新 `risk_type` 断言
+
+### Security (合规)
+- 对外表述统一为"自评风险量表"（`self_assessment_scale`），禁止再宣称"China-PAR 模型""10 年 ASCVD 风险预测"（P0-4 验收标准）
+- 自评倾向百分比明确标注为**无量纲 0-100 指数**（非概率），disclaimer 明确"不构成诊断或治疗建议"
+
 ## [0.2.0-mcp] - 2026-09-24
 
 ### Added
@@ -76,7 +135,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - FastAPI 应用骨架 (14 路由模块, 21 数据库表)
 - 西医诊断流程: 上传 -> OCR -> 异常检测 -> ICD-11 诊断 -> 处方推荐 -> FHIR 导出
 - 中医辨证流程: 体质问卷 (9 种) -> AI 辨证 -> 方剂推荐 -> 配送订单 (状态机)
-- 慢病风险评估: ASCVD (China-PAR) + 糖尿病 (CDRS) + 代谢综合征 (CDS)
+- 慢病风险自评量表: ASCVD（自评，非 China-PAR）+ 糖尿病（自评，非 CDRS）+ 代谢综合征（CDS 五项真实阈值）
 - 健康管理: 目标 -> 进度 -> 依从性 -> 仪表盘
 - 报告解析器: 22 种中英文体检指标正则匹配
 - TCM 方剂库: 15 味中药, 方剂搜索引擎
