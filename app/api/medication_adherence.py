@@ -60,7 +60,7 @@ async def list_adherence(
     db: AsyncSession = Depends(get_db),
 ):
     """获取服药记录列表"""
-    since = datetime.now(timezone.utc) - timedelta(days=days)
+    since = datetime.utcnow() - timedelta(days=days)
 
     query = select(MedicationAdherence).where(
         MedicationAdherence.user_id == current_user.id,
@@ -116,14 +116,11 @@ async def record_medication_intake(
 
     record.status = body.status
     if body.status == "taken":
-        now = datetime.now(timezone.utc)
+        now = datetime.utcnow()
         record.taken_at = now
         # 检查是否延误 (超过计划时间 30 分钟)
         if record.scheduled_at:
-            # 统一时区: 若 scheduled_at 无时区信息，补上 UTC
             scheduled = record.scheduled_at
-            if scheduled.tzinfo is None:
-                scheduled = scheduled.replace(tzinfo=timezone.utc)
             if now > scheduled + timedelta(minutes=30):
                 record.is_late = True
     if body.note:
@@ -142,7 +139,7 @@ async def get_adherence_stats(
     db: AsyncSession = Depends(get_db),
 ):
     """获取用药依从性统计"""
-    since = datetime.now(timezone.utc) - timedelta(days=days)
+    since = datetime.utcnow() - timedelta(days=days)
 
     # 总计划数
     total_result = await db.execute(
