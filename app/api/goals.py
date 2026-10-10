@@ -1,6 +1,6 @@
 """健康目标 API - 目标设定、进度追踪、完成度分析"""
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from pydantic import BaseModel, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -62,7 +62,7 @@ async def create_goal(
         target_value=body.target_value,
         current_value=body.current_value,
         unit=body.unit,
-        start_date=datetime.now(timezone.utc),
+        start_date=datetime.utcnow(),
         target_date=body.target_date,
         notes=body.notes,
         is_reminder_enabled=body.is_reminder_enabled,
@@ -255,7 +255,7 @@ async def add_progress(
         id=str(uuid.uuid4()),
         goal_id=goal_id,
         value=body.value,
-        recorded_at=datetime.now(timezone.utc),
+        recorded_at=datetime.utcnow(),
         note=body.note,
     )
     db.add(progress)
