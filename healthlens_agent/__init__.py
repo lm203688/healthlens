@@ -40,7 +40,17 @@ from .safety import (
     post_gate,
     pre_gate,
 )
-from .team import CriticReview, Plan, critic, executor, planner, referee, team_run
+from .team import (
+    DEFAULT_MAX_ROUNDS,
+    CriticReview,
+    Plan,
+    RoundRecord,
+    critic,
+    executor,
+    planner,
+    referee,
+    team_run,
+)
 
 __version__ = "0.1.0"
 
@@ -65,6 +75,8 @@ __all__ = [
     "disclaimer",
     "Plan",
     "CriticReview",
+    "RoundRecord",
+    "DEFAULT_MAX_ROUNDS",
     "planner",
     "executor",
     "critic",
