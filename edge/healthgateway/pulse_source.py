@@ -272,3 +272,140 @@ class PulseSerialSource:
             except Exception:
                 pass
             self._fobj = None
+
+
+# ---------------------------------------------------------------------------
+# EE 聚合器（Edge Gateway V1，#42）
+# ---------------------------------------------------------------------------
+# 设计动机：边缘盒子在弱网环境下每天推 24-48 次单条上报，每次开销（TLS 握手 +
+# nonce 查询 + Redis SET）≈ 5-15KB。EE 聚合器把多次采集窗的特征合并成批量上报
+# 格式，一次请求推给云端 /device-metrics/batch 端点，减少往返次数。
+#
+# 聚合策略：
+#   - 数值型特征（rate_bpm/h1/h3_h1/h5_h1/ascending_slope/regularity/quality）：
+#     多窗取中位数（抗偶发噪声）
+#   - 二值型特征（dicrotic_present）：多窗取众数
+#   - 字符串型特征（pause_pattern/depth）：保留最后一窗的值
+#   - 元数据（sampling_hz）：取第一个窗的值
+class PulseFeatureAggregator:
+    """号脉特征多窗聚合器：把多次 read() 的特征合并成批量上报格式。"""
+
+    # 需要取中位数的数值型特征
+    _MEDIAN_KEYS = {
+        "hl.pulse.rate_bpm",
+        "hl.pulse.h1",
+        "hl.pulse.h3_h1",
+        "hl.pulse.h5_h1",
+        "hl.pulse.ascending_slope",
+        "hl.pulse.rhythm_regularity",
+        "hl.pulse.quality",
+        "hl.pulse.perfusion_index",
+    }
+    # 需要取众数的二值型特征
+    _MODE_KEYS = {"hl.pulse.dicrotic_present"}
+    # 保留最后一窗值的字符串型特征
+    _LAST_KEYS = {"hl.pulse.pause_pattern", "hl.pulse.depth"}
+    # 取第一个窗值的元数据
+    _FIRST_KEYS = {"hl.pulse.sampling_hz"}
+
+    def __init__(self, day: str | None = None):
+        self.day = day or date.today().isoformat()
+        self._windows: list[dict[str, Any]] = []
+        self._window_start: float | None = None
+
+    def add_window(self, features: dict[str, Any], timestamp: float | None = None) -> None:
+        """添加一个采集窗的特征。"""
+        ts = timestamp or time.time()
+        # 自动检测跨天：如果新窗的时间戳与首窗差值超过 12 小时，认为跨天
+        if self._window_start is not None and (ts - self._window_start) > 43200:
+            # 跨天了，但 V1 不做跨天自动拆分（由调用方负责分 batch）
+            pass
+        if self._window_start is None:
+            self._window_start = ts
+        self._windows.append(features)
+
+    def _median(self, values: list[float]) -> float:
+        """中位数计算（纯标准库）。"""
+        if not values:
+            return 0.0
+        sorted_vals = sorted(v for v in values if isinstance(v, (int, float)) and v == v)  # 过滤 NaN
+        if not sorted_vals:
+            return 0.0
+        n = len(sorted_vals)
+        return sorted_vals[n // 2] if n % 2 == 1 else (sorted_vals[n // 2 - 1] + sorted_vals[n // 2]) / 2
+
+    def _mode(self, values: list[float]) -> float:
+        """众数计算（纯标准库）。"""
+        if not values:
+            return 0.0
+        from collections import Counter
+        c = Counter(v for v in values if isinstance(v, (int, float)))
+        return c.most_common(1)[0][0]
+
+    def flush(self) -> dict[str, Any]:
+        """输出聚合后的特征 dict，可直接用于批量上报。"""
+        if not self._windows:
+            return {}
+
+        agg: dict[str, Any] = {}
+
+        # 数值型：中位数
+        for key in self._MEDIAN_KEYS:
+            vals = [w[key] for w in self._windows if key in w and isinstance(w[key], (int, float))]
+            if vals:
+                agg[key] = round(self._median(vals), 4)
+
+        # 二值型：众数
+        for key in self._MODE_KEYS:
+            vals = [w[key] for w in self._windows if key in w and isinstance(w[key], (int, float))]
+            if vals:
+                agg[key] = round(self._mode(vals), 1)
+
+        # 字符串型：最后一窗
+        for key in self._LAST_KEYS:
+            for w in reversed(self._windows):
+                if key in w:
+                    agg[key] = w[key]
+                    break
+
+        # 元数据：第一窗
+        for key in self._FIRST_KEYS:
+            for w in self._windows:
+                if key in w:
+                    agg[key] = w[key]
+                    break
+
+        # 添加聚合元数据
+        agg["hl.pulse.aggregate_windows"] = len(self._windows)
+        agg["hl.pulse.aggregate_seconds"] = round(self._windows[-1].get("_ts", time.time()) - self._window_start, 1) if self._window_start else 0.0
+
+        return agg
+
+    def to_batch_items(self, gateway_id: str, user_ref: str) -> list[dict[str, Any]]:
+        """输出批量上报格式：[{day, metrics: [{key, value, unit, evidence, sample_count}]}]"""
+        agg = self.flush()
+        metrics = []
+        for key, value in sorted(agg.items()):
+            if key.startswith("hl.pulse.") and not key.endswith("_windows") and not key.endswith("_seconds"):
+                metrics.append({
+                    "key": key,
+                    "value": value,
+                    "unit": "ratio" if any(x in key for x in ["ratio", "_h1", "slope", "index", "regularity", "quality"]) else None,
+                    "evidence": "edge-derived",
+                    "sample_count": agg.get("hl.pulse.aggregate_windows", 1),
+                })
+        return [{
+            "day": self.day,
+            "device": {"type": "pulse", "label": "HealthLens 号脉终端 (PPG)"},
+            "metrics": metrics,
+            "stats": {
+                "windows": agg.get("hl.pulse.aggregate_windows", 0),
+                "aggregate_seconds": agg.get("hl.pulse.aggregate_seconds", 0.0),
+            },
+        }]
+
+    def reset(self) -> None:
+        """清空聚合器，开始新一轮采集。"""
+        self._windows = []
+        self._window_start = None
+        self.day = date.today().isoformat()
