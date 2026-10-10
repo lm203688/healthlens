@@ -1,0 +1,64 @@
+# CN - 中国：PIPL + 中医药法 + 医疗器械监管
+# 判定逻辑：wellness 允许；诊断/治疗宣称需 NMPA 医疗器械注册证。
+# HealthLens 首发市场，保留完整功能但严守"非诊断"边界。
+jurisdiction: cn
+display_name: 中国内地
+regime: PIPL + NMPA Medical Device
+wellness_boundary_strict: true
+
+# 允许输出（对 CN 用户）
+allowed_fields:
+  - tcm_constitution          # 体质倾向
+  - axis_scores               # 八轴分数（A-H）
+  - axis_labels               # 八轴标签
+  - pathway_signals           # 通路信号
+  - syndrome_patterns         # 证候模式
+  - wellness_recommendations  # 养生建议
+  - lifestyle_advice          # 生活方式建议
+  - pgx_phenotype             # 药物代谢倾向（wellness 措辞）
+  - pgx_attention             # "建议留意"/"常规关注"
+  - risk_level                # wellness 自评风险分层（已改名）
+  - self_assess_score         # 自评量表评分
+
+# CN 首发市场，功能最全；仅拦截真正越界的输出
+# （其他法域可能允许的字段在 CN 都放行）
+blocked_fields: []
+
+# 允许输出的字段（即使国际默认禁用）
+# ICD-11 编码在 CN 语境下允许（中医病证分类代码是允许的）
+# 致病性分级在 CN 语境下允许（药代动力学是允许的）
+cn_specific_allowed:
+  - icd_code                  # 中医病证分类代码（非 ICD-11 西药标准）
+  - pgx_severity              # CN 药代动力学分级
+
+# 必须附加的免责声明（按字段类型）
+required_disclaimers:
+  diagnosis: "本结果仅供健康参考，不构成诊断或治疗建议。请在专业医师指导下使用。"
+  pgx: "本结果为药物代谢倾向参考，具体用药请遵医嘱。"
+  risk_assessment: "本评估为自评量表，非临床诊断。如需医学诊断请就医。"
+
+# 拦截的功能开关
+feature_toggles:
+  diagnosis_endpoint: true    # 允许（wellness 措辞）
+  risk_assessment_endpoint: true
+  icd_mapping: true           # 中医病证分类代码允许
+  pgx_pathogenic_grading: true # CN 允许（药代动力学）
+  cds_hooks: false            # 暂不接 CDS Hooks
+  fhir_export: false          # 国内 FHIR 生态不成熟
+
+# 敏感词拦截（输出前扫描）
+banned_terms:
+  medical_claim_patterns:
+    - "诊断结果"
+    - "确诊"
+    - "治疗方案"
+    - "临床指南推荐"
+    - "循证医学证据表明"
+    - "医学上已确认"
+  allowed_context_terms:
+    - "养生参考"
+    - "健康倾向"
+    - "体质倾向"
+    - "代谢倾向"
+    - "健康信号"
+    - "健康护栏"
