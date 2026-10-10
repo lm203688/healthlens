@@ -64,7 +64,7 @@ async def test_analyze_user_genome():
 
 
 def test_drug_interactions():
-    """测试药物相互作用检测"""
+    """测试药物-基因代谢倾向交互检测（P0-23 wellness 措辞）"""
     engine = PGxEngine()
     variants = [
         {"gene": "CYP2D6", "genotype": "*4/*4"},  # PM
@@ -74,4 +74,7 @@ def test_drug_interactions():
     # 只有非 NM 的才报告
     assert len(interactions) > 0
     assert all(i["gene"] == "CYP2D6" for i in interactions)
-    assert all(i["severity"] == "high" for i in interactions)
+    # P0-23: wellness 措辞——不再用 high/medium 临床严重度，改为"建议留意"
+    assert all(i["attention"] == "建议留意" for i in interactions)
+    # 每条交互都必须带免责声明（守住 wellness 边界）
+    assert all("disclaimer" in i and len(i["disclaimer"]) > 0 for i in interactions)
