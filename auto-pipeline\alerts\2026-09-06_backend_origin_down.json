@@ -1,0 +1,48 @@
+{
+  "level": "HIGH",
+  "opened": "2026-09-06T03:10:00",
+  "updated": "2026-09-06T03:10:00",
+  "scope": "healthlens.cc 后端源站（healthlens-web 容器 + 公共 /api、/health、/sitemap.xml）",
+  "title": "后端源站宕机 — healthlens-web 应用启动即 ImportError(cannot import name 'get_app')，动态功能全断、sitemap 由 1255 退化为 50",
+  "root_cause": "后端 FastAPI 应用代码回归：uvicorn worker 启动时报 `ImportError: cannot import name 'get_app' from 'app' (/app/app/__init__.py)`（见 /app/app/main.py line 2 `from app import get_app`）。即 `app/__init__.py` 不再导出 `get_app`，导致每个 worker 进程在 import 阶段崩溃、应用从未绑定到 :8000。容器本身保持 running（supervisor/entrypoint 未退出），但内部 uvicorn 子进程全死 → docker healthcheck 连续失败 1157 次（FailingStreak=1157），nginx / cloudflared 隧道拿到的是 502 / 连接重置。该回归约在 2026-09-05T17:28 容器重启后开始（docker ps 显示 healthlens-web Up 10 hours (unhealthy)；redis/worker/db/minio 均 Up 3 weeks healthy）。属后端代码缺陷，非基础设施/网络问题。",
+  "verified_ok": [
+    "cloudflared-healthlens 隧道 active（running，自 2026-09-05T17:40）— 隧道↔Cloudflare 链路正常",
+    "nginx active；端口 :80/:443/:8000 均 LISTEN（docker-proxy 持有 :8000，说明 healthlens-web 容器在运行）",
+    "redis/worker/db/minio 容器均 healthy（Up 3 weeks）— 依赖服务正常",
+    "前端静态站 + 5 篇 GEO 知识页部署成功并线上 200（HealthLens×4、零跨站泄漏）— 与后端无关，不受影响",
+    "前端 /llms.txt（67 行）、首页（153KB, HL×28）正常"
+  ],
+  "evidence": [
+    "docker ps -a: healthlens-web|running|Up 10 hours (unhealthy)；其余容器 healthy",
+    "sudo docker logs healthlens-web (tail): `File \"/app/app/main.py\", line 2, in <module>` / `from app import get_app` / `ImportError: cannot import name 'get_app' from 'app' (/app/app/__init__.py)`",
+    "sudo docker inspect healthlens-web: RestartCount=0, State.Status=running, Health.FailingStreak=1157, healthcheck curl → `Failed to connect to localhost port 8000`",
+    "ECS 本地 curl 127.0.0.1:8000/ → `Connected ... Recv failure: Connection reset by peer`（docker-proxy 收 TCP 但应用 reset）",
+    "ECS 本地 curl 127.0.0.1:8000/sitemap.xml → HTTP 000（0 <loc>）",
+    "构建期 build_site.py fetch_backend_sitemap: `后端 sitemap 内容异常（<loc>=0），放弃使用` → 回退本地 50 条 sitemap",
+    "线上 healthlens.cc/sitemap.xml → 50 <loc>（9-05 为 1255）；healthlens.cc/health → {\"status\":\"degraded\",\"backend_reachable\":false}；api.healthlens.cc/health → 502",
+    "线上 healthlens.cc/api/v1/growth/points/packages → 真实套餐 JSON 但含 `\"source\":\"edge-fallback\"`（worker 无法达后端、回放缓存）"
+  ],
+  "impact": "后端动态功能全部不可用：账户/登录(OTP)、支付(虎皮椒/Creem)、套餐接口(=缓存兜底)、报告生成、seo_pages 长尾页（/sitemap.xml 由 1255 退化为 50，且后端 seo 路由因应用崩溃实际不可达）。静态前端与 GEO 知识页不受影响（由 Cloudflare Pages 直接服务）。本次每日闭环的前端部署已成功，但因构建期无法拉取后端 sitemap，线上 sitemap.xml 被覆盖为 50 条本地兜底版——这是后端宕机的连锁结果，非部署脚本缺陷（assert_artifact_ready 不校验 sitemap 完整性，属已知待加固项）。",
+  "fix_required_user_action": {
+    "where": "后端代码仓库（healthlens 后端，ECS /opt/healthlens 或对应 git 源）",
+    "what": "恢复 `app/__init__.py` 对 `get_app` 的导出（或在 `app/main.py` 修正导入路径，如 `from app.main import get_app` / `from app.factory import get_app`），使 `from app import get_app` 可解析；然后重建镜像并重启 healthlens-web（如 `cd /opt/healthlens && docker compose -f docker-compose.prod.yml up -d --force-recreate web` 或 `sudo docker restart healthlens-web`）。重启后验证 `curl 127.0.0.1:8000/health` 返回 {\"status\":\"ok\",\"version\":\"0.18.1\"} 且 healthlens.cc/health 不再 degraded。",
+    "why_self_not_done": "属后端生产代码变更 + 容器重建，超出本前端每日闭环自动化范围，且需用户确认代码修复策略（避免我误改生产后端引入二次故障）。本自动化仅做根因自查与告警。"
+  },
+  "related_sitemap_regression": {
+    "from": 1255,
+    "to": 50,
+    "decision": "未回滚、未盲目重跑：后端宕机期间重跑构建必再次得到 50 条兜底（无意义的重跑，已禁止）。当前 50 条 sitemap 指向全部由 Cloudflare Pages 直接服务的知识页（真实可达），比恢复 1255 条指向已宕机后端 seo 路由的陈旧 URL 更安全（后者会 404、损害 SEO）。待后端恢复后，下次每日闭环构建将自动重新拉取 1255 条 sitemap 并上线。",
+    "hardening_todo": "cf_pages_deploy.py 的 assert_artifact_ready 应增加 sitemap 完整性校验（如 <loc> 数低于阈值则中止，防残缺 sitemap 覆盖线上），类比 2026-08-31 SPA 残缺产物门禁。"
+  },
+  "automation_actions_taken": [
+    "A 线 6 阶段运行完毕（采集18→分析18→决策18→开发7→测试7→部署5），0 失败",
+    "GEO 5 篇知识页部署并 live-check 200",
+    "cf_pages_deploy.py 构建+wrangler 部署成功（token#2 命中），产物 73 文件/49 知识页",
+    "回读校验发现 sitemap 退化 / /health degraded / api 502，触发根因自查（paramiko SSH ECS）",
+    "定位后端 ImportError 根因，生成本告警；未盲目重跑（遵循『遇失败先根因自查、禁止无意义重跑』）"
+  ],
+  "status": "open",
+  "owner": "user（后端代码修复 + 容器重建）",
+  "ai_side_ready": false,
+  "ai_side_note": "前端/内容闭环本侧已完成且健康；后端修复需用户执行，AI 侧无法代改生产后端代码。"
+}
