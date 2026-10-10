@@ -1,0 +1,34 @@
+{
+  "version": 4,
+  "batch_key": "0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f",
+  "pre_index_sha256": "b632bf465adb41918bc95b9a8f3633a4810f40c6f91c57068ed18071006b638a",
+  "post_index_sha256": "a917d0e457ccf96e1aa011c7e745fbaae87aef50a279e534892af4c0fcd4a1ba",
+  "baseline_pre_state": "present",
+  "baseline_pre_sha256": "8346fa1b81a454dc74f64a372b947f8640fbd646bd5e195d48fd4a7b9b5d9aae",
+  "assets": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "pre_sha256": "16fd216e2869631a923d6c6417fb98b413f4205950840644682efa513715cd1a",
+      "post_sha256": "90f06332346bebacd4c4c6d71693543faf77194059ac1945a6799b1138ce06fa",
+      "preimage": "I0FPQ0ktQ09ERS1WT0xVTUU6IDEKCj09PUM6L1VzZXJzL3hpbmcvRGVza3RvcC9oZWFsdGhsZW5zLz09PQoKPT09QzovVXNlcnMveGluZy9EZXNrdG9wL2hlYWx0aGxlbnMvYXBwL2xpYi89PT0KZnVzaW9uX2VuZ2luZS5weVtLQjlMXTogRjpFaWdodC1heGlzIFRDTS1mdXNpb24gd2VsbG5lc3MgZW5naW5lIChheGVzIEEtSCk6IHNjb3JlcyBldmlkZW5jZSwgcmV0dXJucyBldmlkZW5jZV9kZXRhaWw7IHNpbmdsZSBzb3VyY2Ugb2YgdHJ1dGggZm9yIGhlYWx0aC1zaWduYWwgZnVzaW9uLiB8IFI6Y29kZTpkYXRhL2Nhc2VfZXZpZGVuY2VfZGIuanNvbiBjb2RlOmFwcC9saWIvcHVsc2VfZW5naW5lLnB5IHwgQTphcHAvYXBpL2FnZW50LnB5IGFwcC9saWIvd2VsbG5lc3Nfc2ltdWxhdG9yLnB5IHwgUzpXZWxsbmVzcy9oZWFsdGggcmVmZXJlbmNlIG9ubHk7IG5ldmVyIGEgbWVkaWNhbCBkaWFnbm9zaXM7IGV2ZXJ5IGRvd25zdHJlYW0gb3V0cHV0IG11c3QgY2FycnkgZ3VhcmRyYWlscyBhbmQgdGhlIG5vbi1tZWRpY2FsIGRpc2NsYWltZXIuCnB1bHNlX2VuZ2luZS5weVtLSDlNXTogRjpDbGFzc2lmaWVzIFBQRyB0aW1lLWRvbWFpbiBmZWF0dXJlcyBpbnRvIDI4IFRDTSBwdWxzZSBsYWJlbHMgcGx1cyBjb21wb3VuZCAoeGlhbmdqaWFuKSBwdWxzZSBzeW50aGVzaXM7IG1hcHMgdG8gZWlnaHQtYXhpcyBzaWduYWxzIGFuZCBndWFyZHJhaWxzLiB8IFI6Y29kZTpkYXRhL3B1bHNlX3NpZ25hdHVyZXMuanNvbiBjb2RlOmFwcC9saWIvZnVzaW9uX2VuZ2luZS5weSB8IEE6YXBwL2FwaS9wdWxzZS5weSBlZGdlL2hlYWx0aGdhdGV3YXkvcHVsc2Vfc291cmNlLnB5IHwgUzpPbiBtaXNzaW5nIGtub3dsZWRnZSBiYXNlIGl0IE1VU1QgcmFpc2UgUHVsc2VLbm93bGVkZ2VCYXNlRXJyb3IgKDUwMyk7IG5ldmVyIHJldHVybiBpZC1pbnN0ZWFkLW9mLW5hbWUgZmFrZSByZWFkaW5ncyBvciBlbXB0eSBheGVzLgp3ZWxsbmVzc19zaW11bGF0b3IucHlbS0I3TV06IEY6V2Vlay1zdGVwIGR5bmFtaWNzIHNpbXVsYXRvciBwcm9qZWN0aW5nIGF4aXMgdHJhamVjdG9yaWVzIGZyb20gY2hlY2tpbiBiYXNlbGluZXM7IGJhY2tzIFBPU1QgL2FwaS92MS9heGVzL3Byb2plY3QuIHwgUjpjb2RlOmFwcC9saWIvZnVzaW9uX2VuZ2luZS5weSB8IEE6YXBwL2FwaS9hZ2VudC5weSB8IFM6U2ltdWxhdGlvbiBpcyBpbGx1c3RyYXRpdmUgb25seTsgbXVzdCBub3QgYmUgcHJlc2VudGVkIGFzIGEgcHJlZGljdGlvbiBvZiBjbGluaWNhbCBvdXRjb21lcy4K"
+    }
+  ],
+  "guards": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "sha256": "16fd216e2869631a923d6c6417fb98b413f4205950840644682efa513715cd1a"
+    },
+    {
+      "volume_id": "meta",
+      "path": "aoci.meta.txt",
+      "sha256": "ebafbe54981dfb23686171bb5253ded8c2bbf9c697b73a1b1af9283d686a5cc4"
+    },
+    {
+      "volume_id": "root",
+      "path": "aoci.txt",
+      "sha256": "6edb677c25397187949c9840b989e4aeaee2ba0d522376bde5a59e8d1a66887e"
+    }
+  ]
+}
