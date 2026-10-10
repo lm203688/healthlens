@@ -1,13 +1,23 @@
-"""慢病风险评估引擎
-Phase 1: 基于循证医学指南的规则评分
-Phase 2: 集成 ML 模型 (XGBoost/Cox 回归)
+"""慢病风险自评量表（透明启发式，非验证型预测模型）
+=================================================
 
-参考指南:
-- 《中国心血管病风险评估和管理指南》(China-PAR 模型)
-- 《中国2型糖尿病防治指南》糖尿病风险评分
-- 《中国高血压防治指南》心血管风险分层
--代谢综合征: 中华医学会糖尿病学分会(CDS)标准
+诚实边界（P0-4，2026-10-09 修订）：本模块是**用户自评风险量表**，仅沿用公开指南
+的风险因素做点分加权，**未使用** China-PAR 的 Cox 回归系数、基线生存函数 S0(t)，
+也未使用任何经验证的机器学习预测模型。**输出不是 10 年发病概率**，仅是一个"倾向
+百分比"（0–100 无量纲指数），用于提示用户是否值得关注、是否值得就医复查；不构
+成诊断、治疗建议，也不构成循证医学意义上的风险预测。
+
+对外表述已统一改为"自评风险量表"（`self_assessment_scale`），禁止再出现
+"China-PAR 模型""10 年 ASCVD 概率"等挂名已发表模型的表述。
+
+参考（仅方法学思路，非所用系数）:
+- 《中国心血管病风险评估和管理指南》(China-PAR) 风险因素框架 — 仅参考因素
+- 《中国2型糖尿病防治指南》糖尿病风险评分(CDRS) 风险因素 — 仅参考因素
+- 《中国高血压防治指南》心血管风险分层思路
+- 代谢综合征: 中华医学会糖尿病学分会(CDS) 五项判定标准（本项判定为真实标准，
+  5 项阈值均为 CDS 原文）
 """
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 from datetime import datetime, date
 from loguru import logger
@@ -26,32 +36,45 @@ class RiskFactor:
 
 @dataclass
 class RiskAssessmentResult:
-    """风险评估结果"""
-    risk_type: str              # 评估类型: ascvd / diabetes / hypertension / metabolic
-    risk_level: str             # 风险等级: low / moderate / high / very_high
-    risk_score: float           # 风险评分
-    risk_probability: float     # 风险概率(百分比)
+    """自评风险量表结果
+
+    字段名保持向后兼容（risk_probability），但语义已明确为"自评倾向百分比"，
+    不是概率意义上的发病预测。前端与 API 层统一改用 `disclaimer` 字段对外
+    声明这一限制，禁止再宣称"10 年 ASCVD 风险"或"China-PAR 模型"。
+    """
+    risk_type: str              # 自评量表类型: ascvd_self_assess / diabetes_self_assess / metabolic_self_assess
+    risk_level: str             # 自评倾向等级: low / moderate / high / very_high
+    risk_score: float           # 自评点分（无量纲）
+    risk_probability: float     # 自评倾向百分比（0-100，无量纲指数，非概率）
     risk_factors: list[RiskFactor] = field(default_factory=list)
     recommendations: list[str] = field(default_factory=list)
     references: list[str] = field(default_factory=list)
+    disclaimer: str = "本量表为用户自评工具，仅提示风险倾向，非医学诊断或治疗建议。"
     assessed_at: str = ""
 
 
 class ASCVDRiskEngine:
-    """动脉粥样硬化性心血管疾病(ASCVD)风险评估
-    基于 China-PAR 模型简化版
+    """动脉粥样硬化性心血管疾病(ASCVD)自评风险量表
+
+    **诚实边界（P0-4）**：这是**自评量表**（self-assessment scale），沿用
+    China-PAR 指南的风险因素**框架**做点分加权，但**未使用 China-PAR 的
+    Cox 回归系数与基线生存函数 S0(t)**。输出是"倾向百分比"（无量纲 0-100
+    指数），**不是 10 年心血管事件概率**。禁止在 UI/论文/对外材料中称为
+    "China-PAR 模型"或"10 年 ASCVD 风险预测"。
+
+    输入沿用 China-PAR 风险因素清单，便于与指南分层对齐做生活方式干预参考。
     """
 
-    # China-PAR 模型系数 (简化版)
+    # 自评量表点分（参考 China-PAR 风险因素框架，非 China-PAR 系数）
     # 完整模型包含: 年龄、性别、腰围、TC、HDL-C、SBP、高血压治疗、吸烟、糖尿病、心血管病家族史、地区
-    # 此处采用评分简化版
+    # 此处采用评分简化版，仅用于健康风险提示与生活方式干预优先级排序
 
     def assess(self, age: int, gender: str, sbp: float, tc: float,
                hdl_c: float | None = None, ldl_c: float | None = None,
                is_smoker: bool = False, has_diabetes: bool = False,
                has_family_history: bool = False, waist: float | None = None,
                on_antihypertensive: bool = False) -> RiskAssessmentResult:
-        """评估 10 年 ASCVD 风险"""
+        """评估 ASCVD 倾向（自评量表，非 10 年发病概率）"""
 
         factors: list[RiskFactor] = []
         score = 0
@@ -194,25 +217,37 @@ class ASCVDRiskEngine:
             ]
 
         return RiskAssessmentResult(
-            risk_type="ascvd",
+            risk_type="ascvd_self_assess",
             risk_level=risk_level,
             risk_score=float(score),
             risk_probability=round(probability, 1),
             risk_factors=factors,
             recommendations=recommendations,
-            references=["中国心血管病风险评估和管理指南(China-PAR)", "中国成人血脂异常防治指南"],
-            assessed_at=datetime.now().isoformat(),
+            references=[
+                "《中国心血管病风险评估和管理指南》(China-PAR) — 仅参考风险因素框架",
+                "《中国成人血脂异常防治指南》 — 血脂阈值参考",
+            ],
+            disclaimer=(
+                "本量表为透明启发自评量表（非 China-PAR 模型），仅沿用指南的风险因素框架做点分加权。"
+                "输出的百分比是倾向指数（0-100 无量纲），不是 10 年心血管事件发病概率，不构成诊断或治疗建议。"
+                "如有心血管症状或高危因素，请咨询心血管专科医生。"
+            ),
+            assessed_at=datetime.now(timezone.utc).isoformat(),
         )
 
 
 class DiabetesRiskEngine:
-    """2型糖尿病风险评估
-    基于中国糖尿病风险评分(CDRS)简化版
+    """2型糖尿病自评风险量表
+
+    **诚实边界（P0-4）**：这是**自评量表**（self-assessment scale），沿用
+    CDRS（中国糖尿病风险评分）的风险因素**框架**做点分加权，但**未使用
+    CDRS 的原始系数**。**输出不是 10 年糖尿病发病概率**，仅为倾向百分比
+    （0-100 无量纲指数）。禁止称为"CDRS 模型"或"糖尿病发病预测"。
     """
 
     def assess(self, age: int, gender: str, bmi: float, sbp: float,
                waist: float, family_history: bool = False) -> RiskAssessmentResult:
-        """评估 2 型糖尿病风险"""
+        """评估糖尿病倾向（自评量表，非 10 年发病概率）"""
 
         factors: list[RiskFactor] = []
         score = 0
@@ -306,20 +341,32 @@ class DiabetesRiskEngine:
             ]
 
         return RiskAssessmentResult(
-            risk_type="diabetes",
+            risk_type="diabetes_self_assess",
             risk_level=risk_level,
             risk_score=float(score),
             risk_probability=round(probability, 1),
             risk_factors=factors,
             recommendations=recommendations,
-            references=["中国2型糖尿病防治指南", "中国糖尿病风险评分(CDRS)"],
-            assessed_at=datetime.now().isoformat(),
+            references=[
+                "《中国2型糖尿病防治指南》 — 风险因素框架参考",
+                "中国糖尿病风险评分(CDRS) — 仅参考因素清单，非所用系数",
+            ],
+            disclaimer=(
+                "本量表为透明启发自评量表（非 CDRS 模型），仅沿用指南的风险因素框架做点分加权。"
+                "输出的百分比是倾向指数（0-100 无量纲），不是 10 年糖尿病发病概率，不构成诊断或治疗建议。"
+                "如有糖尿病家族史或多项高危因素，请咨询内分泌科医生。"
+            ),
+            assessed_at=datetime.now(timezone.utc).isoformat(),
         )
 
 
 class MetabolicSyndromeEngine:
-    """代谢综合征评估
-    基于 CDS(中华医学会糖尿病学分会)标准
+    """代谢综合征评估（CDS 五项判定标准，真实临床标准）
+
+    本模块**不同 ASCVD/糖尿病自评量表**：代谢综合征判定采用的是
+    CDS（中华医学会糖尿病学分会）五项判定标准的**真实阈值**——腹型肥胖、
+    高血糖、高血压、高 TG、低 HDL-C——符合 ≥3 项即判定为代谢综合征，
+    属于指南直接可查的分类标准，不是自评倾向。
     """
 
     # CDS 标准: 符合以下 3 项或以上即可诊断
@@ -428,8 +475,13 @@ class MetabolicSyndromeEngine:
             risk_probability=100.0 if is_metabolic_syndrome else criteria_met * 20.0,
             risk_factors=factors,
             recommendations=recommendations,
-            references=["中华医学会糖尿病学分会代谢综合征标准"],
-            assessed_at=datetime.now().isoformat(),
+            references=["中华医学会糖尿病学分会(CDS) 代谢综合征五项判定标准（阈值直接引用）"],
+            disclaimer=(
+                "代谢综合征判定采用 CDS 五项阈值（腹型肥胖/高血糖/高血压/高 TG/低 HDL-C），"
+                "符合 ≥3 项即判定。这是指南直接可查的分类标准，但仍不构成临床诊断结论，"
+                "需由医生结合完整病史确认。"
+            ),
+            assessed_at=datetime.now(timezone.utc).isoformat(),
         )
 
 
@@ -442,7 +494,12 @@ class RiskAssessmentEngine:
         self.metabolic = MetabolicSyndromeEngine()
 
     def assess_all(self, profile: dict) -> dict[str, RiskAssessmentResult]:
-        """根据用户健康档案进行全量风险评估
+        """根据用户健康档案进行全量自评
+
+        返回字典的 key 与 result.risk_type 保持一致：
+        - "ascvd_self_assess"      动脉粥样硬化性心血管疾病自评量表
+        - "diabetes_self_assess"   2 型糖尿病自评量表
+        - "metabolic_syndrome"     代谢综合征（CDS 五项阈值判定，指南真实标准）
 
         profile 字段:
             age, gender, bmi, waist, sbp, dbp, tc, tg, hdl_c, ldl_c, fpg
@@ -459,9 +516,9 @@ class RiskAssessmentEngine:
         waist = profile.get("waist", 80)
 
         try:
-            # ASCVD 评估 (40 岁以上)
+            # ASCVD 自评量表 (40 岁以上)
             if age >= 40:
-                results["ascvd"] = self.ascvd.assess(
+                results["ascvd_self_assess"] = self.ascvd.assess(
                     age=age, gender=gender, sbp=sbp, tc=tc,
                     hdl_c=profile.get("hdl_c"),
                     ldl_c=profile.get("ldl_c"),
@@ -472,13 +529,13 @@ class RiskAssessmentEngine:
                     on_antihypertensive=profile.get("on_antihypertensive", False),
                 )
 
-            # 糖尿病风险评估
-            results["diabetes"] = self.diabetes.assess(
+            # 糖尿病自评量表
+            results["diabetes_self_assess"] = self.diabetes.assess(
                 age=age, gender=gender, bmi=bmi, sbp=sbp, waist=waist,
                 family_history=profile.get("diabetes_family_history", False),
             )
 
-            # 代谢综合征评估
+            # 代谢综合征评估（CDS 真实阈值）
             results["metabolic_syndrome"] = self.metabolic.assess(
                 gender=gender, waist=waist,
                 fpg=profile.get("fpg"),
