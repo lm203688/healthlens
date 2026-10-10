@@ -6,6 +6,7 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Query
+from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.database import get_db
@@ -234,5 +235,107 @@ async def reprocess_record(
             "id": str(record.id),
             "status": "reprocessing",
             "message": "Record marked for reprocessing",
+        },
+    }
+
+
+# ============ JSON 数据直接录入 ============
+
+class ObservationItem(BaseModel):
+    """单条健康指标数据"""
+    loinc_code: str | None = Field(None, max_length=50)
+    loinc_name: str | None = Field(None, max_length=500)
+    value_numeric: float | None = None
+    value_string: str | None = None
+    value_unit: str | None = Field(None, max_length=50)
+    reference_range_low: float | None = None
+    reference_range_high: float | None = None
+    recorded_at: str | None = Field(None, description="记录时间 ISO 8601，默认当前时间")
+
+
+class HealthDataUploadInput(BaseModel):
+    """健康数据 JSON 上传输入"""
+    source: str = Field("manual", description="数据来源标识")
+    observations: list[ObservationItem] = Field(..., min_length=1, max_length=500)
+    notes: str | None = Field(None, description="备注信息")
+
+
+@router.post("/data", status_code=status.HTTP_201_CREATED)
+async def upload_health_data(
+    body: HealthDataUploadInput,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    直接上传结构化健康数据（JSON格式）
+    - 无需上传文件，直接提交指标数据
+    - 自动创建健康记录和关联观察值
+    """
+    from decimal import Decimal
+    from app.models.observation import HealthObservation
+
+    record_id = str(uuid.uuid4())
+
+    # 创建健康记录
+    record = HealthRecord(
+        id=record_id,
+        user_id=current_user.id,
+        filename=f"data_upload_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}",
+        file_path="",
+        file_size=0,
+        content_type="application/json",
+        status="completed",
+        observations_count=len(body.observations),
+        parse_result=json.dumps({
+            "source": body.source,
+            "notes": body.notes,
+            "upload_type": "json_data",
+        }),
+    )
+    db.add(record)
+
+    # 创建观察值
+    created_obs = []
+    for item in body.observations:
+        obs_id = str(uuid.uuid4())
+        recorded_at = datetime.utcnow()
+        if item.recorded_at:
+            try:
+                recorded_at = datetime.fromisoformat(item.recorded_at.replace("Z", ""))
+            except ValueError:
+                pass
+
+        obs = HealthObservation(
+            id=obs_id,
+            user_id=current_user.id,
+            loinc_code=item.loinc_code,
+            loinc_name=item.loinc_name,
+            value_numeric=Decimal(str(item.value_numeric)) if item.value_numeric is not None else None,
+            value_string=item.value_string,
+            value_unit=item.value_unit,
+            reference_range_low=Decimal(str(item.reference_range_low)) if item.reference_range_low is not None else None,
+            reference_range_high=Decimal(str(item.reference_range_high)) if item.reference_range_high is not None else None,
+            source=body.source,
+            recorded_at=recorded_at,
+        )
+        db.add(obs)
+        created_obs.append(obs_id)
+
+    await db.commit()
+
+    logger.info(
+        f"Health data uploaded via JSON: record={record_id}, "
+        f"user={current_user.id}, observations={len(body.observations)}"
+    )
+
+    return {
+        "success": True,
+        "data": {
+            "id": record_id,
+            "status": "completed",
+            "observations_count": len(body.observations),
+            "observation_ids": created_obs,
+            "source": body.source,
+            "created_at": record.created_at.isoformat() if record.created_at else None,
         },
     }
