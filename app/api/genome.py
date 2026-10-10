@@ -1,4 +1,9 @@
-"""基因组路由 - 基因数据上传、分析结果、药物基因组报告"""
+"""基因组路由 - 基因数据上传、分析结果、药物基因组报告
+
+**管辖感知（阶段 A3 + A6）**：PGx 端点按用户 jurisdiction 过滤致病性分级输出。
+EU/US/UK 法域下致病性分级输出被策略拦截并返回 403，CN 保留完整功能。
+详见 `app/lib/claims_engine.py` 与 `claims_policy/*.yaml`。
+"""
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,6 +12,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.genomics import PharmacogenomicProfile
 from app.api.deps import get_current_user
+from app.lib.claims_engine import filter_output, check_endpoint_allowed, ClaimsPolicyError
 
 router = APIRouter(tags=["genome"])
 
@@ -182,7 +188,28 @@ async def get_pgx_report(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """获取药物基因组(PGx)综合报告 - 含用药建议和相互作用风险"""
+    """获取药物基因组(PGx)综合报告 - 含用药建议和相互作用风险
+
+    管辖感知（A3+A6）：按法域过滤致病性分级 / ICD 等越线字段，
+    EU/US 下 pgx_pathogenic_grading=false 时返回 403。
+    """
+    jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
+
+    ok, reason = check_endpoint_allowed("/genome/pgx", jurisdiction)
+    if not ok:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "endpoint_blocked_by_jurisdiction",
+                "jurisdiction": jurisdiction,
+                "reason": reason,
+                "message": (
+                    "Pharmacogenomic reporting is not available in this jurisdiction "
+                    "under the current claims policy. Please consult a licensed provider."
+                ),
+            },
+        )
+
     result = await db.execute(
         select(PharmacogenomicProfile).where(
             PharmacogenomicProfile.user_id == current_user.id
@@ -193,7 +220,6 @@ async def get_pgx_report(
     from app.core.pgx_engine import PGxEngine
     engine = PGxEngine()
 
-    # 转换为引擎输入
     variants = []
     for p in profiles:
         if p.gene_symbol and p.genotype:
@@ -203,13 +229,10 @@ async def get_pgx_report(
                 "rsid": p.variant_rsid,
             })
 
-    # 分析基因型
     gene_results = await engine.analyze_user_genome(variants)
-
-    # 获取药物相互作用
     interactions = engine.get_drug_interactions(variants)
 
-    return {
+    payload = {
         "success": True,
         "data": {
             "user_id": str(current_user.id),
@@ -231,3 +254,11 @@ async def get_pgx_report(
             },
         },
     }
+    try:
+        fr = filter_output(payload, jurisdiction, endpoint="/genome/pgx")
+        return fr.payload
+    except ClaimsPolicyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "claims_policy_violation", "jurisdiction": jurisdiction, "message": str(e)},
+        )
