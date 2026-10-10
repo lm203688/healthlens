@@ -1,0 +1,271 @@
+# 逐功能 Intended Use 判定表（P1-24）
+# 生成：2026-10-10
+# 用途：为每个 API 端点提供跨法域（CN/US/UK/EEA/AU）的意图定位与合规状态快照。
+# 消费方：
+#   - claims_engine.py 在端点级 check_endpoint_allowed() 决策时引用
+#   - 产品/法务评审会审阅每个功能的可用边界
+#   - 前端 i18n 按此表决定是否展示入口
+# 判定依据：
+#   - US FDA General Wellness Final Rule (2026-01-06)
+#   - UK MHRA AIaMD / Health Tech / MHRA SaMD
+#   - EU MDR Rule 11 + IVDR 12/2017
+#   - AU TGA wellness exclusion + AML
+#   - CN NMPA 医疗器械分类 + 互联网诊疗监管
+#   - 伊利诺伊州《Wellness and Oversight for Psychological Resources Act》(2025-08-01)
+#     → 免责声明在州层面失效，必须靠 claims 实质判定
+
+version: 1.0.0
+generated_at: 2026-10-10
+last_reviewed_by: engineering
+
+# 每个功能 = 一个端点/能力单元。字段说明：
+#   feature_id: 唯一标识，对应 API 路径或能力名
+#   purpose: wellness-定位描述（面向 US FDA Wellness Definition 措辞）
+#   not_purpose: 明确排除的医疗声明（用于合规审阅留痕）
+#   primary_jurisdiction: 首发市场
+#   availability: 各法域状态
+#     - green: 允许完整功能
+#     - amber: 允许但字段/措辞受限（走 claims_engine 过滤）
+#     - red: 端点级禁用（返回 403）
+#     - n/a: 该法域未评估（默认 red，fail-closed）
+#   evidence_level: 决策依据强度（L1 官方规章 / L2 权威指南 / L3 内部推论）
+#   notes: 关键考量
+
+features:
+  # ------------------------------------------------------------------
+  # 用户与鉴权（全法域允许，不涉及健康声明）
+  # ------------------------------------------------------------------
+  - feature_id: auth_register_login
+    purpose: "用户身份认证与账户管理"
+    not_purpose: "不构成健康评估或诊断"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: green, eu: green, au: green}
+    evidence_level: L1
+    notes: "纯身份层，与 wellness boundary 无关"
+
+  - feature_id: auth_totp
+    purpose: "TOTP 多因素认证"
+    not_purpose: "不构成健康评估"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: green, eu: green, au: green}
+    evidence_level: L1
+
+  # ------------------------------------------------------------------
+  # 数据平面（健康记录/报告上传）
+  # ------------------------------------------------------------------
+  - feature_id: records_upload
+    purpose: "用户主动上传健康记录用于个人健康追踪"
+    not_purpose: "不生成疾病诊断结论，不做临床分诊"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: amber}
+    evidence_level: L2
+    notes: "US/UK/EU 下禁止展示 ICD/诊断字段；数据仅回显用户输入原文，不做临床解读"
+
+  - feature_id: ocr_report_parser
+    purpose: "结构化用户已持有报告（PDF/图片）为机器可读字段"
+    not_purpose: "非临床报告生成，不新增诊断声明"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: amber}
+    evidence_level: L2
+    notes: "OCR fail-loud（P0-6）：解析失败返回 status:unavailable，绝不伪造数值"
+
+  # ------------------------------------------------------------------
+  # 八轴健康画像（核心 wellness 能力）
+  # ------------------------------------------------------------------
+  - feature_id: axes_score
+    purpose: "基于用户报告的生物标志物计算八轴健康画像分数（A-H）"
+    not_purpose: "非疾病分期，非临床风险预测"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "US FDA Wellness 定义涵盖'health status improvement'，轴分数属于一般健康状态；UK/EU 保留 amber 因阈值参数尚需按当地指南校准"
+
+  - feature_id: axes_project
+    purpose: "基于打卡数据预测未来轴分数走向（wellness simulator）"
+    not_purpose: "非疾病预测/预后"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L3
+    notes: "US 下预测倾向'health trends'，但需注意与 CDS 分层的边界；文案必须用'趋势参考'而非'概率'"
+
+  - feature_id: fusion_engine
+    purpose: "融合多源信号生成生活方式建议（personalized wellness recommendations）"
+    not_purpose: "非临床诊疗方案"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "P0-13 四角色 Agent 走 wellness 措辞；personalized 建议必须带证据溯源"
+
+  # ------------------------------------------------------------------
+  # 诊断/分诊（最敏感，多法域 red）
+  # ------------------------------------------------------------------
+  - feature_id: diagnosis_analyze
+    purpose: "在 wellness 措辞下生成健康关注提示"
+    not_purpose: "不构成医学诊断，不给出临床诊断结论"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: red, uk: red, eu: red, au: amber}
+    evidence_level: L1
+    notes: "US FDA/UK MHRA/EU MDR 下'诊断'属于 SaMD/MD；AU TGA wellness exclusion 允许但需去临床措辞"
+
+  - feature_id: risk_assessment
+    purpose: "自评量表倾向指数（透明启发式，非 10 年概率）"
+    not_purpose: "非 China-PAR/CDRS Cox 系数，非疾病风险预测"
+    primary_jurisdiction: cn
+    availability: {cn: amber, us: red, uk: red, eu: red, au: amber}
+    evidence_level: L1
+    notes: "P0-4 已改称'自评量表'；CN 下保留 amber 因仍展示数值（用户知情同意前提下）；US/UK/EU red 因任何 10 年风险概率均属 CDS/SaMD"
+
+  - feature_id: triage
+    purpose: "健康信号前置拦截（急症引导就医）"
+    not_purpose: "非临床分诊等级"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "'健康护栏'措辞；拦截后引导用户就医，不给出分诊等级"
+
+  # ------------------------------------------------------------------
+  # 基因组/药代（最敏感，多法域 red）
+  # ------------------------------------------------------------------
+  - feature_id: pgx_pathogenic_grading
+    purpose: ""
+    not_purpose: "致病性分级属诊断性输出"
+    primary_jurisdiction: cn
+    availability: {cn: amber, us: red, uk: red, eu: red, au: red}
+    evidence_level: L1
+    notes: "P0-23/A6 已禁；CN 下 amber 保留内部展示但带 disclaimer"
+
+  - feature_id: pgx_disease_association
+    purpose: "健康倾向标签（代谢倾向/吸收倾向，非致病性）"
+    not_purpose: "非疾病易感性分级"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "P0-23 已改 8 个 phenotype_map 标签为 wellness 措辞"
+
+  - feature_id: fhir_export
+    purpose: ""
+    not_purpose: "FHIR = 回传临床记录系统 → 越线"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: red, uk: red, eu: red, au: amber}
+    evidence_level: L1
+    notes: "CN 下无 FHIR 集成，green；其余法域 red"
+
+  # ------------------------------------------------------------------
+  # 中医（wellness 定位较宽松）
+  # ------------------------------------------------------------------
+  - feature_id: tcm_constitution
+    purpose: "中医体质倾向识别（作为健康画像维度）"
+    not_purpose: "非证候诊断"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "US FDA Wellness 明确覆盖 TCM 体质/经络 wellness 描述"
+
+  - feature_id: tcm_safety
+    purpose: "药-草-食相互作用提示（wellness 参考）"
+    not_purpose: "非临床禁忌处方"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "十八反/十九畏为传统知识，作为 wellness 参考可保留"
+
+  # ------------------------------------------------------------------
+  # 边缘设备/号脉
+  # ------------------------------------------------------------------
+  - feature_id: pulse_interpret
+    purpose: "PPG 波形 → 相兼脉 wellness 描述"
+    not_purpose: "非临床脉诊"
+    primary_jurisdiction: cn
+    availability: {cn: amber, us: amber, uk: amber, eu: amber, au: amber}
+    evidence_level: L3
+    notes: "未用真人数据校准（2026-10-06 已知边界）；所有法域 amber 待校准后升级 green"
+
+  - feature_id: edge_gateway_eeg
+    purpose: "脑电频带功率 wellness 信号"
+    not_purpose: "非临床脑电诊断"
+    primary_jurisdiction: cn
+    availability: {cn: amber, us: amber, uk: amber, eu: amber, au: amber}
+    evidence_level: L3
+    notes: "P1 票据体系已落地；V1 契约本批次补齐"
+
+  # ------------------------------------------------------------------
+  # 数据主权/GDPR
+  # ------------------------------------------------------------------
+  - feature_id: gdpr_consent
+    purpose: "用户同意管理与撤回"
+    not_purpose: "不适用"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: green, eu: green, au: green}
+    evidence_level: L1
+    notes: "A4 region_guard + User.jurisdiction 字段落地"
+
+  - feature_id: data_residency
+    purpose: "区域数据驻留约束"
+    not_purpose: "不适用"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: green, uk: green, eu: green, au: green}
+    evidence_level: L1
+    notes: "A4 region_guard strict=True 时跨区域读写 403"
+
+  # ------------------------------------------------------------------
+  # 支付/商业化
+  # ------------------------------------------------------------------
+  - feature_id: payment_creem
+    purpose: "US 区订阅支付（Creem）"
+    not_purpose: "不适用"
+    primary_jurisdiction: us
+    availability: {cn: amber, us: green, uk: green, eu: green, au: green}
+    evidence_level: L2
+    notes: "P1-19/20/21 已落地 Creem 集成"
+
+  - feature_id: payment_hupijiao
+    purpose: "CNY 区小额支付（虎皮椒）"
+    not_purpose: "不适用"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: amber}
+    evidence_level: L2
+    notes: "非 CNY 法域 amber：需用户确认跨境支付条款"
+
+  # ------------------------------------------------------------------
+  # 智能体/LLM
+  # ------------------------------------------------------------------
+  - feature_id: agent_team
+    purpose: "四角色 Agent 团队生成 wellness 建议"
+    not_purpose: "非临床决策"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+    notes: "P0-13 已落地；Critic 独立规则集审越界"
+
+  - feature_id: agent_fusion
+    purpose: "融合安全管线（前置红牌 + 后置闸门 + 审计）"
+    not_purpose: "非临床决策"
+    primary_jurisdiction: cn
+    availability: {cn: green, us: amber, uk: amber, eu: amber, au: green}
+    evidence_level: L2
+
+# ------------------------------------------------------------------
+# 汇总统计（供审阅/CI 检查）
+# ------------------------------------------------------------------
+summary:
+  total_features: 24
+  by_status:
+    green: 12
+    amber: 21
+    red: 8
+    n/a: 0
+  notes:
+    - "green + amber 之和超过 total（一个功能可在多法域有不同状态）"
+    - "red 计数 = 端点在至少一个法域被禁用"
+    - "所有法域未评估的功能默认 red（fail-closed）"
+
+# ------------------------------------------------------------------
+# 审阅门槛（CI 门禁建议）
+# ------------------------------------------------------------------
+review_gates:
+  - "任何新增端点必须先补入本表，缺失则 claims_engine 默认 red（fail-closed）"
+  - "red 状态端点必须返回 403 而非降级放行"
+  - "amber 状态端点必须经过 claims_engine.filter_output() 过滤"
+  - "证据等级 L3 的功能需季度复审，L1 功能每 12 个月复审"
+  - "US FDA Wellness Final Rule 更新时需全表复审"
+  - "伊利诺伊州 Psychological Resources Act 已确认免责声明失效——所有 US 区状态必须基于 claims 实质而非免责声明"
