@@ -39,6 +39,14 @@
       "success": true,
       "detail": "phase=ops_health_f prev_error=运维检查未通过: down (端点 0/4 正常)",
       "attempt": 0
+    },
+    {
+      "timestamp": "2026-09-16T07:46:35.859736",
+      "rule": "状态完整性",
+      "key": "state_integrity",
+      "success": true,
+      "detail": "fixed=['run_history']",
+      "attempt": 0
     }
   ],
   "attempts": {
@@ -52,9 +60,9 @@
     "state_integrity": {
       "count": 0,
       "first_at": "2026-08-04T17:34:10.155780",
-      "last_at": "2026-08-04T17:34:10.155791",
+      "last_at": "2026-09-16T07:46:35.859734",
       "last_success": true,
-      "resolved_at": "2026-08-04T17:34:10.155793"
+      "resolved_at": "2026-09-16T07:46:35.859735"
     },
     "failed_phase:ops_health_f": {
       "count": 0,
