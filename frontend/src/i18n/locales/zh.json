@@ -157,7 +157,14 @@
     "medications": "正在服用的药物",
     "medicationsPlaceholder": "如：阿司匹林、降压药等（无则留空）",
     "notes": "其他备注",
-    "notesPlaceholder": "其他您想告诉我们的健康信息…"
+    "notesPlaceholder": "其他您想告诉我们的健康信息…",
+    "jurisdictionTitle": "法域与合规设置",
+    "jurisdictionDesc": "选择您所在的法域，系统将应用相应的监管框架。这会影响可用功能与数据字段。",
+    "jurisdictionNote": "在该法域下，部分功能可能因监管要求被限制或禁用。",
+    "jurisdictionSave": "保存法域",
+    "jurisdictionSaving": "保存中…",
+    "jurisdictionSaveFailed": "法域保存失败",
+    "jurisdictionSaved": "法域已更新"
   },
   "axis": {
     "title": "八轴稳态评估",
