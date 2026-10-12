@@ -1,6 +1,6 @@
 # HealthLens 真实案例证据数据库（可读版）
 
-> 版本 v1.2 ｜ 2026-08-21 ｜ 共 27 条案例（CASE-005→CASE-006拆分重构为2条：先导+AFFIRM RCT）
+> 版本 v1.3 ｜ 2026-10-12 ｜ 共 27 条案例（CASE-006 更正为 Farr 2024 真实 Phase II RCT，DOI 10.1038/s41591-024-03096-2；此前误引的"Kirkland AFFIRM n=240"经查证 DOI 不可解析、属 AI 幻觉，已彻底清除）
 
 > 用途：用真实人体试验/RCT 数据作证'稳态生物学轴'理论方向正确；作为 Agent 个性化推荐的引用依据与未来用户数据回填后的群体对照基座。
 
@@ -126,22 +126,23 @@
 
 ---
 
-### CASE-006 · D+Q AFFIRM试验：首个大规模衰老人群RCT（2026里程碑）
+### CASE-006 · D+Q Farr 2024 Phase II RCT：间歇性 senolytic 在绝经后妇女中的骨代谢研究
 
 - **古籍对应**：扶正祛瘀 / 延缓衰老
-- **映射轴**：C、H ｜ **现代机制**：间歇性senolytic→清除衰老细胞→功能健康改善
-- **人群 / 设计**：240名65-85岁成年人 ｜ Phase II RCT，D+Q间歇给药12个月（Mayo Clinic AFFIRM试验）
+- **映射轴**：C、H ｜ **现代机制**：间歇性senolytic→清除衰老细胞→代谢改善（在特定终点上）
+- **人群 / 设计**：60名62-88岁绝经后妇女 ｜ Phase II RCT，D+Q间歇给药
 - **主要结局**：
-  - p16INK4a + SASP因子：显著降低 
-  - 步行速度(gait speed)：显著改善 
-  - 握力(grip strength)：显著改善 
-  - 患者报告生活质量：显著改善 
-- **效应量**：多维功能改善（首个在普通衰老人群中的senolytic功能获益证据）
-- **证据等级**：L1
-- **基因通路**：Senescence, Physical_function, Quality_of_life
-- **融合判定链接**：C/H 轴弱项老年人群 → senolytic机制确认；食源槲皮素作日常候选
-- **来源**：Kirkland et al. Nature Medicine 2026, DOI: 10.1038/s41591-026-04102-8（AFFIRM Phase II RCT, 240人）
-- **理论作证**：senolytics从先导试验进入大规模RCT验证阶段，C轴获得L1级里程碑证据。首次证明清除衰老细胞可改善普通衰老人群的功能健康。
+  - 骨形成标志物（bone formation markers）：早期时点升高
+  - 骨降解标志物（bone degradation markers）：**未见明确改善**
+  - 步行速度 / 握力 / 生活质量：**本试验未测或未报告改善**
+- **效应量**：subtle effect（骨形成早期升高，骨降解未改善）；**不能作为"改善普通衰老人群功能健康"的证据**
+- **证据等级**：L1（RCT 设计本身有效，但结局方向为阴性/中性）
+- **基因通路**：Senescence, Bone_metabolism
+- **融合判定链接**：C 轴 senolytic 机制获得 RCT 级人体证据，但功能获益未在该试验中证实；槲皮素作日常候选仍应基于 CASE-005（Hickson 2019 先导）而非本条
+- **来源**：Farr JN, Atkinson EJ, Achenbach SJ, Volkman TL, Tweed AJ, Vos SJ, Ruan M, Sfeir J, Drake MT, Saul D, Doolittle ML, Bancos I, Yu K, Tchkonia T, LeBrasseur NK, Kirkland JL, Monroe DG, Khosla S. Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial. Nature Medicine 2024;30(9):2605-2612. DOI: 10.1038/s41591-024-03096-2
+- **理论作证**：senolytics 有真实 RCT 级人体证据（L1 设计强度），但结局为阴性/中性——这反而证明本项目"不夸大证据、如实引用"的方法学立场。C 轴 senolytic 机制的**功能获益**仍需后续 RCT 证实。
+- **勘误说明**（2026-10-12）：此前该案例误引为"Kirkland AFFIRM 240人 Phase II RCT，步速握力显著改善"，DOI 10.1038/s41591-026-04102-8 经 Crossref 核验不可解析，属 AI 幻觉生成的参考文献。已在本轮全面更正为真实的 Farr 2024 试验并如实描述其阴性/中性结局。
+
 
 ---
 
@@ -464,7 +465,7 @@
 - **证据等级**：L2
 - **基因通路**：Exosome_biogenesis, miRNA_signaling, PGC1A_signaling
 - **融合判定链接**：I 轴（外泌体-细胞通讯）弱项 → 运动为首选非用药干预；运动不仅激活线粒体(B轴)，还通过外泌体放大修复信号(I轴)
-- **来源**：Yu et al. J Nanobiotechnology 2026, DOI: 10.1186/s12967-026-08038-9（"HIIT诱导循环外泌体增加2-3倍"）; Wang et al. Front Physiol 2026, 16:1680485（运动外泌体×肌少症机制）; Jing et al. Front Cardiovasc Med 2026, 13:1863985（运动外泌体×心脏衰老）
+- **来源**：Yu et al. J Transl Med 2026, DOI: 10.1186/s12967-026-08038-9（"HIIT诱导循环外泌体增加2-3倍"）; Wang et al. Front Physiol 2026, 16:1680485（运动外泌体×肌少症机制）; Jing et al. Front Cardiovasc Med 2026, 13:1863985（运动外泌体×心脏衰老）
 - **理论作证**：把'导引/气血流通'机制化为外泌体胞间信号传导——运动的收益不局限于局部，而是通过外泌体实现全身性细胞间通讯。I 轴核心证据。
 
 ---
