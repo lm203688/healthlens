@@ -1,0 +1,2929 @@
+{
+  "book": "神农本草经",
+  "author": "孙星衍",
+  "dynasty": "清",
+  "source_file": "000-神农本草经.txt",
+  "method": "rule",
+  "entities": [
+    {
+      "type": "herb",
+      "name": "丹沙",
+      "property": "甘微寒",
+      "efficacy": "身体五脏百病",
+      "source_quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "云母",
+      "property": "甘平",
+      "efficacy": "身皮死肌",
+      "source_quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉泉",
+      "property": "甘平",
+      "efficacy": "五脏百病",
+      "source_quote": "内容：味甘，平。主五脏百病。柔筋强骨，安魂魄，长肌肉，益气，久服耐寒暑（《御览》引  耐字多作能，古通），不饥渴，不老神仙。人临死服五斤，死三年，色不变。一名玉",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石钟乳",
+      "property": "甘温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味甘，温。主咳逆上气，明目益精，安五脏，通百节，利九窍，下乳汁（《御览》引云∶  一名留公乳。《大观本》作一名公乳。黑字）。生山谷。  《吴普》曰∶钟乳，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "涅石",
+      "property": "酸寒",
+      "efficacy": "寒热泄利",
+      "source_quote": "内容：（旧作矾石，据郭璞注，《山海经》引作涅石）  味酸，寒。主寒热泄利，白沃阴蚀，恶创，目痛，坚筋骨齿。炼饵服之，轻身、不老、  增年。一名羽涅，生山谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "硝石",
+      "property": "苦寒",
+      "efficacy": "五脏积热",
+      "source_quote": "内容：味苦寒。主五脏积热，胃张闭，涤去蓄结饮食，推陈致新，除邪气。炼之如膏，久服轻  身（《御览》引云∶一名芒硝。《大观本》作黑字）。生山谷。  《吴普》曰∶硝",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "朴硝",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦寒。主百病，除寒热邪气，逐六腑积聚，结固留癖，能化七十二种石。炼饵服之，  轻身神仙。生山谷。  《吴普》曰∶朴硝石，神农、岐伯、雷公∶无毒，生益州，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "滑石",
+      "property": "甘寒",
+      "efficacy": "身热泄",
+      "source_quote": "内容：味甘，寒。主身热泄 ，女子乳难，癃闭。利小便，荡胃中积聚寒热，益精气。久服，  轻身、耐饥、长年。生山谷。  《名医》曰∶一名液石，一名共石，一名脱石，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "空青",
+      "property": "甘寒",
+      "efficacy": "眚盲耳聋",
+      "source_quote": "内容：味甘，寒。主眚盲耳聋。明目，利九窍，通血脉，养精神。久服，轻身、延年、不老。  能化铜、铁、铅、锡作金。生山谷。  《吴普》曰∶空青，神农、甘。一经∶酸。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "曾青",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味酸，小寒。主目痛，止泪，出风痹，利关节，通九窍，破症坚积聚。久服轻身  能化金、铜，生山谷。  《名医》曰∶生蜀中及越 。采无时。  案∶《管子·揆度篇",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "禹余粮",
+      "property": "甘寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，寒。主咳逆，寒热烦满，下（《御览》有痢字）赤白，血闭症瘕，大热。炼饵服  之，  不饥、轻身、延年。生池泽及山岛中。  《名医》曰∶一名白余粮，生东",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "太乙余食",
+      "property": "甘平",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味甘，平。主咳逆上气，症瘕、血闭、漏下，余邪气。久服，耐寒暑、不饥，轻身、飞  行千里、神仙（《御览》引作若神仙）。一名石脑，生山谷。  《吴普》曰∶太一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白石英",
+      "property": "甘微温",
+      "efficacy": null,
+      "source_quote": "内容：味甘，微温。主消渴，阴痿不足，咳逆（《御览》引作呕），胸膈间久寒，益气，除风湿  痹（《御览》引作阴淫痹）。久服，轻身（《御览》引作身轻健）、长年。生山谷",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫石英",
+      "property": "甘温",
+      "efficacy": "心腹咳逆",
+      "source_quote": "内容：味甘，温。主心腹咳逆（《御览》引作呕逆），邪气，补不足，女子风寒在子宫，绝孕十  年无子。久服，温中、轻身、延年。生山谷。  《吴普》曰∶紫石英，神农、扁",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白青",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：味甘，平。主明目，利九窍，耳聋，心下邪气，令人吐，杀诸毒、三虫。久服，通神明，  轻身、延年、不老。生山谷。  《吴普》曰∶神农∶甘，平；雷公∶酸，无毒。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "扁青",
+      "property": "甘平",
+      "efficacy": "丈夫内绝",
+      "source_quote": "内容：味甘，平。主目痛，明目，折跌，痈肿，金创不疗，破积聚，解毒瓦斯（《御览》引作辟  毒），利精神。久服，轻身、不老。生山谷。  《吴普》曰∶扁青，神农、雷公",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菖蒲",
+      "property": "辛温",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味辛，温。主风寒湿痹，咳逆上气，开心孔，补五脏，通九窍，明耳目，出声音。久服，  轻身、不忘、不迷或，延年。一名昌阳（《御览》引云∶生石上，一寸九节者，久",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鞠华",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主风，头眩肿痛，目欲脱，泪出，皮肤死肌，恶风湿痹。久服，利血气，轻  身、耐老、延年。一名节华，生川泽及田野。  《吴普》曰∶菊华，一名白华（《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "人参",
+      "property": "甘微寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，微寒。主补五脏，安精神，定魂魄，止惊悸，除邪气，明目、开心、益智。久服，  轻身、延年。一名人衔，一名鬼盖。生山谷。  《吴普》曰∶人参，一名土精，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天门冬",
+      "property": "苦平",
+      "efficacy": "诸暴风湿偏痹",
+      "source_quote": "内容：味苦，平。主诸暴风湿偏痹，强骨髓，杀三虫，去伏尸。久服，轻身、益气、延年。一  名颠勒（《尔雅》注引云∶门冬，一名满冬，今无文）。生山谷。  《名医》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘草",
+      "property": "甘平",
+      "efficacy": "五脏六腑寒热邪气",
+      "source_quote": "内容：味甘，平。主五脏六腑寒热邪气，坚筋骨，长肌肉，倍力，金创 ，解毒。久服，轻身、  延年（《御览》引云∶一名美草，一名密甘，《大观本》作黑字）。生川谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干地黄",
+      "property": "甘寒",
+      "efficacy": "折跌绝筋",
+      "source_quote": "内容：味甘，寒。主折跌绝筋，伤中，逐血痹，填骨髓，长肌肉，作汤，除寒热积聚，除痹，  生者尤良。久服，轻身、不老。一名地髓。生川泽。  《名医》曰∶一名 ，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "术",
+      "property": "苦温",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味苦，温。主风寒湿痹、死肌、痉、疸。止汗，除热，消食，作煎饵。久服，轻身、延  年、不饥。一名山蓟（《艺文类聚》引作山筋），生山谷。  《吴普》曰∶术，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛膝",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味苦，酸（《御览》作辛）。主寒（《御览》作伤寒）湿痿痹，四肢拘挛，膝痛不可屈伸，  逐血气，伤热火烂，堕胎。久服，轻身、耐老（《御览》作能老）。一名百倍，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "充蔚子",
+      "property": "辛微温",
+      "efficacy": "明目益精",
+      "source_quote": "内容：味辛，微温。主明目益精，除水气。久服轻身，茎主瘾疹痒，可作浴汤。一名益母，一  名益明，一名大札。生池泽。  《名医》曰∶一名贞蔚，生海滨，五月采。  案",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女萎",
+      "property": "甘平",
+      "efficacy": "中风暴热",
+      "source_quote": "内容：味甘，平。主中风暴热，不能动摇，跌筋结肉，诸不足。久服，去面黑 ，好颜色、润  泽，轻身、不老。生山谷。  《吴普》曰∶女萎，一名葳蕤，一名玉马，一名地节",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防葵",
+      "property": "辛寒",
+      "efficacy": "疝瘕肠泄",
+      "source_quote": "内容：味辛，寒。主疝瘕肠泄，膀胱热结，溺不下。咳逆，温疟，癫痫，惊邪狂走。久服，坚  骨髓、益气、轻身。一名梨盖。生川谷。  《吴普》曰∶房葵，一名梨盖，一名爵",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柴胡",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主心腹，去肠胃中结气，饮食积聚，寒热邪气，推陈致新。久服，轻身、明  目、益精。一名地熏。  《吴普》曰∶茈葫，一名山菜，一名茹草，神农、岐伯、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麦门冬",
+      "property": "甘平",
+      "efficacy": "心腹结气",
+      "source_quote": "内容：味甘，平。主心腹结气，伤中、伤饱，胃络脉绝，羸瘦短气。久服，轻身、不老、不饥。  生川谷及堤阪。  《吴普》曰∶一名马韭，一名舋冬，一名忍冬，一名忍陵，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "独活",
+      "property": "苦平",
+      "efficacy": "风寒所击",
+      "source_quote": "内容：味苦，平。主风寒所击，金疮，止痛，贲豚，痫痉，女子疝瘕。久服，轻身、耐  老。一名羌活，一名羌青，一名扩羌使者。生川谷。  《吴普》曰∶独活，一名胡王使者",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "车前子",
+      "property": "甘寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，寒，无毒。主气癃，止痛，利水道小便，除湿痹。久服，轻身、耐老。一名当道  （《御览》有云∶一名牛舌，《大观本》作牛遗，黑字）。生平泽。  《名医》曰",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木香",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味辛。主邪气，辟毒疫温鬼，强志。主淋露（《御览》引云∶主气不足。《大观本》作黑  字）。久服，不梦寤魇寐（《御览》引云∶一名密青。一名∶轻身，致神仙，《大",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "署豫",
+      "property": "甘温",
+      "efficacy": null,
+      "source_quote": "内容：（旧作薯蓣，《御览》作署豫，是）  味甘，温。主伤中，补虚羸，除寒热邪气，补中，益气力，长肌肉。长肌肉。久服，耳  目聪明，轻身、不饥、延年。一名山芋，生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薏苡仁",
+      "property": "甘微寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，微寒。主筋急，拘挛不可屈神，风湿痹，下气。久服，轻身、益气。其根，下三  虫。一名解蠡。生平泽及田野。  《名医》曰∶一名屋 ，一名起实，一名赣。生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽泻",
+      "property": "甘寒",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味甘，寒。主风寒湿痹，乳难。消水，养五脏，益气力，肥健。久服，耳目聪明，不饥、  延、轻身，面生光，能行水上。一名水泻，一名芒芋，一名鹄泻。生池泽。  《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "远志",
+      "property": "苦温",
+      "efficacy": "咳逆伤中",
+      "source_quote": "内容：味苦，温。主咳逆伤中，补不足，除邪气，利九窍，益智慧，耳目聪明，不忘，强志倍  力。久服，轻身、不老。叶名小草，一名棘菀（陆德明《尔雅音义》引作苋），一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙胆",
+      "property": null,
+      "efficacy": "骨间寒热",
+      "source_quote": "内容：味苦涩。主骨间寒热，惊痫邪气，续绝伤，定五脏，杀蛊毒。久服，益智、不忘，轻身、  耐老。一名陵游，生山谷。  《名医》曰∶生齐朐及冤句。二月、八月、十一月",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "细辛",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主咳逆，头痛脑动，百节拘挛，风湿。痹痛、死肌。久服，明目、利九窍，  轻身、长年。一名小辛。生山谷。  《吴普》曰∶细辛，一名细草（《御览》引云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石斛",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：味甘，平。主伤中，除痹，下气，补五脏虚劳、羸瘦，强阴。久服，浓肠胃、轻身、延  年。一名林兰（《御览》引云∶一名禁生。《观本》作黑字），生山谷。  《吴普",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "巴戟天",
+      "property": "辛微温",
+      "efficacy": "大风邪气",
+      "source_quote": "内容：味辛，微温。主大风邪气，阴痿不起，强筋骨，安五脏，补中，增志  《名医》曰∶生巴郡及下邳。二月、八月采根，阴干。     <目录>卷一\\上经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白英",
+      "property": "甘寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，寒。主寒热、八疽、消渴，补中益气。久服，轻身、延年。一名谷菜（元本误作  黑字），生山谷。  《名医》曰∶一名白草。生益州。春，采叶；夏，采茎；秋，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白蒿",
+      "property": "甘平",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味甘，平。主五脏邪气，风寒湿痹，补中益气，长毛发，令黑，疗心悬、少食、常饥。  轻身、耳目聪明、不老。生川泽。  《名医》曰∶生中山，二月采。  案∶《说",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "赤箭",
+      "property": "辛温",
+      "efficacy": "杀鬼精物",
+      "source_quote": "内容：味辛，温。主杀鬼精物、蛊毒恶气。久服，益气力，长阴、肥健，轻身、增年。一名离  母，一名鬼督邮。生川谷。  《吴普》曰∶换督邮，一名神草，一名阎狗。或生太",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "奄闾子",
+      "property": "苦微寒",
+      "efficacy": "五脏瘀血",
+      "source_quote": "内容：（旧作庵闾，《御览》作奄闾，是）  味苦，微寒。主五脏瘀血，腹中水气，胪张留热，风寒湿痹，身体诸痛。久服，轻身、  延年、不老。生川谷。  《吴普》曰∶奄",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "析子",
+      "property": "辛微温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，微温。主明目，目痛泪出，除痹，补五脏，益精光。久服，轻身，不老。一名蔑  析，一名大蕺，一名马辛。生川泽及道旁。  《吴普》曰∶析 ，一名析目，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓍实",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主益气，充肌肤，明目、聪慧、先知。久服，不饥、不老、轻身。生山谷。  《吴普》曰∶蓍实，味苦、酸，平，无毒，主益气，充肌肤，明目、聪慧、先知，久",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "赤芝",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主胸中结，益心气，补中，增智慧，不忘。久食，轻身、不老、延年、神仙。  一名丹芝。黑芝味咸，平。主癃，利水道，益肾气，通九窍，聪察。久食，轻身、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青芝",
+      "property": "酸平",
+      "efficacy": null,
+      "source_quote": "内容：味酸，平。主明目，补肝气，安精魂，仁恕，久食，轻身、不老、延年、神仙。一名龙  芝。     <目录>卷一\\上经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芝",
+      "property": "辛平",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味辛，平。主咳逆上气，益肺气，通利口鼻，强志意，勇悍，安魄。久食，轻身、不老、  延年、神仙。一名玉芝。     <目录>卷一\\上经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄芝",
+      "property": "甘平",
+      "efficacy": "心腹五邪",
+      "source_quote": "内容：味甘，平。主心腹五邪，益脾气，安神，忠信和乐。久食，轻身、不老、延年、神仙。  一名金芝。     <目录>卷一\\上经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫芝",
+      "property": "甘温",
+      "efficacy": null,
+      "source_quote": "内容：味甘，温。主耳聋，利关节，保神，益精气，坚筋骨，好颜色。久服，轻身、不老、延  年。一名木芝。生山谷（旧作六种，今并）。  《吴普》曰∶紫芝，一名木芝。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓝实",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主解诸毒，杀蛊 、注鬼、螫毒。久服，头不白、轻身。生平泽。  《名医》曰∶其茎叶可以染青，生河内。  案∶《说文》云∶ ，马蓝也。蓝，染青草也。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芎",
+      "property": "辛温",
+      "efficacy": "中风入脑",
+      "source_quote": "内容：味辛，温。主中风入脑，头痛，寒痹，筋挛缓急，金创，妇人血闭无子。生川谷。  《吴普》曰∶芎 （《御览》引云∶一名香果），神农、黄帝、岐伯、雷公∶辛，无毒，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蘼芜",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主咳逆，定惊气，辟邪恶，除蛊毒鬼注，去三虫，久服通神。一名薇芜。生  川泽。  《吴普》曰∶麋芜，一名芎 （《御览》）。  《名医》曰∶一名茳蓠",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄连",
+      "property": "苦寒",
+      "efficacy": "热气目痛",
+      "source_quote": "内容：味苦，寒。主热气目痛、 伤泣出，明目（《御览》引云∶主茎伤。《大观本》无），肠  ，腹痛下利，妇人阴中肿痛。久服，令人不忘。一名王连。生川谷。  《吴普》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "络石",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主风热、死肌、痈伤，口干、舌焦，痈肿不消，喉舌肿，水浆不干。  久服，轻身，明目、润泽、好颜色，不老、延年。一名石鲮。生川谷。  《吴普》曰∶落",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蒺藜子",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主恶血，破症结积聚，喉痹，乳难。久服，长肌肉，明目、轻身。一名旁通，  一名屈人，一名止行，一名豺羽，一名升推（《御览》引云∶一名君水香，《大观",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄",
+      "property": "甘微温",
+      "efficacy": "痈疽久败创",
+      "source_quote": "内容：味甘，微温。主痈疽久败创，排脓止痛，大风痢疾，五痔鼠 ，补虚，小儿百病。一名  戴糁。生山谷。  《名医》曰∶一名戴椹，一名独椹，一名芰草，一名蜀脂，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "肉松蓉",
+      "property": "甘微温",
+      "efficacy": "五劳七伤",
+      "source_quote": "内容：味甘，微温。主五劳七伤，补中，除茎中寒热痛，养五脏，强阴，益精气，多子，妇人  症瘕。久服，轻身。生山谷。  《吴普》曰∶肉苁蓉，一名肉松蓉，神农、黄帝∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防风",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温，无毒。主大风、头眩痛，恶风风邪，目盲无所见，风行周身，骨节疼痹（《御  览》作痛），烦满。久服，轻身。一名铜芸（《御览》作芒）。生川泽。  《吴",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蒲黄",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：味甘，平。主心腹、膀胱寒热，利小便，止血，消瘀血。久服，轻身、益气力，延年、  神仙。生池泽。  《名医》曰∶生河东，四月采。  案∶《玉篇》云∶ ，谓今",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "香蒲",
+      "property": "甘平",
+      "efficacy": "五脏心下邪气",
+      "source_quote": "内容：味甘，平。主五脏心下邪气，口中烂臭，坚齿，明目，聪耳。久服，轻身、耐老（《御  览》作能老）。一名睢（《御览》云睢蒲）。生池泽。  《吴普》曰∶睢，一名睢",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "续断",
+      "property": "苦微温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，微温。主伤寒，补不足，金创痈伤，折跌，续筋骨，妇人乳难（《御览》作乳痈，  云崩中、漏血，《大观本》作黑字）。久服，益气力。一名龙豆，一名属折。生山",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "漏芦",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味甘，咸寒。主皮肤热、恶创、疽痔、湿痹，下乳汁。久服，轻身益气，耳目聪  明，不老、延年。一名野兰。生山谷。  《名医》曰∶生乔山，八月采根，阴干。  案",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "营实",
+      "property": "酸温",
+      "efficacy": "痈疽恶创",
+      "source_quote": "内容：味酸，温。主痈疽恶创，结肉跌筋，败创，热气，阴蚀不疗，利关节。一名墙薇  ，一名墙麻，一名牛棘。生川谷。  《吴普》曰∶蔷薇，一名牛勒，一名牛膝，一名蔷薇",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天名精",
+      "property": "甘寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，寒。主瘀血、血瘕欲死、下血。止血，利小便。久服轻身、耐老。一名麦句姜，  一名虾蟆蓝，一名豕首。生川泽。  《名医》曰∶一名天门精，一名玉门精，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "决明子",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主青盲、目淫、肤赤、白膜、眼赤痛、泪出。久服，益精光（《太平御览》  引作理目珠精，理，即治字），轻身。生川泽。  《吴普》曰∶决明子，一名草决",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "丹参",
+      "property": "苦微寒",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味苦，微寒。主心腹邪气，肠鸣幽幽如走水，寒热积聚；破症除瘕，止烦满，益  气。一名却蝉草。生川谷。  《吴普》曰∶丹参，一名赤参，一名木羊乳，一名却蝉草。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茜根",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主寒湿，风痹，黄胆，补中。生川谷。  《名医》曰∶可以染绛。一名地血，一名茹 ，一名茅搜，一名茜。生乔山。二月  、三月采根，阴干。  案∶《说",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "飞廉",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主骨节热，胫重酸疼。久服，令人身轻。一名飞轻（已以上四字，原本黑字）。  生川泽。  《名医》曰∶一名伏兔，一名飞雉，一名木禾，生河内，正月采根",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "五味子",
+      "property": "酸温",
+      "efficacy": null,
+      "source_quote": "内容：味酸，温。主益气，咳逆上气，劳伤羸瘦。补不足，强阴，益男子精（《御览》引云∶  一名会及。《大观本》作黑字）。生山谷。  《吴普》曰∶五味子，一名元及（《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "旋华",
+      "property": "甘温",
+      "efficacy": "腹中寒热邪气",
+      "source_quote": "内容：味甘，温。主益气，去面 （《御览》作 ）黑，色媚好（《御览》作令人色悦泽）。其  根  味辛。主腹中寒热邪气，利小便。久服，不饥、轻身。一名筋根华，一名金",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兰草",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主利水道，杀蛊毒，辟不祥。久服，益气、轻身、不老、通神明。一名水香。  生池泽。  《名医》曰∶生大吴，四月、五月采。  案∶《说文》云∶兰，香",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇床子",
+      "property": "苦平",
+      "efficacy": "妇人阴中肿痛",
+      "source_quote": "内容：味苦，平。主妇人阴中肿痛，男子阳痿、湿痒，除痹气，利关节，癫痫恶创。久服，轻  身。一名蛇米。生川谷及田野。  《吴普》曰∶蛇床，一名蛇珠（《御览》）。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地肤子",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主膀胱热，利小便，补中，益精气。久服，耳目聪明、轻身、耐老。一名地  葵（《御览》引云∶一名地华，一名地脉。《大观本》无一名地华四字；脉，作麦，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "景天",
+      "property": "苦平",
+      "efficacy": "女人漏下赤白",
+      "source_quote": "内容：味苦，平。主大热、火创、身热烦，邪恶气。花，主女人漏下赤白，轻身、明目。一名  戒火，一名慎火（《御览》引云∶一名水母。《大观本》作黑字，水作火）。生川谷",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茵陈",
+      "property": "苦平",
+      "efficacy": "风湿寒热邪气",
+      "source_quote": "内容：（《御览》作茵蒿）  味苦，平。主风湿寒热邪气，热结、黄胆。久服，轻身、益气、耐老（《御览》作能老）。  生邱陵阪岸上。  《吴普》曰∶因尘，神农、岐伯、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杜若",
+      "property": "辛微温",
+      "efficacy": "胸胁下逆气",
+      "source_quote": "内容：味辛，微温。主胸胁下逆气，温中，风入脑户，头肿痛，多涕泪出。久服，益精（《艺  文类聚》引作益气）、明目、轻身。一名杜衡（《艺文类聚》引作蘅，非）。生川泽",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "沙参",
+      "property": "苦微寒",
+      "efficacy": "血积惊气",
+      "source_quote": "内容：味苦，微寒。主血积惊气，除寒热，补中，益肺气。久服利人。一名知母。生川谷。  《吴普》曰∶白沙参，一名苦心，一名识美，一名虎须，一名白参，一名志取，一名文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白兔藿",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主蛇虺，蜂虿， 狗，菜、肉、蛊毒，注。一名白葛。生山谷。  《吴普》曰∶白兔藿，一名白葛谷（《御览》）。  《名医》曰∶生交州。  案∶陶弘景云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "徐长卿",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主鬼物、百精、蛊毒，疫疾，邪恶气，温疟。久服，强悍、轻身。  一名鬼督邮。生山谷。  《吴普》曰∶徐长卿，一名石下长卿，神农、雷公∶辛。或生陇西",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙刍",
+      "property": "苦微寒",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味苦，微寒。主心腹邪气，小便不利，淋闭，风湿，鬼注，恶毒。久服，补虚  羸，轻身。耳目聪明，延年。一名龙须，一名草续断，一名龙珠。生山谷。  《吴普》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薇衔",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主风湿痹、历节痛，惊痫、吐舌、悸气，贼风，鼠 ，痈肿。一名糜衔。生  川泽。  《吴普》曰∶薇 ，一名糜痹，一名无颠，一名承膏，一名丑，一名无心",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "云实",
+      "property": "辛温",
+      "efficacy": "见鬼精物",
+      "source_quote": "内容：味辛，温。主泄利（旧作痢，《御览》作泄利）肠 ，杀虫蛊毒，去邪恶结气，止痛、  除热，平，主见鬼精物；多食，令人狂走。久服，轻身、通神明。生川谷。  《吴",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王不留行",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主金创，止血逐痛，出刺，除风痹内寒。久服，轻身、耐老（《御览》作能  老）、增寿。生山谷。  《吴普》曰∶王不留行，一名王不流行。神农∶苦，平；",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "升麻",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味甘，辛（《大观本》作甘，平）。主解百毒，杀百老物殃鬼，辟温疾、障邪毒蛊。久服，  不夭（《大观本》作∶主解百毒，杀百精老物殃鬼，辟瘟疫瘴气、邪气虫毒。此",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青",
+      "property": "甘寒",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味甘，寒。主五脏邪气，风寒湿痹，益气，补脑髓，坚筋骨。久服，耳目聪明、不饥、  不老、增寿。巨胜苗也。生川谷（旧在米谷部，非）。  《吴普》曰∶青襄，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "姑活",
+      "property": "甘温",
+      "efficacy": "大风邪气",
+      "source_quote": "内容：味甘，温。主大风邪气，湿痹寒痛。久服，轻身、益寿、耐老。一名冬葵子（旧在《唐  本草》中，无毒，今增）。  《名医》曰∶生河东。  案∶《水经注》解县引《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "别羁",
+      "property": "苦微温",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味苦，微温。主风寒湿痹，身重，四肢疼酸，寒邪历节痛。生川谷（旧在《唐本草》中，  无毒，今增）。  《名医》曰∶一名别枝，一名别骑，一名鳖羁。生蓝田。二月",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "屈草",
+      "property": null,
+      "efficacy": "胸胁下痛",
+      "source_quote": "内容：味苦。主胸胁下痛，邪气，腹间寒热阴痹。久服，轻身、益气、耐老（《御览》作补益、  能老）。生川泽（旧在《唐本草》中，无毒，今增）。  《名医》曰∶生汉中，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "淮木",
+      "property": "苦平",
+      "efficacy": "久咳上气",
+      "source_quote": "内容：味苦，平。主久咳上气，肠中虚羸，女子阴蚀、漏下赤白沃。一名百岁城中木。生山谷  （旧在《唐本草》中，无毒，今增）。  《吴普》曰∶淮木，神农、雷公∶无毒，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡桂",
+      "property": "辛温",
+      "efficacy": "上气咳逆",
+      "source_quote": "内容：味辛，温，主上气咳逆，结气，喉痹吐吸。利关节，补中益气。久服通神、轻身、不老。  生山谷。  《名医》曰∶生南海。  案∶《说文》云∶桂，江南木，百药之长",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菌桂",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主百病，养精神，和颜色，为诸药先聘通使。久服，轻身、不老，面生光华，  媚好常如童子。生山谷。  《名医》曰∶生交址桂林岩崖间，无骨，正圆如竹，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "松脂",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主疽，恶创，头疡，白秃，疥瘙风气。五脏，除热。久服，轻身、不老、延  年。一名松膏，一名松肪。生山谷。  《名医》曰∶生太山。六月采。  案∶《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "槐实",
+      "property": "苦寒",
+      "efficacy": "五内邪气热",
+      "source_quote": "内容：味苦，寒。主五内邪气热，止涎唾，补绝伤，五痔，火创，妇人乳瘕，子藏急痛。生平  泽。  《名医》曰∶生河南。  案∶《说文》云∶槐木也；《尔雅》云∶ ，槐",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柏实",
+      "property": "甘平",
+      "efficacy": "胸胁逆气",
+      "source_quote": "内容：味甘，平。主惊悸，安五脏，益气，除湿痹。久服，令人悦泽美色，耳目聪明，不饥、  不老，轻身、延年。生山谷。  《名医》曰∶生太山，柏叶尤良，田四时各依方面",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "榆皮",
+      "property": "甘平",
+      "efficacy": "大小便不通",
+      "source_quote": "内容：味甘，平。主大小便不通，利水道，除邪气。久服，轻身、不饥。其实尤良。一名零榆。  生山谷。  《名医》曰∶生 川，三月采皮，取白，曝干；八月采实。  案∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酸枣",
+      "property": "酸平",
+      "efficacy": "心腹寒热",
+      "source_quote": "内容：味酸，平。主心腹寒热，邪结气聚，四肢酸疼，湿痹。久服，安五脏，轻身、延年。生  川泽。  《名医》曰∶生河东，八月采实，阴干，四十日成。  案∶《说文》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主五脏、肠胃中结热，黄胆，肠痔，止泄利，女子漏下赤白，阴阳蚀创，一  名檀桓。生山谷。  《名医》曰∶生汉中及永昌。  案∶《说文》云∶檗，黄木",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干漆",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温，无毒。主绝伤，补中，续筋骨，填髓脑，安五脏，五缓六急，风寒湿痹。生  漆，去长虫。久服，轻身、耐老。生川谷。  《名医》曰∶生汉中，夏至后采，干",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "五加皮",
+      "property": null,
+      "efficacy": "心腹疝气",
+      "source_quote": "内容：孕辛，温。主心腹疝气，腹痛，益气疗 ，小儿不能行，疸创阴蚀。一名豺漆。  《名医》曰∶一名豺节，生汉中及冤句。五月、十月采茎，十月采根，阴干。  案∶《大",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓荆实",
+      "property": "苦微寒",
+      "efficacy": "筋骨间寒热痹",
+      "source_quote": "内容：味苦，微寒。主筋骨间寒热痹、拘挛，明目坚齿，利九窍，去白虫。久服，轻身、耐老，  小荆实亦等。生山谷。  《名医》曰∶生河间、南阳、冤句，或平寿都乡高岸上",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "辛夷",
+      "property": "辛温",
+      "efficacy": "五脏身体寒风",
+      "source_quote": "内容：味辛，温。主五脏身体寒风，头脑痛，面 。久服下气、轻身、明目、增年、耐老。一  名辛矧（《御览》作引），一名侯桃，一名房木。生川谷。  《名医》曰∶九月采",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑上寄生",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主腰痛，小儿背强，痈肿，安胎，充肌肤，坚发齿，长须眉。其实，明目、  轻身、通神。一名寄屑，一名寓木，一名宛童。生川谷。  《名医》曰∶一名茑。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杜仲",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主腰脊痛，补中，益精气，坚筋骨，强志，除阴下痒湿，小便余沥。久服，  轻身、耐老。一名思仙。生山谷。  《吴普》曰∶杜仲，一名木绵，一名思仲（《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女贞实",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主补中，安五脏，养精神，除百疾。久服，肥健、轻身、不老。生山谷。  《名医》曰∶生武陵，立冬采。  案∶《说文》云∶桢，刚木也。《东山经》云∶太",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木兰",
+      "property": "苦寒",
+      "efficacy": "身大热在皮肤中",
+      "source_quote": "内容：味苦，寒。主身大热在皮肤中，去面热、赤 、酒 ，恶风 疾，阴下痒湿。明耳目。  一名林兰。生川谷。  《名医》曰∶一名杜兰，皮似桂而香。生零陵及太山。十二",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蕤核",
+      "property": "甘温",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味甘，温，主心腹邪气，明目，目赤痛伤泪出。久服，轻身、益气、不饥。生川谷。  《吴普》曰∶蕤核，一名 。神农、雷公∶甘，平，无毒。生池泽。八月采。补中，强",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橘柚",
+      "property": "辛温",
+      "efficacy": "胸中瘕热逆气",
+      "source_quote": "内容：味辛，温。主胸中瘕热逆气，利水谷。久服，去臭、下气、通神。一名橘皮。生川谷（旧  在果部，非）。  《名医》曰∶生南山、江南。十月采。  案∶《说文》云∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "发",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主五癃，关格不通，利小便水道，疗小儿痫、大人痉，仍自还神化。  案∶《说文》云∶发根也， 也， 也，或作 。《毛诗》云∶不屑， 也，《笺  》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙骨",
+      "property": "甘平",
+      "efficacy": "心腹鬼注",
+      "source_quote": "内容：味甘，平。主心腹鬼注，精物老魁，咳逆，泄利脓血，女子漏下症瘕坚结，小儿热气惊  痫。齿∶主小儿、大人惊痫 疾狂走，心下结气，不能喘息，诸痉，杀精物。久服，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麝香",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主辟恶气，杀鬼精物，温疟，蛊毒，痫痉，去三虫。久服除邪，不梦寤厌寐。  生川谷。  《名医》曰∶生中台及益州、雍州山中，春分取之。生者益良。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛黄",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主惊痫，寒热热盛狂痉，除邪逐鬼。生平泽。  《吴普》曰∶牛黄，味苦，无毒。牛出入呻（《御览》作鸣吼）者，有之。夜有光（《御  览》作夜视有光），",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "熊脂",
+      "property": "甘微寒",
+      "efficacy": "风痹不仁",
+      "source_quote": "内容：味甘，微寒。主风痹不仁，筋急，五脏腹中积聚，寒热羸瘦，头疡白秃，面 。久服，  强志、不饥、轻身。生山谷。  《名医》曰∶生雍州，十一月取。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白胶",
+      "property": "甘平",
+      "efficacy": "伤中劳绝",
+      "source_quote": "内容：味甘，平。主伤中劳绝，腰痛，羸瘦，补中益气，女人血闭无子，止痛、安胎。久服，  轻身、延年。一名鹿角胶。  《名医》曰∶生云中，煮鹿角作之。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "阿胶",
+      "property": "甘平",
+      "efficacy": "心腹内崩",
+      "source_quote": "内容：味甘，平。主心腹内崩，劳极，洒洒如疟状，腰腹痛，四肢酸疼，女子下血，安胎。久  服，轻身、益气，一名傅致胶。  《名医》曰∶生平东郡，煮牛皮作之。出东阿。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "丹雄鸡",
+      "property": "甘微温",
+      "efficacy": "女人崩中漏下",
+      "source_quote": "内容：味甘，微温。主女人崩中漏下，赤白沃，补虚温中，止血，通神，杀毒，辟不祥。头∶  主杀鬼，东门上者尤良，肪∶主耳聋。肠∶主遗溺。 裹黄皮∶主泄利。尿白∶主消",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雁肪",
+      "property": "甘平",
+      "efficacy": "风挛拘急",
+      "source_quote": "内容：味甘，平。主风挛拘急，偏枯，气不通利。久服，益气、不饥、轻身、耐老。一名 肪。  生池泽。  《吴普》曰∶雁肪，神农、岐伯、雷公∶甘，无毒（《御览》有 肪",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石蜜",
+      "property": "甘平",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味甘，平。主心腹邪气，诸惊痉痫，安五脏，诸不足，益气补中，止痛解毒，除众病，  和百药。久服，强志、轻身、不饥、不老。一名石饴。生山谷。  《吴普》曰∶石",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜂子",
+      "property": "甘平",
+      "efficacy": "心腹复满痛",
+      "source_quote": "内容：味甘，平。主风头，除蛊毒，补虚羸伤中。久服，令人光泽、好颜色，不老，大黄蜂子∶  主心腹复满痛，轻身益气。土蜂子∶主痈肿。一名蜚零。生山谷。  《名医》曰",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜜蜡",
+      "property": "甘微温",
+      "efficacy": "下利脓血",
+      "source_quote": "内容：味甘，微温。主下利脓血，补中，续绝伤金创。益气、不饥、耐老。生山谷。  《名医》曰∶生武都蜜房木石间。  案∶《西京杂记》云∶南越王献高帝蜜蜡二百枚。《玉",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡蛎",
+      "property": "咸平",
+      "efficacy": "伤寒寒热",
+      "source_quote": "内容：味咸，平。主伤寒寒热，温疟洒洒，惊恚怒气，除拘缓鼠 ，女子带下赤白。久服，强  骨节、杀邪气、延年。一名蛎蛤。生池泽。  《名医》曰∶一名牡蛤。生东海。采",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龟甲",
+      "property": "咸平",
+      "efficacy": "漏下赤白",
+      "source_quote": "内容：味咸，平。主漏下赤白，破症瘕、 疟，五痔、阴蚀，湿痹，四肢重弱，小儿囟不合。  久服，轻身、不饥。一名神屋。生池泽。  《名医》曰∶生南海及湖水中。采无时",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑螵蛸",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主伤中，疝瘕，阴痿，益精生子，女子血闭腰痛，通五淋，利小便水道。一  名蚀疣。生桑枝上。采，蒸之。  《吴普》曰∶桑蛸条，一名（今本脱此二字）蚀",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海蛤",
+      "property": "苦平",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味苦，平。主咳逆上气，喘息烦满，胸痛寒热。一名魁蛤。  《吴普》曰∶海蛤，神农∶甘，岐伯∶甘；扁鹊∶咸。大节头有文，文如磨齿，采无时  《名医》曰∶生南海",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "文蛤",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：主恶疮，蚀（《御览》作除阴蚀）五痔（《御览》下有大孔出血。《大观》本作黑字）。  《名医》曰∶生东海，表有文，采无时。  蠡鱼（《初学记》引作鳢鱼） 味苦",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲤鱼胆",
+      "property": "苦寒",
+      "efficacy": "目热赤痛青盲",
+      "source_quote": "内容：味苦，寒。主目热赤痛青盲，明目。久服，强悍、益志气志气。生池泽。  《名医》曰∶生九江，采无时。  案∶《说文》云∶鲤， 也； ，鲤也。《尔雅》云∶鲤 。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藕实茎",
+      "property": "甘平",
+      "efficacy": "补中养神",
+      "source_quote": "内容：味甘，平。主补中养神，益气力，除百疾。久服，轻身、耐老、不饥、延年。  一名水芝丹。生池泽。  《名医》曰∶一名莲。生汝南。八月采。  案∶《说文》云∶藕",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大枣",
+      "property": "甘平",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味甘，平。主心腹邪气，安中养脾，肋十二经，平胃气，通九窍，补少气、少津液、身  中不足，大惊，四肢重，和百药。久服，轻身、长年。叶覆麻黄，能令出汗。生平泽",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葡萄",
+      "property": "甘平",
+      "efficacy": "筋骨湿痹",
+      "source_quote": "内容：味甘，平。主筋骨湿痹，益气、倍力、强志，令人肥健、耐饥、忍风寒。久食，轻身、  不老、延年。可作酒。生山谷。  《名医》曰∶生陇西五原敦煌。  案∶《史纪",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓬",
+      "property": "酸平",
+      "efficacy": null,
+      "source_quote": "内容：味酸，平。主安五脏，益精气，长阴令坚，强志倍力，有子。久服，轻身、不老一名  复盆。生平泽。  《吴普》曰∶ 盆，一名决盆（《御览》）。《甄氏本草》曰∶复",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸡头实",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主湿痹，腰脊膝痛，补中，除暴疾，益精气，强志，令耳目聪明。久服，轻  身、不饥、耐老、神仙。一名雁啄实。生池泽。  《名医》曰∶一名芡，生雷泽。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡麻",
+      "property": "甘平",
+      "efficacy": "伤中虚羸",
+      "source_quote": "内容：味甘，平。主伤中虚羸，补五内（《御览》作脏），益气力，长肌肉，填髓脑。久服，轻  身、不老。一名巨胜。叶，名青 。生川泽。  《吴普》曰∶胡麻，一名方金。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麻贲",
+      "property": "辛平",
+      "efficacy": "五劳七伤",
+      "source_quote": "内容：味辛，平。主五劳七伤，利五脏，下血，寒气。多食，令人见鬼狂走。久服，通神明、  轻身。一名麻勃。麻子∶味甘，平。主补中益气，肥健、不老、神仙。生川谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "冬葵子",
+      "property": "甘寒",
+      "efficacy": "五脏六腑寒热",
+      "source_quote": "内容：味甘，寒。主五脏六腑寒热、羸瘦、五癃，利小便。久服，坚骨、长肌肉、轻  《名医》曰∶生少室山。十二月采之。  案∶《说文》云∶KT ，古文终，葵菜也。《广",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苋实",
+      "property": "甘寒",
+      "efficacy": null,
+      "source_quote": "内容：味甘，寒。主青盲，明目，除邪，利大小便，去寒热。久服，益气力、不饥、轻身。一  名马苋。  《名医》曰∶一名莫实。生淮阳及田中，叶如蓝。十一月采。  案∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瓜蒂",
+      "property": "苦寒",
+      "efficacy": "大水身面四肢浮肿",
+      "source_quote": "内容：味苦，寒。主大水身面四肢浮肿，下水，杀蛊毒，咳逆上气，及食诸果，病在胸腹中，  皆吐下之。生平泽。  《名医》曰∶生蒿高。七月七日采，阴干。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瓜子",
+      "property": "甘平",
+      "efficacy": "令人阅泽",
+      "source_quote": "内容：味甘，平。主令人阅泽，好颜色，益气不饥。久服，轻身、耐老。一名水芝（《御览》  作土芝）。生平泽。  《吴普》曰∶瓜子，一名瓣。七月七日采，可作面脂（《御",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦菜",
+      "property": "苦寒",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味苦，寒。主五脏邪气，厌谷，胃痹。久服，安心益气，聪察少卧，轻身、耐老。一名  荼草，一名选。生川谷。  《名医》曰∶一名游冬。生益州山陵道旁，凌冬不死。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雄黄",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平、寒。主寒热，鼠 恶创，疽痔死肌，杀精物、恶鬼、邪气、百虫毒，胜五兵。  炼食之，轻身、神仙。一名黄食石。生山谷。  《吴普》曰∶雄黄，神农∶苦。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石流黄",
+      "property": "酸温",
+      "efficacy": "妇人阴蚀",
+      "source_quote": "内容：（流，旧作硫。《御览》引作流，是）  味酸，温。主妇人阴蚀，痈痔恶血，坚筋骨，除头秃，能化金银铜铁奇物（《御览》引  云∶石流  《吴普》曰∶硫黄，一名石",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雌黄",
+      "property": "辛平",
+      "efficacy": "恶创头秃痂疥",
+      "source_quote": "内容：味辛，平。主恶创头秃痂疥，杀毒虫虱，身痒，邪气、诸毒。炼之。久服，轻身、增年、  不老。生山谷。  吴普曰∶磁石，一名磁君。  《名医》曰∶生武都，与雄黄",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水银",
+      "property": "辛寒",
+      "efficacy": "疥 痂疡",
+      "source_quote": "内容：味辛，寒。主疥 痂疡、白秃，杀皮肤中虱，堕胎，除热，杀金、银、铜、锡毒。熔化  还复为丹，久服，神仙、之死。生平土。  《名医》曰∶一名汞。生符陵，出于丹",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石膏",
+      "property": "辛微寒",
+      "efficacy": "中风寒热",
+      "source_quote": "内容：味辛，微寒。主中风寒热，心下逆气惊喘，口干苦焦，不能息，腹中坚痛，除邪鬼，产  乳，金创。生山谷。  《名医》曰∶一名细石。生齐山及齐卢山、鲁蒙山。采无时",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "磁石",
+      "property": "辛寒",
+      "efficacy": "周痹风湿",
+      "source_quote": "内容：味辛，寒。主周痹风湿，肢节中痛，不可持物，洗洗酸消，除大热烦满及耳聋。一名元  石，生山谷。  《吴普》曰∶磁石，一名磁君。  《名医》曰∶一名处石。生太",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "凝水石",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主身热，腹中积聚、邪气，皮中如火烧，烦满。水饮之，久服，不饥。一名  白水石。生山谷。  《吴普》曰∶神农∶辛；岐伯、医和、扁鹊∶甘，无毒；李氏",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "阳起石",
+      "property": "咸微温",
+      "efficacy": "崩中漏下",
+      "source_quote": "内容：味咸，微温。主崩中漏下，破子藏中血，症瘕结气，寒热腹痛，无子，阴痿不起（《御  览》引作阴阳不合），补不足（《御览》引有句挛二字）。一名白石。生山谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "孔公孽",
+      "property": "辛温",
+      "efficacy": "伤食不化",
+      "source_quote": "内容：味辛，温。主伤食不化，邪结气，恶创，疽 琅邪，利九窍，下乳汁（《御览》引云∶  一名通石。《大观本》作黑字）。生山谷。  《吴普》曰∶孔公孽，神农∶辛；岐",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "殷孽",
+      "property": "辛温",
+      "efficacy": "烂伤瘀血",
+      "source_quote": "内容：味辛，温。主烂伤瘀血，泄利寒热，鼠寒 ，症瘕结气。一名姜石。生山谷（按∶此当  与孔公孽为一条）。  《名医》曰∶钟乳根也。生越国，又梁山及南海，采无时。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "铁精",
+      "property": "辛平",
+      "efficacy": "风热恶创",
+      "source_quote": "内容：平，主明目，化铜。铁落∶味辛，平。主风热恶创，疡疽创痂，疥气在皮肤中。铁∶主  坚肌耐痛。生平泽（旧为三条，今并）。  《名医》曰∶铁精，一名铁液。可以染",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "理石",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主身热，利胃解烦，益精明目，破积聚，去三虫。一名石立制石。生山谷。  《名医》曰∶一名饥石，如石膏，顺理而细。生汉中及卢山。采无时。     <",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "长石",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主身热，四肢寒厥，利小便，通血脉，明目，去翳眇，下三虫，杀蛊毒。久  服，不饥。一名方石。生山谷。  《吴普》曰∶长石，一名方石，一名直石。生长",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "肤青",
+      "property": "辛平",
+      "efficacy": "蛊毒及蛇",
+      "source_quote": "内容：味辛，平。主蛊毒及蛇、菜、肉诸毒，恶创。生川谷。  《名医》曰∶一名推青，一名推石，生益州。  案∶陶弘景云∶俗方及《仙经》，并无用此者，亦相与不复识。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干姜",
+      "property": "辛温",
+      "efficacy": "胸满咳逆上气",
+      "source_quote": "内容：味辛，温。主胸满咳逆上气，温中止血，出汗，逐风湿痹，肠 ，下利。生者，尤良。  久服，去臭气、通神明。生川谷。  《名医》曰∶生楗为及荆、扬州。九月采。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "耳实",
+      "property": "甘温",
+      "efficacy": "风头寒痛",
+      "source_quote": "内容：味甘，温。主风头寒痛，风湿周痹，四肢拘挛痛，恶肉死肌。久服益气，耳目聪明，强  志轻身。一名胡 ，一名地葵。生  《名医》曰∶一名 ，一名常思，生安陆及六",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葛根",
+      "property": "甘平",
+      "efficacy": "下利十岁以上",
+      "source_quote": "内容：味甘，平。主消渴，身大热，呕吐，诸痹，起阴气，解诸毒，葛谷，主下利十岁以上。  一名鸡齐根。生种谷。  《吴普》曰∶葛根，神农∶甘。生太山（《御览》）。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栝蒌根",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主消渴，身热烦满，大热，补虚安中，续绝伤。一名地楼。生川谷及山阴。  《吴普》曰∶栝蒌，一名泽巨，一名泽姑（《御览》）。  《名医》曰∶一名果裸",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦参",
+      "property": "苦寒",
+      "efficacy": "心腹结气",
+      "source_quote": "内容：味苦，寒。主心腹结气，症瘕积聚，黄胆，溺有余沥，逐水，除痈肿，补中明目，止泪。  一名水槐，一名苦识。生山谷及田野。  《名医》曰∶一名地槐，一名菟槐，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "当归",
+      "property": "甘温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味甘，温。主咳逆上气，温疟、寒热，洗在皮肤中（《大观本》，洗音癣），妇人漏下绝  子，诸恶创疡、金创。煮饮之。一名干归。生川谷。  《吴普》曰∶当归，神农",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麻黄",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主中风，伤寒头痛，温疟，发表出汗，去邪热气，止咳逆上气，除寒热，破  症坚积聚。一名龙沙。  《吴普》曰∶麻黄，一名卑相，一名卑坚。神农、雷公∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "通草",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》作草）  味辛，平。主去恶虫，除脾胃寒热，通利九窍、血脉、关节，令人不忘。一名附支。生  山谷。  《吴普》曰∶通草，一名丁翁，一名附支。神农、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芍药",
+      "property": "苦平",
+      "efficacy": "邪气腹痛",
+      "source_quote": "内容：味苦，平。主邪气腹痛，除血痹，破坚积、寒热、疝瘕，止痛，利小便，益气（《艺文  类聚》引云∶一名白术。《大观本》作黑字）。生川谷及  《吴普》曰∶芍药，神",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蠡实",
+      "property": "甘平",
+      "efficacy": "皮肤寒热",
+      "source_quote": "内容：味甘，平。主皮肤寒热，胃中热气，寒湿痹，坚筋骨，令人嗜食。久服，轻身。花、叶∶  去白虫。一名剧草，一名三坚，一名豕首。生川谷。  《吴普》曰∶蠡实，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瞿麦",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主关格，诸癃结，小便不通，出刺，决痈肿，明目去翳，破胎堕子，下闭血。  一名巨句麦。生川谷。  《名医》曰∶一名大菊，一名大兰。生大山。立秋采实",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "元参",
+      "property": "苦微寒",
+      "efficacy": "腹中寒热积聚",
+      "source_quote": "内容：味苦，微寒。主腹中寒热积聚，女子产乳余疾，补肾气，令人目明。一名重台。  《吴普》曰∶元参，一名鬼藏，一名正马，一名重台，一名鹿腹，一名端，一名元台，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦艽",
+      "property": "苦平",
+      "efficacy": "寒热邪气",
+      "source_quote": "内容：味苦，平。主寒热邪气，寒湿，风痹，肢节痛，下水，利小便。生山谷。  《名医》曰∶生飞乌山。二月、八月采根，曝干。  案∶《说文》云∶KT ，草之相 者，《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "百合",
+      "property": "甘平",
+      "efficacy": "邪气腹张",
+      "source_quote": "内容：味甘，平。主邪气腹张，心痛，利大小便，补中益气。生川谷。  《吴普》曰∶百合，一名重迈，一名中庭。生冠朐及荆山（《艺文类聚》引云∶一名  重匡）。  《名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "知母",
+      "property": "苦寒",
+      "efficacy": "消渴热中",
+      "source_quote": "内容：味苦，寒。主消渴热中，除邪气，肢体浮肿，下水，补不足，益气。一名 母，一名连  母，一名野蓼，一名地参，一名水参，一名水浚，一名货母，一名 母。生川谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贝母",
+      "property": "辛平",
+      "efficacy": "伤寒烦热",
+      "source_quote": "内容：味辛，平。主伤寒烦热，淋沥，邪气，疝瘕，喉痹，乳难，金创，风痉。一名空草。  《名医》曰∶一名药实，一名苦花，一名苦菜，一名商（ 字）草，一名勤母。生晋地",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芷",
+      "property": "辛温",
+      "efficacy": "女人漏下赤白",
+      "source_quote": "内容：味辛，温。主女人漏下赤白，血闭，阴肿，寒热，风头侵目泪出。长肌肤，润泽，可作  面脂。一名芳香。生川谷。  《吴普》曰∶白芷，一名 ，一名苻离，一名泽芬，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "淫羊藿",
+      "property": "辛寒",
+      "efficacy": "阳痿绝伤",
+      "source_quote": "内容：味辛，寒。主阳痿绝伤，茎中痛，利小便，益气力，强志。一名刚前。生山谷。  《吴普》曰∶淫羊藿，神农、雷公∶辛；李氏∶小寒。坚骨（《御览》）。  《名医》曰",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄芩",
+      "property": "苦平",
+      "efficacy": "诸热黄胆",
+      "source_quote": "内容：味苦，平。主诸热黄胆，肠 泄利，逐水，下血闭，恶创，恒蚀火疡。一名腐肠。生川  谷。  《吴普》曰∶黄芩，一名黄文，一名妒妇，一名虹胜，一名红芩，一名印头",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "狗脊",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主腰背，强关机，缓急，周痹寒湿，膝痛。颇利老人。一  《吴普》曰∶狗脊，一名狗青，一名赤节。神农，桐君、黄帝、岐伯、雷公  、扁鹊∶甘，无毒；李",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙芮",
+      "property": "苦平",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味苦，平。主风寒湿痹，心腹邪气，利关节，止烦满。久服，轻身、明目、不老。一名  鲁果能（《御览》作食果），一名地椹。生川泽石边。  《吴普》曰∶龙芮，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茅根",
+      "property": "甘寒",
+      "efficacy": "劳伤虚羸",
+      "source_quote": "内容：味甘，寒。主劳伤虚羸，补中益气，除瘀血、血闭、寒热，利小便。其苗，主下水。一  名兰根，一名茹根。生山谷、田野。  《名医》曰∶一名地管，一名地筋，一名兼",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫菀",
+      "property": "苦温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味苦，温。主咳逆上气，胸中  《吴普》曰∶紫菀，一名青苑（《御览》）。  《名医》曰∶一名紫茜，一名青苑。生房陵及真定邯郸。二月、三月采根，阴干  案∶《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫草",
+      "property": "苦寒",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味苦，寒。主心腹邪气，五疸，补中益气，利九窍，通水道。一名紫丹，一名紫芙（《御  览》引云∶一名地血。《大观本》无文）。生川谷。  《吴普》曰∶紫草节赤。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "败酱",
+      "property": "苦平",
+      "efficacy": "暴热火创",
+      "source_quote": "内容：味苦，平。主暴热火创、赤气，疥瘙，疸痔，马鞍热气。一名鹿肠。生川谷。  《名医》曰∶一名鹿首，一名马草，一名泽败，生江夏，八月采根，曝干。  案∶《范子计",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白藓",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主头风，黄胆，咳逆，淋沥，女子阴中肿痛，湿痹死肌，不可屈伸、起止、  行步。生川谷。  《名医》曰∶生上谷及冤句。四月、五月采根，阴干。  案∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酸酱",
+      "property": "酸平",
+      "efficacy": null,
+      "source_quote": "内容：味酸，平。主热烦满，定志益气，利水道。产难，吞其实立产。一名醋酱。生川泽。  《吴普》曰∶酸酱，一名酢酱（《御览》）。  《名医》曰∶生荆楚及人家田园中。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫参",
+      "property": null,
+      "efficacy": "心腹积聚",
+      "source_quote": "内容：味苦，辛，寒。主心腹积聚，寒热邪气，通九窍，利大小便。一名牡蒙。生山谷。  《吴普》曰∶伏蒙，一名紫参，一名泉戎，一名音腹，一名伏菟，一名重伤。神  农、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "本",
+      "property": "辛温",
+      "efficacy": "妇人疝瘕",
+      "source_quote": "内容：味辛，温。主妇人疝瘕，阴中寒、肿痛，腹中急，除风头痛，长肌肤，悦颜色。一名鬼  卿，一名地新。生山谷。  《名医》曰∶一名微茎，生崇山，正月、二月采根，曝",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石苇",
+      "property": "苦平",
+      "efficacy": "劳热邪气",
+      "source_quote": "内容：味苦，平。主劳热邪气，五癃闭不通，利小便水道。一名石 。生山谷石上。  《名医》曰∶一名石皮，生华阴山谷。不闻水及人声者，良。二月采叶，阴干。     <",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "萆",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主腰背痛，强骨节，风寒湿、周痹，恶创不瘳，热气。生山谷。  《名医》曰∶一名赤节。生真定。八月采根，曝干。  案∶《博物志》云∶菝 ，与萆 相乱",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白薇",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主暴中风，身热肢满，忽忽不知人，狂惑，邪气，寒热酸 ，温疟洗洗，发  作有时。生川谷。  《名医》曰∶一名白幕，一名薇草，一名春草，一名骨美。生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水萍",
+      "property": "辛寒",
+      "efficacy": "暴热身痒",
+      "source_quote": "内容：味辛，寒。主暴热身痒（《艺文类聚》《初学记》痒，此是），下水气，胜酒，长须发（《艺  文类聚》作乌发），消渴。久服，轻身。一名水华（《艺文类聚》引云∶一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王瓜",
+      "property": "苦寒",
+      "efficacy": "消渴内痹瘀血",
+      "source_quote": "内容：味苦，寒。主消渴内痹瘀血，月闭，寒热，酸疼，益气，俞聋。一名土瓜。生平泽。  《名医》曰∶生鲁地田野及人家坦墙间。三月采根，阴干。  案∶《说文》云∶ ，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地榆",
+      "property": "苦微寒",
+      "efficacy": "妇人乳 痛",
+      "source_quote": "内容：味苦，微寒。主妇人乳 痛，七伤、带下病，止痛，除恶肉，止汗，疗金创（《御览》  上云∶主消酒。又云∶明目。《大观本草》消酒作黑字，而无明目）。生山谷。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海藻",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主瘿瘤气，颈下核，破散结气、痈肿、症瘕、坚气，腹中上下鸣，下十二水  肿，一名落首。生池泽。  《名医》曰∶一名 。生东海。七月七日采，曝干。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽兰",
+      "property": "苦微温",
+      "efficacy": "乳妇内衄",
+      "source_quote": "内容：味苦，微温。主乳妇内衄（《御览》作衄血），中风余疾，大腹水肿，身面四肢浮肿，骨  节中水，金创、痈肿、创脓。一名虎兰，一名龙枣。生大泽傍。  《吴普》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防己",
+      "property": "辛平",
+      "efficacy": "风寒温疟",
+      "source_quote": "内容：味辛，平。主风寒温疟，热气诸痈，除邪，利大小便。一名解离（《御览》作石解引云∶  通腠理，利九窍。《大观本》六字黑）。生川谷。  《吴普》曰∶木防己，一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "款冬花",
+      "property": "辛温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味辛，温。主咳逆上气，善喘、喉痹，诸惊痫，寒热邪气。一名橐吾（《御览》作石），  一名颗东（《御览》作颗冬），一名虎须，一名免奚。生山谷。  《吴普》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡丹",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味苦辛，寒。主寒热，中风、螈 、痉，惊痫邪气，除症坚，瘀血留舍肠胃，安五脏，  疗痈创。一名鹿韭，一名鼠姑。生山谷。  《吴普》曰∶牡丹，神农、岐伯∶辛；",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马先蒿",
+      "property": "平",
+      "efficacy": "寒热鬼注",
+      "source_quote": "内容：味平。主寒热鬼注，中风湿痹，女子带下病，无子。一名马尿蒿。生川泽。  《名医》曰∶生南阳。  案∶《说文》云∶蔚，牡蒿也。《广雅》云∶因尘，马先也。《尔雅",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "积雪草",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主大热，恶创，痈疽，浸淫赤 ，皮肤赤，身热。生川谷。  《名医》曰∶生荆州。  案∶陶弘景云∶荆楚人以叶如钱，谓为地钱草。徐仪《药图》名连钱草。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女菀",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》作苑）  味辛，温。主风洗洗，霍乱泄利，肠鸣，上下无常处，惊痫，寒  《吴普》曰∶女菀，一名白菀，一名识女苑（《御览》）。  《名医》曰∶一名白",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王孙",
+      "property": "苦平",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味苦，平。主五脏邪气，寒湿痹，四肢疼酸，膝冷痛。生川谷。  《吴普》曰∶黄孙，一名王孙，一名蔓延，一名公草，一名海孙。神农、雷公∶苦，无  毒；黄帝∶甘，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀羊泉",
+      "property": "苦微寒",
+      "efficacy": "头秃恶创",
+      "source_quote": "内容：味苦，微寒。主头秃恶创，热气疥，瘙痂，癣虫，疗龋齿。生川谷。  《名医》曰∶一名羊泉，一名饴。生蜀郡。  案∶《广雅》云∶ 姑，艾但鹿何，泽     <目",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "爵床",
+      "property": "咸寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，寒。主腰脊痛，不得着床，俯仰艰难，除热，可作浴汤。生川谷及田野。  《吴普》曰∶爵床，一名爵卿（《御览》）。  《名医》曰∶生汉中。  案∶别本注云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "假苏",
+      "property": "辛温",
+      "efficacy": "寒热鼠",
+      "source_quote": "内容：味辛，温。主寒热鼠 ，瘰 生创，破结聚气，下瘀血，除湿痹。一名鼠 。生川泽（旧  在菜部，今移）。  《吴普》曰∶假苏，一名鼠实，一名姜芥也（《御览》），",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑根白皮",
+      "property": "甘寒",
+      "efficacy": "除寒热出汗",
+      "source_quote": "内容：味甘，寒。主伤中、五劳六极、羸瘦，崩中脉绝，补虚益气。叶∶主除寒热出汗。桑耳  黑者∶主女子漏下赤白汗，血病，症瘕积聚，阴补，阴阳寒热，无子。五木耳名糯，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "竹叶",
+      "property": "苦平",
+      "efficacy": "咳逆上气溢",
+      "source_quote": "内容：味苦，平。主咳逆上气溢，筋急恶疡，杀小虫。根∶作汤，益气止渴，补虚下气。汁∶  主风 。实∶通神明，轻身、益气。  《名医》曰∶生益州。  案∶《说文》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "吴茱萸",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》引无吴字，是）  味辛，温。主温中，下气，止痛，咳逆，寒热，除湿、血痹，逐风邪，开凑（旧作腠，  《御  览》作涛，是）理。根∶杀三虫。一名 ，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "卮子",
+      "property": "苦寒",
+      "efficacy": "五内邪气",
+      "source_quote": "内容：（旧作栀，《艺文类聚》及《御览》引作支，是）  味苦，寒。主五内邪气，胃中热气，面赤、酒泡、 鼻，白赖、赤癞，创疡。一名木丹。  生川谷。  《名医》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芜荑",
+      "property": null,
+      "efficacy": "五内邪气",
+      "source_quote": "内容：味辛。主五内邪气，散皮肤骨节中淫淫温行毒，去三虫，化食。一名无姑，一名殿塘（《  御览》引云∶逐寸白，散腹中温温喘息。《大观本》作黑字）。生川谷。  《名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "枳实",
+      "property": "苦寒",
+      "efficacy": "大风在皮肤中",
+      "source_quote": "内容：味苦，寒。主大风在皮肤中，如麻豆苦痒（《御览》作痰，非）。除寒热结，止利（旧作  痢，《御览》作利，是）。长肌肉，利五脏，益气、轻身。生川泽。  《吴普》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "浓朴",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主中风、伤寒、头痛、寒热，惊悸气，血痹死肌，去三虫。  《吴普》曰∶浓朴，神农、岐伯、雷公∶苦，无毒；李氏∶小温（《御览》引云∶一名  浓皮。生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦皮",
+      "property": "苦微寒",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味苦，微寒。主风寒湿痹，洗洗寒气，除热，目中青翳、白膜。久服，头不白、轻身。  生川谷。  《吴普》曰∶芩皮，一名秦皮。神农、雷公、黄帝、岐伯∶酸，无毒；",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦菽",
+      "property": "辛温",
+      "efficacy": "心下邪气",
+      "source_quote": "内容：味辛，温。主风邪气，温中，除寒痹，坚齿发、明目。久服，轻身、好颜色、耐老、增  年、通神。生川谷。  《名医》曰∶生太山及秦岭上，或琅邪。八月、九月采实。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫葳",
+      "property": null,
+      "efficacy": "妇人产乳余疾",
+      "source_quote": "内容：味酸（《御览》作咸），微寒。主妇人产乳余疾，崩中，症瘕血闭，寒热羸瘦，养胎。生  川谷。  《吴普》曰∶紫葳，一名武威，一名瞿麦，一名陵居腹，一名鬼目，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "猪苓",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：味甘，平。主 疟，解毒蛊注（《御览》作蛀）不祥，利水道。久服，轻身、耐老（《御  览》作能老）。一名 猪尿。生山谷。  《吴普》曰∶猪苓，神农，甘；雷公∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白棘",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主心腹痛，痈肿渍脓，止痛。一名棘针。生川谷。  《名医》曰∶一名棘刺。生雍州。  案∶《说文》云∶棘，小枣丛生者。《尔雅》云∶髦颠棘。孙炎云∶一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙眼",
+      "property": "甘平",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味甘，平。主五脏邪气，安志厌食。久服，强魂、聪明、轻身、不老，通神明。一名益  智。生山谷。  《吴普》曰∶龙眼，一名益智。《要术》∶一名比目（《御览》）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "松罗",
+      "property": "苦平",
+      "efficacy": "嗔怒邪气",
+      "source_quote": "内容：味苦，平。主嗔怒邪气，止虚汗、头风，女子阴寒、肿病。一名女萝。生山谷。  《名医》曰∶生熊耳山。  案∶《广雅》云∶女萝，松萝也。《毛诗》云∶茑与女萝。《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "卫矛",
+      "property": "苦寒",
+      "efficacy": "女子崩中下血",
+      "source_quote": "内容：味苦，寒。主女子崩中下血，腹满汗出，除邪，杀鬼毒、虫注。一名鬼箭。生山谷。  《吴普》曰∶鬼箭，一名卫矛。神农、黄帝、桐君∶苦，无毒。叶，如桃如羽，正月、",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "合欢",
+      "property": "甘平",
+      "efficacy": null,
+      "source_quote": "内容：味甘，平。主安五脏，利心志（《艺文类聚》作和心志，《御览》作和心气）。令人献乐  无忧。久服，轻身、明目、所欲。生山谷。  《名医》曰∶生益州。  案∶《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白马茎",
+      "property": "咸平",
+      "efficacy": "伤中脉绝",
+      "source_quote": "内容：味咸，平。主伤中脉绝，阴不起，强志益气，长肌肉，肥健，生子。眼∶主惊痫，腹满，  疟疾，当杀用之。悬蹄∶主惊邪，螈 ，乳难，辟恶气、鬼毒、蛊注、不祥。生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿茸",
+      "property": "甘温",
+      "efficacy": "漏下恶血",
+      "source_quote": "内容：味甘，温，主漏下恶血，寒热，惊痫，益气强志，生齿不老。角，主恶创痈肿，逐邪恶  气，留血在阴中。  《名医》曰∶茸，四月、五月解角时取，阴干，使时躁。角，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛角",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：下闭  血，瘀血疼痛，女人带下血。髓∶补中，填骨髓。久服，增年。胆∶可  案∶《说文》云∶ ，角中骨也。     <目录>卷二\\中经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羚羊角",
+      "property": "咸温",
+      "efficacy": null,
+      "source_quote": "内容：味咸，温。主青盲，明目，杀疥虫，止寒泄，辟恶鬼虎野狼，止惊悸。久服，安心、益气、  轻身。生川谷。  《名医》曰∶生河西。取无时。  案∶《说文》云∶羚夏",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡狗阴茎",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主伤中，阴痿不起，令强、热、大、生子，除女子带下十二疾。一名狗精。  胆∶主明目。  《名医》曰∶六月上伏取，阴干百日。     <目录>卷二\\",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "犀角",
+      "property": "苦寒",
+      "efficacy": "百毒虫注",
+      "source_quote": "内容：味苦，寒。主百毒虫注，邪鬼、障气，杀钩吻、鸩羽、蛇毒，除不迷或厌寐。久服轻血。  生山谷。  《名医》曰∶生永昌及益州。  案∶《说文》云∶犀，南徼外牛，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "燕屎",
+      "property": "辛平",
+      "efficacy": "蛊毒鬼注",
+      "source_quote": "内容：味辛，平。主蛊毒鬼注，逐不祥邪气，破五癃，利小便。生平谷。  《名医》曰∶生高山。  案∶《说文》云∶燕，元鸟也。尔口，布翅，枝尾，象形。作巢，避戊己，乙",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天鼠屎",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主面痈肿，皮肤洗洗时痛，肠中血气，破寒热积聚，除惊悸。一名鼠 ，一  名石肝。生山谷。  《名医》曰∶生合浦。十月、十二月取。  案∶李当之云∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "猥皮",
+      "property": "苦平",
+      "efficacy": "五痔阴蚀",
+      "source_quote": "内容：味苦，平。主五痔阴蚀，下血赤白五色，血汁不止，阴肿、痛引要背。酒煮杀之。生川  谷。  《名医》曰∶生楚山田野。取无时。  案∶《说文》云∶KT ，似豪猪",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "露蜂房",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主惊痫 ，寒热邪气， 疾，鬼精蛊毒，肠痔。火熬之，良。一名蜂肠。  生山谷。  《名医》曰∶一名百穿，一名蜂 。生 柯。七月七日采，阴干。  案",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳖甲",
+      "property": "咸平",
+      "efficacy": "心腹症瘕坚积",
+      "source_quote": "内容：味咸，平。主心腹症瘕坚积、寒热，去痞、息肉、阴蚀、痔、恶肉。生池泽。  《名医》曰∶生丹阳，取无时。  案∶《说文》云∶鳖，甲虫也。     <目录>卷二",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蟹",
+      "property": "咸寒",
+      "efficacy": "胸中邪气",
+      "source_quote": "内容：味咸，寒。主胸中邪气、热结痛， 僻而肿。败漆烧之，致鼠。生池泽。  《名医》曰∶生伊芳洛诸水中，取无时。  案∶《说文》云∶蟹，有二敖八足旁行，非蛇鳝之穴",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柞蝉",
+      "property": "咸寒",
+      "efficacy": "小儿惊痫",
+      "source_quote": "内容：味咸，寒。主小儿惊痫、夜啼， 病，寒热。生杨柳上。  《名医》曰∶五月采，蒸干之。  案∶《说文》云∶蝉以旁鸣者，蜩蝉也。《广雅》云∶KT ，蝉也；复育，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛴螬",
+      "property": "咸微温",
+      "efficacy": null,
+      "source_quote": "内容：味咸，微温。主恶血、血瘀（《御览》作血瘴），痹气，破折、血在胁下坚满痛，月闭，  目中淫肤，青翳白膜。一名 蛴。生平泽。  《名医》曰∶一名 齐，一名勃齐",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌贼鱼骨",
+      "property": "咸微温",
+      "efficacy": "女子漏下赤白经汁",
+      "source_quote": "内容：味咸，微温。主女子漏下赤白经汁，血闭，阴蚀肿痛，寒热症瘕，无子。生池泽。  《名医》曰∶生东海。取无时。  案∶《说文》云∶ ，乌 ，鱼名，或作鲫。《左思",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白僵蚕",
+      "property": null,
+      "efficacy": "小儿惊痫夜啼",
+      "source_quote": "内容：味咸。主小儿惊痫夜啼，去三虫，减黑 ，令人面色好，男子阴疡病。生平泽。  《名医》曰∶生 川。四月取自死者。  案∶《说文》云∶蚕任丝也。《淮南子·说林训",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鱼甲",
+      "property": "辛微温",
+      "efficacy": "心腹症瘕",
+      "source_quote": "内容：味辛，微温，主心腹症瘕、伏坚、积聚、寒热，女子崩中，下血五色，小腹阴中相引痛，  创疥死肌。生池泽。  《名医》曰∶生南海。取无时。  案∶《说文》云∶鳝",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "樗鸡",
+      "property": "苦平",
+      "efficacy": "心腹邪气",
+      "source_quote": "内容：味苦，平，主心腹邪气，阴痿，益精强志，生子，好色、补中、轻身。生川谷。  《名医》曰∶生河内樗树上。七月采，曝干。  案∶《广雅》云∶樗鸠，樗鸡也。《尔雅",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛞蝓",
+      "property": "咸寒",
+      "efficacy": "贼风 僻",
+      "source_quote": "内容：味咸，寒。主贼风 僻，轶筋及脱肛，惊痫挛缩。一名陵蠡。生池泽。  《名医》曰∶一名土 ，一名附 。生大山及阴地沙石垣下。八月取。  案∶《说文》云∶蝓，虎",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙子",
+      "property": "咸寒",
+      "efficacy": "五癃邪结气",
+      "source_quote": "内容：味咸，寒。主五癃邪结气，破石淋，下血，利小便水道。一名蜥易，生川谷。  《吴普》曰∶石龙子，一名守宫，一名石蜴，一名石龙子（《御览》）。  《名医》曰∶一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木虻",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主目赤痛， 伤泪出，瘀血血闭，寒热酸 ，无子。一名魂常。生川泽。  《名医》曰∶生汉中。五月取。  案∶《说文》云∶虻，啮人飞虫。《广雅》云∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜚虻",
+      "property": "苦微寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，微寒。主逐瘀血，破下血积、坚痞症瘕、寒热，通利血脉及九窍。生川谷。  《名医》曰∶生江夏。五月取。腹有血者，良。     <目录>卷二\\中经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜚廉",
+      "property": "咸寒",
+      "efficacy": "妇人寒热",
+      "source_quote": "内容：味咸，寒。主血瘀（《御览》引云∶逐下血）、症坚、寒热，破积聚，喉咽痹，内寒，无  子。生川泽。  《吴普》曰∶蜚廉虫，神农、黄帝云∶治妇人寒热（《御览》）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫",
+      "property": "咸寒",
+      "efficacy": "心腹寒热洗洗",
+      "source_quote": "内容：味咸，寒。主心腹寒热洗洗，血积症瘕，破坚，下血闭，生子大良。一名土鳖。生川泽。  《名医》曰∶一名土鳖。生河东及沙中、人家墙壁下、土中湿处。十月，曝干。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "伏翼",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主目瞑，明目，夜视有精光。久服，令人喜乐，媚好无忧。一名蝙蝠。生川  谷（旧部禽部，今移）。  《吴普》曰∶伏翼，或生人家屋间。立夏后，阴干，治",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梅实",
+      "property": "酸平",
+      "efficacy": null,
+      "source_quote": "内容：味酸，平。主下气，除热、烦、满，安心，肢体痛，偏枯不仁，死肌，去青黑志，恶疾。  生川谷。  《吴普》曰∶梅实（《大观本草》作核），明目，益气（《御览》）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粟米",
+      "property": "咸微寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，微寒。主养肾气，去胃、脾中热，益气。陈者，味苦，主胃热，消渴，利小便（《大  观本草》作黑字，据《吴普》增）。  《吴普》曰∶陈粟，神农、黄帝∶苦，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黍米",
+      "property": "甘温",
+      "efficacy": "益气补中",
+      "source_quote": "内容：味甘，温。主益气补中，多热、令人烦（《大观本》作黑字，据《吴普》增）。  《吴普》曰∶黍，神农∶甘，无毒。七月取，阴干。益中补气（《御览》）。  案∶《说",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓼实",
+      "property": "辛温",
+      "efficacy": "明目温中",
+      "source_quote": "内容：味辛，温。主明目温中，耐风寒，下水气，面目浮肿，痈疡。马蓼，去肠中蛭虫，轻身。  生川泽。  《吴普》曰∶蓼实，一名天蓼，一名野蓼，一名泽蓼（《艺文类聚》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葱实",
+      "property": "辛温",
+      "efficacy": "伤寒寒热",
+      "source_quote": "内容：味辛，温。主明目，补中不足。其茎可作汤，主伤寒寒热，出汗，中风面目肿。     <目录>卷二\\中经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "KT",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主金创，创败，轻身、不饥、耐老。生平泽。  《名医》曰∶生鲁山。  案∶《说文》云∶KT ，菜也，叶似韭。《广雅》云∶韭，KT ，荞，其华谓之菁",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "锻石",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主疽疡、疥瘙、热气，恶创、癞疾、死肌，堕眉，杀痔虫，去黑子息肉。一  名恶 。生山谷。  《名医》曰∶一名希 。生中山。  按∶恶灰，疑当为垩灰",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味辛，大热。主寒热，鼠 蚀创，死肌，风痹，腹中坚。一名青分石，一名立制石，一  名固羊石（《御览》引云∶除热，杀百兽。《大观  《吴普》曰∶白巩石，一名鼠",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "铅丹",
+      "property": "辛微寒",
+      "efficacy": "土逆胃反",
+      "source_quote": "内容：味辛，微寒，主土逆胃反，惊痫 疾，除热下气。炼化还成九光。久服，通神明（《御  览》引作吐下，云久服成仙）。生平泽  《名医》曰∶一名铅华。生蜀郡。  案",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粉锡",
+      "property": "辛寒",
+      "efficacy": "伏尸毒螫",
+      "source_quote": "内容：味辛，寒。主伏尸毒螫，杀三虫。一名解锡。锡镜鼻∶主女子血闭，症瘕，伏肠，绝孕。  生山谷（旧作二种，今并）。  《名医》曰∶生桂阳。  案∶《说文》云∶锡",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "代赭",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主鬼注、贼风、蛊毒，杀精物恶鬼，腹中毒邪气，女子赤沃漏下。一名须丸。  生山谷。  《名医》曰∶一名血师，生齐国，赤红青色如鸡冠，有泽。染爪甲，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "戎盐",
+      "property": "苦寒",
+      "efficacy": "肠胃结热",
+      "source_quote": "内容：主明目、目痛，益气、坚肌骨，去毒蛊。大盐∶令人吐（《御览》引云∶主肠胃结热。《大  观本》作黑字）。卤盐∶味苦，寒，主大热，消渴狂烦，除邪及下蛊毒，柔肌肤",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白垩",
+      "property": "苦温",
+      "efficacy": "女子寒热",
+      "source_quote": "内容：味苦，温。主女子寒热、症瘕、目闭、积聚。生山谷。  《吴普》曰∶白垩，一名白 （《一切经音义》）。  《名医》曰∶一名白善。生邯郸。采无时。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "冬灰",
+      "property": "辛微温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，微温。主黑子，去疣、息肉、疽蚀、疥瘙。一名藜灰。生川泽。  《名医》曰∶生方谷。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青琅",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主身痒、火创，痈伤、疥瘙、死肌。一名石珠。生平泽。  《名医》曰∶一名青珠，生蜀郡，采无时。  案∶《说文》云∶琅 ，似珠者，古文作。《禹贡》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌头",
+      "property": "辛温",
+      "efficacy": "术训》云∶莫凶于鸡毒",
+      "source_quote": "内容：味辛，温。主中内、恶风洗洗，出汗，除寒湿痹，咳逆上气，破积聚、寒热。其汁，煎  之，名射罔，杀禽兽。一名奚毒，一名即子，一名乌喙。生山谷。  《吴普》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天雄",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温，主大风，寒湿痹，沥节痛，拘挛缓急，破积聚，邪气，金创，强筋骨，轻身  健行。一名白幕（《御览》引云∶长阴气，强志，令人武勇，力作不倦。《大观本》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "半夏",
+      "property": "辛平",
+      "efficacy": "伤寒寒热",
+      "source_quote": "内容：味辛，平。主伤寒寒热，心下坚，下气，喉咽肿痛，头眩胸胀，咳逆肠鸣，止汗。一名  地文，  一名水玉（以上八字，原本黑字）。生川谷。  《吴普》曰∶半夏，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虎掌",
+      "property": "苦温",
+      "efficacy": "心痛寒热",
+      "source_quote": "内容：味苦，温。主心痛寒热，结气、积聚、伏梁，伤筋、痿、拘缓，利水道。生山谷。  《吴普》曰∶虎掌，神农、雷公∶苦，无毒；岐伯、桐君∶辛，有毒。立秋九月  采之",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸢尾",
+      "property": "苦平",
+      "efficacy": "蛊毒邪气",
+      "source_quote": "内容：味苦，平。主蛊毒邪气，鬼注，诸毒，破症瘕积聚，去水，下三虫。生山谷。  《吴普》曰∶鸢尾，治蛊毒（《御览》）。  《名医》曰∶一名乌园。生九嶷山。五月采。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大黄",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主下瘀血、血闭、寒热，破症瘕积聚，留饮宿食，荡涤肠胃，推陈致新，通  利水杀（《御览》，此下有道字），调中化食，安和五脏，生山谷。  《吴普》曰",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "亭历",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：（旧作葶苈，《御览》作亭历）  味辛，寒，主症瘕、积聚、结气，饮食、寒热，破坚。一名大室，一名大适。生平泽及  田野。  《名医》曰∶一名下历，一名 蒿。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桔梗",
+      "property": "辛微温",
+      "efficacy": "胸胁痛如刀刺",
+      "source_quote": "内容：味辛，微温。主胸胁痛如刀刺，腹满，肠鸣幽幽，惊恐悸气（《御览》引云∶一  名利如。《大观本》作黑字）。生山谷。  《吴普》曰∶桔梗，一名符扈，一名白芍，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "莨荡子",
+      "property": "苦寒",
+      "efficacy": "齿痛出虫",
+      "source_quote": "内容：味苦，寒。主齿痛出虫，肉痹拘急，使人健行，见鬼。多食，令人狂走。久服，轻身、  走及奔马、强志、益力、通神。一名横唐。生川谷。  《名医》曰∶一名行唐。生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草蒿",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主疥瘙、痂痒、恶创，杀虫，留热在骨节间，明目。一名青蒿，一名方溃。  生川泽。  《名医》曰∶生华阴。  案∶《说文》云∶蒿， 也； ，香蒿也，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "旋复花",
+      "property": "咸温",
+      "efficacy": null,
+      "source_quote": "内容：味咸，温。主结气、胁下满、惊悸，除水，去五脏间寒热，补中下气。一名金沸草，一  名盛椹。生川谷。  《名医》曰∶一名戴椹。生平泽。五月采花，晒干，二十日成",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藜芦",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》作梨芦）  味辛，寒。主蛊毒，咳逆，泄  葱苒。生山谷。  《吴普》曰∶藜芦，一名葱葵，一名丰芦，一名蕙葵（《御览》引云∶一名山葱，一名  公苒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "钩吻",
+      "property": "辛温",
+      "efficacy": "金创乳",
+      "source_quote": "内容：（《御览》作 ）  味辛，温。主金创乳 ，中恶风，咳逆上气，水肿，杀鬼注（旧作疰，《御览》作注，  是）  蛊毒。一名野葛。生山谷。  《吴普》曰∶秦，钩",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "射干",
+      "property": "苦平",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味苦，平。主咳逆上气，喉痹咽痛不得消息，散急气，腹中邪逆，食饮大热。一名乌扇，  一名乌蒲。生川谷。  《吴普》曰∶射干，一名黄远也（《御览》）。  《名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇合",
+      "property": "苦微寒",
+      "efficacy": "惊痫寒热邪气",
+      "source_quote": "内容：（原注云，合是含字）  味苦，微寒。主惊痫寒热邪气，除热，金创，疽痔鼠 ，恶创，头疡。一名蛇衔。生山  谷。  《名医》曰∶生益州。八月采，阴干。  按∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "恒山",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：（旧作常山，《御览》作恒山，是）  味苦，寒。主伤  《吴普》曰∶恒山，一名漆叶。神农、岐伯∶苦；李氏∶大寒；桐君∶辛，有毒。二月、  八月采。  《名医",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀漆",
+      "property": "辛平",
+      "efficacy": "疟及咳逆寒热",
+      "source_quote": "内容：味辛，平。主疟及咳逆寒热，腹中症坚、痞结、积聚，邪气、蛊毒、鬼注（旧作疰，《御  览》作蛀）。生川谷。  《吴普》曰∶蜀漆叶，一名恒山。神农、岐伯、雷公∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘遂",
+      "property": "苦寒",
+      "efficacy": "大腹疝瘕",
+      "source_quote": "内容：味苦，寒。主大腹疝瘕，腹满，面目浮肿，留饮宿食，破症坚积聚，利水谷道。一名主  田。生川谷。  《吴普》曰∶甘遂，一名主田，一名白泽，一名重泽，一名鬼丑，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白蔹",
+      "property": "苦平",
+      "efficacy": "痈肿疽创",
+      "source_quote": "内容：味苦，平。主痈肿疽创，散结气，止痛除热，目中赤，小儿惊痫，温疟，女子阴中肿痛。  一名免核，一名白草。生山谷。  《名医》曰∶一名白根，一名昆仑。生衡山，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青葙子",
+      "property": "苦微寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，微寒。主邪气，皮肤中热，风瘙身痒，杀三虫，子∶名草决明，疗唇口青。一名  草蒿，一名萋蒿。生平谷。  《名医》曰∶生道旁，三月三日采茎、叶，阴干；五",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菌",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主心痛，温中，去长患、白 、蛲虫、蛇螫毒，症瘕、诸虫。一名 芦，生  池泽。  《名医》曰∶生东海及渤海、章武。八月采，阴干。  案∶《尔雅》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芨",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》作芨）  味苦，平。主痈肿、恶创、败疽，伤阴，死肌，胃中邪气，贼风鬼击，痱缓不收。一名  甘根，一名连及草。生川谷。  《吴普》曰∶神农∶苦；黄",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大戟",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主蛊毒、十二水，肿满急痛，积聚，中风，皮肤疼痛，吐逆。一名 钜（案∶  此无生川泽三字者，古或与泽漆为一条）。  《名医》曰∶生常山。十二月采根",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽漆",
+      "property": "苦微寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，微寒。主皮肤热，大腹、水气，四肢面目浮肿，丈夫阴气不足。生川泽。  《名医》曰∶一名漆茎，大戟苗也。生太山。三月三日、七月七日采茎、叶，阴  案∶《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茵芋",
+      "property": "苦温",
+      "efficacy": "五脏邪气",
+      "source_quote": "内容：味苦，温。主五脏邪气，心腹寒热，羸瘦如疟状，发作有时，诸关节风  《吴普》曰∶茵芋，一名卑共。微温，有毒。状如莽草而细软（《御览》）。  《名医》曰∶一名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贯众",
+      "property": "苦微寒",
+      "efficacy": "腹中邪热气",
+      "source_quote": "内容：味苦，微寒。主腹中邪热气，诸毒，杀三虫。一名贯节，一名贯渠，一名百头（《御览》）  作白），一名虎卷，一名扁符。生山谷。  《吴普》曰∶贯众，一名贯来，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荛花",
+      "property": "苦平",
+      "efficacy": "伤寒温疟",
+      "source_quote": "内容：味苦，平，寒。主伤寒温疟，下十二水，破积聚、大坚、症瘕，荡涤肠胃中留癖饮食、  寒热邪气，利水道，生川谷。  《名医》曰∶生咸阳及河南中牟。六月采花，阴干",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牙子",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主邪气、热气，疥瘙、恶疡、创痔，去白虫。一名野狼牙，生川谷。  《吴普》曰∶野狼牙，一名支兰，一名野狼齿，一名犬牙，一名抱子。神农、黄帝∶苦，有",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊踯躅",
+      "property": "辛温",
+      "efficacy": "贼风在皮肤中",
+      "source_quote": "内容：味辛，温。主贼风在皮肤中，淫淫痛，温疟，恶毒，诸痹。生川谷。  《吴普》曰∶羊踯躅花，神农、雷公∶辛，有毒。生淮南。治贼风、恶毒，诸邪气（《  御览》）。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "商陆",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主水张、疝瘕、痹，熨除痈肿，杀鬼精物。一名 根，一名夜呼。生川谷。  《名医》曰∶如人行者，有神。生咸阳。  案∶《说文》∶ 草，枝枝相值，叶叶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊蹄",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主头秃、疥瘙，除热，女子阴蚀（《御览》此四字作无字）。一名东方宿，一  名连虫陆，一名鬼目，生川泽。  《名医》曰∶名蓄。生陈留。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓄",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主浸淫、疥瘙、疽痔，杀三虫（《御览》引云∶一名篇竹。《大观本》无文）。  生山谷。  《吴普》曰∶ 蓄，一名蓄辩，一名 蔓（《御览》）。  《名",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "野狼毒",
+      "property": "辛平",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味辛，平。主咳逆上气，破积聚、饮食、寒热，水气、恶创，鼠 、疽蚀，鬼精、蛊毒，  杀飞鸟、走兽，一名续毒。生山谷。  《名医》曰∶生秦亭及奉高。二月、八月",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白头翁",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主温疟、易狂、寒热、症瘕积聚、瘿气，逐血、止痛，疗金疮。一名野丈人，  一名胡王使者。生山谷。  《吴普》曰∶白头翁，一名野丈人，一名奈河草。神",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鬼臼",
+      "property": "辛温",
+      "efficacy": "杀蛊毒鬼注",
+      "source_quote": "内容：味辛，温。主杀蛊毒鬼注、精物，辟恶气不祥，逐邪，解百毒。一名爵犀，一名马目毒  公，一名九臼。生山谷。  《吴普》曰∶一名九臼，一名天臼，一名雀犀，一名马",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊桃",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主 热，身暴赤色，风水积聚，恶疡，除小儿热。一名鬼桃，一名羊肠。生  川谷。  《名医》曰∶一名苌楚，一名御弋，一名铫弋。生山林及田野，二月采，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女青",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主蛊毒，逐邪恶气，杀鬼温疟，辟不祥。一名雀瓢（《御览》作闾）。  《吴普》曰∶女青，一名霍由祗。神农、黄帝∶辛（《御览》）。  《名医》曰∶蛇衔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "连翘",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主寒热、鼠 ，瘰 、痈肿，恶创，瘿瘤，结热蛊毒。一名异翘，一名兰花，  一名轵，一名三廉。生山谷。  《名医》曰∶一名折根，生太山，八月采，阴干",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兰茹",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：（《御览》作闾，是）  味辛，寒。主蚀恶肉、败创、死肌，杀疥虫，排脓恶血，除大风  ，善忘不乐。生川  谷。  《吴普》曰∶闾茹，一名离楼，一名屈居。神农",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌韭",
+      "property": "甘寒",
+      "efficacy": "皮肤往来寒热",
+      "source_quote": "内容：味甘，寒。主皮肤往来寒热，利小肠膀胱气。生山谷石上。  案∶《广雅》云∶昔邪，乌韭也，在屋，曰昔邪；在墙，曰垣衣。《西山经》云∶萆荔，  状如乌韭。《唐本",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿藿",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主蛊毒，女子腰腹痛，不乐，肠痈、瘰 （《御览》作历）、疡气。生山谷。  《名医》曰∶生汶山。  案∶《说文》云∶ ，鹿藿也，读若剽。《广雅》云∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚤休",
+      "property": "苦微寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，微寒。主惊痫、摇头弄舌，热气在腹中， 疾痈创，阴蚀，下三虫，去蛇毒。一  名蚩休。生川谷。  《名医》曰∶生山及冤句。  案∶郑樵云∶蚤休，曰螫休，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石长生",
+      "property": "咸微寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，微寒。主寒热、恶创、火热，辟鬼气不祥（《御览》作辟恶气、不祥、鬼毒）。一  名丹草（《御览》引云丹沙草）。生山谷。  《吴普》曰∶石长生，神农∶苦；",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "陆英",
+      "property": "苦寒",
+      "efficacy": "骨间诸痹",
+      "source_quote": "内容：味苦，寒。主骨间诸痹，四肢拘挛、疼酸，膝寒痛，阴痿，短气不足，脚肿。生川谷。  《名医》曰∶生熊耳及冤句。立秋采。又曰∶蒴 ，味酸，温，有毒。一名堇（今本",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荩草",
+      "property": "苦平",
+      "efficacy": "久咳上气",
+      "source_quote": "内容：味苦，平，主久咳上气、喘逆，久寒，惊悸，痂疥、白秃、疡气，杀皮肤小虫。  《吴普》曰∶王刍，一名黄草。神农、雷公曰∶生太山山谷。治身热邪气，小儿身热气",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛扁",
+      "property": "甘微寒",
+      "efficacy": "身皮创热气",
+      "source_quote": "内容：味甘，微寒。主身皮创热气，可作浴汤，杀牛虱小虫，又疗牛病。生川谷。  《名医》曰∶生桂阳。  案∶陶弘景云∶太常贮，名扁特，或名扁毒。     <目录>卷",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "夏枯草",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味苦，辛，主寒热、瘰 、鼠 、头创，破症，散瘿、结气，脚肿，湿痹。轻身。一名  夕句，一名乃东。生川谷。  《名医》曰∶一名燕面。生蜀郡。四月采。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芫花",
+      "property": "辛温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味辛，温。主咳逆上气，喉鸣、喘，咽肿、短气，蛊毒、鬼疟，疝瘕、痈肿，杀虫鱼。  一名去水。生川谷（旧  《吴普》曰∶芫花，一名去水，一名败花，一名儿草根，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "巴豆",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主伤寒、温疟、寒热，破症瘕、结聚、坚积，留饮、痰癖。大腹水张  ，荡炼五脏六腑，开通闭塞，利水谷道，去恶内，除鬼毒蛊注邪物（《御览》作鬼毒邪注）",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀菽",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主邪气、咳逆，温中，逐骨节，皮肤死肌，寒湿痹痛，下气。久服之，头不  白、轻身、增年，生川谷。  《名医》曰∶一名巴椒，一名 。生武都及巴郡。八",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "皂荚",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味辛、咸，温。主风痹、死肌、邪气，风头、泪出，利九窍，杀精物。生川谷。  《名医》曰∶生壅州及鲁邹县。如猪牙者，良。九月、十月采，阴干。  案∶《说文》云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柳花",
+      "property": "苦寒",
+      "efficacy": "风水黄胆",
+      "source_quote": "内容：味苦，寒。主风水黄胆，面热、黑。一名柳絮。叶∶主马疥痂创；实∶主溃痈，逐脓血；  子汁∶疗渴。生川泽。  《名医》曰∶生琅邪。  案∶《说文》云∶柳，小杨",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "楝实",
+      "property": "苦寒",
+      "efficacy": "温疾伤寒",
+      "source_quote": "内容：味苦，寒。主温疾伤寒，大热烦狂，杀三虫、疥疡，利小便水道。生山谷。  《名医》曰∶生荆山。  案∶《说文》云∶楝，木也。《中山经》云∶其实如楝。郭璞云∶楝",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "郁李仁",
+      "property": "酸平",
+      "efficacy": "大腹水肿",
+      "source_quote": "内容：味酸，平。主大腹水肿，面目四肢浮肿，利小便水道。根∶主齿龈肿，龋齿，一名爵李。  生坚齿川谷。  《吴普》曰∶郁李，一名雀李，一名车下李，一名棣（《御览》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "莽草",
+      "property": "辛温",
+      "efficacy": "风头痈肿",
+      "source_quote": "内容：味辛，温。主风头痈肿、乳痈、疝瘕，除结气、疥瘙（《御览》有痈疮二字），杀虫鱼。  生山谷。  《吴普》曰∶莽草，一名春草。神农∶辛；雷公、桐君∶苦，有毒。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桐叶",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主恶蚀、创着阴皮，主五痔，杀三虫。花∶主传猪创，饲猪，肥大三倍。生  山谷。  《名医》曰∶生桐柏山。  案∶《说文》云∶桐，荣也；梧，梧桐木，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梓白皮",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主热，去三虫。叶∶捣，传猪创，饲猪，肥大三倍。生山谷。  《名医》曰∶生河内。  案∶《说文》云∶梓，楸也，或作 ，椅梓也。楸，梓也； ，楸也。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石南",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：味辛，苦。主养肾气、内伤、阴衰，利筋骨皮毛。实∶杀蛊毒，破积聚，逐风痹。一名  鬼目。生山谷。  《名医》曰∶生华阴。二月、四月采实，阴干。     <目",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄环",
+      "property": "苦平",
+      "efficacy": null,
+      "source_quote": "内容：味苦，平。主蛊毒、鬼注、鬼魅、邪气在脏中，除咳逆寒热。一名凌泉，一名大就。生  山谷。  《吴普》曰∶蜀，黄环，一名生刍，一名根韭。神农、黄帝、岐伯、桐君",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "溲疏",
+      "property": "辛寒",
+      "efficacy": "身皮肤中热",
+      "source_quote": "内容：味辛，寒。主身皮肤中热，除邪气，止遗溺，可作浴汤。生山谷及田野、故邱虚地。  《名医》曰∶一名巨骨，生熊耳山，四月采。  案∶李当之云∶溲疏，一名杨栌，一",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠李",
+      "property": null,
+      "efficacy": "寒热瘰 创",
+      "source_quote": "内容：主寒热瘰 创。生田野。  《吴普》曰∶鼠李，一名牛李（《御览》）。  《名医》曰∶一名牛李，一名鼠梓，一名啤。采无时。  案∶《说文》云∶ ，鼠梓木。《尔",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "药实根",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主邪气，诸痹疼酸，续绝伤，补骨髓。一名连木。生山谷。  《名医》曰∶生蜀郡。采无时。  案∶《广雅》云∶贝父，药实也。     <目录>卷三\\下",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栾花",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主目痛、泪出、伤 ，消目肿。生川谷。  《名医》曰∶生汉中。五月采。  案∶《说文》云∶栾木，似栏。《山海经》云∶云雨之山，有木名栾，黄木赤枝青",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓椒",
+      "property": "苦温",
+      "efficacy": "风寒湿痹",
+      "source_quote": "内容：味苦，温。主风寒湿痹、 节疼，除四肢厥气、膝痛。一名家椒。生川谷及邱家间。  《名医》曰∶一名猪椒，一名彘椒，一名狗椒。生云中。采茎、根，酿酒。  案∶陶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豚卵",
+      "property": "苦温",
+      "efficacy": null,
+      "source_quote": "内容：味苦，温。主惊痫、 疾，鬼注、蛊毒，除寒热，贲豚、五癃，邪气、挛缩。一名  豚颠。悬蹄∶主五痔、伏热在肠、肠痈、内蚀。  案∶《说文》云∶ ，小豕也。从豸",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麋脂",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主痈肿、恶创、死肌，寒、风、湿痹，四肢拘缓不收，风头，肿气，通腠理。  一名官脂。生山谷。  《名医》曰∶生南山及雀淮南边。十月取。  案∶《说",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：主堕胎，令人产易。生平谷。  《名医》曰∶生山都。  案∶《说文》云∶ ，鼠形，飞走且乳之鸟也。籀文作 。《广雅》云∶KT KT ，  飞也。  陶弘景云",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "六畜毛蹄甲",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主鬼注、蛊毒，寒热、惊痫， 、狂走。骆驼毛，尤良。  案∶陶弘景云∶六畜，谓马、牛、羊、猪、狗、鸡也；蹄，即踯省文。  上兽，下品四种。旧同。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虾蟆",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主邪气，破症坚，血、痈肿、阴创。服之，不患热病。生池泽。  《名医》曰∶一名蟾蜍，一名 ，一名去甫，一名苦 。生江湖。五月五日取，阴干  。东行",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马刀",
+      "property": "辛微寒",
+      "efficacy": "漏下赤白",
+      "source_quote": "内容：味辛，微寒（《御览》有补中二字。《大观本》黑字）。主漏下赤白，寒热，破石淋，杀  禽兽、贼鼠。生池泽。  《吴普》曰∶马刀，一名齐蛤。神农、岐伯、桐君∶咸",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇蜕",
+      "property": "咸平",
+      "efficacy": "小儿百二十种惊痫",
+      "source_quote": "内容：味咸，平。主小儿百二十种惊痫、螈 、 疾、寒热、肠痔，虫毒，蛇痫。火熬之，良。  一名龙子衣，一名蛇符，一名龙子单衣，一名弓皮。生川谷及田野。  《吴普》",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚯蚓",
+      "property": "咸寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，寒。主蛇瘕，去三虫、伏尸、鬼注、蛊毒，杀长虫。仍自化作水。生平土  《吴普》曰∶蚯蚓，一名白颈螳 ，一名附引（《御览》）。  《名医》曰∶一名土龙。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜈蚣",
+      "property": "辛温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，温。主鬼注、蛊毒，啖诸蛇、早、鱼毒，杀鬼物、老精、温疟，去三虫（《御览》  引云∶一名至掌。《大观本》在水蛭下）。生川谷。  《名医》曰∶生大吴江南",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水蛭",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主逐恶血、瘀血、月闭（《御览》作水闭），破血瘕积聚，无子，利水道。生  池泽。  《名医》曰∶一名 ，一名至掌。生雷泽。五月、六月采，曝干。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "班苗",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主寒热、鬼注蛊毒、鼠 恶创、疽蚀死肌，破石癃。一名龙尾。生川  《吴普》曰∶斑猫，一名斑蚝，一名龙蚝，一名斑苗，一名胜发，一名盘蛩，一名  晏青",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贝子",
+      "property": "咸平",
+      "efficacy": null,
+      "source_quote": "内容：味咸，平。主目翳、鬼注虫毒、腹痛、下血、五癃，利水道。烧用之，良。生池泽。  《名医》曰∶一名贝齿。生东海。  案∶《说文》云∶贝，海介虫也。居陆，名飙；",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石蚕",
+      "property": "咸寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，寒。主五癃，破五淋，堕胎，内解结气，利水道，除热。一名水虱。生池泽。  《吴普》曰∶石蚕，亦名沙虱。神农、雷公∶酸，无毒。生汉中。治五淋，破随内结气",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雀瓮",
+      "property": "甘平",
+      "efficacy": "小儿惊痫",
+      "source_quote": "内容：味甘，平。主小儿惊痫，寒热结气，蛊毒鬼注。一名躁舍。  《名医》曰∶生汉中。采，蒸之。生树枝间，蛄 房也。八月取。  案∶《说文》云∶蛄，蛄斯黑也。《尔雅",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜣螂",
+      "property": "咸寒",
+      "efficacy": "小儿惊痫",
+      "source_quote": "内容：味咸，寒。主小儿惊痫、螈 ，腹胀寒热，大人疾狂易。一名 蜣。火熬之，良。生池  泽。  《名医》曰∶生长沙。五月五日取，蒸，藏之。  案∶《说文》云∶ ，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蝼蛄",
+      "property": "咸寒",
+      "efficacy": null,
+      "source_quote": "内容：味咸，寒。主产难，出肉中刺（《御览》作刺在肉中），溃痈肿，下哽噎（《御览》作咽），  解毒，除恶创。一名蟪蛄（《御览》作蟪蛄），一名天蝼  《名医》曰∶生",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马陆",
+      "property": "辛温",
+      "efficacy": "腹中大坚症",
+      "source_quote": "内容：味辛，温。主腹中大坚症，破积聚、息肉、恶创、白秃。一名百足。生川谷。  《吴普》曰∶一名马轴（《御览》）。  《名医》曰∶一名马轴。生元菟。  案∶《说文",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地胆",
+      "property": "辛寒",
+      "efficacy": null,
+      "source_quote": "内容：味辛，寒。主鬼注、寒热，鼠蝼，恶创、死肌，破症瘕，堕胎。一名 青。生川谷。  《吴普》曰∶地胆，一名元青，一名杜龙，一名青虹（《御览》）。  《名医》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠妇",
+      "property": "酸温",
+      "efficacy": "气癃不得小便",
+      "source_quote": "内容：味酸，温。主气癃不得小便，女人月闭、血症，痫症、寒热，利水道。一名负蟠，一名  威。生平谷。  《名医》曰∶一名 。生魏郡及人家地上。五月五日取。  案∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荧火",
+      "property": "辛微温",
+      "efficacy": null,
+      "source_quote": "内容：味辛，微温。主明目，小儿火创伤，热气、蛊毒、鬼注，通神。一名夜光（《御览》引  云∶一名熠耀，一名即照。《大观本》作黑字）。生池泽。  《吴普》曰∶荧火，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "衣鱼",
+      "property": "咸温",
+      "efficacy": "妇人疝瘕",
+      "source_quote": "内容：味咸，温，无毒。主妇人疝瘕，小便不利（《御览》作泄利），小儿中风（《御览》作头  风）、项强（《御览》作疆），背起摩之。一名白鱼。生平泽。  《吴普》曰∶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桃核仁",
+      "property": "苦平",
+      "efficacy": "杀百鬼精物",
+      "source_quote": "内容：味苦，平。主症血、血闭、瘕邪，杀小虫。桃花∶杀注恶鬼，令人好颜色。桃凫∶微温。  主杀百鬼精物（《初学记》引云∶枭桃在树不落，杀百鬼）。桃毛∶主下血瘕寒热",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杏核仁",
+      "property": "甘温",
+      "efficacy": "咳逆上气",
+      "source_quote": "内容：味甘，温。主咳逆上气，雷鸣，喉痹下气，产乳，金创、寒心、贲豚。生川谷。  《名医》曰∶生晋山。  案∶《说文》云∶杏，果也。《管子·地员篇》云∶五沃之土，",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "腐婢",
+      "property": "辛平",
+      "efficacy": null,
+      "source_quote": "内容：味辛，平。主 疟，寒热、邪气，泄利，阴不起，病酒，头痛。生汉中。  《吴普》曰∶小豆花，一名腐婢（旧作付月，误）。神农∶甘，毒。七月采，阴干四十  日。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦瓠",
+      "property": "苦寒",
+      "efficacy": null,
+      "source_quote": "内容：味苦，寒。主大水，面目四肢浮肿，下水，令人叶。生川泽。  《名医》曰∶生晋地。  案∶《说文》云∶瓠匏，匏瓠也。《广雅》云∶匏，瓠也。《尔雅》云∶瓠，栖瓣",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水靳",
+      "property": "甘平",
+      "efficacy": "女子赤沃",
+      "source_quote": "内容：味甘，平。主女子赤沃，止血养精，保血脉，益气，令人肥健、嗜食。一名水英。生池  泽。  《名医》曰∶生南海。  案∶《说文》云∶芹，楚葵也；近，菜类也。《",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "彼子",
+      "property": "甘温",
+      "efficacy": "腹中邪气",
+      "source_quote": "内容：味甘，温。主腹中邪气，去三虫、蛇螫、蛊毒、鬼注、伏尸。生山谷（旧在《唐本》退  中）。  《名医》曰∶生永昌。  案∶陶弘景云∶方家，从来无用此者。古今诸",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉、石，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：玉泉 畏款冬花。  玉屑 恶鹿角。  丹砂 恶磁石，畏咸水。  曾青 畏菟丝子。  石胆 水英为使；畏牡桂、菌桂、芫花、辛夷白。  钟乳 蛇床子为使，恶牡",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉、石，下部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：矾石 得火良；棘针为使；恶虎掌、毒公、 屎、细辛、水。  青琅 得水银良；畏鸡骨；杀锡毒。  特生矾石 得火良；畏水。  代赭 畏天雄。  方解石 恶巴豆",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，上部",
+      "property": null,
+      "efficacy": "畏卤KT 咸",
+      "source_quote": "内容：六芝 薯蓣为使；得发良；恶常山；畏扁青、茵陈。  术 防风、地榆为使。  天门冬 垣衣、地黄为使；畏曾青。  麦门冬 地黄、车前为使；恶款冬、苦瓠；畏苦参",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，中部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：当归 恶兰茹；畏菖蒲、海藻、牡蒙。  秦艽 菖蒲为使。  黄芩 山茱萸，龙骨为使；恶葱实；畏丹砂、牡丹、藜芦。  芍药 须丸为使；恶石斛、芒硝；畏石、鳖甲",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，下部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：大黄 黄芩为使。  桔梗 节皮为使；畏白芨；反龙胆、龙眼。  甘遂 瓜蒂为使；恶远志；反甘草。  葶苈 榆皮为使；得酒良；恶僵蚕、石龙芮。  芫花 决明为",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：茯苓，茯神 马间为使；恶白蔹；畏牡蒙、地榆、雄黄、秦艽、龟甲。  杜仲 恶蛇蜕、元参。  柏实 牡蛎、桂心、瓜子为使；畏菊花、羊蹄、诸石、面曲。  干漆",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，中部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：浓朴 干姜为使；恶泽泻、寒水石、硝石。  山茱萸 蓼实为使；恶桔梗、防风、防己。  吴茱萸 蓼实为使；恶丹参、硝石、白垩；畏紫石英。  秦皮 大戟为使；恶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，下部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：黄环 鸢尾为使；恶茯苓、防己。  石南 五加皮为使。  巴豆 芫花为使；恶 草；畏大黄、黄连、藜芦；杀斑蝥毒。  栾花 决明为使。  蜀椒 杏仁为使，畏款",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：龙骨 得人参、牛黄，良；畏石膏。  龙角 畏干漆、蜀椒、理石。  牛黄 人参为使，恶龙骨、地黄、龙胆、蜚蠊；畏牛膝。  白胶 得火，良；畏大黄。  阿胶",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，中部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：犀角 松子为使；恶 菌、雷丸。  羚羊角 菟丝子为使。  鹿茸 麻勃为使。  鹿角 杜仲为使。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，下部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：麋脂 畏大黄。  伏翼 苋实、云实为使。  天鼠屎 恶白蔹、白薇。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：蜜蜡 恶芫花、齐蛤。  蜂子 畏黄芩、芍药、牡蛎。  牡蛎 贝母为使；得甘草、牛膝、远志、蛇床，良；恶麻黄、吴茱萸、辛夷。  桑螵蛸 畏旋复花。  海蛤",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，中部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：皮 得酒良；畏桔梗、麦门冬。  蜥蜴 恶硫黄、斑蝥、芜荑。  露蜂房 恶干姜、丹参、黄芩、芍药、牡蛎。  虫 畏皂荚、菖蒲。  蛴螬 蜚蠊为使，恶附子。",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，下部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：蜣螂 畏羊角，石膏。  蛇蜕 畏磁石及酒。  斑蝥 马刀为使；畏巴豆、丹参、空青；恶肤青。  地胆 恶甘草。  马刀 得水良。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "果，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：大枣 杀乌头，毒。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菜，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：冬葵子 黄芩为使。  葱实，解藜芦毒。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "米，上部",
+      "property": null,
+      "efficacy": null,
+      "source_quote": "内容：麻 、麻子 畏牡蛎、白薇；恶茯苓。     <目录>卷三\\下经",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "米，中部",
+      "property": null,
+      "efficacy": "胸背二十四节",
+      "source_quote": "内容：大豆及黄卷 恶五参、龙胆；得前胡、乌喙、杏仁、牡蛎，良；杀乌头毒。  大麦 蜜为使。  上二百三十一种，有相制使，其余皆无（三十四种续添，案∶当云三十",
+      "evidence_level": "high"
+    }
+  ]
+}
