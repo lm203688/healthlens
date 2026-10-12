@@ -43,6 +43,9 @@ export const api = {
   totpDisable: ()     => request('/auth/totp/disable', { method: 'POST' }),
   totpMethod:  (body) => request('/auth/totp/method',  { method: 'PUT',  body: JSON.stringify(body) }),
 
+  /* ===== 法域/合规设置 ===== */
+  updateJurisdiction: (body) => request('/auth/jurisdiction', { method: 'PUT', body: JSON.stringify(body) }),
+
   /* ===== 健康评估（Agent 融合管线）===== */
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
   agentTeam:   (body) => request('/agent/team',   { method: 'POST', body: JSON.stringify(body) }),
