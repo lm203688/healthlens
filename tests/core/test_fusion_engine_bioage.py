@@ -100,4 +100,8 @@ def test_bioage_output_shape_and_honesty():
     assert ba["not_clinical"] is True
     assert ba["bio_age"] > ba["chrono_age"]          # 异常画像生物学年龄应偏老
     assert len(ba["markers"]) == 8                    # 8 项标志物全量返回
-    assert out["axis_scores"][AXIS_KEY] == ba["axis_score"]
+    # S0-3：axis_scores 统一为 dict 结构（与 A-H 轴一致），bioage 轴以
+    # {"axis","score","measured",...} 形式注入；数值在 ["score"] 字段。
+    assert AXIS_KEY in out["axis_scores"]
+    assert out["axis_scores"][AXIS_KEY]["score"] == ba["axis_score"]
+    assert out["axis_scores"][AXIS_KEY]["measured"] is True
