@@ -11,7 +11,7 @@ import io
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,6 +21,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.observation import HealthObservation
 from app.api.deps import get_current_user
+from app.lib.region_guard import require_same_region
 from loguru import logger
 
 router = APIRouter(tags=["GDPR"])
@@ -110,21 +111,31 @@ async def _upsert_consent_db(
 
 @router.get("/consent")
 async def get_consent(
+    request: Request,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """获取当前用户的 GDPR 同意状态"""
+    """获取当前用户的 GDPR 同意状态
+
+    B0-3: 强区域驻留检查。
+    """
+    require_same_region(user, request)
     consent = await _get_consent_db(db, user.id)
     return {"success": True, "data": consent.model_dump()}
 
 
 @router.post("/consent")
 async def update_consent(
+    request: Request,
     payload: ConsentUpdate,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """更新用户 GDPR 同意状态"""
+    """更新用户 GDPR 同意状态
+
+    B0-3: 强区域驻留检查。
+    """
+    require_same_region(user, request)
     now = datetime.now(timezone.utc).isoformat()
     consent = ConsentStatus(
         accepted=payload.accepted,
@@ -141,13 +152,17 @@ async def update_consent(
 
 @router.get("/export")
 async def export_data(
+    request: Request,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """GDPR Article 15: 数据导出 — 返回用户所有个人数据的 JSON 格式
 
     包含：用户信息、健康指标、同意记录
+
+    B0-3: 强区域驻留检查（跨 region 导出 PII → 403）。
     """
+    require_same_region(user, request)
     consent = await _get_consent_db(db, user.id)
 
     # 获取所有健康观测数据
@@ -200,10 +215,15 @@ async def export_data(
 
 @router.get("/export/csv")
 async def export_data_csv(
+    request: Request,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """GDPR Article 15: 数据导出 — CSV 格式（仅健康观测数据）"""
+    """GDPR Article 15: 数据导出 — CSV 格式（仅健康观测数据）
+
+    B0-3: 强区域驻留检查。
+    """
+    require_same_region(user, request)
     obs_stmt = select(HealthObservation).where(
         HealthObservation.user_id == user.id
     ).order_by(HealthObservation.recorded_at)
@@ -243,6 +263,7 @@ async def export_data_csv(
 
 @router.post("/delete")
 async def delete_user_data(
+    request: Request,
     payload: DeleteRequest,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -250,7 +271,10 @@ async def delete_user_data(
     """GDPR Article 17: 被遗忘权 — 删除用户所有个人数据
 
     删除：健康观测数据、同意记录、用户账户
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(user, request)
     if not payload.confirm:
         raise HTTPException(
             status_code=400,
