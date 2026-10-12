@@ -58,13 +58,33 @@ async def test_apple_health_xml_parse():
 
 
 @pytest.mark.asyncio
-async def test_withings_sync():
-    """测试 Withings 数据同步"""
+async def test_withings_sync(monkeypatch):
+    """测试 Withings 数据同步（mock fetch_health_data，避免真实 API 依赖）
+
+    S0-3（2026-10-12）：Withings 连接器已改为 P0-7 真实 API 模式（缺凭据诚实报错），
+    测试通过 monkeypatch fetch_health_data 注入模拟数据来验证 sync_data 的格式转换逻辑。
+    """
     import app.connectors.withings
+    from app.connectors.withings import WithingsConnector
+
+    async def _mock_fetch(self, access_token, days=7):
+        return {
+            "items_count": 1,
+            "items": [{
+                "weight_kg": 72.5,
+                "systolic": 120,
+                "diastolic": 80,
+                "date": "2026-10-12",
+                "source": "withings_mock",
+            }],
+            "message": "mock data for test",
+        }
+
+    monkeypatch.setattr(WithingsConnector, "fetch_health_data", _mock_fetch)
+
     connector = ConnectorRegistry.get("withings")
     result = await connector.sync_data("fake_token", "user456")
     assert result["items_count"] > 0
-    # 应该包含体重和血压
     loinc_codes = [o["loinc_code"] for o in result["observations"]]
     assert "29463-7" in loinc_codes  # 体重
     assert "8480-6" in loinc_codes   # 收缩压
