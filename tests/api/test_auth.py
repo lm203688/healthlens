@@ -19,9 +19,9 @@ async def test_login(client):
         "email": "login@test.com",
         "password": "Password123!",
     })
-    # 再登录
+    # 再登录（B0-1: LoginInput 使用 account 字段，兼容 email/手机号）
     response = await client.post("/api/v1/auth/login", json={
-        "email": "login@test.com",
+        "account": "login@test.com",
         "password": "Password123!",
     })
     assert response.status_code in (200, 501)
