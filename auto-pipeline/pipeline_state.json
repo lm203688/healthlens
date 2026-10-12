@@ -1,8 +1,8 @@
 {
   "pipeline_id": "W35-2026",
   "created_at": "2026-09-06T03:01:25.449290",
-  "status": "running_ops_health_f",
-  "current_phase": "ops_health_f",
+  "status": "running_collect",
+  "current_phase": "collect",
   "phases": {
     "collect": {
       "status": "completed",
@@ -68,51 +68,51 @@
     },
     "feedback_a": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:12.713561",
-      "completed_at": "2026-10-12T08:28:16.887824",
-      "output_file": "reports/analysis/2026-10-12_feedback_a.json",
-      "items_processed": 3,
+      "started_at": "2026-09-16T07:46:43.192091",
+      "completed_at": "2026-09-16T07:46:51.513341",
+      "output_file": "reports/analysis/2026-09-16_feedback_a.json",
+      "items_processed": 6,
       "error": null
     },
     "user_conversion_b": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:16.919864",
-      "completed_at": "2026-10-12T08:28:16.923409",
-      "output_file": "reports/analysis/2026-10-12_conversion_b.json",
+      "started_at": "2026-09-16T07:46:51.631198",
+      "completed_at": "2026-09-16T07:46:55.962106",
+      "output_file": "reports/analysis/2026-09-16_conversion_b.json",
       "items_processed": 0,
       "error": null
     },
     "data_asset_c": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:16.971677",
-      "completed_at": "2026-10-12T08:28:19.707647",
-      "output_file": "reports/analysis/2026-10-12_data_asset_c.json",
+      "started_at": "2026-09-16T07:46:56.107123",
+      "completed_at": "2026-09-16T07:46:59.838830",
+      "output_file": "reports/analysis/2026-09-16_data_asset_c.json",
       "items_processed": 6,
       "error": null,
       "quality_issues": 4
     },
     "promotion_d": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:19.759527",
-      "completed_at": "2026-10-12T08:28:21.549209",
-      "output_file": "reports/analysis/2026-10-12_promotion_d.json",
+      "started_at": "2026-09-16T07:46:59.976190",
+      "completed_at": "2026-09-16T07:47:03.394138",
+      "output_file": "reports/analysis/2026-09-16_promotion_d.json",
       "items_processed": 5,
       "error": null
     },
     "finance_e": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:22.034061",
-      "completed_at": "2026-10-12T08:28:22.037763",
-      "output_file": "reports/analysis/2026-10-12_finance_e.json",
+      "started_at": "2026-09-16T07:47:03.547611",
+      "completed_at": "2026-09-16T07:47:07.732622",
+      "output_file": "reports/analysis/2026-09-16_finance_e.json",
       "items_processed": 1,
       "error": null,
       "alerts": 1
     },
     "ops_health_f": {
       "status": "completed",
-      "started_at": "2026-10-12T08:28:22.099509",
-      "completed_at": "2026-10-12T08:28:28.274601",
-      "output_file": "reports/analysis/2026-10-12_ops_health_f.json",
+      "started_at": "2026-09-16T07:47:07.927974",
+      "completed_at": "2026-09-16T07:47:13.444761",
+      "output_file": "reports/analysis/2026-09-16_ops_health_f.json",
       "items_processed": 4,
       "error": null
     }
@@ -860,41 +860,27 @@
   ],
   "feedback_metrics": {
     "ops_health": {
-      "checked_at": "2026-10-12T08:28:28.271820",
       "overall": "healthy",
       "endpoints_ok": 4,
       "endpoints_error": 0,
-      "server_reachable": false,
-      "containers_unhealthy": 0,
-      "security_issues": 1,
-      "medical_terms_found": 0
+      "server_reachable": false
     },
     "content_pipeline": {
-      "checked_at": "2026-10-12T08:28:16.885360",
+      "checked_at": "2026-09-16T07:46:51.501291",
       "data_source": "http_probe",
-      "total_deployed": 2,
-      "success_rate": 33.3,
+      "total_deployed": 5,
+      "success_rate": 100.0,
       "top_performer": "__core_health__",
       "weight_adjustments": {
-        "market_validation": {
-          "current": 25,
-          "suggested": 25,
-          "reason": "内容表现不佳，需加强市场验证筛选"
-        },
-        "feasibility": {
-          "current": 15,
-          "suggested": 15,
-          "reason": "技术可行性评估需更严格"
-        },
         "source_count": {
-          "current": 35,
-          "suggested": 35,
-          "reason": "降低来源数量权重，避免伪信号"
+          "current": 45,
+          "suggested": 45,
+          "reason": "内容表现优秀，可适当放宽筛选标准增加产出"
         }
       }
     },
     "user_conversion": {
-      "checked_at": "2026-10-12T08:28:16.921693",
+      "checked_at": "2026-09-16T07:46:55.952851",
       "data_source": "mock_zero",
       "weekly_active_rate": 0.0,
       "d7_retention": 0,
@@ -903,15 +889,15 @@
       "plan_effectiveness": 0
     },
     "data_asset": {
-      "checked_at": "2026-10-12T08:28:19.705744",
-      "total_records": 1201898091,
+      "checked_at": "2026-09-16T07:46:59.829822",
+      "total_records": 1201774750,
       "quality_issues": 4,
-      "estimated_value": 1201898.09,
+      "estimated_value": 1201774.75,
       "freshness": 0.5,
       "data_source": "real_api_probe"
     },
     "promotion": {
-      "checked_at": "2026-10-12T08:28:21.547446",
+      "checked_at": "2026-09-16T07:47:03.385999",
       "data_source": "mixed",
       "seo_data_source": "http_probe",
       "total_visits": 0,
@@ -920,13 +906,13 @@
       "channel_actions": 0
     },
     "finance": {
-      "checked_at": "2026-10-12T08:28:22.036164",
+      "checked_at": "2026-09-16T07:47:07.723726",
       "weekly_profit": -77.5,
       "monthly_profit_est": -333.25,
       "unit_economics": "negative",
       "all_time_revenue": 0,
       "alerts": 1,
-      "data_source": "db_unavailable"
+      "data_source": "db_error"
     }
   },
   "development_tasks": [
@@ -998,13 +984,6 @@
       "run_id": "run_20260916_074635",
       "started_at": "2026-09-16T07:46:35.849391",
       "finished_at": "2026-09-16T07:47:13.473176",
-      "verdict": "SUCCESS",
-      "failed_count": 0
-    },
-    {
-      "run_id": "run_20261012_082810",
-      "started_at": "2026-10-12T08:28:10.704870",
-      "finished_at": "2026-10-12T08:28:28.328412",
       "verdict": "SUCCESS",
       "failed_count": 0
     }
