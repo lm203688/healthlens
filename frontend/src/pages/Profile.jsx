@@ -4,6 +4,14 @@ import { api } from '../api/client';
 import TotpManager from '../components/TotpManager';
 import WearableDevices from '../components/WearableDevices';
 
+const JURISDICTION_OPTIONS = {
+  cn: '🇨🇳 CN — 中国',
+  us: '🇺🇸 US — 美国',
+  uk: '🇬🇧 UK — 英国',
+  au: '🇦🇺 AU — 澳大利亚',
+  eu: '🇪🇺 EU — 欧盟',
+};
+
 export default function Profile() {
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
@@ -27,6 +35,10 @@ export default function Profile() {
     notes: '',
   });
 
+  const [jurisdiction, setJurisdiction] = useState('cn');
+  const [savingJurisdiction, setSavingJurisdiction] = useState(false);
+  const [jurisdictionSaved, setJurisdictionSaved] = useState(null);
+
   useEffect(() => {
     if (!token) return;
     Promise.all([
@@ -35,6 +47,7 @@ export default function Profile() {
     ]).then(([userRes, profileRes]) => {
       const userData = userRes?.data || userRes;
       setUser(userData);
+      if (userData.jurisdiction) setJurisdiction(userData.jurisdiction);
 
       if (profileRes?.data) {
         const p = profileRes.data;
@@ -54,6 +67,21 @@ export default function Profile() {
       }
     }).catch(() => setError(t('profile.fetchFailed'))).finally(() => setLoading(false));
   }, [token]);
+
+  async function saveJurisdiction() {
+    setSavingJurisdiction(true);
+    setJurisdictionSaved(null);
+    try {
+      const resp = await api.updateJurisdiction({ jurisdiction });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.detail || data.message || t('profile.jurisdictionSaveFailed'));
+      setJurisdictionSaved(t('profile.jurisdictionSaved'));
+    } catch (err) {
+      setJurisdictionSaved(err.message);
+    } finally {
+      setSavingJurisdiction(false);
+    }
+  }
 
   async function saveProfile() {
     setSaving(true);
@@ -237,6 +265,40 @@ export default function Profile() {
         >
           {saving ? t('profile.saving') : '💾 ' + t('profile.saveProfile')}
         </button>
+      </div>
+
+      {/* 法域/合规设置 */}
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <h3 className="font-semibold text-slate-800 mb-2">🌐 {t('profile.jurisdictionTitle')}</h3>
+        <p className="text-sm text-slate-500 mb-4">{t('profile.jurisdictionDesc')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          {Object.entries(JURISDICTION_OPTIONS).map(([code, label]) => (
+            <button
+              key={code}
+              onClick={() => setJurisdiction(code)}
+              className={`px-4 py-3 rounded-lg border-2 text-sm font-medium transition ${
+                jurisdiction === code
+                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                  : 'border-slate-200 text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {jurisdiction !== 'cn' && (
+          <p className="text-xs text-amber-600 mt-3">{t('profile.jurisdictionNote')}</p>
+        )}
+        <button
+          onClick={saveJurisdiction}
+          disabled={savingJurisdiction}
+          className="mt-4 w-full bg-slate-700 text-white py-2.5 rounded-xl font-medium hover:bg-slate-800 disabled:opacity-50 transition"
+        >
+          {savingJurisdiction ? t('profile.jurisdictionSaving') : t('profile.jurisdictionSave')}
+        </button>
+        {jurisdictionSaved && (
+          <p className="text-sm text-emerald-700 mt-2 text-center">{jurisdictionSaved}</p>
+        )}
       </div>
 
       <TotpManager />
