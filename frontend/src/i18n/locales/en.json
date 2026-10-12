@@ -157,7 +157,14 @@
     "medications": "Current Medications",
     "medicationsPlaceholder": "e.g., Aspirin, blood pressure medication (leave blank if none)",
     "notes": "Other Notes",
-    "notesPlaceholder": "Any other health info you'd like to share…"
+    "notesPlaceholder": "Any other health info you'd like to share…",
+    "jurisdictionTitle": "Jurisdiction & Compliance",
+    "jurisdictionDesc": "Select your region to apply the appropriate regulatory framework. This affects which features and data fields are available to you.",
+    "jurisdictionNote": "Under this jurisdiction, some features may be restricted or disabled due to regulatory requirements.",
+    "jurisdictionSave": "Save Jurisdiction",
+    "jurisdictionSaving": "Saving…",
+    "jurisdictionSaveFailed": "Failed to save jurisdiction",
+    "jurisdictionSaved": "Jurisdiction updated"
   },
   "axis": {
     "title": "8-Axis Steady State Assessment",
