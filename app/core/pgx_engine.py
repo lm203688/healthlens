@@ -325,9 +325,10 @@ class PGxEngine:
                 r["drug_recommendations"] = enriched
                 r["drug_count"] = len(enriched)
                 r["top_drugs"] = [d["drug_name"] for d in enriched[:3]]
-                r["guidelines_attached"] = any(
-                    "cpic_level" in d for d in enriched
-                )
+                # S0-3（2026-10-12）：仅在实际获得 CPIC 等级时才标记 guidelines_attached，
+                # 离线回退时不附加该字段（保持与 test_engine_enriched_offline 断言一致）。
+                if any("cpic_level" in d for d in enriched):
+                    r["guidelines_attached"] = True
         except Exception as e:  # 离线/导入失败 → 保持本地结果
             logger.warning(f"PGx live guideline enrichment skipped: {e}")
         return results
