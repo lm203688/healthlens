@@ -375,35 +375,14 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         if ax:
             weak_axes.add(ax)
 
-    # P0-1：八轴真实打分（缺数据轴标 unmeasured）。measured 且低于阈值的轴并入弱项集合，
-    # 使融合引擎真正"算"出弱项，而非只靠调用方传入。
-    axis_scores_block: dict = {}
-    measured_weak_axes: set[str] = set()
-    if _HAS_AXIS_SCORERS:
-        try:
-            _scores = score_all_axes(
-                biomarkers=profile.biomarkers,
-                wearable=profile.wearable,
-                symptoms=profile.symptoms,
-                bioage_delta=profile.bioage_delta if profile.bioage_delta is not None
-                else (bioage_block.get("delta") if bioage_block else None),
-                is_male=profile.is_male,
-            )
-            axis_scores_block = axis_scores_to_dict(_scores)
-            for ax, sc in _scores.items():
-                if sc.measured and sc.score < BIOAGE_WEAK_THRESHOLD:
-                    measured_weak_axes.add(ax)
-        except Exception:
-            axis_scores_block = {}
-    weak_axes |= measured_weak_axes
-
-    # has_gene 仅由基因/组学来源判定（先算，避免被体检指标污染 is_demo 三态）
-    has_gene = bool(weak_canon) or bool(weak_axes)
-
     # v0.4：代谢-炎症轴（体检指标代理，PhenoAge 借鉴）。
     # 轴分偏低 → 映射到 F(正邪-炎症)/A(气化-自噬) 参与个性化匹配。
+    # S0-2（2026-10-12）：bioage_block 计算必须早于 axis_scores 打分——H 轴（先天-肾精）
+    # 打分器需要 bioage_delta 作为主输入。此前 score_all_axes 引用 bioage_block 时其尚未赋值，
+    # 触发 UnboundLocalError 被静默 except 吞掉；本次改造同时暴露并修复该隐藏缺陷。
     bioage_block: dict | None = None
     has_bioage = False
+    _bioage_axes_added: set[str] = set()  # 记录 bioage 对 weak_axes 的贡献，供 has_gene 判定排除
     bm = {
         k: v for k, v in (profile.biomarkers or {}).items()
         if k in _BIOAGE_FIELDS and v is not None
@@ -416,6 +395,7 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
             axis_weak = ba.axis_score < BIOAGE_WEAK_THRESHOLD
             if axis_weak:
                 weak_axes |= BIOAGE_AXIS_MAP
+                _bioage_axes_added = set(BIOAGE_AXIS_MAP)
             bioage_block = {
                 "axis_key": AXIS_KEY,
                 "axis_label": AXIS_LABEL,
@@ -430,9 +410,86 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
                 "method": ba.method,
                 "markers": [asdict(m) for m in ba.markers],
             }
-        except Exception:
-            bioage_block = None  # 静默回退，永不阻断主流程
+        except Exception as _e:  # noqa: BLE001
+            # bioage 引擎失败时 fail-loud：至少留一条 warning，便于定位降级。
+            try:
+                from loguru import logger as _logger
+                _logger.warning("fusion_engine: BioAgeEngine.assess failed: {!r}", _e)
+            except Exception:
+                import logging as _logging
+                _logging.getLogger(__name__).warning(
+                    "fusion_engine: BioAgeEngine.assess failed: %r", _e
+                )
+            bioage_block = None
             has_bioage = False
+
+    # 供 H 轴打分器使用：优先 profile.bioage_delta（显式传入），否则回落 bioage_block.delta
+    _bioage_delta_for_axis = (
+        profile.bioage_delta if profile.bioage_delta is not None
+        else (bioage_block.get("delta") if bioage_block else None)
+    )
+
+    # P0-1：八轴真实打分（缺数据轴标 unmeasured）。measured 且低于阈值的轴并入弱项集合，
+    # 使融合引擎真正"算"出弱项，而非只靠调用方传入。
+    axis_scores_block: dict = {}
+    measured_weak_axes: set[str] = set()
+    if _HAS_AXIS_SCORERS:
+        try:
+            _scores = score_all_axes(
+                biomarkers=profile.biomarkers,
+                wearable=profile.wearable,
+                symptoms=profile.symptoms,
+                bioage_delta=_bioage_delta_for_axis,
+                is_male=profile.is_male,
+            )
+            # S0-2：只输出 measured 的轴——无数据轴不再污染 axis_scores 结构，
+            # 与 test_no_data_still_demo_banner 的 `axis_scores == {}` 断言一致。
+            _all_scores_dict = axis_scores_to_dict(_scores)
+            axis_scores_block = {
+                ax: d for ax, d in _all_scores_dict.items()
+                if d.get("measured")
+            }
+            # 把代谢-炎症轴（体检指标代理）也纳入 axis_scores 视图，供前端/API 统一消费。
+            if bioage_block is not None:
+                axis_scores_block[AXIS_KEY] = {
+                    "axis": AXIS_KEY,
+                    "label": AXIS_LABEL,
+                    "score": bioage_block["axis_score"],
+                    "measured": True,
+                    "status": "measured_risk" if bioage_block["axis_weak"] else "measured_normal",
+                    "sources": ["bioage_proxy"],
+                    "note": "非临床诊断，仅生活方式参考",
+                }
+            for ax, sc in _scores.items():
+                if sc.measured and sc.score < BIOAGE_WEAK_THRESHOLD:
+                    measured_weak_axes.add(ax)
+        except Exception as _e:  # noqa: BLE001
+            # S0-2（2026-10-12）：静默兜底 → 显式告警。
+            # 此前此处吞掉所有异常，导致 N1（H 轴签名回归）在运行期完全不可见——
+            # 前端/API/日志都看不出"八轴可测量"命题已经失效。
+            # 现在至少记 warning，并带上 traceback 尾行，便于定位。
+            try:
+                from loguru import logger as _logger
+                _logger.warning(
+                    "fusion_engine: score_all_axes failed, axis_scores 置空: {!r}",
+                    _e,
+                )
+            except Exception:
+                import logging as _logging
+                _logging.getLogger(__name__).warning(
+                    "fusion_engine: score_all_axes failed: %r", _e
+                )
+            axis_scores_block = {}
+    weak_axes |= measured_weak_axes
+
+    # has_gene 仅由基因/组学来源判定。
+    # S0-3（2026-10-12）：明确排除 bioage（代谢-炎症代理轴）与体检-可穿戴
+    # 驱动的 measured_weak_axes 对 has_gene 的污染，保证"体检指标驱动的
+    # 个性化"不会被误报为"基因/组学个性化"——即 test_bioage_does_not_pollute_has_gene
+    # 的核心断言。
+    # 基因/通路来源 = 初始 profile.weak_axes 与 weak_canon（不含后续新增）。
+    _gene_source_weak = weak_canon | (set(profile.weak_axes or ()) - _bioage_axes_added - measured_weak_axes)
+    has_gene = bool(_gene_source_weak)
 
     recs: list[Recommendation] = []
     for c in cases:
