@@ -47,7 +47,7 @@ class TesseractOCREngine(BaseOCREngine):
                 import pytesseract  # noqa: F401
                 self._available = True
             except ImportError:
-                logger.warning("pytesseract not installed, falling back to MockOCR")
+                logger.warning("pytesseract not installed — will raise OCRUnavailableError (no mock fallback)")
                 self._available = False
         return self._available
 
@@ -197,7 +197,7 @@ class PaddleOCREngine(BaseOCREngine):
                 )
                 logger.info("PaddleOCR engine initialized successfully")
             except ImportError:
-                logger.warning("PaddleOCR not installed, falling back to MockOCR")
+                logger.warning("PaddleOCR not installed — will raise OCRUnavailableError (no mock fallback)")
                 return None
             except Exception as e:
                 logger.error(f"PaddleOCR initialization failed: {e}")
