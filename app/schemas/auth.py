@@ -158,6 +158,21 @@ class TotpVerifyInput(BaseModel):
         return v
 
 
+class JurisdictionUpdateInput(BaseModel):
+    """用户法域更新输入"""
+
+    jurisdiction: str
+
+    @field_validator("jurisdiction")
+    @classmethod
+    def validate_jurisdiction(cls, v: str) -> str:
+        v = (v or "").strip().lower()
+        allowed = {"cn", "us", "uk", "au", "eu"}
+        if v not in allowed:
+            raise ValueError(f"jurisdiction must be one of {allowed}")
+        return v
+
+
 class TotpStatusOutput(BaseModel):
     """TOTP 状态输出"""
 
