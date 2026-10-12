@@ -18,9 +18,9 @@
 
 **目的**：提出整合医学稳态生物学框架（ISSBF），将古籍的气/血/脏腑/阴阳/正邪/神等概念公理化映射为八条可测量的稳态生物学轴（另提出两条待验证扩展轴），并建立古籍候选与个体基因弱项通路的融合判定与感知–推断–干预–验证（SIIV）闭环。
 
-**方法**：（1）以六条范式公理约束框架；（2）构建八轴映射；（3）建立真实世界案例证据库（n=29，L1=8，L2=9，L3=12）；（4）设计可穿戴/CGM/BCI数据接口；（5）对融合引擎做in-silico计算验证（22合成画像）。
+**方法**：（1）以六条范式公理约束框架；（2）构建八轴映射；（3）建立真实世界案例证据库（n=120，L1=56，L2=31，L3=33）；（4）设计可穿戴/CGM/BCI数据接口；（5）对融合引擎做in-silico计算验证（22合成画像）。
 
-**结果**：框架在八轴上均能锚定现代机制与人体证据（如断食4周自噬基因LAMP2增加4.2倍；D+Q在240人Phase II RCT中改善步速和握力；16:8限时进食在333人RCT中降低肝脂肪25.8%）。计算验证显示可复现性100%、弱项覆盖率100%、对照画像个性化推荐为0、收敛效度85%。
+**结果**：框架在八轴上均能锚定现代机制与人体证据（如断食4周自噬基因LAMP2增加4.2倍；D+Q在60名绝经后妇女Phase II RCT中早期时点骨形成标志物升高但骨降解未见明确改善；16:8限时进食在333人RCT中降低肝脂肪25.8%）。计算验证显示可复现性100%、弱项覆盖率100%、对照画像个性化推荐为0、收敛效度70%。
 
 **结论**：ISSBF为古今中西结合提供了一套可计算、可验证的理论骨架，可作为非用药干预个性化推荐的决策支持基础。框架整体仍需前瞻性RCT验证。
 
@@ -55,7 +55,7 @@
 |---|---|---|---|
 | **A 气化** | 气化/运化 | AMPK/mTOR自噬 | 断食4周LAMP2增加4.2倍[1] |
 | **B 气血–线粒体** | 气血/益气 | PGC-1α/SIRT1生物合成 | 单HIIT 3h核内PGC-1α[15] |
-| **C 络脉–清瘀** | 络脉/痰瘀 | Senolytics(p16/p21,SASP) | D+Q：p16+p21细胞减少35%[5]；AFFIRM RCT(n=240)步速握力改善[18] |
+| **C 络脉–清瘀** | 络脉/痰瘀 | Senolytics(p16/p21,SASP) | D+Q：p16+p21细胞减少35%[5]；Farr 2024 Phase II RCT(n=60绝经后妇女)骨形成标志物早期升高、骨降解未见明确改善[18] |
 | **D 阴阳–昼夜** | 阴阳/起居有常 | CLOCK/BMAL1,褪黑素 | 16:8TRE肝脂肪减少25.8%(n=333)[9]；早期TRE胰岛素敏感性优于晚期[8] |
 | **E 脏腑–神经内分泌** | 脏腑/肾命门 | HPA轴,皮质醇 | 冥想HRV↑皮质醇↓[12] |
 | **F 正邪–炎症** | 正邪/湿热 | 低度炎症(CD4+T细胞免疫衰老) | 断食IL-6/TNF-α↓[1]；CD4-Eomes+调控组织衰老(Nature Aging 2025) |
@@ -78,14 +78,14 @@
 
 ---
 
-## 5. 证据基座：真实世界案例库（n=29）
+## 5. 证据基座：真实世界案例库（n=120）
 
-等级分布：L1=8，L2=9，L3=12。代表性条目：
+等级分布：L1=56，L2=31，L3=33。代表性条目：
 
 | ID | 干预 | 轴 | 人群/设计 | 关键效应 | 等级 | DOI |
 |---|---|---|---|---|---|---|
 | CASE-001 | 断食4周 | A/F | 51人 | LAMP2增加4.2倍 | L1 | 10.1016/j.clnesp.2024.11.002 |
-| CASE-006 | D+Q AFFIRM | C/H | 240人65-85岁Phase II RCT | p16/SASP↓步速握力改善 | L1 | 10.1038/s41591-026-04102-8 |
+| CASE-006 | D+Q Farr Phase II | C/H | 60名62-88岁绝经后妇女 Phase II RCT | 骨形成标志物早期升高；骨降解未见明确改善 | L1 | 10.1038/s41591-024-03096-2 |
 | CASE-007 | 早期vs晚期TRE | D | 197人12周RCT | 内脏脂肪↓早期HOMA-IR优于晚期 | L1 | 10.1038/s41591-024-03375-y |
 | CASE-008 | 16:8 TRE | D/F | 333人MASLD 16周RCT | 肝脂肪↓25.8% | L1 | 10.1016/j.jhep.2025.06.005 |
 | CASE-024 | 运动外泌体 | B/I | 人体运动研究 | 循环外泌体↑2-3倍 | L2 | 10.1186/s12967-026-08038-9 |
@@ -102,16 +102,18 @@
 | 指标 | 结果 |
 |---|---|
 | 可复现性 | 100% |
-| 弱项画像平均个性化推荐数 | 5.95 |
+| 弱项画像平均个性化推荐数 | 7.7 |
 | 对照画像个性化推荐数 | 0.0 |
 | 弱项覆盖率 | 100% |
-| L1级覆盖率 | 90% |
-| 收敛效度 | 85% |
+| L1级覆盖率 | 95% |
+| 收敛效度 | 70% |
 | 禁忌排除 | 1条(CASE-017) |
+
+> 数据冻结说明：以上数字来自 `tools/engine_validation.py` 于 git commit `7b75e9a` 的实跑结果，快照已冻结至 `validation_snapshots/BASELINE.json`。后续若脚本或案例库发生变更，CI 将自动检测 baseline diff 并要求人工确认，杜绝论文正文、仓库指标、实跑结果三者失联（N2 硬阻断修复）。
 
 轴激活分布：A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3——初始8轴均被激活（I/J轴为后续扩展，需独立验证）。
 
-证据等级分布(n=119)：L1=47(39%), L2=46(39%), L3=26(22%)。
+证据等级分布(n=154)：L1=134(87%), L2=16(10%), L3=4(3%)。
 
 **局限**：本验证检验引擎逻辑本身，不代表所推荐干预的人体有效性。
 
@@ -189,9 +191,9 @@ ISSBF为古今中西结合提供了一套可计算、可验证、去医疗化的
 
 [17] Su Z, Chen L. Circulating microRNAs for personalized exercise programs. Biology. 2025.
 
-[18] Kirkland JL, et al. AFFIRM Phase II RCT: senolytics extend healthspan. Nat Med. 2026. doi:10.1038/s41591-026-04102-8
+[18] Farr JN, Atkinson EJ, Achenbach SJ, Volkman TL, Tweed AJ, Vos SJ, Ruan M, Sfeir J, Drake MT, Saul D, Doolittle ML, Bancos I, Yu K, Tchkonia T, LeBrasseur NK, Kirkland JL, Monroe DG, Khosla S. Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial. Nat Med. 2024;30(9):2605-2612. doi:10.1038/s41591-024-03096-2
 
-[19] Yu P, et al. Exercise-induced muscle exosomes: miRNA cargo. J Nanobiotechnol. 2026. doi:10.1186/s12967-026-08038-9
+[19] Yu P, et al. Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression. J Transl Med. 2026. doi:10.1186/s12967-026-08038-9
 
 [20] Wang X, et al. Exercise-derived circulating exosomes for sarcopenia. Front Physiol. 2026;16:1680485.
 
