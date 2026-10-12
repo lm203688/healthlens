@@ -5,7 +5,7 @@ EU/US/UK 法域下致病性分级输出被策略拦截并返回 403，CN 保留�
 详见 `app/lib/claims_engine.py` 与 `claims_policy/*.yaml`。
 """
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Query
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.database import get_db
@@ -13,6 +13,7 @@ from app.models.user import User
 from app.models.genomics import PharmacogenomicProfile
 from app.api.deps import get_current_user
 from app.lib.claims_engine import filter_output, check_endpoint_allowed, ClaimsPolicyError
+from app.lib.region_guard import require_same_region
 
 router = APIRouter(tags=["genome"])
 
@@ -67,11 +68,16 @@ def _parse_genomic_file(content: bytes, filename: str) -> list[dict]:
 
 @router.post("/upload")
 async def upload_genome(
+    request: Request,
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """上传基因组数据(VCF/23andMe格式) - 解析并存储药物基因组学特征"""
+    """上传基因组数据(VCF/23andMe格式) - 解析并存储药物基因组学特征
+
+    B0-3: 强区域驻留检查（HGRAC 硬约束：中国遗传资源数据不得出境）。
+    """
+    require_same_region(current_user, request)
     content = await file.read()
 
     # 解析 VCF/文本格式
@@ -111,13 +117,17 @@ async def upload_genome(
 
 @router.get("/profile", response_model=dict)
 async def get_genome_profile(
+    request: Request,
     gene_symbol: str | None = Query(None, description="按基因符号筛选，如 CYP2D6"),
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """获取药物基因组分析结果 - 包含 PGx 引擎解读"""
+    """获取药物基因组分析结果 - 包含 PGx 引擎解读
+
+    B0-3: 强区域驻留检查。"""
+    require_same_region(current_user, request)
     query = select(PharmacogenomicProfile).where(
         PharmacogenomicProfile.user_id == current_user.id
     )
@@ -185,6 +195,7 @@ async def get_genome_profile(
 
 @router.get("/pgx", response_model=dict)
 async def get_pgx_report(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -192,7 +203,10 @@ async def get_pgx_report(
 
     管辖感知（A3+A6）：按法域过滤致病性分级 / ICD 等越线字段，
     EU/US 下 pgx_pathogenic_grading=false 时返回 403。
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
 
     ok, reason = check_endpoint_allowed("/genome/pgx", jurisdiction)
