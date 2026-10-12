@@ -16,11 +16,11 @@
 
 **Background**: Traditional medicine (exemplified by Chinese medicine) has accumulated millennia of experiential knowledge on homeostatic regulation, whereas modern aging biology has identified measurable homeostatic pathways (autophagy, mitochondrial biogenesis, senescent-cell clearance, circadian rhythm). The two knowledge systems have long run in parallel, lacking a computable, verifiable unifying framework.
 
-**Objective**: We propose the Integrated Steady-State Biology Framework (ISSBF), which axiomatically maps classical constructs (qi, blood, zang-fu, yin-yang, zheng-xie, shen) onto ten measurable steady-state biology axes, and establishes a fusion rule of classical candidate intersected with individual genetic weakness pathway together with a Sense-Infer-Intervene-Verify (SIIV) closed loop.
+**Objective**: We propose the Integrated Steady-State Biology Framework (ISSBF), which axiomatically maps classical constructs (qi, blood, zang-fu, yin-yang, zheng-xie, shen) onto eight measurable steady-state biology axes (A–H; axes I/J reserved for future extension, not implemented), and establishes a fusion rule of classical candidate intersected with individual genetic weakness pathway together with a Sense-Infer-Intervene-Verify (SIIV) closed loop.
 
-**Methods**: (1) Six paradigm axioms constrain the framework; (2) a ten-axis mapping is constructed (A: gasification/autophagy, B: qi-blood/mitochondria, C: luo-network/stasis-clearance, D: yin-yang/circadian, E: zang-fu/neuroendocrine, F: zheng-xie/inflammation, G: shen/affect, H: congenital/epi-clock, I: exosome intercellular signaling, J: regenerative medicine/iPSC); (3) a real-world case evidence base (n=29; L1=8, L2=9, L3=12) anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validation (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.
+**Methods**: (1) Six paradigm axioms constrain the framework; (2) an eight-axis mapping (A–H) is constructed (A: gasification/autophagy, B: qi-blood/mitochondria, C: luo-network/stasis-clearance, D: yin-yang/circadian, E: zang-fu/neuroendocrine, F: zheng-xie/inflammation, G: shen/affect, H: congenital/epi-clock; axes I/J reserved for future extension, not implemented); (3) a real-world case evidence base (n=120; L1=56, L2=31, L3=33) anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validation (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.
 
-**Results**: The framework anchors each axis to modern mechanisms and human evidence (e.g., 4-week fasting raised LAMP2 4.2-fold and LC3B 1.9-fold; dasatinib plus quercetin reduced senescent cells by 35% in a first-in-human pilot and improved gait speed in a 240-person Phase II trial; 16:8 time-restricted eating reduced hepatic fat by 25.8% in a 333-person randomized controlled trial). Computational validation showed 100% reproducibility, 100% weakness-profile coverage (90% with L1-grade evidence), zero personalized recommendations for control profiles, and 85% convergent validity with traditional-medicine domain expectations.
+**Results**: The framework anchors each axis to modern mechanisms and human evidence (e.g., 4-week fasting raised LAMP2 4.2-fold and LC3B 1.9-fold; dasatinib plus quercetin reduced p16-positive senescent cells by 35% in a first-in-human pilot (9 diabetic kidney disease patients); in a 60-person Phase II RCT in postmenopausal women, bone-formation markers rose at early timepoints but no clear effect was seen on bone-degradation markers; 16:8 time-restricted eating reduced hepatic fat by 25.8% in a 333-person randomized controlled trial). Computational validation showed 100% reproducibility, 100% weakness-profile coverage (95% with L1-grade evidence), zero personalized recommendations for control profiles, and 70% convergent validity with traditional-medicine domain expectations.
 
 **Conclusion**: ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating classical and modern medicine. It can serve as a decision-support foundation for personalized non-pharmacological intervention. The framework as a whole requires prospective validation.
 
@@ -59,7 +59,7 @@ Each axis maps a classical construct onto a modern measurable pathway and anchor
 |---|---|---|---|
 | **A: Gasification** | qi transformation / transport | AMPK/mTOR autophagy | 4-week fasting: LAMP2 increased 4.2-fold, LC3B 1.9-fold [1] |
 | **B: Qi-blood-Mitochondria** | qi-blood / tonify-qi | PGC-1-alpha/SIRT1 biogenesis | Single HIIT: nuclear PGC-1-alpha within 3 h [15] |
-| **C: Luo-network-Stasis clearance** | luo-network / phlegm-stasis | Senolytics (p16/p21, SASP) | D+Q: p16+p21 cells reduced 35% [5]; AFFIRM Phase II RCT (n=240): gait speed and grip strength improved [18] |
+| **C: Luo-network-Stasis clearance** | luo-network / phlegm-stasis | Senolytics (p16/p21, SASP) | D+Q: p16+p21 cells reduced 35% [5]; Farr 2024 Phase II RCT (n=60 postmenopausal women aged 62-88): bone-formation markers rose at early timepoints, no clear effect on bone degradation [18] |
 | **D: Yin-yang-Circadian** | yin-yang / regular routine | CLOCK/BMAL1, melatonin | 16:8 TRE: hepatic fat reduced 25.8% (n=333) [9]; early TRE优于late TRE for insulin sensitivity [8] |
 | **E: Zang-fu-Neuroendocrine** | zang-fu / kidney life-gate | HPA axis, cortisol | Meditation/breathing: HRV increased, cortisol decreased [12] |
 | **F: Zheng-xie-Inflammation** | zheng-xie / damp-heat | Low-grade inflammation + CD4+T-cell immunosenescence | Fasting: IL-6 and TNF-alpha decreased [1]; CD4-Eomes+ cells modulate tissue senescence (Nature Aging 2025) |
@@ -86,14 +86,14 @@ Given a user's genetic/omics panel (pathway-level aggregated scores; SNP-level c
 
 ---
 
-## 5. Evidence Base: Real-World Case Library (n=29)
+## 5. Evidence Base: Real-World Case Library (n=120)
 
-We built case_evidence_db.json (machine-readable), containing 29 real human-trial or classical-experience entries. Grade distribution: **L1=8 / L2=9 / L3=12**. Representative entries:
+We built case_evidence_db.json (machine-readable), containing 120 real human-trial or classical-experience entries. Grade distribution: **L1=56 / L2=31 / L3=33**. Representative entries:
 
 | ID | Intervention | Axis | Population/Design | Key effect | Grade | DOI |
 |---|---|---|---|---|---|---|
 | CASE-001 | 4-week fasting | A/F | 51 adults | LAMP2 increased 4.2-fold, LC3B 1.9-fold | L1 | 10.1016/j.clnesp.2024.11.002 |
-| CASE-006 | D+Q AFFIRM trial | C/H | 240 adults aged 65-85, Phase II RCT | p16/SASP reduced; gait speed and grip strength improved | L1 | 10.1038/s41591-026-04102-8 |
+| CASE-006 | D+Q Farr Phase II | C/H | 60 postmenopausal women aged 62-88, Phase II RCT | Bone-formation markers rose at early timepoints; no clear effect on bone-degradation markers | L1 | 10.1038/s41591-024-03096-2 |
 | CASE-007 | Early vs late TRE | D | 197 adults, 12-week RCT | All TRE groups reduced VAT; early TRE优于late TRE for HOMA-IR (P less than 0.05) | L1 | 10.1038/s41591-024-03375-y |
 | CASE-008 | 16:8 TRE | D/F | 333 MASLD adults, 16-week RCT | Hepatic fat reduced 25.8% (TRE equivalent to calorie restriction) | L1 | 10.1016/j.jhep.2025.06.005 |
 | CASE-022 | Evening blue-light avoidance | D | 12 adults, crossover | Melatonin suppressed greater than 55% | L2 | 10.1073/pnas.1418490112 |
@@ -111,16 +111,18 @@ To demonstrate that the fusion rule is a computable, auditable method, we conduc
 | Metric | Result |
 |---|---|
 | Reproducibility (dual-run agreement) | 100% (0/22 disagreement) |
-| Mean personalized recommendations per weakness profile | 5.95 |
+| Mean personalized recommendations per weakness profile | 7.7 |
 | Mean personalized recommendations per control profile | 0.0 |
 | Weakness-profile coverage (at least 1 personalized) | 100% |
-| Weakness-profile L1-coverage | 90% |
-| Convergent validity vs. traditional-medicine domain expectations | 85% |
+| Weakness-profile L1-coverage | 95% |
+| Convergent validity vs. traditional-medicine domain expectations | 70% |
 | Contraindication exclusion (weak F+D plus pregnancy) | 1 entry (CASE-017) |
+
+> **Data freeze note**: These numbers originate from `tools/engine_validation.py` at git commit `7b75e9a`, snapshot frozen to `validation_snapshots/BASELINE.json`. Any future script or case-library change triggers automatic CI baseline diff detection requiring manual confirmation — eliminating the three-way disconnect between paper text, repository metrics, and live-run results (N2 hard-blocker fix).
 
 **Axis activation distribution** (hits per weakness profile): A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3 -- all initial eight axes were activated, with no axis collapse. (Axes I and J were added after initial validation and require independent computational validation.)
 
-**Evidence-grade distribution** (personalized recommendation pool, n=119): L1=47 (39%), L2=46 (39%), L3=26 (22%) -- approximately 80% supported by human or RCT-level (L1 plus L2) evidence.
+**Evidence-grade distribution** (personalized recommendation pool, n=154): L1=134 (87%), L2=16 (10%), L3=4 (3%) -- approximately 97% supported by human or RCT-level (L1 plus L2) evidence.
 
 **Specificity**: Control profiles produced zero personalized recommendations, proving the intersection logic responds to real input rather than emitting indiscriminately.
 
@@ -151,9 +153,9 @@ This loop turns the theory from a text hypothesis into a measurable, falsifiable
 - **vs Systems-biology Chinese medicine** [3,4]: ISSBF maps luo/phlegm-stasis to axis C (senolytics) and adds a quantifiable closed-loop verification layer, descending from formula-level to individual-executable micro-interventions.
 - **vs Chronobiology**: Axis D anchors regular routine and light avoidance to the measurable melatonin-SCN loop.
 - **vs AI drug discovery (C2S-Scale/CellType)** [23]: C2S-Scale performs conditional reasoning -- drugs are effective only in specific biological contexts. ISSBF applies the same conditional-reasoning method to non-pharmacological interventions: classical candidates are weighted only when they match a user's genetic weakness profile. Both reject one-size-fits-all and require biological context for efficacy.
-- **vs Genomic language models (GeneLLM/BioFord)** [24]: GeneLLM processes raw cfRNA as language tokens, discovering pseudo-biomarkers without genome annotation. BioFord treats the laboratory as programmable AI infrastructure. ISSBF borrows this insight: classical texts are treated as "traditional-medicine language tokens," ten-axis mapping is the translation layer between classical and modern biology, and the SIIV loop is a learnable experimental flywheel.
+- **vs Genomic language models (GeneLLM/BioFord)** [24]: GeneLLM processes raw cfRNA as language tokens, discovering pseudo-biomarkers without genome annotation. BioFord treats the laboratory as programmable AI infrastructure. ISSBF borrows this insight: classical texts are treated as "traditional-medicine language tokens," eight-axis mapping is the translation layer between classical and modern biology, and the SIIV loop is a learnable experimental flywheel.
 
-**Novelty statement**: The core increments are (1) a computable mapping from classical constructs to ten axes, (2) an intersection fusion of classical candidate and genetic weakness, (3) the SIIV closed loop, and (4) a unified definition of hardware data interfaces. The framework offers a meta-framework for integration and prioritization; it does not claim any mechanism beyond known biology.
+**Novelty statement**: The core increments are (1) a computable mapping from classical constructs to eight axes (A–H; I/J reserved), (2) an intersection fusion of classical candidate and genetic weakness, (3) the SIIV closed loop, and (4) a unified definition of hardware data interfaces. The framework offers a meta-framework for integration and prioritization; it does not claim any mechanism beyond known biology.
 
 ---
 
@@ -210,9 +212,9 @@ ISSBF provides a computable, verifiable, non-medical theoretical skeleton for in
 
 [17] Su Z, Chen L. Utilizing circulating microRNAs for personalized exercise programs: insights into physiological adaptations and individual responses. Biology. 2025.
 
-[18] Kirkland JL, Tchkonia T, Musi N, et al. Senolytic drugs extend healthspan in first large human trial (AFFIRM). Nat Med. 2026. doi:10.1038/s41591-026-04102-8
+[18] Farr JN, Atkinson EJ, Achenbach SJ, Volkman TL, Tweed AJ, Vos SJ, Ruan M, Sfeir J, Drake MT, Saul D, Doolittle ML, Bancos I, Yu K, Tchkonia T, LeBrasseur NK, Kirkland JL, Monroe DG, Khosla S. Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial. Nat Med. 2024;30(9):2605-2612. doi:10.1038/s41591-024-03096-2
 
-[19] Yu P, et al. Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression. J Nanobiotechnol. 2026. doi:10.1186/s12967-026-08038-9
+[19] Yu P, et al. Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression. J Transl Med. 2026. doi:10.1186/s12967-026-08038-9
 
 [20] Wang X, Huang H, Chen J, Zhang Q. Mechanism of exercise-derived circulating exosomes as a target for sarcopenia management. Front Physiol. 2026;16:1680485.
 
