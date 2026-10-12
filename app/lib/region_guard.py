@@ -4,16 +4,17 @@
 PII 跨越 region 边界读取或写入 → 立即抛异常。
 
 **设计**：
-- `get_current_region()` 从请求头 X-HL-Region 或环境变量读取当前请求区域
-- `enforce_region_match(user, current_region)` 检查用户 region 与当前请求区域是否匹配
+- `get_request_region()` 从请求头 X-HL-Region 或环境变量读取当前请求区域
+- `enforce_region_match(user, request)` 检查用户 region 与当前请求区域是否匹配
 - `assert_same_region(record_region, user_region)` 记录级检查
+- `require_same_region(user, request)` 便捷函数：端点开头一行接入
 - 所有违反返回 HTTPException 403，detail 包含 `data_residency_violation`
 
-**约束范围**（当前已接入的端点）：
-- 基因数据（genome.py）—— HGRAC 硬约束：中国遗传资源数据不得出境
-- 诊断结果（diagnosis.py）—— 敏感 PI
-- 健康观察数据（observations）—— 敏感 PI
-- GDPR 数据导出/删除
+**约束范围**（B0-3 已接入的端点，2026-10-11 起）：
+- 基因数据（app/api/genome.py）—— HGRAC 硬约束：中国遗传资源数据不得出境
+- 诊断结果（app/api/diagnosis.py）—— 敏感 PI
+- 健康观察数据（app/api/observations.py）—— 敏感 PI
+- GDPR 数据导出/删除（app/api/gdpr.py）
 
 **约束级别**：
 - STRICT：所有敏感 PI 端点默认 strict
@@ -144,6 +145,19 @@ def assert_same_region(
 
 
 # ── 便捷依赖注入：给 FastAPI 端点用 ──────────────────────────
+
+def require_same_region(user, request: Request, strict: bool = True) -> str:
+    """端点开头一行接入：强制用户 region 与当前请求 region 匹配。
+
+    用法（端点签名加 `request: Request`）：
+        async def my_endpoint(request: Request, current_user=Depends(get_current_user)):
+            region = require_same_region(current_user, request)
+            ...
+
+    B0-3 接线标准：所有 PII 读写端点必须调用本函数。
+    """
+    return enforce_region_match(user, request, strict=strict)
+
 
 def region_guard(request: Request):
     """依赖注入装饰器：返回当前请求 region。"""
