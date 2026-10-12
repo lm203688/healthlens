@@ -34,9 +34,9 @@ axis_a:
   proxy: "血糖代谢稳态"
   thresholds:
     fpg:  # 空腹血糖（mmol/L）
-      default: { normal_max: 6.1, impaired_max: 7.0, severe_max: 11.1, optimal: 5.0 }
+      default: { normal_max: 6.1, elevated_max: 5.6, impaired_max: 7.0, severe_max: 11.1, optimal: 5.0 }
     hba1c:  # HbA1c（%）
-      default: { normal_max: 5.8, impaired_max: 6.5, severe_max: 8.0, optimal: 5.2 }
+      default: { normal_max: 5.8, elevated_max: 6.0, impaired_max: 6.5, severe_max: 8.0, optimal: 5.2 }
     bmi:  # BMI（kg/m²）
       default: { normal_max: 24, overweight_max: 28, severe_min: 28, optimal: 22, severe_low: 17 }
     waist:  # 腰围（cm，男）
@@ -129,14 +129,48 @@ axis_h:
   proxy: "表观遗传完整性"
   thresholds:
     bioage_delta:  # 生物年龄偏移（年）
-      default: { normal_max: 2, elevated_max: 5, severe_max: 8, optimal_max: 0 }
+      default: { normal_max: 0.5, elevated_max: 3.0, severe_max: 6.0, optimal_max: 0 }
     telomere_length:  # 端粒长度（bp，相对）
-      default: { normal_min: 0.8, low_max: 0.7, severe_low: 0.6 }
+      default: { normal_min: 1.0, low_max: 0.8, severe_low: 0.6 }
 
-# 法域覆盖示例（当前无实际差异化，占位结构）
+# 法域覆盖（B0-2 真实差异化，2026-10-11）
+# CN: 中国糖尿病防治指南（CDS 2020）+ 中国血脂异常防治指南（2016）
+# US: ADA Standards of Care 2025 + ACC/AHA 2017 高血压指南
+# EU: ESC/EASD 2019 糖尿病管理指南 + ESC 2023 高血压指南
+# SG/AU: 沿用 US 指南（当地指南与 US 差异较小）
 jurisdiction_overrides:
-  cn: {}
-  us: {}
-  eu: {}
-  sg: {}
-  au: {}
+  cn:
+    axis_a:
+      thresholds:
+        fpg: { elevated_max: 6.1, impaired_max: 7.0 }   # CDS: 6.1 即空腹血糖受损
+        hba1c: { normal_max: 6.0, impaired_max: 6.5 }   # CDS: 6.0% 为参考上限
+        bmi: { overweight_max: 24, severe_min: 28 }     # 中国标准：24 超重，28 肥胖
+        waist: { overweight_max: 90 }                   # 中国男性腰围切点 90cm
+        waist_female: { overweight_max: 85 }            # 中国女性腰围切点 85cm
+  us:
+    axis_a:
+      thresholds:
+        fpg: { normal_max: 5.6, elevated_max: 5.6, impaired_max: 6.9 }  # ADA: 5.6-6.9 为 prediabetes
+        hba1c: { normal_max: 5.7, elevated_max: 5.7, impaired_max: 6.4 } # ADA: 5.7-6.4% 为 prediabetes
+        bmi: { overweight_max: 25, severe_min: 30 }     # NIH: 25 超重，30 肥胖
+        waist: { overweight_max: 102 }                   # NIH: 男性 102cm
+        waist_female: { overweight_max: 88 }             # NIH: 女性 88cm
+  eu:
+    axis_a:
+      thresholds:
+        fpg: { elevated_max: 5.6, impaired_max: 7.0 }   # EASD: 5.6-6.9 prediabetes
+        hba1c: { elevated_max: 6.0, impaired_max: 6.5 } # EASD: 6.0-6.4% prediabetes
+        bmi: { overweight_max: 25, severe_min: 30 }     # ESC: 沿用 WHO/NIH
+    axis_c:
+      thresholds:
+        sbp: { normal_max: 120, elevated_max: 130, hypertensive_max: 140 }  # ESC 2023: 130-139 Stage 1
+        dbp: { normal_max: 80, elevated_max: 85, hypertensive_max: 90 }
+  sg:
+    axis_a:
+      thresholds:
+        fpg: { normal_max: 5.6, elevated_max: 5.6, impaired_max: 6.9 }
+        bmi: { overweight_max: 23, severe_min: 30 }     # Singapore NHE: 23 超重
+  au:
+    axis_a:
+      thresholds:
+        bmi: { overweight_max: 25, severe_min: 30 }     # AIHW: 沿用 NIH
