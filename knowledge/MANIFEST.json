@@ -1,39 +1,40 @@
 {
-  "version": "1.0.0",
-  "released": "2026-10-10",
-  "description": "HealthLens 知识平面资产清单（阶段 A1 骨架）",
+  "version": "1.0.1",
+  "released": "2026-10-11",
+  "description": "HealthLens 知识平面资产清单（阶段 A1 骨架 + B0-4 资产真实分离）",
   "plane": "knowledge",
   "pii": false,
   "license": "MIT",
+  "_path_convention": "所有 path 字段是相对仓库根目录的完整路径（2026-10-11 修正：此前 axes/mcp_tools 用了错误的 ../../ 前缀）",
   "assets": {
     "evidence": {
-      "path": "evidence/case_evidence_db.json",
+      "path": "knowledge/evidence/case_evidence_db.json",
       "source": "data/case_evidence_db.json",
       "count": 120,
       "version": "1.3",
-      "description": "120 条带 DOI 证据（L1/L2/L3 三级），I/J 轴残留已清理"
+      "description": "120 条带 DOI 证据（L1/L2/L3 三级），I/J 轴残留已清理。B0-4 已从 data/ 真实复制到 knowledge/"
     },
     "pathway_to_syndrome": {
-      "path": "tcm_entities/pathway_to_syndrome.json",
+      "path": "knowledge/tcm_entities/pathway_to_syndrome.json",
       "source": "data/pathway_to_syndrome_map.json",
       "count": 38,
       "version": "1.0",
-      "description": "通路-证候映射（从 120 条证据提取，A5 已清理单字符垃圾键）"
+      "description": "通路-证候映射（38 条，A5 已清理 21 个单字符垃圾键）"
     },
     "tcm_entities": {
-      "path": "tcm_entities/tcm_structured/",
+      "path": "knowledge/tcm_entities/tcm_structured/",
       "source": "data/tcm_structured/",
-      "count": 613,
+      "count": 2,
       "version": "1.0",
-      "description": "613 条古籍实体（药材/方剂/证候/穴）"
+      "description": "古籍实体（神农本草经、食疗本草；共 613 条实体）"
     },
     "axes": {
-      "path": "../../config/axes/axes.yaml",
+      "path": "config/axes/axes.yaml",
       "version": "1.0",
-      "description": "八轴阈值配置（含 jurisdiction 维度，A2 参数外置）"
+      "description": "八轴阈值配置（含 jurisdiction 维度，A2 参数外置）。B0-4 修正：原为错误的 ../../config/... 前缀"
     },
     "mcp_tools": {
-      "path": "../../mcp-server/server.json",
+      "path": "mcp-server/server.json",
       "version": "0.22.0",
       "description": "MCP 工具清单（OCI 镜像 ghcr.io/lm203688/healthlens-mcp）"
     }
@@ -41,7 +42,7 @@
   "distribution": {
     "local_embed": true,
     "cdn": false,
-    "huggingfate": false,
+    "huggingface": false,
     "zenodo": false,
     "mcp_image": "ghcr.io/lm203688/healthlens-mcp:latest"
   },
@@ -51,6 +52,7 @@
     "signature_algorithm": null
   },
   "history": [
-    {"date": "2026-10-10", "version": "1.0.0", "note": "阶段 A1 骨架建立"}
+    {"date": "2026-10-10", "version": "1.0.0", "note": "阶段 A1 骨架建立"},
+    {"date": "2026-10-11", "version": "1.0.1", "note": "B0-4 资产真实复制到 knowledge/；修正 axes/mcp_tools 的错误相对路径"}
   ]
 }
