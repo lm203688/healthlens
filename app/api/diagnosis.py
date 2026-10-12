@@ -10,7 +10,7 @@
 """
 import uuid
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -20,6 +20,7 @@ from app.models.diagnosis import DiagnosisResult
 from app.models.medication import MedicationRecommendation
 from app.api.deps import get_current_user, require_doctor_or_admin
 from app.lib.claims_engine import filter_output, check_endpoint_allowed, ClaimsPolicyError
+from app.lib.region_guard import require_same_region
 
 router = APIRouter(tags=["diagnosis"])
 
@@ -47,6 +48,7 @@ class ReviewRequest(BaseModel):
 
 @router.post("/analyze", response_model=dict, status_code=status.HTTP_202_ACCEPTED)
 async def trigger_analysis(
+    request: Request,
     body: AnalyzeRequest,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -59,7 +61,10 @@ async def trigger_analysis(
 
     管辖感知：按用户 jurisdiction 检查 diagnosis_endpoint 开关，
     EU/US/UK 等严监管法域下会返回 403 拒绝响应。
+
+    B0-3: 强区域驻留检查（PII 敏感）。
     """
+    require_same_region(current_user, request)
     jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
     ok, reason = check_endpoint_allowed("/diagnosis/analyze", jurisdiction)
     if not ok:
@@ -107,6 +112,7 @@ async def trigger_analysis(
 
 @router.get("/results", response_model=dict)
 async def list_diagnosis_results(
+    request: Request,
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     status_filter: str | None = Query(None, alias="status", description="状态筛选: pending/confirmed/rejected"),
@@ -117,7 +123,9 @@ async def list_diagnosis_results(
     获取诊断结果历史列表
 
     管辖感知：列表返回的每条诊断记录都会按用户法域过滤 ICD/severity 等越线字段。
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
 
     query = select(DiagnosisResult).where(DiagnosisResult.user_id == current_user.id)
@@ -173,6 +181,7 @@ async def list_diagnosis_results(
 
 @router.get("/results/{result_id}", response_model=dict)
 async def get_diagnosis_result(
+    request: Request,
     result_id: str,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -181,7 +190,9 @@ async def get_diagnosis_result(
     获取诊断结果详情
 
     管辖感知：详情返回同样按法域过滤 ICD/severity 等字段。
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     jurisdiction = getattr(current_user, "jurisdiction", "cn") or "cn"
 
     result = await db.execute(
@@ -241,6 +252,7 @@ async def get_diagnosis_result(
 
 @router.put("/results/{result_id}", response_model=dict)
 async def review_diagnosis(
+    request: Request,
     result_id: str,
     body: ReviewRequest,
     current_user: User = Depends(require_doctor_or_admin),
@@ -248,7 +260,10 @@ async def review_diagnosis(
 ):
     """
     审核/确认诊断结果
+
+    B0-3: 强区域驻留检查（医生也只能在部署 region 内审核）。
     """
+    require_same_region(current_user, request)
     # 只按 diagnosis_id 查询，允许医生审核任何患者的诊断
     result = await db.execute(
         select(DiagnosisResult).where(
