@@ -5,7 +5,7 @@ from datetime import datetime, date
 from decimal import Decimal
 from typing import Literal
 from collections import defaultdict
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -13,6 +13,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.observation import HealthObservation
 from app.api.deps import get_current_user
+from app.lib.region_guard import require_same_region
 
 router = APIRouter(tags=["observations"])
 
@@ -51,6 +52,7 @@ class ObservationBatchCreateInput(BaseModel):
 
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def create_observation(
+    request: Request,
     body: ObservationCreateInput,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -59,7 +61,10 @@ async def create_observation(
     创建单条健康指标记录
     - OCR 解析后写入数据库的接口
     - source 默认为 "manual"，可传入 "ocr" / "connector" / "manual"
+
+    B0-3: 强区域驻留检查（PII 敏感）。
     """
+    require_same_region(current_user, request)
     obs = HealthObservation(
         id=str(uuid.uuid4()),
         user_id=current_user.id,
@@ -97,6 +102,7 @@ async def create_observation(
 
 @router.post("/batch", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def create_observations_batch(
+    request: Request,
     body: ObservationBatchCreateInput,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -106,7 +112,10 @@ async def create_observations_batch(
     - 支持一次请求中写入多条指标数据
     - 单次最多 200 条
     - 兼容 `items` 和 `observations` 两种字段名
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     # 兼容旧版字段名 observations
     item_list = body.items if body.items else (body.observations or [])
     if not item_list:
@@ -167,6 +176,7 @@ async def create_observations_batch(
 
 @router.get("/", response_model=dict)
 async def list_observations(
+    request: Request,
     page: int = Query(1, ge=1, description="页码"),
     page_size: int = Query(20, ge=1, le=100, description="每页数量"),
     loinc_code: str | None = Query(None, description="LOINC 编码筛选"),
@@ -175,7 +185,10 @@ async def list_observations(
 ):
     """
     获取健康指标列表（分页，支持 loinc_code 筛选）
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     query = select(HealthObservation).where(HealthObservation.user_id == current_user.id)
     count_query = select(func.count()).select_from(HealthObservation).where(
         HealthObservation.user_id == current_user.id
@@ -232,6 +245,7 @@ async def list_observations(
 
 @router.get("/trend", response_model=dict)
 async def get_trend(
+    request: Request,
     code: str = Query(..., description="LOINC 编码"),
     from_date: date = Query(..., description="起始日期"),
     to_date: date = Query(..., description="截止日期"),
@@ -240,7 +254,10 @@ async def get_trend(
 ):
     """
     获取指定指标的趋势数据
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     query = (
         select(HealthObservation)
         .where(
@@ -304,13 +321,17 @@ async def get_trend(
 
 @router.get("/summary", response_model=dict)
 async def get_summary(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
     获取最新健康指标汇总
     - 按指标类型聚合，返回每个指标的最近一次值及异常状态
+
+    B0-3: 强区域驻留检查。
     """
+    require_same_region(current_user, request)
     # 查询每个 loinc_code 的最新记录
     # 使用子查询找出每个 loinc_code 的最新 recorded_at
     subquery = (
