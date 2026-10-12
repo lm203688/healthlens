@@ -152,3 +152,6 @@ class GoogleHealthConnector(BaseConnector):
             "source": "google_health",
             "recorded_at": start_date.isoformat(),
         }
+
+
+ConnectorRegistry.register("google_health", GoogleHealthConnector)
