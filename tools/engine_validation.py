@@ -147,9 +147,11 @@ conv_rate = conv_hit / conv_n if conv_n else 0
 
 # 禁忌排除演示
 # 禁忌排除演示：弱 F+D 无禁忌 vs 加"孕妇"禁忌（CASE-017 应被排除）
-# 用全量候选(top_k=全部)复算，确保低分但应排除的项进入对比
-base_F = recommend(UserProfile(weak_axes={"F", "D"}), top_k=24)
-contra_F = recommend(UserProfile(weak_axes={"F", "D"}, contraindications={"孕妇"}), top_k=24)
+# S0-4（2026-10-12）：原 top_k=24 恰好等于候选池上限，CASE-017 被排除后
+# 第 25 名补位，导致排除数恒为 0（假阴性）。改用全量候选（top_k=200）
+# 才能真实反映安全护栏的排除效果。
+base_F = recommend(UserProfile(weak_axes={"F", "D"}), top_k=200)
+contra_F = recommend(UserProfile(weak_axes={"F", "D"}, contraindications={"孕妇"}), top_k=200)
 base_F_n = len([x for x in base_F["recommendations"] if x["mode"] == "personalized"])
 contra_F_n = len([x for x in contra_F["recommendations"] if x["mode"] == "personalized"])
 excluded = base_F_n - contra_F_n
@@ -169,8 +171,71 @@ metrics = {
 }
 
 # ---------- 4. 写文件 ----------
+# S0-4（2026-10-12）：原脚本直接覆盖 engine_validation_metrics.json，导致论文正文、
+# 仓库指标、今日实跑三份数字永久失联（N2 学术诚信硬阻断）。改为：
+#   1) 追加写带 git_sha + 时间戳的快照 metrics_<sha>_<ts>.json（历史不可覆盖）
+#   2) 若 baseline 存在，输出 diff 并作为 CI 门禁信号（非零 diff → 应触发 review）
+#   3) 保留 engine_validation_metrics.json 作为"当前最新"指针（便于外部工具读取），
+#      但同时在 metrics 内写入 snapshot_path 与 baseline_sha 字段以便追溯。
+import subprocess, datetime
+
+def _git_sha() -> str:
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=OUT,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        ).strip()
+    except Exception:
+        return "nogit"
+
+_sha = _git_sha()
+_ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+metrics["_meta"] = {
+    "git_sha": _sha,
+    "timestamp_utc": _ts,
+    "script": "tools/engine_validation.py",
+    "note": "in-silico validation; numbers here ARE the paper's numbers (S0-4 freeze)",
+}
+
+# 追加写快照（永不覆盖历史）
+snapshot_name = f"engine_validation_metrics_{_sha}_{_ts}.json"
+snapshot_path = os.path.join(OUT, "validation_snapshots", snapshot_name)
+os.makedirs(os.path.dirname(snapshot_path), exist_ok=True)
+with open(snapshot_path, "w", encoding="utf-8") as f:
+    json.dump(metrics, f, ensure_ascii=False, indent=2)
+
+# 当前"最新"指针（供外部工具消费，同时内嵌 _meta 追溯字段）
 with open(os.path.join(OUT, "engine_validation_metrics.json"), "w", encoding="utf-8") as f:
     json.dump(metrics, f, ensure_ascii=False, indent=2)
+
+# 与 baseline 对比（CI 门禁：diff 非零 → 提示需人工确认）
+baseline_path = os.path.join(OUT, "validation_snapshots", "BASELINE.json")
+if os.path.exists(baseline_path):
+    with open(baseline_path, "r", encoding="utf-8") as f:
+        baseline = json.load(f)
+    baseline_keys = {k: v for k, v in baseline.items() if not k.startswith("_")}
+    cur_keys = {k: v for k, v in metrics.items() if not k.startswith("_")}
+    diffs = []
+    for k in set(baseline_keys) | set(cur_keys):
+        if baseline_keys.get(k) != cur_keys.get(k):
+            diffs.append({"key": k, "baseline": baseline_keys.get(k), "current": cur_keys.get(k)})
+    if diffs:
+        print(f"\n⚠️  BASELINE DIFF DETECTED ({len(diffs)} keys changed):")
+        for d in diffs:
+            print(f"  {d['key']}: {d['baseline']!r} → {d['current']!r}")
+        # CI 门禁：非空 diff 视为需要 review 的信号（不 fail，仅告警）
+        print("  → 请确认这是预期的模型/数据/代码变更，然后执行：")
+        print(f"    cp {snapshot_path} {baseline_path}")
+    else:
+        print(f"\n✅  Baseline match: current run reproduces BASELINE exactly.")
+else:
+    print(f"\nℹ️  No baseline found at {baseline_path}. To freeze a baseline:")
+    print(f"    cp {snapshot_path} {baseline_path}")
+
+print(f"Snapshot written: {snapshot_path}")
 
 with open(os.path.join(OUT, "HealthLens_论文_计算验证_补充数据.csv"), "w", encoding="utf-8-sig", newline="") as f:
     w = csv.DictWriter(f, fieldnames=["pid", "case_id", "mode", "score", "evidence", "axes", "tcm", "intervention"])
