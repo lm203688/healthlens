@@ -271,14 +271,14 @@ else: 标记"待验证假说", is_demo 降级
 4. 运动线粒体网络：Sports Medicine 2024（AMPK/SIRT1/PGC-1α）。
 5. 单 HIIT 线粒体适应：Little et al.（PGC-1α 核转位，2 周适应窗口）。
 6. Senolytics D+Q IPF 先导+DKD：Hickson et al. EBioMedicine 2019, 47:446-456 (PMID:31542391); Justice et al. EBioMedicine 2019, 40:554-563 (PMID:30616998)（p16+p21 细胞 −35%）。
-7. **AFFIRM 试验（里程碑）**：Kirkland et al. Nature Medicine 2026, doi:10.1038/s41591-026-04102-8（240名65-85岁，Phase II RCT，D+Q→p16/SASP↓+步速/握力/生活质量显著改善）。
+7. **Farr 2024 Phase II RCT（里程碑，需如实描述）**：Farr JN, et al. Nature Medicine 2024;30(9):2605-2612, doi:10.1038/s41591-024-03096-2（60名62-88岁绝经后妇女，间歇性 senolytic 疗法；骨形成标志物早期升高，骨降解未见明确改善）。此前项目文档曾误引为"Kirkland AFFIRM 240人 RCT 步速握力改善"，经查证该 DOI 不可解析，实际试验规模、人群与结论均不符，已在此更正。
 8. Senolytics 综述：Kirkland 2024 Nature Aging。
 9. 早 TRE vs 晚 TRE：Dote-Montero et al. Nature Medicine 2025, 31:524-533, doi:10.1038/s41591-024-03375-y（197人RCT，所有TRE组减少内脏脂肪；早期TRE在HOMA-IR改善上优于晚期TRE，P<0.05）。
 10. 16:8 TRE 肝脂↓25.8%：Oh et al. J Hepatol 2025, doi:10.1016/j.jhep.2025.06.005（333人RCT，TRE≈CR等效；被引31次）。
 11. 系统生物学中医：王永炎"肾虚痰瘀–毒损络脉"；北京中医药大学学报 2022 复杂网络控制论方剂。
 12. 华为 HiHealth Kit：开放数据类型（步数/心率/压力/睡眠/SpO2/血糖/血压），Extended Health Service Kit 实时心率/体重体脂写入。
 13. 消费级 BCI：中国信通院《脑机接口技术与应用研究报告(2025)》（80% 企业聚焦无创）；市场 2025 约 58 亿元 CAGR 45%+。
-14. **运动外泌体**：Yu et al. J Nanobiotechnology 2026, doi:10.1186/s12967-026-08038-9（HIIT→循环外泌体↑2-3倍）; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985（运动外泌体×心脏衰老逆转）。
+14. **运动外泌体**：Yu et al. J Transl Med 2026, doi:10.1186/s12967-026-08038-9（HIIT→循环外泌体↑2-3倍）; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985（运动外泌体×心脏衰老逆转）。
 15. **TRE网络荟萃分析**：ScienceDirect 2026, doi:10.1016/j.ther.2026.105127（19项RCT，1149人；TRF为肝脂肪减少最有效IF方案）。
 
 > 注：引用用于方向作证与论文骨架；正式投稿前需逐篇原文核对全文、样本量与置信区间。
