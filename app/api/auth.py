@@ -22,6 +22,7 @@ from app.schemas.auth import (
     TotpEnrollInput,
     TotpVerifyInput,
     TotpStatusOutput,
+    JurisdictionUpdateInput,
 )
 from app.services import sms_service
 from app.services.totp_service import (
@@ -326,6 +327,8 @@ async def get_me(current_user: User = Depends(get_current_user)):
             "email": current_user.email,
             "phone": current_user.phone,
             "role": current_user.role,
+            "jurisdiction": current_user.jurisdiction or "cn",
+            "region": current_user.region or "cn",
             "created_at": current_user.created_at.isoformat() if current_user.created_at else None,
         },
     }
@@ -373,6 +376,39 @@ async def update_user_role(
             "email": target_user.email,
             "role": target_user.role,
         },
+    }
+
+
+@router.put("/jurisdiction", response_model=dict)
+async def update_jurisdiction(
+    body: JurisdictionUpdateInput,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """用户切换合规法域（Claims 策略路由）。
+
+    jurisdiction 控制输出前按哪个法域过滤字段、开关端点、附加免责声明。
+    切换后立即生效，下一次调用受管端点即走新策略。
+    """
+    from app.lib.claims_engine import SUPPORTED_JURISDICTIONS
+
+    if body.jurisdiction not in SUPPORTED_JURISDICTIONS:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid jurisdiction. Must be one of: {sorted(SUPPORTED_JURISDICTIONS)}",
+        )
+
+    current_user.jurisdiction = body.jurisdiction
+    await db.commit()
+    await db.refresh(current_user)
+
+    return {
+        "success": True,
+        "data": {
+            "jurisdiction": current_user.jurisdiction,
+            "region": current_user.region or "cn",
+        },
+        "message": f"Jurisdiction updated to {current_user.jurisdiction}",
     }
 
 
