@@ -1,177 +1,177 @@
 ﻿pid,case_id,mode,score,evidence,axes,tcm,intervention
 P01-single-A,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P01-single-A,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P01-single-A,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P01-single-A,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
-P01-single-A,CASE-025,personalized,2,L2,气化/自噬(AMPK-mTOR); I,辟谷 / 气化重启（断食激活全身修复信号）,间歇性断食调节外泌体miRNA谱
-P01-single-A,CASE-014,personalized,1,L3,气化/自噬(AMPK-mTOR); 气血-线粒体(PGC-1α/SIRT),食物性味：温（四气）· 温中散寒、行气,食疗：生姜（温）
-P01-single-A,CASE-020,personalized,1,L3,气化/自噬(AMPK-mTOR); 神-情志(HRV/EEG),食物性味：寒（四气）· 清心安神、健脾,食疗：莲子（寒）
-P01-single-A,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
+P01-single-A,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P01-single-A,HL-0047,personalized,3,L1,气化/自噬(AMPK-mTOR),《温病条辨》,
+P01-single-A,HL-0053,personalized,3,L1,气化/自噬(AMPK-mTOR),《金匮要略》,
+P01-single-A,HL-0061,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P01-single-A,HL-0062,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P01-single-A,HL-0096,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P01-single-A,HL-0102,personalized,3,L1,气化/自噬(AMPK-mTOR),《黄帝内经·素问》,
 P02-single-B,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P02-single-B,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P02-single-B,CASE-024,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); I,导引 / 气血流通（动则气血周流，外达四肢百骸）,运动诱导外泌体释放（肌肉-脂肪串扰）
-P02-single-B,CASE-029,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); I,导引/气血流通(动则气血周流),Exercise-induced exosome release (confirmed 2026)
-P02-single-B,CASE-014,personalized,1,L3,气化/自噬(AMPK-mTOR); 气血-线粒体(PGC-1α/SIRT),食物性味：温（四气）· 温中散寒、行气,食疗：生姜（温）
-P02-single-B,CASE-018,personalized,1,L3,气血-线粒体(PGC-1α/SIRT); 先天-肾精(表观时钟),食物性味：微寒（四气）· 滋阴养血,食疗：地黄（微寒）
-P02-single-B,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P02-single-B,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P02-single-B,HL-0050,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
+P02-single-B,HL-0069,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P02-single-B,HL-0075,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P02-single-B,HL-0076,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P02-single-B,HL-0077,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P02-single-B,HL-0082,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《神农本草经》,
+P02-single-B,HL-0086,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
 P03-single-C,CASE-005,personalized,3,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P03-single-C,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P03-single-C,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P03-single-C,HL-0060,personalized,3,L1,络脉-清瘀(senolytics),《金匮要略》,
+P03-single-C,HL-0112,personalized,3,L1,络脉-清瘀(senolytics),《温病条辨》,
+P03-single-C,HL-0030,personalized,2,L2,络脉-清瘀(senolytics),《伤寒论》,
+P03-single-C,HL-0098,personalized,2,L2,络脉-清瘀(senolytics),《金匮要略》,
 P03-single-C,CASE-013,personalized,1,L3,络脉-清瘀(senolytics); 正邪-炎症,药食同源 / 活血（食养清瘀）,药食同源 senolytic（槲皮素食源：红洋葱/苹果/茶）
-P03-single-C,CASE-026,personalized,1,L3,络脉-清瘀(senolytics); I,药食同源 / 通络载药（经络传输药力）,外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）
-P03-single-C,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P03-single-C,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P03-single-C,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P03-single-C,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
+P03-single-C,CASE-026,personalized,1,L3,络脉-清瘀(senolytics),药食同源 / 通络载药（经络传输药力）,外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）
 P04-single-D,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
 P04-single-D,CASE-007,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P04-single-D,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P04-single-D,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
+P04-single-D,HL-0033,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《伤寒论》,
+P04-single-D,HL-0057,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《温病条辨》,
 P04-single-D,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P04-single-D,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P04-single-D,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
-P04-single-D,CASE-022,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1),昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）,避蓝光：夜间(睡前4h)避免短波蓝光暴露（发光eBook/手机屏 vs 印刷书）
-P05-single-E,CASE-012,personalized,2,L2,脏腑-神经内分泌; 神-情志(HRV/EEG),调息 / 安神 / 疏肝,冥想 / 呼吸训练（HRV、压力）
-P05-single-E,CASE-024,personalized,2,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
-P05-single-E,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P05-single-E,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P05-single-E,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P05-single-E,CASE-005,general,0.9,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P05-single-E,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
-P05-single-E,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
+P04-single-D,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟/内源性干细胞池),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
+P05-single-E,HL-0056,personalized,3,L1,脏腑-神经内分泌,《金匮要略》,
+P05-single-E,HL-0065,personalized,3,L1,脏腑-神经内分泌,《中医内科学》,
+P05-single-E,HL-0066,personalized,3,L1,脏腑-神经内分泌,《中医内科学》,
+P05-single-E,HL-0067,personalized,3,L1,脏腑-神经内分泌,《黄帝内经·素问》,
+P05-single-E,HL-0079,personalized,3,L1,脏腑-神经内分泌,《温病条辨》,
+P05-single-E,HL-0097,personalized,3,L1,脏腑-神经内分泌,《黄帝内经·素问》,
+P05-single-E,HL-0101,personalized,3,L1,脏腑-神经内分泌,《中医内科学》,
+P05-single-E,HL-0103,personalized,3,L1,脏腑-神经内分泌,《黄帝内经·素问》,
 P06-single-F,CASE-005,personalized,3,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
 P06-single-F,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P06-single-F,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P06-single-F,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P06-single-F,CASE-024,personalized,2,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
-P06-single-F,CASE-013,personalized,1,L3,络脉-清瘀(senolytics); 正邪-炎症,药食同源 / 活血（食养清瘀）,药食同源 senolytic（槲皮素食源：红洋葱/苹果/茶）
-P06-single-F,CASE-015,personalized,1,L3,正邪-炎症; 神-情志(HRV/EEG),食物性味：平（四气）· 润肺安神,食疗：百合（平）
-P06-single-F,CASE-016,personalized,1,L3,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,食物性味：平（四气）· 清热解毒、利湿,食疗：绿豆（平）
+P06-single-F,HL-0032,personalized,3,L1,正邪-炎症,《伤寒论》,
+P06-single-F,HL-0038,personalized,3,L1,正邪-炎症,《伤寒论》,
+P06-single-F,HL-0044,personalized,3,L1,正邪-炎症,《伤寒论》,
+P06-single-F,HL-0055,personalized,3,L1,正邪-炎症,《黄帝内经·素问》,
+P06-single-F,HL-0070,personalized,3,L1,正邪-炎症,《黄帝内经·素问》,
 P07-single-G,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P07-single-G,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P07-single-G,CASE-012,personalized,2,L2,脏腑-神经内分泌; 神-情志(HRV/EEG),调息 / 安神 / 疏肝,冥想 / 呼吸训练（HRV、压力）
-P07-single-G,CASE-024,personalized,2,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
-P07-single-G,CASE-015,personalized,1,L3,正邪-炎症; 神-情志(HRV/EEG),食物性味：平（四气）· 润肺安神,食疗：百合（平）
-P07-single-G,CASE-020,personalized,1,L3,气化/自噬(AMPK-mTOR); 神-情志(HRV/EEG),食物性味：寒（四气）· 清心安神、健脾,食疗：莲子（寒）
-P07-single-G,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P07-single-G,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P08-single-H,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P08-single-H,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
-P08-single-H,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P08-single-H,CASE-018,personalized,1,L3,气血-线粒体(PGC-1α/SIRT); 先天-肾精(表观时钟),食物性味：微寒（四气）· 滋阴养血,食疗：地黄（微寒）
-P08-single-H,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P08-single-H,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P08-single-H,CASE-005,general,0.9,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P08-single-H,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
+P07-single-G,HL-0036,personalized,3,L1,神-情志(HRV/EEG),《黄帝内经·素问》,
+P07-single-G,HL-0058,personalized,3,L1,神-情志(HRV/EEG),《伤寒论》,
+P07-single-G,HL-0059,personalized,3,L1,神-情志(HRV/EEG),《神农本草经》,
+P07-single-G,HL-0064,personalized,3,L1,神-情志(HRV/EEG),《黄帝内经·素问》,
+P07-single-G,HL-0073,personalized,3,L1,神-情志(HRV/EEG),《伤寒论》,
+P07-single-G,HL-0090,personalized,3,L1,神-情志(HRV/EEG),《神农本草经》,
+P07-single-G,HL-0107,personalized,3,L1,神-情志(HRV/EEG),《中医内科学》,
+P08-single-H,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P08-single-H,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P08-single-H,HL-0041,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《伤寒论》,
+P08-single-H,HL-0043,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《伤寒论》,
+P08-single-H,HL-0093,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《金匮要略》,
+P08-single-H,HL-0100,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《中医内科学》,
+P08-single-H,HL-0115,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《神农本草经》,
+P08-single-H,HL-0117,personalized,3,L1,先天-肾精(表观时钟/内源性干细胞池),《黄帝内经·素问》,
 P09-pair-AB,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P09-pair-AB,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P09-pair-AB,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
 P09-pair-AB,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P09-pair-AB,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P09-pair-AB,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
-P09-pair-AB,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P09-pair-AB,CASE-014,personalized,2,L3,气化/自噬(AMPK-mTOR); 气血-线粒体(PGC-1α/SIRT),食物性味：温（四气）· 温中散寒、行气,食疗：生姜（温）
-P09-pair-AB,CASE-024,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); I,导引 / 气血流通（动则气血周流，外达四肢百骸）,运动诱导外泌体释放（肌肉-脂肪串扰）
+P09-pair-AB,HL-0047,personalized,3,L1,气化/自噬(AMPK-mTOR),《温病条辨》,
+P09-pair-AB,HL-0050,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
+P09-pair-AB,HL-0053,personalized,3,L1,气化/自噬(AMPK-mTOR),《金匮要略》,
+P09-pair-AB,HL-0061,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P09-pair-AB,HL-0062,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
 P10-pair-BD,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
 P10-pair-BD,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P10-pair-BD,CASE-007,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P10-pair-BD,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P10-pair-BD,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P10-pair-BD,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P10-pair-BD,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P10-pair-BD,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
+P10-pair-BD,HL-0033,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《伤寒论》,
+P10-pair-BD,HL-0050,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
+P10-pair-BD,HL-0057,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《温病条辨》,
 P11-pair-CF,CASE-005,personalized,6,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P11-pair-CF,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P11-pair-CF,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P11-pair-CF,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P11-pair-CF,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P11-pair-CF,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P11-pair-CF,CASE-013,personalized,2,L3,络脉-清瘀(senolytics); 正邪-炎症,药食同源 / 活血（食养清瘀）,药食同源 senolytic（槲皮素食源：红洋葱/苹果/茶）
-P11-pair-CF,CASE-024,personalized,2,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
-P11-pair-CF,CASE-015,personalized,1,L3,正邪-炎症; 神-情志(HRV/EEG),食物性味：平（四气）· 润肺安神,食疗：百合（平）
+P11-pair-CF,HL-0032,personalized,3,L1,正邪-炎症,《伤寒论》,
+P11-pair-CF,HL-0038,personalized,3,L1,正邪-炎症,《伤寒论》,
+P11-pair-CF,HL-0044,personalized,3,L1,正邪-炎症,《伤寒论》,
+P11-pair-CF,HL-0055,personalized,3,L1,正邪-炎症,《黄帝内经·素问》,
 P12-pair-EG,CASE-012,personalized,4,L2,脏腑-神经内分泌; 神-情志(HRV/EEG),调息 / 安神 / 疏肝,冥想 / 呼吸训练（HRV、压力）
 P12-pair-EG,CASE-024,personalized,4,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
 P12-pair-EG,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P12-pair-EG,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P12-pair-EG,CASE-015,personalized,1,L3,正邪-炎症; 神-情志(HRV/EEG),食物性味：平（四气）· 润肺安神,食疗：百合（平）
-P12-pair-EG,CASE-020,personalized,1,L3,气化/自噬(AMPK-mTOR); 神-情志(HRV/EEG),食物性味：寒（四气）· 清心安神、健脾,食疗：莲子（寒）
-P12-pair-EG,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P12-pair-EG,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P12-pair-EG,HL-0036,personalized,3,L1,神-情志(HRV/EEG),《黄帝内经·素问》,
+P12-pair-EG,HL-0056,personalized,3,L1,脏腑-神经内分泌,《金匮要略》,
+P12-pair-EG,HL-0058,personalized,3,L1,神-情志(HRV/EEG),《伤寒论》,
+P12-pair-EG,HL-0059,personalized,3,L1,神-情志(HRV/EEG),《神农本草经》,
+P12-pair-EG,HL-0064,personalized,3,L1,神-情志(HRV/EEG),《黄帝内经·素问》,
 P13-pair-FG,CASE-024,personalized,4,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
 P13-pair-FG,CASE-004,personalized,3,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P13-pair-FG,CASE-005,personalized,3,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
 P13-pair-FG,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P13-pair-FG,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P13-pair-FG,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
-P13-pair-FG,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P13-pair-FG,CASE-012,personalized,2,L2,脏腑-神经内分泌; 神-情志(HRV/EEG),调息 / 安神 / 疏肝,冥想 / 呼吸训练（HRV、压力）
-P14-pair-DH,CASE-009,personalized,4,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
+P13-pair-FG,HL-0032,personalized,3,L1,正邪-炎症,《伤寒论》,
+P13-pair-FG,HL-0036,personalized,3,L1,神-情志(HRV/EEG),《黄帝内经·素问》,
+P13-pair-FG,HL-0038,personalized,3,L1,正邪-炎症,《伤寒论》,
+P14-pair-DH,CASE-009,personalized,4,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟/内源性干细胞池),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
 P14-pair-DH,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P14-pair-DH,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P14-pair-DH,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P14-pair-DH,CASE-003,personalized,3,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P14-pair-DH,CASE-006,personalized,3,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P14-pair-DH,CASE-007,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P14-pair-DH,CASE-008,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P14-pair-DH,CASE-030,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P14-pair-DH,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
+P14-pair-DH,HL-0033,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《伤寒论》,
 P15-path-mito,CASE-004,personalized,6,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
-P15-path-mito,CASE-011,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 调神 / 和气血,太极 / 导引（HRV 与迷走张力）
-P15-path-mito,CASE-024,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); I,导引 / 气血流通（动则气血周流，外达四肢百骸）,运动诱导外泌体释放（肌肉-脂肪串扰）
-P15-path-mito,CASE-029,personalized,2,L2,气血-线粒体(PGC-1α/SIRT); I,导引/气血流通(动则气血周流),Exercise-induced exosome release (confirmed 2026)
-P15-path-mito,CASE-014,personalized,1,L3,气化/自噬(AMPK-mTOR); 气血-线粒体(PGC-1α/SIRT),食物性味：温（四气）· 温中散寒、行气,食疗：生姜（温）
-P15-path-mito,CASE-018,personalized,1,L3,气血-线粒体(PGC-1α/SIRT); 先天-肾精(表观时钟),食物性味：微寒（四气）· 滋阴养血,食疗：地黄（微寒）
-P15-path-mito,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P15-path-mito,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P15-path-mito,HL-0050,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
+P15-path-mito,HL-0069,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P15-path-mito,HL-0075,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P15-path-mito,HL-0076,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P15-path-mito,HL-0077,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《金匮要略》,
+P15-path-mito,HL-0082,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《神农本草经》,
+P15-path-mito,HL-0086,personalized,3,L1,气血-线粒体(PGC-1α/SIRT),《伤寒论》,
 P16-path-circ,CASE-022,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1),昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）,避蓝光：夜间(睡前4h)避免短波蓝光暴露（发光eBook/手机屏 vs 印刷书）
 P16-path-circ,CASE-023,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1),昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）,"晨光暴露：晨间 1h 明亮光(10,000 lux)暴露"
 P16-path-circ,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P16-path-circ,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P16-path-circ,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
 P16-path-circ,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P16-path-circ,CASE-005,general,0.9,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P16-path-circ,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P16-path-circ,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P16-path-circ,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P17-path-autop,CASE-001,personalized,6,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P17-path-autop,CASE-003,personalized,6,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P17-path-autop,CASE-025,personalized,4,L2,气化/自噬(AMPK-mTOR); I,辟谷 / 气化重启（断食激活全身修复信号）,间歇性断食调节外泌体miRNA谱
-P17-path-autop,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P17-path-autop,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
-P17-path-autop,CASE-014,personalized,2,L3,气化/自噬(AMPK-mTOR); 气血-线粒体(PGC-1α/SIRT),食物性味：温（四气）· 温中散寒、行气,食疗：生姜（温）
-P17-path-autop,CASE-020,personalized,2,L3,气化/自噬(AMPK-mTOR); 神-情志(HRV/EEG),食物性味：寒（四气）· 清心安神、健脾,食疗：莲子（寒）
-P17-path-autop,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
+P17-path-autop,CASE-003,personalized,6,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P17-path-autop,CASE-025,personalized,4,L2,气化/自噬(AMPK-mTOR),辟谷 / 气化重启（断食激活全身修复信号）,间歇性断食调节外泌体miRNA谱
+P17-path-autop,HL-0047,personalized,3,L1,气化/自噬(AMPK-mTOR),《温病条辨》,
+P17-path-autop,HL-0053,personalized,3,L1,气化/自噬(AMPK-mTOR),《金匮要略》,
+P17-path-autop,HL-0061,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P17-path-autop,HL-0062,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
+P17-path-autop,HL-0096,personalized,3,L1,气化/自噬(AMPK-mTOR),《神农本草经》,
 P18-path-sen,CASE-005,personalized,6,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P18-path-sen,CASE-006,personalized,6,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
-P18-path-sen,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
+P18-path-sen,CASE-006,personalized,6,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P18-path-sen,HL-0060,personalized,3,L1,络脉-清瘀(senolytics),《金匮要略》,
+P18-path-sen,HL-0112,personalized,3,L1,络脉-清瘀(senolytics),《温病条辨》,
+P18-path-sen,CASE-009,personalized,2,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟/内源性干细胞池),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
 P18-path-sen,CASE-013,personalized,2,L3,络脉-清瘀(senolytics); 正邪-炎症,药食同源 / 活血（食养清瘀）,药食同源 senolytic（槲皮素食源：红洋葱/苹果/茶）
-P18-path-sen,CASE-026,personalized,2,L3,络脉-清瘀(senolytics); I,药食同源 / 通络载药（经络传输药力）,外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）
-P18-path-sen,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P18-path-sen,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
-P18-path-sen,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
+P18-path-sen,CASE-026,personalized,2,L3,络脉-清瘀(senolytics),药食同源 / 通络载药（经络传输药力）,外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）
+P18-path-sen,HL-0030,personalized,2,L2,络脉-清瘀(senolytics),《伤寒论》,
 P19-ctrl-strong,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P19-ctrl-strong,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P19-ctrl-strong,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
 P19-ctrl-strong,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P19-ctrl-strong,CASE-005,general,0.9,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P19-ctrl-strong,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P19-ctrl-strong,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P19-ctrl-strong,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P19-ctrl-strong,CASE-008,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P19-ctrl-strong,CASE-030,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
 P20-ctrl-empty,CASE-001,general,0.9,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P20-ctrl-empty,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P20-ctrl-empty,CASE-003,general,0.9,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
 P20-ctrl-empty,CASE-004,general,0.9,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P20-ctrl-empty,CASE-005,general,0.9,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P20-ctrl-empty,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P20-ctrl-empty,CASE-006,general,0.9,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P20-ctrl-empty,CASE-007,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
 P20-ctrl-empty,CASE-008,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P20-ctrl-empty,CASE-030,general,0.9,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
 P21-contra-FD,CASE-008,personalized,6,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
 P21-contra-FD,CASE-030,personalized,6,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食/运化痰湿,Intermittent fasting strategies network meta-analysis
-P21-contra-FD,CASE-009,personalized,4,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
+P21-contra-FD,CASE-009,personalized,4,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟/内源性干细胞池),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
 P21-contra-FD,CASE-001,personalized,3,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
 P21-contra-FD,CASE-005,personalized,3,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
 P21-contra-FD,CASE-007,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),子午流注 / 阳气当令进食,Early vs Late TRE (12-week RCT)
-P21-contra-FD,CASE-002,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 节律（子午流注雏形）,间歇性断食 vs 限时进食(TRF) 20 天
-P21-contra-FD,CASE-010,personalized,2,L2,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化失司 / 血糖波动（未病先防）,连续血糖监测(CGM) 餐后暴露
+P21-contra-FD,HL-0032,personalized,3,L1,正邪-炎症,《伤寒论》,
+P21-contra-FD,HL-0033,personalized,3,L1,阴阳-昼夜(CLOCK/BMAL1),《伤寒论》,
 P22-all8,CASE-001,personalized,6,L1,气化/自噬(AMPK-mTOR); 阴阳-昼夜(CLOCK/BMAL1),气化 / 脾运化（促运化、通腑）,间歇性断食(IF) 4 周
-P22-all8,CASE-003,personalized,6,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
+P22-all8,CASE-003,personalized,6,L1,气化/自噬(AMPK-mTOR); 先天-肾精(表观时钟/内源性干细胞池),辟谷 / 气化重启,模拟禁食(FMD) 3 个月
 P22-all8,CASE-004,personalized,6,L1,气血-线粒体(PGC-1α/SIRT); 神-情志(HRV/EEG),导引 / 行气（动则生阳）,规律运动（有氧/HIIT）线粒体适应
 P22-all8,CASE-005,personalized,6,L1,络脉-清瘀(senolytics); 正邪-炎症,活血祛瘀 / 通络（清瘀滞）,"Senolytics（Dasatinib+Quercetin, D+Q）IPF 先导"
-P22-all8,CASE-006,personalized,6,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
+P22-all8,CASE-006,personalized,6,L1,络脉-清瘀(senolytics); 先天-肾精(表观时钟/内源性干细胞池),扶正祛瘀 / 延缓衰老,D+Q intermittent dosing (AFFIRM trial)
 P22-all8,CASE-008,personalized,6,L1,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症,节律饮食 / 运化痰湿,16:8 限时进食 4 个月（肝脂）
-P22-all8,CASE-009,personalized,6,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
+P22-all8,CASE-009,personalized,6,L2,阴阳-昼夜(CLOCK/BMAL1); 正邪-炎症; 先天-肾精(表观时钟/内源性干细胞池),节律养生 / 扶正,16:8 限时进食 抗衰抗炎（协和/湘雅）
 P22-all8,CASE-024,personalized,6,L2,脏腑-神经内分泌; 正邪-炎症; 神-情志(HRV/EEG),针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）,"电针足三里(ST36, 0.5 mA)抗炎"
