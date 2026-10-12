@@ -47,9 +47,16 @@ async def client(db_session: AsyncSession):
 
 @pytest.fixture
 def test_user_data():
-    """每个测试用唯一的 email，避免并发冲突"""
+    """每个测试用唯一的 email/account，避免并发冲突。
+
+    B0-1（2026-10-12）：`LoginInput` schema 已从 `email` 迁到 `account`
+    （同时接受邮箱或手机号）；此 fixture 同时提供两个字段，保证注册/登录
+    端点各自的校验都能通过。
+    """
+    _email = f"test_{uuid.uuid4().hex[:8]}@healthlens.com"
     return {
-        "email": f"test_{uuid.uuid4().hex[:8]}@healthlens.com",
+        "email": _email,
+        "account": _email,
         "password": "TestPassword123!",
     }
 
