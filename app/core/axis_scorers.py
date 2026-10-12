@@ -29,6 +29,40 @@ from dataclasses import dataclass, field
 
 
 # ---------------------------------------------------------------------------
+# A2 参数外置接线（B0-2，2026-10-11）
+# ---------------------------------------------------------------------------
+# 设计：把 YAML 依赖隔离到 lazy import 中，保留 axis_scorers 的"标准库 only"约束。
+# 若 axis_config/yaml 不可用，_t() 自动 fallback 到调用方传入的 default 值，
+# 行为与硬编码完全一致（backward-compatible）。改 YAML 立即改行为，无需发版。
+# 阈值 metric 命名与 config/axes/axes.yaml 保持一致（fpg/hba1c/bmi/waist/tg/…）。
+#
+# 用法：
+#     if g > _t('A', 'fpg', 'impaired_max', 7.0):
+#         penalty += _p('A', 'fpg', 'impaired_max_penalty', 28)
+# ---------------------------------------------------------------------------
+
+try:
+    from app.lib.axis_config import get_threshold as _axis_get_threshold
+    _AXIS_CONFIG_AVAILABLE = True
+except Exception:  # pragma: no cover — 精简环境/导入失败 fallback
+    _AXIS_CONFIG_AVAILABLE = False
+
+    def _axis_get_threshold(*args, **kwargs):  # type: ignore
+        default = kwargs.get("default")
+        return default
+
+
+def _t(axis: str, metric: str, key: str, default: float | None,
+       jurisdiction: str = "cn") -> float:
+    """安全阈值查询：axis_config 优先，失败回退 default。永远返回 float。"""
+    try:
+        v = _axis_get_threshold(axis, metric, key, jurisdiction=jurisdiction, default=default)
+        return float(v) if v is not None else float(default)
+    except Exception:
+        return float(default)
+
+
+# ---------------------------------------------------------------------------
 # 八轴元数据
 # ---------------------------------------------------------------------------
 
@@ -98,32 +132,34 @@ def _gauss_penalty(value: float, ideal: float, tol: float, full_penalty: float) 
 # A 气化-自噬 (AMPK-mTOR) — 血糖代谢稳态
 # ---------------------------------------------------------------------------
 
-def _score_axis_A(bm: dict, is_male: bool = True) -> AxisScore:
+def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
     # 空腹血糖
     g = bm.get("glucose")
     if g is not None:
         src.append("glucose")
-        if g > 7.0:
+        if g > _t('A', 'fpg', 'impaired_max', 7.0, jurisdiction):
             penalty += 28
-        elif g > 6.1:
+        elif g > _t('A', 'fpg', 'normal_max', 6.1, jurisdiction):
             penalty += 18
-        elif g > 5.6:
+        elif g > _t('A', 'fpg', 'elevated_max', 5.6, jurisdiction):
             penalty += 8
     h = bm.get("hba1c")
     if h is not None:
         src.append("hba1c")
-        if h >= 6.5:
+        if h >= _t('A', 'hba1c', 'impaired_max', 6.5, jurisdiction):
             penalty += 22
-        elif h >= 6.0:
+        elif h >= _t('A', 'hba1c', 'elevated_max', 6.0, jurisdiction):
             penalty += 12
-        elif h >= 5.8:
+        elif h >= _t('A', 'hba1c', 'normal_max', 5.8, jurisdiction):
             penalty += 6
     w = bm.get("waist_cm")
     if w is not None:
         src.append("waist_cm")
-        hi = 102 if is_male else 88
+        # 男性/女性腰围 overweight_max（B0-2：从 axes.yaml 加载，保留原值 fallback）
+        waist_key = 'waist' if is_male else 'waist_female'
+        hi = _t('A', waist_key, 'overweight_max', 102 if is_male else 88, jurisdiction)
         if w > hi + 10:
             penalty += 20
         elif w > hi:
@@ -131,16 +167,16 @@ def _score_axis_A(bm: dict, is_male: bool = True) -> AxisScore:
     tg = bm.get("triglycerides")
     if tg is not None:
         src.append("triglycerides")
-        if tg >= 2.3:
+        if tg >= _t('A', 'tg', 'elevated_max', 2.3, jurisdiction):
             penalty += 16
-        elif tg >= 1.7:
+        elif tg >= _t('A', 'tg', 'normal_max', 1.7, jurisdiction):
             penalty += 8
     bmi = bm.get("bmi")
     if bmi is not None:
         src.append("bmi")
-        if bmi >= 28 or bmi < 17:
+        if bmi >= _t('A', 'bmi', 'severe_min', 28, jurisdiction) or bmi < _t('A', 'bmi', 'severe_low', 17, jurisdiction):
             penalty += 18
-        elif bmi >= 25 or bmi < 18.5:
+        elif bmi >= _t('A', 'bmi', 'overweight_max', 25, jurisdiction) or bmi < 18.5:
             penalty += 10
     if not src:
         return AxisScore("A", AXIS_META["A"]["label"], measured=False,
@@ -156,37 +192,37 @@ def _score_axis_A(bm: dict, is_male: bool = True) -> AxisScore:
 # B 气血-线粒体能量 (NAD+/mtDNA) — 蛋白/脂质能量代谢 + 静息心率
 # ---------------------------------------------------------------------------
 
-def _score_axis_B(bm: dict, wearable: dict | None = None) -> AxisScore:
+def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
     hdl = bm.get("hdl")
     if hdl is not None:
         src.append("hdl")
-        low = 1.0  # 男性阈值下限，女性 1.3 已在 caller 处理；此处统一用 1.0 简化
-        if hdl < 0.9:
+        # 男性阈值下限，女性 1.3 已在 caller 处理；此处统一用 1.0 简化
+        if hdl < _t('B', 'hdl', 'severe_low', 0.7, jurisdiction) + 0.2:  # severe_low + 0.2 ≈ 0.9
             penalty += 16
-        elif hdl < 1.0:
+        elif hdl < _t('B', 'hdl', 'low_min', 1.0, jurisdiction):
             penalty += 8
     tg = bm.get("triglycerides")
     if tg is not None:
         src.append("triglycerides")
-        if tg >= 2.3:
+        if tg >= _t('B', 'tg', 'severe_max', 2.3, jurisdiction):
             penalty += 16
-        elif tg >= 1.7:
+        elif tg >= _t('B', 'tg', 'elevated_max', 1.7, jurisdiction):
             penalty += 8
     homo = bm.get("homocysteine")
     if homo is not None:
         src.append("homocysteine")
-        if homo >= 15:
+        if homo >= _t('B', 'homo_cysteine', 'severe_max', 20, jurisdiction) - 5:
             penalty += 14
-        elif homo >= 10:
+        elif homo >= _t('B', 'homo_cysteine', 'elevated_max', 15, jurisdiction) - 5:
             penalty += 7
     rh = (wearable or {}).get("resting_hr")
     if rh is not None:
         src.append("resting_hr")
-        if rh >= 90:
+        if rh >= _t('B', 'resting_hr', 'elevated_max', 90, jurisdiction):
             penalty += 10
-        elif rh >= 80:
+        elif rh >= _t('B', 'resting_hr', 'normal_max', 80, jurisdiction):
             penalty += 5
     if not src:
         return AxisScore("B", AXIS_META["B"]["label"], measured=False,
@@ -202,38 +238,38 @@ def _score_axis_B(bm: dict, wearable: dict | None = None) -> AxisScore:
 # C 络脉-内皮微循环 — 血压 + 炎症 + 同型半胱氨酸
 # ---------------------------------------------------------------------------
 
-def _score_axis_C(bm: dict) -> AxisScore:
+def _score_axis_C(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
     sbp = bm.get("sbp")
     dbp = bm.get("dbp")
     if sbp is not None:
         src.append("sbp")
-        if sbp >= 140:
+        if sbp >= _t('C', 'sbp', 'hypertensive_max', 140, jurisdiction):
             penalty += 22
-        elif sbp >= 130:
+        elif sbp >= _t('C', 'sbp', 'elevated_max', 130, jurisdiction):
             penalty += 12
-        elif sbp >= 120:
+        elif sbp >= _t('C', 'sbp', 'normal_max', 120, jurisdiction):
             penalty += 6
     if dbp is not None:
         src.append("dbp")
-        if dbp >= 90:
+        if dbp >= _t('C', 'dbp', 'hypertensive_max', 90, jurisdiction):
             penalty += 12
-        elif dbp >= 85:
+        elif dbp >= _t('C', 'dbp', 'elevated_max', 85, jurisdiction):
             penalty += 6
     hs = bm.get("hs_crp")
     if hs is not None:
         src.append("hs_crp")
-        if hs > 3.0:
+        if hs > _t('C', 'hs_crp', 'elevated_max', 3.0, jurisdiction):
             penalty += 15
-        elif hs > 1.0:
+        elif hs > _t('C', 'hs_crp', 'normal_max', 1.0, jurisdiction):
             penalty += 8
     homo = bm.get("homocysteine")
     if homo is not None:
         src.append("homocysteine")
-        if homo >= 15:
+        if homo >= _t('C', 'homo_cysteine', 'elevated_max', 15, jurisdiction):
             penalty += 12
-        elif homo >= 10:
+        elif homo >= _t('C', 'homo_cysteine', 'normal_max', 10, jurisdiction):
             penalty += 6
     if not src:
         return AxisScore("C", AXIS_META["C"]["label"], measured=False,
@@ -249,32 +285,35 @@ def _score_axis_C(bm: dict) -> AxisScore:
 # D 阴阳-昼夜节律 — 睡眠中点抖动 / 时长 / 社会时差（需可穿戴睡眠）
 # ---------------------------------------------------------------------------
 
-def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None) -> AxisScore:
+def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None, jurisdiction: str = "cn") -> AxisScore:
     w = wearable or {}
     src = []
     penalty = 0.0
     jitter = w.get("sleep_midpoint_jitter")  # 每日睡眠中点标准差（分钟）
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
-        if jitter >= 90:
+        if jitter >= _t('D', 'sleep_midpoint_jitter', 'severe_max', 90, jurisdiction):
             penalty += 25
-        elif jitter >= 60:
+        elif jitter >= _t('D', 'sleep_midpoint_jitter', 'elevated_max', 60, jurisdiction):
             penalty += 15
-        elif jitter >= 30:
+        elif jitter >= _t('D', 'sleep_midpoint_jitter', 'normal_max', 30, jurisdiction):
             penalty += 8
     duration = w.get("sleep_duration_h")  # 平均睡眠时长（小时）
     if duration is not None:
         src.append("sleep_duration_h")
-        if duration < 5.5 or duration > 9.5:
+        # 长/短睡眠：以 YAML 的 long_max/short_min 为锚，±0.5h 作为严重阈值
+        long_max = _t('D', 'sleep_duration', 'long_max', 9.0, jurisdiction)
+        short_min = _t('D', 'sleep_duration', 'short_min', 6.0, jurisdiction)
+        if duration < short_min - 0.5 or duration > long_max + 0.5:
             penalty += 15
-        elif duration < 6.5 or duration > 8.5:
+        elif duration < short_min + 0.5 or duration > long_max - 0.5:
             penalty += 8
     sjl = w.get("social_jetlag_h")  # 社会时差（周末-工作日睡眠中点差，小时）
     if sjl is not None:
         src.append("social_jetlag_h")
-        if sjl >= 2.0:
+        if sjl >= _t('D', 'social_time_lag', 'elevated_max', 2.0, jurisdiction):
             penalty += 15
-        elif sjl >= 1.0:
+        elif sjl >= _t('D', 'social_time_lag', 'normal_max', 1.0, jurisdiction):
             penalty += 8
     if not src:
         return AxisScore("D", AXIS_META["D"]["label"], measured=False,
@@ -290,25 +329,27 @@ def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None) ->
 # E 脏腑-神经内分泌 (HPA) — HRV + 静息心率 + 压力症状
 # ---------------------------------------------------------------------------
 
-def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None) -> AxisScore:
+def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None, jurisdiction: str = "cn") -> AxisScore:
     w = wearable or {}
     src = []
     penalty = 0.0
     rmssd = w.get("hrv_rmssd")  # ms
     if rmssd is not None:
         src.append("hrv_rmssd")
-        if rmssd < 15:
+        low_max = _t('E', 'hrv_rmssd', 'low_max', 30, jurisdiction)
+        severe_low = _t('E', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
+        if rmssd < severe_low - 5:
             penalty += 22
-        elif rmssd < 25:
+        elif rmssd < low_max - 5:
             penalty += 12
-        elif rmssd < 35:
+        elif rmssd < low_max + 5:
             penalty += 6
     rh = w.get("resting_hr")
     if rh is not None:
         src.append("resting_hr")
-        if rh >= 90:
+        if rh >= _t('E', 'resting_hr', 'elevated_max', 90, jurisdiction):
             penalty += 10
-        elif rh >= 80:
+        elif rh >= _t('E', 'resting_hr', 'normal_max', 80, jurisdiction):
             penalty += 5
     stress_kw = {"压力大", "焦虑", "失眠", "易怒", "疲劳", "倦怠", "紧张"}
     sym = symptoms or []
@@ -330,22 +371,22 @@ def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None) ->
 # F 正邪-炎症负荷 — hs-CRP / IL-6
 # ---------------------------------------------------------------------------
 
-def _score_axis_F(bm: dict) -> AxisScore:
+def _score_axis_F(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
     hs = bm.get("hs_crp")
     if hs is not None:
         src.append("hs_crp")
-        if hs > 3.0:
+        if hs > _t('F', 'hs_crp', 'elevated_max', 3.0, jurisdiction):
             penalty += 30
-        elif hs > 1.0:
+        elif hs > _t('F', 'hs_crp', 'normal_max', 1.0, jurisdiction):
             penalty += 15
     il6 = bm.get("il6")
     if il6 is not None:
         src.append("il6")
-        if il6 > 3.0:
+        if il6 > _t('F', 'il6', 'elevated_max', 5.0, jurisdiction) - 2.0:
             penalty += 25
-        elif il6 > 1.8:
+        elif il6 > _t('F', 'il6', 'normal_max', 2.5, jurisdiction) - 0.7:
             penalty += 12
     if not src:
         return AxisScore("F", AXIS_META["F"]["label"], measured=False,
@@ -361,25 +402,27 @@ def _score_axis_F(bm: dict) -> AxisScore:
 # G 神-情志 (自主神经) — HRV(RMSSD) + 睡眠规律性
 # ---------------------------------------------------------------------------
 
-def _score_axis_G(wearable: dict | None = None) -> AxisScore:
+def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> AxisScore:
     w = wearable or {}
     src = []
     penalty = 0.0
     rmssd = w.get("hrv_rmssd")
     if rmssd is not None:
         src.append("hrv_rmssd")
-        if rmssd < 15:
+        low_max = _t('G', 'hrv_rmssd', 'low_max', 30, jurisdiction)
+        severe_low = _t('G', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
+        if rmssd < severe_low - 5:
             penalty += 22
-        elif rmssd < 25:
+        elif rmssd < low_max - 5:
             penalty += 12
-        elif rmssd < 35:
+        elif rmssd < low_max + 5:
             penalty += 6
     jitter = w.get("sleep_midpoint_jitter")
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
-        if jitter >= 90:
+        if jitter >= _t('G', 'sleep_regularity', 'severe_low', 30, jurisdiction):
             penalty += 15
-        elif jitter >= 60:
+        elif jitter >= _t('G', 'sleep_regularity', 'low_max', 50, jurisdiction):
             penalty += 8
     if not src:
         return AxisScore("G", AXIS_META["G"]["label"], measured=False,
@@ -395,23 +438,34 @@ def _score_axis_G(wearable: dict | None = None) -> AxisScore:
 # H 先天-肾精 (表观遗传) — 表观遗传年龄偏移 + 端粒(可选)
 # ---------------------------------------------------------------------------
 
-def _score_axis_H(bioage_delta: float | None = None, bm: dict | None = None) -> AxisScore:
+def _score_axis_H(
+    bioage_delta: float | None = None,
+    bm: dict | None = None,
+    jurisdiction: str = "cn",
+) -> AxisScore:
+    """H 先天-肾精轴打分（表观遗传）。
+
+    S0-2（2026-10-12）：签名补齐 `jurisdiction` 参数，与其他 7 个轴打分器一致。
+    此前 `_score_axis_H` 未随 B0-2 参数外置改造同步更新，导致 `score_axis()` 传 3 个
+    位置参数时抛 `TypeError`，函数体内又引用未定义名 `jurisdiction` 会引发 `NameError`——
+    双缺陷被 `fusion_engine` 的 `except Exception: {}` 静默吞掉，使得 axis_scores 恒为空。
+    """
     src = []
     penalty = 0.0
     if bioage_delta is not None:
         src.append("bioage_delta")
-        if bioage_delta >= 6.0:
+        if bioage_delta >= _t('H', 'bioage_delta', 'severe_max', 6.0, jurisdiction):
             penalty += 30
-        elif bioage_delta >= 3.0:
+        elif bioage_delta >= _t('H', 'bioage_delta', 'elevated_max', 3.0, jurisdiction):
             penalty += 18
-        elif bioage_delta >= 0.5:
+        elif bioage_delta >= _t('H', 'bioage_delta', 'normal_max', 0.5, jurisdiction):
             penalty += 8
     tl = (bm or {}).get("telomere_length")
     if tl is not None:
         src.append("telomere_length")
-        if tl < 0.8:
+        if tl < _t('H', 'telomere_length', 'low_max', 0.8, jurisdiction):
             penalty += 15
-        elif tl < 1.0:
+        elif tl < _t('H', 'telomere_length', 'normal_min', 1.0, jurisdiction):
             penalty += 8
     if not src:
         return AxisScore("H", AXIS_META["H"]["label"], measured=False,
@@ -435,25 +489,29 @@ def score_axis(
     symptoms: list | None = None,
     bioage_delta: float | None = None,
     is_male: bool = True,
+    jurisdiction: str = "cn",
 ) -> AxisScore:
-    """对单轴打分。缺失数据返回 measured=False 的结果。"""
+    """对单轴打分。缺失数据返回 measured=False 的结果。
+
+    B0-2: jurisdiction 参数接入 axis_config，按法域读取阈值。
+    """
     bm = biomarkers or {}
     if axis == "A":
-        return _score_axis_A(bm, is_male)
+        return _score_axis_A(bm, is_male, jurisdiction)
     if axis == "B":
-        return _score_axis_B(bm, wearable)
+        return _score_axis_B(bm, wearable, jurisdiction)
     if axis == "C":
-        return _score_axis_C(bm)
+        return _score_axis_C(bm, jurisdiction)
     if axis == "D":
-        return _score_axis_D(wearable, symptoms)
+        return _score_axis_D(wearable, symptoms, jurisdiction)
     if axis == "E":
-        return _score_axis_E(wearable, symptoms)
+        return _score_axis_E(wearable, symptoms, jurisdiction)
     if axis == "F":
-        return _score_axis_F(bm)
+        return _score_axis_F(bm, jurisdiction)
     if axis == "G":
-        return _score_axis_G(wearable)
+        return _score_axis_G(wearable, jurisdiction)
     if axis == "H":
-        return _score_axis_H(bioage_delta, bm)
+        return _score_axis_H(bioage_delta, bm, jurisdiction)
     raise ValueError(f"未知轴: {axis}")
 
 
@@ -464,13 +522,18 @@ def score_all_axes(
     symptoms: list | None = None,
     bioage_delta: float | None = None,
     is_male: bool = True,
+    jurisdiction: str = "cn",
 ) -> dict[str, AxisScore]:
-    """对所有八轴打分，返回 {axis: AxisScore}。"""
+    """对所有八轴打分，返回 {axis: AxisScore}。
+
+    B0-2: jurisdiction 参数透传到各轴打分器。
+    """
     out: dict[str, AxisScore] = {}
     for ax in ALL_AXES:
         out[ax] = score_axis(
             ax, biomarkers=biomarkers, wearable=wearable,
             symptoms=symptoms, bioage_delta=bioage_delta, is_male=is_male,
+            jurisdiction=jurisdiction,
         )
     return out
 
