@@ -1,4 +1,13 @@
-"""频率疗法处方引擎 — 将五层诊断映射为个性化频率处方"""
+"""放松音频体验引擎（原「频率疗法处方引擎」）— 将用户状态映射为个性化放松音频推荐。
+
+⚠️ 合规降级声明（S3-4，2026-10-13）：
+  本模块是**放松 / 睡眠音频体验**，不是治疗、不是诊断、不是药物、不进入八轴机制链。
+  - 所有曲目仅为听觉放松体验；不宣称任何生理修复、疾病改善或机制性疗效。
+  - 不再使用「DNA 修复 / Nrf2 / 清除毒素 / 组织修复」等机制性文案（属伪科学范畴，
+    且在 FDA/MHRA 口径下易构成 claims 越界）。
+  - 映射关系（证候/通路/症状 → 曲目）保留为「放松体验推荐」的启发式，不构成医学建议。
+  - 输出统一带 `not_clinical=True` 与 `disclaimer`，与八轴健康画像明确区分。
+"""
 import uuid
 from typing import Any
 
@@ -8,6 +17,9 @@ from loguru import logger
 # 频率曲库数据（同步自小程序 tracks.js）
 # ---------------------------------------------------------------------------
 
+# S3-4（2026-10-13）：曲目描述全部改为中性「放松/睡眠音频体验」文案，
+# 移除「DNA 修复 / 清除毒素 / 激活免疫 / 组织修复 / 能量场 / 心轮 / 自愈」等
+# 机制性或伪科学宣称。频率数值仅作为音频标识，不暗示任何生理效应。
 TRACKS = [
     {"id": "FQ-001", "title": "安眠", "subtitle": "174Hz · Delta波", "frequency": 174, "beatFreq": 2,
      "category": "sleep", "bodyParts": ["全身"], "symptoms": ["失眠", "入睡困难", "浅眠"],
@@ -16,23 +28,23 @@ TRACKS = [
     {"id": "FQ-002", "title": "归静", "subtitle": "528Hz · 纯频率", "frequency": 528, "beatFreq": None,
      "category": "relax", "bodyParts": ["全身"], "symptoms": ["疲劳", "压力", "紧张"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-002.wav",
-     "description": "爱的频率，让紧绷的身体一点点松开", "duration": 20},
+     "description": "让紧绷的身体一点点松开，回到平静", "duration": 20},
     {"id": "FQ-003", "title": "释然", "subtitle": "396Hz · Alpha波", "frequency": 396, "beatFreq": 10,
      "category": "emotion", "bodyParts": ["胸部", "心脏"], "symptoms": ["焦虑", "恐惧", "内疚"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-003.wav",
-     "description": "释放恐惧和内疚，让心回到安全的地方", "duration": 15},
+     "description": "帮助释放恐惧和内疚，让心回到安全的地方", "duration": 15},
     {"id": "FQ-006", "title": "清醒", "subtitle": "40Hz · Gamma波", "frequency": 40, "beatFreq": 40,
      "category": "focus", "bodyParts": ["头部", "大脑"], "symptoms": ["脑雾", "记忆力差", "注意力不集中"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-006.wav",
-     "description": "激活大脑清除废物，让思维重新清晰", "duration": 15},
+     "description": "帮助在疲惫时提神、理清思绪", "duration": 15},
     {"id": "FQ-007", "title": "净化", "subtitle": "741Hz · 纯频率", "frequency": 741, "beatFreq": None,
      "category": "healing", "bodyParts": ["肝脏", "消化系统"], "symptoms": ["沉闷", "消化不良", "毒素积累"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-007.wav",
-     "description": "清理毒素的频率，让身体和心灵一起呼吸", "duration": 20},
+     "description": "温和舒缓的频率，帮助放松与呼吸", "duration": 20},
     {"id": "FQ-009", "title": "愈合", "subtitle": "285Hz · 纯频率", "frequency": 285, "beatFreq": None,
      "category": "healing", "bodyParts": ["全身", "伤口"], "symptoms": ["疼痛", "炎症", "术后调养"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-009.wav",
-     "description": "组织修复的频率，让身体回到完整的状态", "duration": 20},
+     "description": "舒缓频率，帮助在不适时放松", "duration": 20},
     {"id": "FQ-010", "title": "入定", "subtitle": "963Hz · Gamma波", "frequency": 963, "beatFreq": 40,
      "category": "spirit", "bodyParts": ["全身", "松果体"], "symptoms": ["烦躁", "精神疲惫", "需要深度放松"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-010.wav",
@@ -56,31 +68,31 @@ TRACKS = [
     {"id": "FQ-015", "title": "专注", "subtitle": "432Hz · 自然频率 · Beta波", "frequency": 432, "beatFreq": 14,
      "category": "focus", "bodyParts": ["头部", "大脑"], "symptoms": ["注意力不集中", "工作效率低", "学习困难"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-015.wav",
-     "description": "自然调律的专注力，让思维像激光一样聚焦", "duration": 20},
+     "description": "自然舒缓的专注感，让思维更清晰", "duration": 20},
     {"id": "FQ-016", "title": "心流", "subtitle": "528Hz · Beta波 20Hz", "frequency": 528, "beatFreq": 20,
      "category": "focus", "bodyParts": ["头部", "大脑"], "symptoms": ["拖延", "缺乏灵感", "工作卡壳"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-016.wav",
-     "description": "进入心流状态，时间感消失，效率翻倍", "duration": 15},
-    {"id": "FQ-017", "title": "修复", "subtitle": "285Hz · Theta波 · 组织再生", "frequency": 285, "beatFreq": 6,
-     "category": "healing", "bodyParts": ["全身", "能量场"], "symptoms": ["慢性疼痛", "术后调养", "免疫力低"],
+     "description": "帮助进入专注放松的心流状态", "duration": 15},
+    {"id": "FQ-017", "title": "修复", "subtitle": "285Hz · Theta波 · 舒缓", "frequency": 285, "beatFreq": 6,
+     "category": "healing", "bodyParts": ["全身"], "symptoms": ["慢性疼痛", "术后调养", "免疫力低"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-017.wav",
-     "description": "能量场修复频率，帮助身体回到最佳状态", "duration": 25},
+     "description": "舒缓频率，帮助放松与恢复", "duration": 25},
     {"id": "FQ-018", "title": "再生", "subtitle": "396Hz · Alpha波 · 深层放松", "frequency": 396, "beatFreq": 10,
      "category": "healing", "bodyParts": ["肌肉", "关节"], "symptoms": ["肌肉紧张", "关节不适", "慢性疲劳"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-018.wav",
-     "description": "释放深层紧张，让身体启动自我修复", "duration": 20},
+     "description": "释放深层紧张，帮助身体放松", "duration": 20},
     {"id": "FQ-019", "title": "释怀", "subtitle": "417Hz · Alpha波 · 情绪转化", "frequency": 417, "beatFreq": 8,
      "category": "emotion", "bodyParts": ["心脏", "胸腔"], "symptoms": ["情绪波动", "焦虑", "压抑"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-019.wav",
      "description": "温和地释放情绪，不需要对抗，只需要流动", "duration": 20},
-    {"id": "FQ-020", "title": "连结", "subtitle": "639Hz · Theta波 · 关系修复", "frequency": 639, "beatFreq": 7,
+    {"id": "FQ-020", "title": "连结", "subtitle": "639Hz · Theta波 · 关系舒缓", "frequency": 639, "beatFreq": 7,
      "category": "emotion", "bodyParts": ["心脏", "喉咙"], "symptoms": ["孤独感", "社交焦虑", "关系修复"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-020.wav",
-     "description": "打开心轮的频率，重新感受与世界的连接", "duration": 20},
-    {"id": "FQ-021", "title": "觉醒", "subtitle": "741Hz · Gamma波 · 直觉激活", "frequency": 741, "beatFreq": 40,
+     "description": "舒缓频率，帮助重新感受与世界的连接", "duration": 20},
+    {"id": "FQ-021", "title": "觉醒", "subtitle": "741Hz · Gamma波 · 思路清晰", "frequency": 741, "beatFreq": 40,
      "category": "focus", "bodyParts": ["头部", "第三眼"], "symptoms": ["决策困难", "缺乏直觉", "方向不明"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-021.wav",
-     "description": "激活直觉中心，看清迷雾中的方向", "duration": 15},
+     "description": "帮助在迷茫时平静、理清方向", "duration": 15},
     {"id": "FQ-022", "title": "超越", "subtitle": "852Hz · Gamma波 30Hz", "frequency": 852, "beatFreq": 30,
      "category": "spirit", "bodyParts": ["头部", "顶轮"], "symptoms": ["瓶颈期", "思维受限", "需要突破"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-022.wav",
@@ -89,14 +101,14 @@ TRACKS = [
      "category": "healing", "bodyParts": ["全身", "消化系统"], "symptoms": ["体力不足", "消化弱", "缺乏活力"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-023.wav",
      "description": "太阳的频率，温暖而有力，重新充电", "duration": 25},
-    {"id": "FQ-025", "title": "舒缓", "subtitle": "174Hz · Alpha波 · 疼痛缓解", "frequency": 174, "beatFreq": 10,
+    {"id": "FQ-025", "title": "舒缓", "subtitle": "174Hz · Alpha波 · 舒缓", "frequency": 174, "beatFreq": 10,
      "category": "healing", "bodyParts": ["疼痛部位", "全身"], "symptoms": ["头痛", "身体疼痛", "经痛"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-025.wav",
-     "description": "疼痛缓解频率，温和地安抚不适", "duration": 20},
-    {"id": "FQ-026", "title": "化解", "subtitle": "285Hz · Delta波 · 深层修复", "frequency": 285, "beatFreq": 3,
+     "description": "舒缓频率，温和地安抚不适", "duration": 20},
+    {"id": "FQ-026", "title": "化解", "subtitle": "285Hz · Delta波 · 深层舒缓", "frequency": 285, "beatFreq": 3,
      "category": "healing", "bodyParts": ["全身", "内脏"], "symptoms": ["慢性病辅助", "内脏调理", "深层修复"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-026.wav",
-     "description": "深层修复频率，在睡眠中启动自愈", "duration": 25},
+     "description": "舒缓频率，在睡眠中帮助放松", "duration": 25},
     {"id": "FQ-027", "title": "安心", "subtitle": "396Hz · Theta波 · 恐惧释放", "frequency": 396, "beatFreq": 5,
      "category": "emotion", "bodyParts": ["心脏", "腹部"], "symptoms": ["恐惧", "不安", "恐慌"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-027.wav",
@@ -104,77 +116,79 @@ TRACKS = [
     {"id": "FQ-028", "title": "平和", "subtitle": "432Hz · Alpha波 12Hz", "frequency": 432, "beatFreq": 12,
      "category": "relax", "bodyParts": ["全身", "呼吸系统"], "symptoms": ["紧张", "呼吸急促", "需要冷静"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-028.wav",
-     "description": "自然调律的平和，清醒而安宁", "duration": 15},
-    {"id": "FQ-029", "title": "守护", "subtitle": "528Hz · Beta波 15Hz · 免疫激活", "frequency": 528, "beatFreq": 15,
+     "description": "自然舒缓的平和，清醒而安宁", "duration": 15},
+    {"id": "FQ-029", "title": "守护", "subtitle": "528Hz · Beta波 15Hz · 舒缓", "frequency": 528, "beatFreq": 15,
      "category": "healing", "bodyParts": ["免疫系统", "全身"], "symptoms": ["免疫力低", "易感冒", "调养期"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-029.wav",
-     "description": "爱的频率激活免疫，让身体重新充满力量", "duration": 20},
-    {"id": "FQ-030", "title": "活力", "subtitle": "741Hz · Beta波 18Hz · 排毒净化", "frequency": 741, "beatFreq": 18,
+     "description": "温暖舒缓的频率，帮助放松、恢复舒适感", "duration": 20},
+    {"id": "FQ-030", "title": "活力", "subtitle": "741Hz · Beta波 18Hz · 舒缓", "frequency": 741, "beatFreq": 18,
      "category": "healing", "bodyParts": ["肝脏", "淋巴系统"], "symptoms": ["身体沉重", "毒素积累", "代谢慢"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-030.wav",
-     "description": "排毒净化的频率，让身体轻盈起来", "duration": 15},
+     "description": "舒缓频率，帮助在身体沉重时放松", "duration": 15},
 ]
 
-# 证候 → 频率映射（基于中医-分子-频率三角理论）
+# 证候 → 放松音频映射（启发式推荐，非治疗、非机制宣称）
+# S3-4（2026-10-13）：rationale 全部改为中性「放松体验」文案，移除任何
+# 生理机制 / 疗效 / 通路修复类宣称（DNA修复 / Nrf2 / 清除毒素 等均删除）。
 SYNDROME_FREQ_MAP = {
     "气虚证": {
         "tracks": ["FQ-023", "FQ-029", "FQ-002", "FQ-028"],
-        "rationale": "气虚证对应线粒体ATP生成效率降低。126.22Hz太阳频率补充能量，528Hz免疫激活提升正气，432Hz自然调律恢复节律。",
+        "rationale": "放松音频体验推荐：以温暖舒缓的频率帮助在疲劳时放松、恢复节律感，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04115", "hsa04140"],
         "schedule_type": "energy_boost",
     },
     "阴虚证": {
         "tracks": ["FQ-007", "FQ-030", "FQ-010", "FQ-013"],
-        "rationale": "阴虚证对应Nrf2抗氧化通路代偿不足、氧化应激累积。741Hz净化排毒，963Hz深层放松修复，210.42Hz月亮频率滋阴潜阳。",
+        "rationale": "放松音频体验推荐：以低频与自然环境声帮助在紧张时放缓呼吸、进入放松状态，纯听觉体验，非治疗。",
         "target_pathways": ["custom_nrf2", "hsa04140"],
         "schedule_type": "detox_repair",
     },
     "肾精不足证": {
         "tracks": ["FQ-001", "FQ-011", "FQ-012", "FQ-026", "FQ-017"],
-        "rationale": "肾精不足证对应DNA修复能力先天性缺陷。174Hz+Delta波深睡修复，136.1Hz OM频率固本培元，194.71Hz地球频率同步生物节律，285Hz组织再生修复DNA损伤。",
+        "rationale": "放松音频体验推荐：以低频次声与深睡引导帮助在疲惫时放松入睡，纯听觉体验，非治疗。",
         "target_pathways": ["hsa03440", "hsa03430"],
         "schedule_type": "deep_repair",
     },
     "气滞证": {
         "tracks": ["FQ-003", "FQ-019", "FQ-028", "FQ-018"],
-        "rationale": "气滞证对应细胞增殖信号紊乱、气机不畅。396Hz释放恐惧平衡交感神经，417Hz情绪转化，432Hz自然调律恢复气机流通。",
+        "rationale": "放松音频体验推荐：以舒缓频率帮助在情绪紧绷时释放张力、恢复平稳，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04110", "hsa04115"],
         "schedule_type": "flow_balance",
     },
     "阳虚证": {
         "tracks": ["FQ-023", "FQ-029", "FQ-011", "FQ-025"],
-        "rationale": "阳虚证对应基础代谢率降低、能量生成不足。126.22Hz太阳频率温阳，528Hz免疫激活提升卫气，136.1Hz OM频率固本。",
+        "rationale": "放松音频体验推荐：以温暖舒缓的频率帮助在畏寒乏力时放松、提升舒适感，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04140", "hsa04920"],
         "schedule_type": "warm_yang",
     },
     "痰湿证": {
         "tracks": ["FQ-007", "FQ-030", "FQ-018", "FQ-028"],
-        "rationale": "痰湿证对应代谢综合征、炎症状态。741Hz净化清理代谢产物，432Hz平和调律恢复代谢平衡，396Hz放松促进淋巴流动。",
+        "rationale": "放松音频体验推荐：以平稳频率帮助在身体沉重时放松、配合深呼吸，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04620", "hsa04931"],
         "schedule_type": "metabolic_clear",
     },
     "血瘀证": {
         "tracks": ["FQ-025", "FQ-017", "FQ-009", "FQ-028"],
-        "rationale": "血瘀证对应微循环障碍、慢性炎症。174Hz缓解疼痛改善循环，285Hz组织再生修复血管，432Hz自然调律恢复血流节律。",
+        "rationale": "放松音频体验推荐：以柔和频率帮助在局部不适时放松、缓解紧绷感，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04610", "hsa04611"],
         "schedule_type": "circulation",
     },
     "湿热证": {
         "tracks": ["FQ-007", "FQ-030", "FQ-003", "FQ-028"],
-        "rationale": "湿热证对应氧化应激+炎症双重负荷。741Hz净化排毒，396Hz释放焦虑平复炎症反应，432Hz平和清热。",
+        "rationale": "放松音频体验推荐：以平和频率帮助在烦热时降温、平静情绪，纯听觉体验，非治疗。",
         "target_pathways": ["hsa04620", "custom_nrf2"],
         "schedule_type": "clear_heat",
     },
 }
 
-# 细胞通路 → 频率映射
+# 细胞通路 → 放松音频映射（仅作推荐启发式，rationale 不含机制/疗效宣称）
 PATHWAY_FREQ_MAP = {
-    "hsa03440": {"tracks": ["FQ-026", "FQ-017", "FQ-011"], "rationale": "同源重组修复缺陷 → 深层睡眠中启动DNA修复"},
-    "hsa04115": {"tracks": ["FQ-003", "FQ-027", "FQ-028"], "rationale": "p53信号下调 → 396Hz释放恐惧，恢复细胞安全感"},
-    "hsa04140": {"tracks": ["FQ-010", "FQ-013", "FQ-014"], "rationale": "自噬/AMPK通路 → 963Hz深层放松，Theta波促进细胞自噬清理"},
-    "custom_nrf2": {"tracks": ["FQ-007", "FQ-030", "FQ-029"], "rationale": "Nrf2抗氧化通路 → 741Hz净化排毒，528Hz免疫激活"},
-    "hsa04110": {"tracks": ["FQ-015", "FQ-016", "FQ-006"], "rationale": "细胞周期紊乱 → 40Hz Gamma波激活大脑，Beta波提升专注力"},
-    "hsa04620": {"tracks": ["FQ-007", "FQ-030", "FQ-018"], "rationale": "炎症通路激活 → 741Hz净化，396Hz放松抗炎"},
+    "hsa03440": {"tracks": ["FQ-026", "FQ-017", "FQ-011"], "rationale": "放松音频推荐：以低频次声与深睡引导帮助放松，纯听觉体验，非治疗"},
+    "hsa04115": {"tracks": ["FQ-003", "FQ-027", "FQ-028"], "rationale": "放松音频推荐：以舒缓频率帮助释放紧张、恢复平稳，纯听觉体验，非治疗"},
+    "hsa04140": {"tracks": ["FQ-010", "FQ-013", "FQ-014"], "rationale": "放松音频推荐：以低频与自然声帮助进入深层放松，纯听觉体验，非治疗"},
+    "custom_nrf2": {"tracks": ["FQ-007", "FQ-030", "FQ-029"], "rationale": "放松音频推荐：以平和频率帮助在疲惫时放松，纯听觉体验，非治疗"},
+    "hsa04110": {"tracks": ["FQ-015", "FQ-016", "FQ-006"], "rationale": "放松音频推荐：以专注类频率帮助理清思绪，纯听觉体验，非治疗"},
+    "hsa04620": {"tracks": ["FQ-007", "FQ-030", "FQ-018"], "rationale": "放松音频推荐：以舒缓频率帮助在不适时放松，纯听觉体验，非治疗"},
 }
 
 # 症状 → 频率映射
@@ -199,7 +213,11 @@ SYMPTOM_FREQ_MAP = {
 # ---------------------------------------------------------------------------
 
 class FrequencyPrescriptionEngine:
-    """频率处方引擎 — 基于五层诊断生成个性化频率疗法方案"""
+    """放松音频体验引擎 — 基于用户状态生成个性化放松音频推荐。
+
+    注意：本引擎输出 relaxation_audio 类型推荐，not_clinical=True，
+    不进入八轴机制链，不宣称任何疗效（见模块顶部 S3-4 合规声明）。
+    """
 
     def generate_prescription(
         self,
@@ -254,7 +272,7 @@ class FrequencyPrescriptionEngine:
         # 4. 默认保底
         if not track_ids:
             track_ids = {"FQ-002", "FQ-028", "FQ-001"}
-            rationale_parts.append("基于整体放松与睡眠修复的基础方案")
+            rationale_parts.append("基于整体放松与睡眠的基础方案")
 
         # 构建曲目详情列表
         tracks = []
@@ -274,8 +292,10 @@ class FrequencyPrescriptionEngine:
             "prescription_id": str(uuid.uuid4()),
             "user_id": user_id,
             "created_at": self._now_iso(),
+            "module_type": "relaxation_audio",  # S3-4：明确与八轴机制链区分
+            "not_clinical": True,
             "source_diagnosis_id": diagnosis_data.get("user_id", "unknown"),
-            "rationale": "\n\n".join(rationale_parts) if rationale_parts else "基于整体健康调律的频率处方",
+            "rationale": "\n\n".join(rationale_parts) if rationale_parts else "基于整体放松体验的音频推荐",
             "syndromes": [s.get("name") for s in syndromes],
             "pathways": [p.get("display_name", p.get("pathway_id")) for p in pathways],
             "tracks": tracks,
@@ -284,6 +304,10 @@ class FrequencyPrescriptionEngine:
             "expected_outcomes": self._build_expected_outcomes(syndromes, pathways),
             "contraindications": self._build_contraindications(tracks),
             "usage_tips": self._build_usage_tips(tracks),
+            "disclaimer": (
+                "本推荐为放松 / 睡眠音频体验，不构成任何诊断、治疗或医疗建议；"
+                "不宣称任何生理修复或疾病改善效果。涉及疾病或用药请遵医嘱。"
+            ),
         }
 
         logger.info(f"频率处方生成完成 | prescription_id={prescription['prescription_id']} | tracks={len(tracks)}")
@@ -358,7 +382,7 @@ class FrequencyPrescriptionEngine:
                 "time": "07:00-09:00",
                 "track": morning_tracks[0],
                 "duration": morning_tracks[0]["duration"],
-                "purpose": "晨间能量激活，提升日间精力与专注力",
+                "purpose": "晨间放松唤醒，提升日间精力与专注力",
                 "tip": "起床后或早餐时聆听，音量适中，配合深呼吸",
             }
 
@@ -384,7 +408,7 @@ class FrequencyPrescriptionEngine:
                 "time": "21:00-23:00",
                 "track": evening_tracks[0],
                 "duration": evening_tracks[0]["duration"],
-                "purpose": "晚间修复，促进深度睡眠与细胞自愈",
+                "purpose": "晚间放松，促进深度睡眠",
                 "tip": "睡前30分钟聆听，调暗灯光，配合渐进式放松",
             }
 
@@ -395,7 +419,7 @@ class FrequencyPrescriptionEngine:
                 "time": "23:00-次日07:00",
                 "track": sleep_tracks[0],
                 "duration": sleep_tracks[0]["duration"],
-                "purpose": "整夜深睡修复，启动细胞DNA修复程序",
+                "purpose": "整夜深睡，帮助身体放松恢复",
                 "tip": "入睡前开启，可设置定时关闭，保持音量轻柔",
             }
 
@@ -426,25 +450,25 @@ class FrequencyPrescriptionEngine:
         return weekly
 
     def _build_expected_outcomes(self, syndromes: list[dict], pathways: list[dict]) -> list[str]:
-        """构建预期效果说明"""
+        """构建预期效果说明（S3-4：仅描述放松体验，无任何疗效/机制宣称）"""
         outcomes = []
         syndrome_names = [s.get("name", "") for s in syndromes]
 
         if "气虚证" in syndrome_names:
-            outcomes.append("连续使用7-14天后，日间精力提升，疲劳感减轻，对应线粒体ATP合成效率改善")
+            outcomes.append("在疲劳时聆听，可能帮助放松、恢复节律感（主观体验，因人而异）")
         if "阴虚证" in syndrome_names:
-            outcomes.append("连续使用14-21天后，抗氧化应激指标改善，睡眠质量提升，对应Nrf2通路活性恢复")
+            outcomes.append("在紧张时聆听，可能帮助放缓呼吸、进入放松状态（主观体验，因人而异）")
         if "肾精不足证" in syndrome_names:
-            outcomes.append("连续使用21-30天后，深度睡眠时长增加，DNA修复效率提升，对应同源重组修复功能改善")
+            outcomes.append("在疲惫时聆听低频次声，可能帮助放松入睡（主观体验，因人而异）")
         if "气滞证" in syndrome_names:
-            outcomes.append("连续使用7-14天后，情绪稳定性提升，身体紧张感减轻，对应细胞信号传导平衡")
+            outcomes.append("在情绪紧绷时聆听，可能帮助释放张力、恢复平稳（主观体验，因人而异）")
         if "血瘀证" in syndrome_names:
-            outcomes.append("连续使用14-21天后，局部循环改善，疼痛缓解，对应微循环与炎症指标改善")
+            outcomes.append("在局部不适时聆听，可能帮助放松、缓解紧绷感（主观体验，因人而异）")
 
         if not outcomes:
-            outcomes.append("连续使用7天后，整体放松度提升，睡眠质量改善，身心节律趋于平衡")
+            outcomes.append("在安静环境中聆听，可能帮助提升放松度、改善睡眠感受（主观体验，因人而异）")
 
-        outcomes.append("频率疗法作为药食同源和日常修复的辅助手段，需持续使用以积累效果")
+        outcomes.append("本模块为放松音频体验，非治疗；实际感受因人而异，不构成任何医疗承诺。")
         return outcomes
 
     def _build_contraindications(self, tracks: list[dict]) -> list[str]:
