@@ -27,8 +27,8 @@
   "convergent_validity_rate": 0.697,
   "contra_excluded_count": 1,
   "_meta": {
-    "git_sha": "7b75e9a",
-    "timestamp_utc": "20261012T003538Z",
+    "git_sha": "2ca7592",
+    "timestamp_utc": "20261013T070225Z",
     "script": "tools/engine_validation.py",
     "note": "in-silico validation; numbers here ARE the paper's numbers (S0-4 freeze)"
   }
