@@ -1,0 +1,453 @@
+{
+  "schema": "axis-term-mapping/v1",
+  "generated_at": "2026-10-13",
+  "note": "GB/T 20348-2026 术语为通行对应，gbt_confirmation_required=true，需对照官方标准校订；古籍原文仅对 tcm_structured 中已结构化书目提供 source_quote。",
+  "reserved_axes": {
+    "I": "外泌体-细胞通讯轴（数据层 pathway 映射已涉，但案例未使用、代码未实现）",
+    "J": "再生医学轴（定义未实现）"
+  },
+  "axes": {
+    "A": {
+      "axis_label": "气化轴(AMPK/mTOR 自噬-合成代谢)",
+      "gbt_20348_2026": {
+        "zh": "气化",
+        "en": "Qi Transformation",
+        "note": "气机 / 气化失常对应代谢紊乱",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "ampk_signaling",
+        "autophagy",
+        "circadian",
+        "epigenetic_clock",
+        "exosome_mirna",
+        "gabaergic",
+        "glucose_metabolism",
+        "immune_regulation",
+        "mtor",
+        "thermogenesis",
+        "vagal_tone"
+      ],
+      "pathway_count": 11,
+      "representative_syndromes": [
+        "子午流注 / 阳气当令进食",
+        "导引 / 调神 / 和气血",
+        "气化 / 脾运化（促运化、通腑）",
+        "气化 / 节律（子午流注雏形）",
+        "气化失司 / 血糖波动（未病先防）",
+        "节律饮食 / 运化痰湿",
+        "节律饮食/运化痰湿",
+        "调息 / 安神 / 疏肝",
+        "辟谷 / 气化重启",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：寒（四气）· 清热解暑"
+      ],
+      "classical_books": [
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "B": {
+      "axis_label": "气血-线粒体轴(PGC-1α/SIRT1)",
+      "gbt_20348_2026": {
+        "zh": "气血",
+        "en": "Qi and Blood",
+        "note": "气血失调 / 血虚 / 气虚",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "ampk_signaling",
+        "antioxidant",
+        "autonomic",
+        "autophagy",
+        "bdnf",
+        "epigenetic_clock",
+        "exosome_biogenesis",
+        "hematopoiesis",
+        "mirna_signaling",
+        "mitochondrial_biogenesis",
+        "pgc1a_signaling",
+        "sirt1",
+        "thermogenesis",
+        "vagal_tone"
+      ],
+      "pathway_count": 14,
+      "representative_syndromes": [
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "导引 / 行气（动则生阳）",
+        "导引 / 调神 / 和气血",
+        "导引/气血流通(动则气血周流)",
+        "气化 / 脾运化（促运化、通腑）",
+        "气化 / 节律（子午流注雏形）",
+        "调息 / 安神 / 疏肝",
+        "辟谷 / 气化重启",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：平（四气）· 润肺安神",
+        "食物性味：平（四气）· 清热解毒、利湿"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "C": {
+      "axis_label": "络脉-清瘀轴(senolytics/SASP)",
+      "gbt_20348_2026": {
+        "zh": "络脉 / 瘀血",
+        "en": "Collaterals / Blood Stasis",
+        "note": "络病 / 血瘀证",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "exosome_delivery",
+        "inflammation",
+        "p16_ink4a",
+        "p21",
+        "physical_function",
+        "senescence"
+      ],
+      "pathway_count": 6,
+      "representative_syndromes": [
+        "扶正祛瘀 / 延缓衰老",
+        "活血祛瘀 / 通络（清瘀滞）",
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "药食同源 / 活血（食养清瘀）",
+        "药食同源 / 通络载药（经络传输药力）",
+        "食物性味：寒（四气）· 清热解暑",
+        "食物性味：平（四气）· 润肺安神",
+        "食物性味：平（四气）· 清肝明目、润肠"
+      ],
+      "classical_books": [
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "D": {
+      "axis_label": "阴阳-昼夜轴(CLOCK/BMAL1/TRE)",
+      "gbt_20348_2026": {
+        "zh": "阴阳 / 昼夜",
+        "en": "Yin-Yang / Circadian",
+        "note": "阴阳失调 / 昼夜节律",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "ampk_signaling",
+        "antioxidant",
+        "autophagy",
+        "circadian",
+        "circadian_clock_bmal1",
+        "diuretic",
+        "glucose_metabolism",
+        "hepatic_lipid",
+        "inflammation",
+        "insulin_sensitivity",
+        "iprgc_scn_axis",
+        "lipid_metabolism",
+        "melatonin_signaling",
+        "mtor",
+        "salience_network",
+        "senescence"
+      ],
+      "pathway_count": 16,
+      "representative_syndromes": [
+        "子午流注 / 阳气当令进食",
+        "扶正祛瘀 / 延缓衰老",
+        "昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）",
+        "昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）",
+        "气化 / 脾运化（促运化、通腑）",
+        "气化 / 节律（子午流注雏形）",
+        "气化失司 / 血糖波动（未病先防）",
+        "活血祛瘀 / 通络（清瘀滞）",
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "节律饮食/运化痰湿",
+        "药食同源 / 活血（食养清瘀）"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "E": {
+      "axis_label": "脏腑-神经内分泌轴(HPA/肠脑)",
+      "gbt_20348_2026": {
+        "zh": "脏腑",
+        "en": "Zang-Fu (Viscera)",
+        "note": "脏腑辨证 / 五脏功能",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "hpa_axis",
+        "inflammation_tlr4_nfkb",
+        "neuroimmune_vagal_splenic",
+        "neutrophil_chemotaxis",
+        "vagal_tone"
+      ],
+      "pathway_count": 5,
+      "representative_syndromes": [
+        "导引 / 调神 / 和气血",
+        "调息 / 安神 / 疏肝",
+        "针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：平（四气）· 润肺安神"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "F": {
+      "axis_label": "正邪-炎症轴(inflammaging)",
+      "gbt_20348_2026": {
+        "zh": "正邪 / 邪正盛衰",
+        "en": "Healthy Qi vs Pathogenic Qi",
+        "note": "正气 / 邪气 / 虚实",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "antioxidant",
+        "circadian",
+        "diuretic",
+        "gabaergic",
+        "glucose_metabolism",
+        "hepatic_lipid",
+        "immune_regulation",
+        "inflammation",
+        "inflammation_tlr4_nfkb",
+        "insulin_sensitivity",
+        "lipid_metabolism",
+        "neuroimmune_vagal_splenic",
+        "neutrophil_chemotaxis",
+        "p16_ink4a",
+        "p21",
+        "senescence",
+        "vagal_tone"
+      ],
+      "pathway_count": 17,
+      "representative_syndromes": [
+        "子午流注 / 阳气当令进食",
+        "导引 / 调神 / 和气血",
+        "扶正祛瘀 / 延缓衰老",
+        "气化 / 节律（子午流注雏形）",
+        "气化失司 / 血糖波动（未病先防）",
+        "活血祛瘀 / 通络（清瘀滞）",
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "节律饮食/运化痰湿",
+        "药食同源 / 活血（食养清瘀）",
+        "药食同源 / 通络载药（经络传输药力）",
+        "调息 / 安神 / 疏肝"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "G": {
+      "axis_label": "神-情志轴(迷走张力/HRV/EEG)",
+      "gbt_20348_2026": {
+        "zh": "神 / 情志",
+        "en": "Spirit (Shen) / Emotion",
+        "note": "心神 / 情志失调",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "autonomic",
+        "autophagy",
+        "bdnf",
+        "gabaergic",
+        "hpa_axis",
+        "inflammation",
+        "inflammation_tlr4_nfkb",
+        "mitochondrial_biogenesis",
+        "neuroimmune_vagal_splenic",
+        "neutrophil_chemotaxis",
+        "pgc1a_signaling",
+        "sirt1",
+        "vagal_tone"
+      ],
+      "pathway_count": 13,
+      "representative_syndromes": [
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "导引 / 行气（动则生阳）",
+        "导引 / 调神 / 和气血",
+        "导引/气血流通(动则气血周流)",
+        "气化 / 脾运化（促运化、通腑）",
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "药食同源 / 通络载药（经络传输药力）",
+        "调息 / 安神 / 疏肝",
+        "辟谷 / 气化重启",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "针灸/针刺 足三里——扶正祛邪、疏通经络、调和气血（F/E/G 轴机制实证）"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    },
+    "H": {
+      "axis_label": "先天-肾精轴(干细胞龛/表观时钟)",
+      "gbt_20348_2026": {
+        "zh": "先天之精 / 肾",
+        "en": "Kidney Essence (Jing) / Congenital",
+        "note": "肾精 / 先天禀赋",
+        "gbt_confirmation_required": true
+      },
+      "pathways": [
+        "antioxidant",
+        "autophagy",
+        "epigenetic_clock",
+        "hematopoiesis",
+        "inflammation",
+        "physical_function",
+        "senescence"
+      ],
+      "pathway_count": 7,
+      "representative_syndromes": [
+        "扶正祛瘀 / 延缓衰老",
+        "气化 / 脾运化（促运化、通腑）",
+        "活血祛瘀 / 通络（清瘀滞）",
+        "节律养生 / 扶正",
+        "节律饮食 / 运化痰湿",
+        "药食同源 / 活血（食养清瘀）",
+        "药食同源 / 通络载药（经络传输药力）",
+        "辟谷 / 气化重启",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "食物性味：寒（四气）· 清心安神、健脾",
+        "食物性味：寒（四气）· 清热解暑",
+        "食物性味：平（四气）· 润肺安神"
+      ],
+      "classical_books": [
+        "中医内科学",
+        "伤寒论",
+        "温病条辨",
+        "神农本草经",
+        "金匮要略",
+        "黄帝内经·素问"
+      ],
+      "classical_quotes_sample": [
+        {
+          "book": "神农本草经",
+          "entity": "丹沙",
+          "quote": "内容：味甘，微寒。主身体五脏百病，养精神，安魂魄，益气，明目，杀精魁邪恶鬼。久服，  通神明，不老。能化为汞，生山谷。（《太平御览》引∶多有生山谷三字，《大观》"
+        },
+        {
+          "book": "神农本草经",
+          "entity": "云母",
+          "quote": "内容：味甘，平。主身皮死肌，中风寒热，如在车船上，除邪气，安五脏，益子精，明目，久  服轻身、延年。一名云珠，一名云华，一名云英，一名云液，一名云沙，一名磷石，"
+        }
+      ]
+    }
+  }
+}
