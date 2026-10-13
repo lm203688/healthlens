@@ -1509,6 +1509,7 @@
       "source_quote",
       "efficacy"
     ],
+    "authorized_retention": [],
     "records": 248,
     "fields_removed": 496,
     "upstream_file": "004-食疗本草.txt",

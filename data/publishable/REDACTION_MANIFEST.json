@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-13T07:39:40Z",
+  "generated": "2026-10-13T09:14:12Z",
   "purpose": "知识语料可公开再分发（Zenodo）脱敏副本清单",
   "audit": "data/LICENSE_AUDIT_2026-10-13.md",
   "upstream": {
@@ -11,7 +11,7 @@
   "source_files_unchanged": true,
   "source_outputs": 3,
   "total_source_bytes": 741785,
-  "total_redacted_bytes": 404400,
+  "total_redacted_bytes": 388705,
   "leaked_fields_total": 0,
   "outputs": [
     {
@@ -19,30 +19,72 @@
       "dest": "data/publishable/classical_slices.json",
       "source_sha256": "541d98f17ccb669229cdf535b68758f49e9e1602491798f9666faa7cd55d5168",
       "source_bytes": 498063,
-      "redacted_bytes": 330464,
-      "bytes_saved_pct": 33.7,
-      "dest_sha256": "afa14b3079ef47064754535acdfaa78932e8219d4c9fc9a00c21ce09c761a607",
-      "leaked_fields": 0
+      "redacted_bytes": 314705,
+      "bytes_saved_pct": 36.8,
+      "dest_sha256": "ea4276b7143ccb68b41713f6aa5d41ac4b6c81ea0818cf17ff967a069cc862be",
+      "inert_fields": [],
+      "leaked_fields": 0,
+      "fields_stripped": [
+        "passage",
+        "efficacy",
+        "citation"
+      ],
+      "verbatim_chars_removed": 47150,
+      "verbatim_chars_by_field": {
+        "passage": 43467,
+        "efficacy": 2688,
+        "citation": 995
+      },
+      "retained_bibliographic": [
+        "book",
+        "author",
+        "dynasty",
+        "entity",
+        "entity_type",
+        "property"
+      ]
     },
     {
       "source": "data\\tcm_structured\\神农本草经.json",
       "dest": "data/publishable/tcm_structured/神农本草经.json",
       "source_sha256": "06c2b0f6c6fc9bfe18e9cff9bdb5a349a30189bb572dc2a1cb2e5aff554effcc",
       "source_bytes": 149694,
-      "redacted_bytes": 44498,
+      "redacted_bytes": 44530,
       "bytes_saved_pct": 70.3,
-      "dest_sha256": "2b4612fc2b875fb9e0a5bcb309c54dad5ca51007f969145a655072da2a9ef63a",
-      "leaked_fields": 0
+      "dest_sha256": "65434b657c0697fa6c62fef976ce095eba36302befacb09ce2633e67a31bbe85",
+      "inert_fields": [],
+      "leaked_fields": 0,
+      "fields_stripped": [
+        "source_quote",
+        "efficacy"
+      ],
+      "verbatim_chars_removed": 30414,
+      "verbatim_chars_by_field": {
+        "source_quote": 28850,
+        "efficacy": 1564
+      },
+      "retained_bibliographic": []
     },
     {
       "source": "data\\tcm_structured\\食疗本草.json",
       "dest": "data/publishable/tcm_structured/食疗本草.json",
       "source_sha256": "e974523250ab07183020bde799f631b3973d02ffabc8c265c16489f8cd6243d9",
       "source_bytes": 94028,
-      "redacted_bytes": 29438,
+      "redacted_bytes": 29470,
       "bytes_saved_pct": 68.7,
-      "dest_sha256": "3af818d87e35ffad481ae2218ebb8d57241be6d083c1b9749775f774b0498dc6",
-      "leaked_fields": 0
+      "dest_sha256": "8ccf5045fd6e63d4f4eb21d55bc7037098bc65409dda38674bb826328a0b3a87",
+      "inert_fields": [],
+      "leaked_fields": 0,
+      "fields_stripped": [
+        "source_quote",
+        "efficacy"
+      ],
+      "verbatim_chars_removed": 18642,
+      "verbatim_chars_by_field": {
+        "source_quote": 17518,
+        "efficacy": 1124
+      },
+      "retained_bibliographic": []
     }
   ]
 }

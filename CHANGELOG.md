@@ -23,14 +23,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 **S2-4 上游知识平面许可审计（公开发布阻断项）**
 - `data/LICENSE_AUDIT_2026-10-13.md`：逐条核对上游语料许可。核心结论——GitHub 仓库无 LICENSE 文件时默认「保留所有权利」（all rights reserved），**公有领域 ≠ 已许可**；`TCM-Ancient-Books` 经 GitHub API 确认 `license: null`，属公开发布合规阻断
-- `tools/redact_for_public_release.py`：剥离 `source_quote` / `passage` / `efficacy` / `citation` / `source_file` / `book` / `entity` 等原文承载字段（741KB → 404KB），产物写入 `data/publishable/` + `REDACTION_MANIFEST.json`；支持 `--check` / `--keep-verbatim`
+- `tools/redact_for_public_release.py`：剥离 `source_quote` / `passage` / `efficacy` / `citation` 等原文承载字段，产物写入 `data/publishable/` + `REDACTION_MANIFEST.json`；支持 `--check` / `--keep-verbatim` / `--strip-bibliographic`
 - 三方案（A 脱敏 / B 最小可用 / C 私有部署）已给出可执行路径，实际发布（Zenodo DOI 注册等）需用户决策
+
+### Fixed
+
+- **S2-4 脱敏泄漏（严重，已修复并推送）**：首版工具 `STRIP_MAP` 只配了 `["passage", "efficacy"]`，
+  漏掉同样承载上游逐字引文的 `citation` 字段——60/613 条切片、995 字符（《太平御览》《大观》等
+  原文引文）随 `data/publishable/classical_slices.json` 一起推上了公开仓库（commit `49f80ea0de`）。
+  更严重的是**上一版 CHANGELOG 与本条目曾声称已剥离 `citation`，属虚假声明**——声明覆盖了实际行为。
+- **根因（比漏配更值得记）**：`_emit` 的校验只按 `STRIP_MAP` 自身核对「声明剥离的字段是否消失」，
+  配置漏项时校验必然通过。自证校验器无法发现配置本身的缺口，这是这类缺陷静默上生产的通用机制。
+- **修复：三道 fail-loud 防线**
+  1. 配置驱动（原有）：STRIP_MAP 声明剥离的字段必须真的消失；
+  2. **独立黑名单** `UPSTREAM_VERBATIM_FIELDS`（不依赖 STRIP_MAP）：任何上游逐字字段残留在产物中即中断；
+  3. 空转检测：STRIP_MAP 配置了但源中不存在的字段记入 `inert_fields`（告警不中断——空转不等于泄漏，
+     且黑名单是跨来源并集，断言中断曾误伤引用其它来源字段的情形）。
+- **`AUTHORIZED_RETENTION` 授权保留通道**：逐字字段要么被剥离、要么显式授权保留，二者都不沾即中断。
+  `--keep-verbatim` 只把 `efficacy` 加进该集合（需上游书面授权）。集合只能收敛于黑名单内，
+  试图豁免自撰字段（如 `slice_id`）会被断言拦下——防止它退化成绕过黑名单的后门。
+- **产物自我声明**：`redaction_notice` 新增 `authorized_retention` / `retained_bibliographic` /
+  `retained_bibliographic_rationale`。保留书目字段（book/author/dynasty/entity/entity_type/property，
+  短事实性元数据）时**必须在产物里写明保留理由**，不得伪装成「已剥离」；新增 `--strip-bibliographic`
+  最保守模式供上游明确要求时使用。
+- **`tools/gh_api_push.py` 凭据发现失效**：原逻辑只查 `healthlens/.git/config`（该目录已删），
+  现补 `ROOT/.git/config` 与 `~/.git-credentials` 回退，并把凭据正则由 `[^@]+` 收紧为 `[^@\s]+`。
+- **自写统计 bug**：`verbatim_chars_removed` 原在已剥离的产物记录上统计，恒为 0（自称报告移除量却永远
+  报 0）；改为按源记录统计，并新增 `verbatim_chars_by_field` 逐字段明细。
+- **`tests/tools/test_redact_for_public_release.py`：18 用例**，含
+  **字段处置完整性**校验——源数据每个字段必须明确归入 剥离 / 经复核保留 / HealthLens 自撰 三者之一，
+  新增未分类字段即失败（这正是拦住 `citation` 的那条：它当时属于「无人认领」）；
+  以及**事故复现**用例（把 STRIP_MAP 改回当年错误配置必须被拦下）、授权集合边界、CLI 接线、
+  源文件只读不变、记录数不丢、notice 声明自洽。
+- 脱敏实测：源 `citation` 非空 60 条 / 995 字符 → 产物 **0 条 / 0 字符**；四类逐字字段全部清零，
+  613 条记录无丢失；`leaked_fields_total=0`；741,785 → 388,705 字节。
 
 ### Changed
 - `pyproject.toml`：0.26.1 → 0.26.2（单一真源）；`agent-card.json` 静态版本同步
 
 ### Verified
-- 三套测试合计 **441 passed, 0 failed**：`tests/` 377 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+- 三套测试合计 **459 passed, 0 failed**：`tests/` 395 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
 
 ## [0.26.1] - 2026-10-13
 

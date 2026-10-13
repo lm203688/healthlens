@@ -55,10 +55,31 @@ UPSTREAM = {
 
 # 各来源中需剥离的上游逐字摘录字段。
 STRIP_MAP = {
-    "classical_slices.json": {"container": "slices", "fields": ["passage", "efficacy"]},
+    # citation 是《太平御览》等上游原文的逐字引文（60/613 条、约 995 字），
+    # 属著作权风险核心，必须剥离。历史缺陷：早期版本只剥 passage/efficacy，
+    # 漏掉 citation 且校验器按配置自身核对而静默通过，导致逐字引文随产物发布。
+    "classical_slices.json": {"container": "slices", "fields": ["passage", "efficacy", "citation"]},
 }
 # tcm_structured/ 下的每个文件共用同一结构。
 TCM_STRUCTURED_FIELDS = ["source_quote", "efficacy"]
+
+# 独立黑名单：不依赖 STRIP_MAP，任何情况下都不得出现在产物记录中。
+# 存在意义是堵住「配置漏项 → 校验器按配置核对 → 静默通过」这条盲区。
+# 若 STRIP_MAP 与它不一致，会在 _emit 里 assert 失败。
+UPSTREAM_VERBATIM_FIELDS = frozenset({
+    "passage", "efficacy", "citation", "source_quote",
+})
+
+# 授权保留：本轮明确许可保留的上游逐字字段。默认为空（全部剥离）。
+# --keep-verbatim 只把 efficacy 加进来；这是「已剥离 / 已授权」二选一的
+# 例外通道，而非绕过黑名单的后门——集合外的字段一律仍按黑名单拦截。
+AUTHORIZED_RETENTION: set[str] = set()
+
+# 经复核后**决定保留**的短书目元数据。保留理由必须写在产物里，
+# 而不是伪装成「已剥离」——书名/药名/朝代属事实性数据，非创造性表达。
+REVIEWED_RETAINED = {
+    "classical_slices.json": ["book", "author", "dynasty", "entity", "entity_type", "property"],
+}
 
 REDACTION_NOTICE = {
     "redacted": True,
@@ -98,8 +119,19 @@ def redact_classical_slices(write: bool) -> dict:
         **REDACTION_NOTICE,
         "redaction_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "fields_stripped": cfg["fields"],
+        "authorized_retention": sorted(AUTHORIZED_RETENTION),
+        "authorized_retention_rationale": (
+            "efficacy 为上游原文短片段，仅在取得上游书面授权后由 --keep-verbatim 保留；"
+            "未授权时该列表恒为空。" if AUTHORIZED_RETENTION else "无（全部剥离）"
+        ),
         "records": len(out["slices"]),
         "fields_removed": removed,
+        "retained_bibliographic": REVIEWED_RETAINED.get("classical_slices.json", []),
+        "retained_bibliographic_rationale": (
+            "book/author/dynasty/entity/entity_type/property 为书名、编者、朝代、药名等"
+            "事实性书目数据（通常数十字节内），非创造性表达，经复核可随 MIT 发布。"
+            "如上游要求删除，用 --strip-bibliographic 重跑。"
+        ),
         "note": (
             "axis_hint / matched_keywords / axis_confidence 等字段为 HealthLens 自撰的"
             "关键词启发式标注（keyword_heuristic_v1），全部 needs_expert_review=true，"
@@ -124,6 +156,7 @@ def redact_tcm_structured(write: bool) -> dict:
             **REDACTION_NOTICE,
             "redaction_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
             "fields_stripped": TCM_STRUCTURED_FIELDS,
+            "authorized_retention": sorted(AUTHORIZED_RETENTION),
             "records": len(entities),
             "fields_removed": removed,
             "upstream_file": doc.get("source_file"),
@@ -154,17 +187,57 @@ def _emit(src: Path, out: dict, write: bool, rel: str, container: str | None = N
         dest.write_text(text, encoding="utf-8")
         stat["dest_sha256"] = sha256_of(dest)
 
-    # fail-loud：校验产物中确实不含任何应剥离字段。
+    # --- 校验 1（配置驱动）：STRIP_MAP 声明剥离的字段必须真的消失。 ---
     want = STRIP_MAP.get(rel, {}).get("fields", TCM_STRUCTURED_FIELDS)
     container_key = STRIP_MAP.get(rel, {}).get("container", "entities")
+    records = out.get(container_key, [])
     remaining = [
         f"{rec.get('slice_id') or rec.get('id') or rec.get('name')}:{f}"
-        for rec in out.get(container_key, [])
+        for rec in records
         for f in want
         if f in rec
     ]
     assert not remaining, f"脱敏失败，残留上游摘录字段: {remaining[:5]}"
+
+    # --- 校验 2（独立黑名单）：不依赖 STRIP_MAP，防配置漏项。 ---
+    # 例外通道：AUTHORIZED_RETENTION 里的字段是本轮明确授权保留的（--keep-verbatim
+    # 且已获上游授权）。集合外的逐字字段只要残留在产物中就必须中断。
+    unauthorized = AUTHORIZED_RETENTION - UPSTREAM_VERBATIM_FIELDS
+    assert not unauthorized, (
+        f"AUTHORIZED_RETENTION 试图豁免非上游逐字字段 {sorted(unauthorized)}；"
+        "该集合只能收敛于 UPSTREAM_VERBATIM_FIELDS，不能当绕过黑名单的后门。"
+    )
+    enforced = UPSTREAM_VERBATIM_FIELDS - AUTHORIZED_RETENTION
+    blacklisted = [
+        f"{rec.get('slice_id') or rec.get('id') or rec.get('name')}:{f}"
+        for rec in records
+        for f in enforced
+        if f in rec
+    ]
+    assert not blacklisted, (
+        f"脱敏失败：产物含上游逐字字段但未被配置剥离（STRIP_MAP 漏项）: {blacklisted[:5]}"
+    )
+
+    # --- 校验 3（配置空转检测）：配置了剥离、源里却根本没有该字段。
+    # 只告警不中断——该字段没剥等于没泄漏，不是脱敏失败；但配置里有脏项必须知道。
+    # 注意不能 assert：黑名单是跨来源并集，某个来源的配置里天然可能不含其它来源的字段。
+    source = json.loads(src.read_text(encoding="utf-8"))
+    src_records = source.get(container_key, source.get("entities", []))
+    inert = [
+        f for f in want if src_records and not any(f in r for r in src_records)
+    ]
+    stat["inert_fields"] = inert
+
     stat["leaked_fields"] = 0
+    stat["fields_stripped"] = want
+    # 必须从**源记录**统计：产物里的字段已被剥离，在产物上量恒为 0（历史 bug）。
+    stat["verbatim_chars_removed"] = sum(
+        len(str(rec.get(f, ""))) for rec in src_records for f in want
+    )
+    stat["verbatim_chars_by_field"] = {
+        f: sum(len(str(rec.get(f, ""))) for rec in src_records) for f in want
+    }
+    stat["retained_bibliographic"] = REVIEWED_RETAINED.get(rel, [])
     return stat
 
 
@@ -197,12 +270,26 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="保留 efficacy（仅在已获上游书面授权时使用，见审计方案 B）",
     )
+    ap.add_argument(
+        "--strip-bibliographic",
+        action="store_true",
+        help="连 book/author/dynasty/entity 等书目元数据一并剥离（最保守，用于上游明确要求时）",
+    )
     args = ap.parse_args(argv)
 
+    if args.strip_bibliographic:
+        for rel, bib in REVIEWED_RETAINED.items():
+            STRIP_MAP.setdefault(rel, {"container": "entities", "fields": []})
+            STRIP_MAP[rel]["fields"] = list(
+                dict.fromkeys(STRIP_MAP[rel]["fields"] + bib)
+            )
+        REDACTION_NOTICE["reason"] += "；应上游要求，书目元数据亦已剥离"
+
     if args.keep_verbatim:
-        # 只保留 efficacy，仍剥离最长的逐字摘录字段。
-        STRIP_MAP["classical_slices.json"]["fields"] = ["passage"]
+        # 只保留 efficacy（短片段），逐字引文类字段一个都不放。
+        STRIP_MAP["classical_slices.json"]["fields"] = ["passage", "citation"]
         globals()["TCM_STRUCTURED_FIELDS"] = ["source_quote"]
+        globals()["AUTHORIZED_RETENTION"] = {"efficacy"}
         REDACTION_NOTICE["reason"] = (
             "上游逐字摘录已剥离；efficacy 为短片段，作者声明已取得上游授权"
         )

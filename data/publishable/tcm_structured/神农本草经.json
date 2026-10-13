@@ -2211,6 +2211,7 @@
       "source_quote",
       "efficacy"
     ],
+    "authorized_retention": [],
     "records": 365,
     "fields_removed": 730,
     "upstream_file": "000-神农本草经.txt",
