@@ -1,8 +1,8 @@
 {
   "meta": {
     "name": "HealthLens 真实案例证据数据库",
-    "version": "v1.2",
-    "date": "2026-08-21",
+    "version": "v1.3",
+    "date": "2026-10-13",
     "purpose": "用真实人体试验/RCT 数据作证'稳态生物学轴'理论方向正确；作为 Agent 个性化推荐的引用依据与未来用户数据回填后的群体对照基座。",
     "evidence_levels": {
       "L1": "≥2 项独立人体 RCT/人体试验一致",
@@ -18,12 +18,15 @@
       "E": "脏腑-神经内分泌轴(HPA/肠脑)",
       "F": "正邪-炎症轴(inflammaging)",
       "G": "神-情志轴(迷走张力/HRV/EEG)",
-      "H": "先天-肾精轴(干细胞龛/表观时钟)",
-      "I": "外泌体-细胞通讯轴(exosome/miRNA/胞间信号)",
-      "J": "再生医学轴(iPSC/细胞重编程/组织修复)"
+      "H": "先天-肾精轴(干细胞龛/表观时钟)"
     },
     "total_cases": 29,
-    "total": 120
+    "total": 120,
+    "reserved_axes": {
+      "I": "外泌体-细胞通讯轴（pathway 知识层已部分引用，代码未评分、案例未使用）",
+      "J": "再生医学轴（仅定义，未实现）"
+    },
+    "axis_count_note": "代码与案例实际实现/使用 8 轴（A–H）；I/J 为预留概念轴，尚未评分与证据化。"
   },
   "cases": [
     {
@@ -85,7 +88,16 @@
         "year": 2024,
         "doi": "10.1016/j.clnesp.2024.11.002"
       },
-      "fusion_note": "古籍'脾主运化' ↔ 自噬流上调，方向一致；属 A 轴强证据。"
+      "fusion_note": "古籍'脾主运化' ↔ 自噬流上调，方向一致；属 A 轴强证据。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.1016/j.clnesp.2024.11.002",
+      "source_canonical": {
+        "title": "Dawn-to-dusk intermittent fasting is associated with overexpression of autophagy genes: A prospective study on overweight and obese cohort",
+        "journal": "Clinical Nutrition ESPEN",
+        "year": 2025,
+        "publisher": "Elsevier BV"
+      }
     },
     {
       "id": "CASE-002",
@@ -126,7 +138,16 @@
         "year": 2024,
         "doi": "10.3390/nu17101695"
       },
-      "fusion_note": "重要边界：断食非万能，年轻女性短周期 AMPK/mTOR 不显 → 印证 A5 非负伤/窗口公理与个性化必要性。"
+      "fusion_note": "重要边界：断食非万能，年轻女性短周期 AMPK/mTOR 不显 → 印证 A5 非负伤/窗口公理与个性化必要性。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.3390/nu17101695",
+      "source_canonical": {
+        "title": "Regulation of Metabolic Aging Through Adenosine Mono Phosphate-Activated Protein Kinase and Mammalian Target of Rapamycin: A Comparative Study of Intermittent Fasting Variations in Obese Young Women",
+        "journal": "Nutrients",
+        "year": 2025,
+        "publisher": "MDPI AG"
+      }
     },
     {
       "id": "CASE-003",
@@ -162,7 +183,16 @@
         "year": 2024,
         "doi": "10.1038/s41467-024-45260-9"
       },
-      "fusion_note": "为'先天-肾精轴'提供可量化代理（表观时钟），是 H 轴首个强人体证据。"
+      "fusion_note": "为'先天-肾精轴'提供可量化代理（表观时钟），是 H 轴首个强人体证据。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.1038/s41467-024-45260-9",
+      "source_canonical": {
+        "title": "Fasting-mimicking diet causes hepatic and blood markers changes indicating reduced biological age and disease risk",
+        "journal": "Nature Communications",
+        "year": 2024,
+        "publisher": "Springer Science and Business Media LLC"
+      }
     },
     {
       "id": "CASE-004",
@@ -204,7 +234,10 @@
         "year": 2024,
         "doi": "Sports Medicine 2024 线粒体信号网络; Little et al.（投稿前需全文复核）"
       },
-      "fusion_note": "把'导引/动则生阳'机制化为 PGC-1α 轴，B 轴核心证据。"
+      "fusion_note": "把'导引/动则生阳'机制化为 PGC-1α 轴，B 轴核心证据。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "Sports Medicine 2024 线粒体信号网络; Little et al.（投稿前需全文复核）"
     },
     {
       "id": "CASE-005",
@@ -237,40 +270,58 @@
       ],
       "gene_link": "C 轴（络脉-清瘀）弱项 → 食源槲皮素(红洋葱/苹果/茶)作日常 senolytic 候选",
       "source": "Hickson et al. EBioMedicine 2019, 47:446-456 (PMID:31542391); Justice et al. EBioMedicine 2019, 40:554-563 (PMID:30616998)",
-      "fusion_note": "'瘀血/络脉'首次获现代细胞学对应（衰老细胞负荷），C 轴强证据；药食同源槲皮素为可消费组分。"
+      "fusion_note": "'瘀血/络脉'首次获现代细胞学对应（衰老细胞负荷），C 轴强证据；药食同源槲皮素为可消费组分。",
+      "citation_status": "unverified_text",
+      "doi_verified": false
     },
     {
       "id": "CASE-006",
-      "intervention": "D+Q intermittent dosing (AFFIRM trial)",
+      "intervention": "D+Q (dasatinib+quercetin) 间歇性 senolytic 给药 — Farr 2024 Phase II RCT",
       "tcm_concept": "扶正祛瘀 / 延缓衰老",
       "axes": [
         "C",
         "H"
       ],
-      "mechanism": "衰老细胞清除 → 身体功能改善",
-      "population": "240 adults aged 65-85",
-      "design": "Phase II RCT, 12 months (Mayo Clinic)",
+      "mechanism": "衰老细胞清除 → 骨代谢调节（真实结果：骨形成标志物早期升高、骨降解无明确改善）",
+      "population": "60 名绝经后女性，年龄 62-88 岁",
+      "design": "Phase II RCT，12 个月（Mayo Clinic）",
       "primary_outcomes": [
         {
-          "marker": "p16INK4a+SASP",
-          "change": "significantly reduced",
-          "note": "senescent cell burden"
+          "marker": "骨形成标志物 P1NP",
+          "change": "早期时间点升高",
+          "note": "bone formation marker"
         },
         {
-          "marker": "Gait speed/grip strength",
-          "change": "significantly improved",
-          "note": "functional outcomes"
+          "marker": "骨降解标志物 CTX",
+          "change": "无明确改善",
+          "note": "bone degradation marker"
         }
       ],
-      "effect_size": "Multidimensional functional improvement (first senolytic functional benefit in general aging population)",
+      "effect_size": "骨形成标志物早期升高、骨降解无明确改善（结果 subtle，假设生成性）；真实研究未报告步速/握力等功能改善。",
       "evidence_level": "L1",
       "gene_pathway": [
         "Senescence",
         "Physical_function"
       ],
       "gene_link": "H/C 轴弱项老年人群 → 清瘀+扶正组合候选",
-      "source": "Kirkland et al. Nature Medicine 2026, DOI:10.1038/s41591-026-04102-8",
-      "fusion_note": "把'衰老/肾虚'落到可测量功能结局（步速），H 轴功能代理证据。"
+      "source": {
+        "authors": "Farr JN, Atkinson EJ, Khosla S, et al.",
+        "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": 2024,
+        "doi": "10.1038/s41591-024-03096-2",
+        "note": "原幻觉 DOI 10.1038/s41591-026-04102-8（'AFFIRM' 试验）已替换为真实 Phase II RCT；真实结果为骨形成标志物早期升高、骨降解无明确改善（subtle），非功能改善。"
+      },
+      "fusion_note": "把'衰老/肾虚'落到可测量骨代谢结局；H 轴功能代理证据。注意：真实 Farr 2024 结果为 subtle，仅假设生成性，不应夸大功能获益。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.1038/s41591-024-03096-2",
+      "source_canonical": {
+        "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": 2024,
+        "publisher": "Springer Science and Business Media LLC"
+      }
     },
     {
       "id": "CASE-007",
@@ -302,7 +353,9 @@
       ],
       "gene_link": "D 轴（昼夜）弱项(如 PER/CRY 多态) → 早 TRE 个性化候选",
       "source": "Dote-Montero et al. Nature Medicine 2025, 31:524-533, DOI:10.1038/s41591-024-03375-y",
-      "fusion_note": "为'子午流注'提供现代 RCT 证据：进食时机本身即是干预，D 轴旗舰证据。"
+      "fusion_note": "为'子午流注'提供现代 RCT 证据：进食时机本身即是干预，D 轴旗舰证据。",
+      "citation_status": "unverified_text",
+      "doi_verified": false
     },
     {
       "id": "CASE-008",
@@ -336,7 +389,9 @@
       ],
       "gene_link": "痰湿质/脂肪肝倾向(基因) → 16:8 候选",
       "source": "Oh et al. J Hepatol 2025, DOI:10.1016/j.jhep.2025.06.005 (31 citations)",
-      "fusion_note": "把'痰湿/肝'与现代肝脂量化对齐，D+F 轴强证据。"
+      "fusion_note": "把'痰湿/肝'与现代肝脂量化对齐，D+F 轴强证据。",
+      "citation_status": "unverified_text",
+      "doi_verified": false
     },
     {
       "id": "CASE-009",
@@ -372,7 +427,10 @@
         "year": 2024,
         "doi": "2024 16+8 抗衰抗炎（投稿前需全文复核）"
       },
-      "fusion_note": "本土人群证据，增强'治未病'适用性。"
+      "fusion_note": "本土人群证据，增强'治未病'适用性。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "2024 16+8 抗衰抗炎（投稿前需全文复核）"
     },
     {
       "id": "CASE-010",
@@ -403,7 +461,10 @@
         "year": 2024,
         "doi": "Cell Metabolism 2024 CGM 57人（投稿前需全文复核）"
       },
-      "fusion_note": "说明'隐性血糖应激'普遍 → 可穿戴感知是理论闭环的数据基础（呼应 #61）。"
+      "fusion_note": "说明'隐性血糖应激'普遍 → 可穿戴感知是理论闭环的数据基础（呼应 #61）。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "Cell Metabolism 2024 CGM 57人（投稿前需全文复核）"
     },
     {
       "id": "CASE-011",
@@ -445,7 +506,10 @@
         "year": 2020,
         "doi": "tai-chi HRV review（投稿前需全文复核）"
       },
-      "fusion_note": "把'调神/和气血'可测量化为 HRV/迷走张力，G 轴核心非用药证据。"
+      "fusion_note": "把'调神/和气血'可测量化为 HRV/迷走张力，G 轴核心非用药证据。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "tai-chi HRV review（投稿前需全文复核）"
     },
     {
       "id": "CASE-012",
@@ -485,7 +549,10 @@
         "year": 2021,
         "doi": "meditation HRV review（投稿前需全文复核）"
       },
-      "fusion_note": "为 BCI(EEG) 闭环提供'神/情志'可测靶点（呼应 #61）。"
+      "fusion_note": "为 BCI(EEG) 闭环提供'神/情志'可测靶点（呼应 #61）。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "meditation HRV review（投稿前需全文复核）"
     },
     {
       "id": "CASE-013",
@@ -517,7 +584,10 @@
         "year": 2024,
         "doi": "Kirkland 2024 Nature Aging（投稿前需全文复核）"
       },
-      "fusion_note": "体现'药食同源'的现代机制落点；L3 不进强个性化，仅作养生提示。"
+      "fusion_note": "体现'药食同源'的现代机制落点；L3 不进强个性化，仅作养生提示。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "Kirkland 2024 Nature Aging（投稿前需全文复核）"
     },
     {
       "id": "CASE-014",
@@ -557,7 +627,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "四气'温'→A/B 轴（气化/气血-代谢）投影；属食养级传统经验，标 L3。"
+      "fusion_note": "四气'温'→A/B 轴（气化/气血-代谢）投影；属食养级传统经验，标 L3。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-015",
@@ -597,7 +670,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'平'性食养→G/F 轴；安神对应 HRV/EEG 可测靶点（呼应 #61）。"
+      "fusion_note": "'平'性食养→G/F 轴；安神对应 HRV/EEG 可测靶点（呼应 #61）。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-016",
@@ -636,7 +712,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'平'性清补→F/D 轴；与 CGM 餐后漂移验证可闭环。"
+      "fusion_note": "'平'性清补→F/D 轴；与 CGM 餐后漂移验证可闭环。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-017",
@@ -675,7 +754,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'平'性清肝→D/F 轴；属食养级，禁作药。"
+      "fusion_note": "'平'性清肝→D/F 轴；属食养级，禁作药。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-018",
@@ -715,7 +797,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'微寒'滋阴→B/H 轴；为'肾精/气血'食养投影。"
+      "fusion_note": "'微寒'滋阴→B/H 轴；为'肾精/气血'食养投影。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-019",
@@ -749,7 +834,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'寒'性清热→F 轴；与 CASE-009 抗炎轴一致。"
+      "fusion_note": "'寒'性清热→F 轴；与 CASE-009 抗炎轴一致。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-020",
@@ -789,7 +877,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'寒'性清心→G/A 轴；安神对应 HRV/EEG 闭环。"
+      "fusion_note": "'寒'性清心→G/A 轴；安神对应 HRV/EEG 闭环。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-021",
@@ -828,7 +919,10 @@
         "year": "唐",
         "doi": "traditional"
       },
-      "fusion_note": "'寒'性化痰湿→D/F 轴；与 CASE-008 痰湿/肝脂呼应。"
+      "fusion_note": "'寒'性化痰湿→D/F 轴；与 CASE-008 痰湿/肝脂呼应。",
+      "citation_status": "traditional",
+      "doi_verified": false,
+      "doi": "traditional"
     },
     {
       "id": "CASE-022",
@@ -875,7 +969,16 @@
         "year": "2015",
         "doi": "10.1073/pnas.1418490112"
       },
-      "fusion_note": "对应古籍'夜卧避光、无扰阳气'；机制是 ipRGC→SCN→松果体褪黑素轴，无需'松果体活化'表述。作 D 轴'避害'实证。"
+      "fusion_note": "对应古籍'夜卧避光、无扰阳气'；机制是 ipRGC→SCN→松果体褪黑素轴，无需'松果体活化'表述。作 D 轴'避害'实证。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.1073/pnas.1418490112",
+      "source_canonical": {
+        "title": "Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness",
+        "journal": "Proceedings of the National Academy of Sciences",
+        "year": 2014,
+        "publisher": "National Academy of Sciences"
+      }
     },
     {
       "id": "CASE-023",
@@ -914,7 +1017,16 @@
         "year": "2020",
         "doi": "10.1016/j.sleep.2020.05.009"
       },
-      "fusion_note": "对应古籍'日出而作、晨兴升阳'；晨光=无成本 D 轴养护实证，呼应早 TRE(CASE-007)。"
+      "fusion_note": "对应古籍'日出而作、晨兴升阳'；晨光=无成本 D 轴养护实证，呼应早 TRE(CASE-007)。",
+      "citation_status": "verified",
+      "doi_verified": true,
+      "doi": "10.1016/j.sleep.2020.05.009",
+      "source_canonical": {
+        "title": "Decreased functional connectivity within the salience network after two-week morning bright light exposure in individuals with sleep disturbances: a preliminary randomized controlled trial",
+        "journal": "Sleep Medicine",
+        "year": 2020,
+        "publisher": "Elsevier BV"
+      }
     },
     {
       "id": "CASE-024",
@@ -951,7 +1063,10 @@
         "year": "2026",
         "doi": "待补（论文标题: High numerical aperture confocal volumetric mesoscope reveals mesoscale subcellular dynamics in vivo；华中科技大学同济医院王伟团队 × 清华大学戴琼海院士团队；RUSH3D-HR 介观共聚焦体积显微镜）"
       },
-      "fusion_note": "对应古籍'针刺足三里扶正祛邪'——本例是'古籍经验命题↔现代通路证据'对齐的旗舰实证，支撑 A2 可测量才可干预、A6 经验可错。动物/急性炎症模型，仅作机制背书与背景证据，禁诊疗化引用、禁暗示治疗疾病。"
+      "fusion_note": "对应古籍'针刺足三里扶正祛邪'——本例是'古籍经验命题↔现代通路证据'对齐的旗舰实证，支撑 A2 可测量才可干预、A6 经验可错。动物/急性炎症模型，仅作机制背书与背景证据，禁诊疗化引用、禁暗示治疗疾病。",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "待补（论文标题: High numerical aperture confocal volumetric mesoscope reveals mesoscale subcellular dynamics in vivo；华中科技大学同济医院王伟团队 × 清华大学戴琼海院士团队；RUSH3D-HR 介观共聚焦体积显微镜）"
     },
     {
       "id": "CASE-024",
@@ -991,7 +1106,10 @@
         "doi": "运动外泌体综述（投稿前需全文复核）"
       },
       "fusion_note": "把'导引/气血流通'机制化为外泌体胞间信号传导——运动的收益不局限于局部，而是通过外泌体实现全身性细胞间通讯。I轴核心证据。",
-      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "运动外泌体综述（投稿前需全文复核）"
     },
     {
       "id": "CASE-025",
@@ -1031,7 +1149,10 @@
         "doi": "断食外泌体研究（投稿前需全文复核）"
       },
       "fusion_note": "为'辟谷/气化重启'增加外泌体维度——断食的全身修复效应部分通过外泌体miRNA实现，打通A轴与I轴。",
-      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "断食外泌体研究（投稿前需全文复核）"
     },
     {
       "id": "CASE-026",
@@ -1071,7 +1192,10 @@
         "doi": "外泌体药物递送综述（投稿前需全文复核）"
       },
       "fusion_note": "为'经络/通络载药'提供外泌体载体假说——外泌体是细胞天然的'快递员'，可作为药食同源成分的生物利用度增强器。I+C轴桥接证据。",
-      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
+      "citation_status": "unverified_text",
+      "doi_verified": false,
+      "doi": "外泌体药物递送综述（投稿前需全文复核）"
     },
     {
       "id": "CASE-029",
@@ -1105,7 +1229,9 @@
       "gene_link": "I axis (exosome-cell communication) weakness -> exercise as first-line non-drug intervention",
       "source": "Yu et al. J Nanobiotechnology 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985",
       "fusion_note": "I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling",
-      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)"
+      "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
+      "citation_status": "unverified_text",
+      "doi_verified": false
     },
     {
       "id": "CASE-030",
@@ -1139,7 +1265,10 @@
       ],
       "gene_link": "D axis (circadian) weakness -> TRE as preferred IF regimen for liver fat",
       "source": "ScienceDirect 2026, DOI:10.1016/j.ther.2026.105127 (19 RCTs, 1149 participants)",
-      "fusion_note": "Confirms TRE as D-axis flagship intervention; network evidence level upgraded"
+      "fusion_note": "Confirms TRE as D-axis flagship intervention; network evidence level upgraded",
+      "citation_status": "broken_citation",
+      "doi_verified": false,
+      "doi": "10.1016/j.ther.2026.105127"
     },
     {
       "case_id": "HL-0030",
@@ -1155,7 +1284,9 @@
       "pathway": "mitochondrial",
       "confidence": 0.33,
       "generated_at": "2026-08-27T14:31:14.682848",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0031",
@@ -1171,7 +1302,9 @@
       "pathway": "senolytics",
       "confidence": 0.85,
       "generated_at": "2026-08-27T14:31:14.682981",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0032",
@@ -1187,7 +1320,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.84,
       "generated_at": "2026-08-27T14:31:14.682987",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0033",
@@ -1203,7 +1338,9 @@
       "pathway": "HPA",
       "confidence": 0.65,
       "generated_at": "2026-08-27T14:31:14.682993",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0034",
@@ -1219,7 +1356,9 @@
       "pathway": "senolytics",
       "confidence": 0.37,
       "generated_at": "2026-08-27T14:31:14.682997",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0035",
@@ -1235,7 +1374,9 @@
       "pathway": "HPA",
       "confidence": 0.67,
       "generated_at": "2026-08-27T14:31:14.683001",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0036",
@@ -1251,7 +1392,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.47,
       "generated_at": "2026-08-27T14:31:14.683004",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0037",
@@ -1267,7 +1410,9 @@
       "pathway": "serotonin",
       "confidence": 0.47,
       "generated_at": "2026-08-27T14:31:14.683010",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0038",
@@ -1283,7 +1428,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.64,
       "generated_at": "2026-08-27T14:31:14.683013",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0039",
@@ -1299,7 +1446,9 @@
       "pathway": "senolytics",
       "confidence": 0.51,
       "generated_at": "2026-08-27T14:31:14.683017",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0040",
@@ -1315,7 +1464,9 @@
       "pathway": "circadian",
       "confidence": 0.48,
       "generated_at": "2026-08-27T14:31:14.683021",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0041",
@@ -1331,7 +1482,9 @@
       "pathway": "circadian",
       "confidence": 0.52,
       "generated_at": "2026-08-27T14:31:14.683024",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0042",
@@ -1347,7 +1500,9 @@
       "pathway": "inflammation",
       "confidence": 0.47,
       "generated_at": "2026-08-27T14:31:14.683027",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0043",
@@ -1363,7 +1518,9 @@
       "pathway": "serotonin",
       "confidence": 0.71,
       "generated_at": "2026-08-27T14:31:14.683032",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0044",
@@ -1379,7 +1536,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.32,
       "generated_at": "2026-08-27T14:31:14.683034",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0045",
@@ -1395,7 +1554,9 @@
       "pathway": "circadian",
       "confidence": 0.51,
       "generated_at": "2026-08-27T14:31:14.683038",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0046",
@@ -1411,7 +1572,9 @@
       "pathway": "inflammation",
       "confidence": 0.49,
       "generated_at": "2026-08-27T14:31:14.683041",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0047",
@@ -1427,7 +1590,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.68,
       "generated_at": "2026-08-27T14:31:14.683044",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0048",
@@ -1443,7 +1608,9 @@
       "pathway": "inflammation",
       "confidence": 0.84,
       "generated_at": "2026-08-27T14:31:14.683047",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0049",
@@ -1459,7 +1626,9 @@
       "pathway": "senolytics",
       "confidence": 0.32,
       "generated_at": "2026-08-27T14:31:14.683051",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0050",
@@ -1475,7 +1644,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.79,
       "generated_at": "2026-08-27T14:31:14.683055",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0051",
@@ -1491,7 +1662,9 @@
       "pathway": "mitochondrial",
       "confidence": 0.55,
       "generated_at": "2026-08-27T14:31:14.683059",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0052",
@@ -1507,7 +1680,9 @@
       "pathway": "HPA",
       "confidence": 0.67,
       "generated_at": "2026-08-27T14:31:14.683062",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0053",
@@ -1523,7 +1698,9 @@
       "pathway": "autophagy",
       "confidence": 0.38,
       "generated_at": "2026-08-27T14:31:14.683065",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0054",
@@ -1539,7 +1716,9 @@
       "pathway": "HPA",
       "confidence": 0.79,
       "generated_at": "2026-08-27T14:31:14.683068",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0055",
@@ -1555,7 +1734,9 @@
       "pathway": "serotonin",
       "confidence": 0.86,
       "generated_at": "2026-08-27T14:31:14.683071",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0056",
@@ -1571,7 +1752,9 @@
       "pathway": "circadian",
       "confidence": 0.45,
       "generated_at": "2026-08-27T14:31:14.683074",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0057",
@@ -1587,7 +1770,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.5,
       "generated_at": "2026-08-27T14:31:14.683077",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0058",
@@ -1603,7 +1788,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.31,
       "generated_at": "2026-08-27T14:31:14.683081",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0059",
@@ -1619,7 +1806,9 @@
       "pathway": "circadian",
       "confidence": 0.86,
       "generated_at": "2026-08-27T14:31:14.683083",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0060",
@@ -1635,7 +1824,9 @@
       "pathway": "serotonin",
       "confidence": 0.75,
       "generated_at": "2026-08-27T14:31:14.683087",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0061",
@@ -1651,7 +1842,9 @@
       "pathway": "inflammation",
       "confidence": 0.67,
       "generated_at": "2026-08-27T14:31:14.683090",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0062",
@@ -1667,7 +1860,9 @@
       "pathway": "senolytics",
       "confidence": 0.77,
       "generated_at": "2026-08-27T14:31:14.683094",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0063",
@@ -1683,7 +1878,9 @@
       "pathway": "serotonin",
       "confidence": 0.82,
       "generated_at": "2026-08-27T14:31:14.683098",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0064",
@@ -1699,7 +1896,9 @@
       "pathway": "mitochondrial",
       "confidence": 0.52,
       "generated_at": "2026-08-27T14:31:14.683101",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0065",
@@ -1715,7 +1914,9 @@
       "pathway": "autophagy",
       "confidence": 0.41,
       "generated_at": "2026-08-27T14:31:14.683105",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0066",
@@ -1731,7 +1932,9 @@
       "pathway": "autophagy",
       "confidence": 0.77,
       "generated_at": "2026-08-27T14:31:14.683108",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0067",
@@ -1747,7 +1950,9 @@
       "pathway": "HPA",
       "confidence": 0.4,
       "generated_at": "2026-08-27T14:31:14.683117",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0068",
@@ -1763,7 +1968,9 @@
       "pathway": "serotonin",
       "confidence": 0.86,
       "generated_at": "2026-08-27T14:31:14.683120",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0069",
@@ -1779,7 +1986,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.81,
       "generated_at": "2026-08-27T14:31:14.683123",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0070",
@@ -1795,7 +2004,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.33,
       "generated_at": "2026-08-27T14:31:14.683127",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0071",
@@ -1811,7 +2022,9 @@
       "pathway": "circadian",
       "confidence": 0.67,
       "generated_at": "2026-08-27T14:31:14.683131",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0072",
@@ -1827,7 +2040,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.65,
       "generated_at": "2026-08-27T14:31:14.683134",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0073",
@@ -1843,7 +2058,9 @@
       "pathway": "inflammation",
       "confidence": 0.53,
       "generated_at": "2026-08-27T14:31:14.683137",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0074",
@@ -1859,7 +2076,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.7,
       "generated_at": "2026-08-27T14:31:14.683140",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0075",
@@ -1875,7 +2094,9 @@
       "pathway": "circadian",
       "confidence": 0.63,
       "generated_at": "2026-08-27T14:31:14.683143",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0076",
@@ -1891,7 +2112,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.86,
       "generated_at": "2026-08-27T14:31:14.683146",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0077",
@@ -1907,7 +2130,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.87,
       "generated_at": "2026-08-27T14:31:14.683149",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0078",
@@ -1923,7 +2148,9 @@
       "pathway": "autophagy",
       "confidence": 0.62,
       "generated_at": "2026-08-27T14:31:14.683152",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0079",
@@ -1939,7 +2166,9 @@
       "pathway": "inflammation",
       "confidence": 0.61,
       "generated_at": "2026-08-27T14:31:14.683156",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0080",
@@ -1955,7 +2184,9 @@
       "pathway": "senolytics",
       "confidence": 0.58,
       "generated_at": "2026-08-27T14:31:14.683161",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0081",
@@ -1971,7 +2202,9 @@
       "pathway": "serotonin",
       "confidence": 0.57,
       "generated_at": "2026-08-27T14:31:14.683165",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0082",
@@ -1987,7 +2220,9 @@
       "pathway": "autophagy",
       "confidence": 0.37,
       "generated_at": "2026-08-27T14:31:14.683168",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0083",
@@ -2003,7 +2238,9 @@
       "pathway": "autophagy",
       "confidence": 0.71,
       "generated_at": "2026-08-27T14:31:14.683171",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0084",
@@ -2019,7 +2256,9 @@
       "pathway": "serotonin",
       "confidence": 0.68,
       "generated_at": "2026-08-27T14:31:14.683174",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0085",
@@ -2035,7 +2274,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.71,
       "generated_at": "2026-08-27T14:31:14.683177",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0086",
@@ -2051,7 +2292,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.58,
       "generated_at": "2026-08-27T14:31:14.683180",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0087",
@@ -2067,7 +2310,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.73,
       "generated_at": "2026-08-27T14:31:14.683183",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0088",
@@ -2083,7 +2328,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.32,
       "generated_at": "2026-08-27T14:31:14.683188",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0089",
@@ -2099,7 +2346,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.4,
       "generated_at": "2026-08-27T14:31:14.683191",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0090",
@@ -2115,7 +2364,9 @@
       "pathway": "autophagy",
       "confidence": 0.79,
       "generated_at": "2026-08-27T14:31:14.683195",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0091",
@@ -2131,7 +2382,9 @@
       "pathway": "circadian",
       "confidence": 0.48,
       "generated_at": "2026-08-27T14:31:14.683199",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0092",
@@ -2147,7 +2400,9 @@
       "pathway": "HPA",
       "confidence": 0.81,
       "generated_at": "2026-08-27T14:31:14.683203",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0093",
@@ -2163,7 +2418,9 @@
       "pathway": "circadian",
       "confidence": 0.8,
       "generated_at": "2026-08-27T14:31:14.683208",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0094",
@@ -2179,7 +2436,9 @@
       "pathway": "HPA",
       "confidence": 0.64,
       "generated_at": "2026-08-27T14:31:14.683215",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0095",
@@ -2195,7 +2454,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.53,
       "generated_at": "2026-08-27T14:31:14.683221",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0096",
@@ -2211,7 +2472,9 @@
       "pathway": "autophagy",
       "confidence": 0.32,
       "generated_at": "2026-08-27T14:31:14.683226",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0097",
@@ -2227,7 +2490,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.73,
       "generated_at": "2026-08-27T14:31:14.683231",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0098",
@@ -2243,7 +2508,9 @@
       "pathway": "circadian",
       "confidence": 0.33,
       "generated_at": "2026-08-27T14:31:14.683234",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0099",
@@ -2259,7 +2526,9 @@
       "pathway": "inflammation",
       "confidence": 0.59,
       "generated_at": "2026-08-27T14:31:14.683237",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0100",
@@ -2275,7 +2544,9 @@
       "pathway": "inflammation",
       "confidence": 0.5,
       "generated_at": "2026-08-27T14:31:14.683241",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0101",
@@ -2291,7 +2562,9 @@
       "pathway": "autophagy",
       "confidence": 0.55,
       "generated_at": "2026-08-27T14:31:14.683245",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0102",
@@ -2307,7 +2580,9 @@
       "pathway": "HPA",
       "confidence": 0.72,
       "generated_at": "2026-08-27T14:31:14.683248",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0103",
@@ -2323,7 +2598,9 @@
       "pathway": "inflammation",
       "confidence": 0.71,
       "generated_at": "2026-08-27T14:31:14.683251",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0104",
@@ -2339,7 +2616,9 @@
       "pathway": "autophagy",
       "confidence": 0.5,
       "generated_at": "2026-08-27T14:31:14.683255",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0105",
@@ -2355,7 +2634,9 @@
       "pathway": "senolytics",
       "confidence": 0.5,
       "generated_at": "2026-08-27T14:31:14.683258",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0106",
@@ -2371,7 +2652,9 @@
       "pathway": "hematopoiesis",
       "confidence": 0.79,
       "generated_at": "2026-08-27T14:31:14.683261",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0107",
@@ -2387,7 +2670,9 @@
       "pathway": "HPA",
       "confidence": 0.51,
       "generated_at": "2026-08-27T14:31:14.683266",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0108",
@@ -2403,7 +2688,9 @@
       "pathway": "circadian",
       "confidence": 0.73,
       "generated_at": "2026-08-27T14:31:14.683271",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0109",
@@ -2419,7 +2706,9 @@
       "pathway": "epigenetic_clock",
       "confidence": 0.79,
       "generated_at": "2026-08-27T14:31:14.683274",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0110",
@@ -2435,7 +2724,9 @@
       "pathway": "mitochondrial",
       "confidence": 0.78,
       "generated_at": "2026-08-27T14:31:14.683278",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0111",
@@ -2451,7 +2742,9 @@
       "pathway": "serotonin",
       "confidence": 0.52,
       "generated_at": "2026-08-27T14:31:14.683281",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0112",
@@ -2467,7 +2760,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.39,
       "generated_at": "2026-08-27T14:31:14.683284",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0113",
@@ -2483,7 +2778,9 @@
       "pathway": "inflammation",
       "confidence": 0.48,
       "generated_at": "2026-08-27T14:31:14.683287",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0114",
@@ -2499,7 +2796,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.61,
       "generated_at": "2026-08-27T14:31:14.683292",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0115",
@@ -2515,7 +2814,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.33,
       "generated_at": "2026-08-27T14:31:14.683295",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0116",
@@ -2531,7 +2832,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.41,
       "generated_at": "2026-08-27T14:31:14.683298",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0117",
@@ -2547,7 +2850,9 @@
       "pathway": "senolytics",
       "confidence": 0.7,
       "generated_at": "2026-08-27T14:31:14.683302",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0118",
@@ -2563,7 +2868,9 @@
       "pathway": "endogenous_stem_cell_activation",
       "confidence": 0.71,
       "generated_at": "2026-08-27T14:31:14.683305",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0119",
@@ -2579,7 +2886,9 @@
       "pathway": "senolytics",
       "confidence": 0.59,
       "generated_at": "2026-08-27T14:31:14.683309",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     },
     {
       "case_id": "HL-0120",
@@ -2595,7 +2904,9 @@
       "pathway": "autophagy",
       "confidence": 0.33,
       "generated_at": "2026-08-27T14:31:14.683313",
-      "is_synthetic": true
+      "is_synthetic": true,
+      "citation_status": "synthetic_validation",
+      "doi_verified": false
     }
   ],
   "version": "1.3",
