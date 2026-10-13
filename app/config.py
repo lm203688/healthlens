@@ -1,12 +1,16 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# 单一版本真源：版本号只定义在 pyproject.toml [project].version，
+# 此处引用而非硬编码，使 pyproject 与运行时版本不可能再漂移（S3-5）。
+from app.core.version import __version__ as _APP_VERSION
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     # App
     APP_NAME: str = "HealthLens"
-    APP_VERSION: str = "0.25.0"
+    APP_VERSION: str = _APP_VERSION
     DEBUG: bool = False
     CORS_ORIGINS: list[str] = ["*"]  # 生产环境应设为具体域名
     RATE_LIMIT_ENABLED: bool = True  # 认证端点限流（测试环境可禁用）

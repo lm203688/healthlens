@@ -33,11 +33,17 @@ def get_token():
     t = os.getenv("GITHUB_TOKEN")
     if t:
         return t, "环境变量 GITHUB_TOKEN"
-    cfg = ROOT / "healthlens" / ".git" / "config"
-    if cfg.exists():
-        m = re.search(r"https://[^:]+:([^@]+)@github\.com", cfg.read_text(encoding="utf-8", errors="replace"))
+    for cfg in (ROOT / "healthlens" / ".git" / "config", ROOT / ".git" / "config"):
+        if cfg.exists():
+            m = re.search(r"https://[^:]+:([^@\s]+)@github\.com", cfg.read_text(encoding="utf-8", errors="replace"))
+            if m:
+                return m.group(1), f"{cfg}（内嵌凭据）"
+    # ~/.git-credentials（git credential-store 的默认落盘位置）
+    cred = Path.home() / ".git-credentials"
+    if cred.exists():
+        m = re.search(r"https://[^:]+:([^@\s]+)@github\.com", cred.read_text(encoding="utf-8", errors="replace"))
         if m:
-            return m.group(1), "healthlens/.git/config（内嵌凭据）"
+            return m.group(1), "~/.git-credentials"
     return None, None
 
 
@@ -45,11 +51,11 @@ def get_repo():
     r = os.getenv("GITHUB_REPO")
     if r:
         return r
-    cfg = ROOT / "healthlens" / ".git" / "config"
-    if cfg.exists():
-        m = re.search(r"github\.com/([\w.-]+/[\w.-]+?)(?:\.git)?\s", cfg.read_text(encoding="utf-8", errors="replace"))
-        if m:
-            return m.group(1)
+    for cfg in (ROOT / "healthlens" / ".git" / "config", ROOT / ".git" / "config"):
+        if cfg.exists():
+            m = re.search(r"github\.com/([\w.-]+/[\w.-]+?)(?:\.git)?\s", cfg.read_text(encoding="utf-8", errors="replace"))
+            if m:
+                return m.group(1)
     return None
 
 

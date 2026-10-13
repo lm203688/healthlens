@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -5,6 +6,58 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from app.config import settings
+
+
+# 仓库根目录下的 A2A agent card 源文件。
+_AGENT_CARD_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "agent-card.json"
+)
+
+
+def _build_agent_card_response(method: str = "GET"):
+    """构建 /.well-known/agent-card.json 的响应。
+
+    A2A 协议规定 agent card 必须服务于该 well-known 路径，供外部 agent
+    在运行时自动发现 HealthLens 的能力与连接方式。运行时以 pyproject 为
+    单一真源注入版本，使卡片版本与运行时版本不可能漂移。
+
+    注意：卡片内 conformanceNote 如实声明本服务未实现 A2A 任务生命周期
+    （SendMessage/GetTask/CancelTask），实际可编程接口为 MCP JSON-RPC 2.0
+    与 REST——不在卡片中声称未实现的协议能力。
+    """
+    import json as _json
+
+    from fastapi.responses import JSONResponse
+    from starlette.responses import Response
+
+    if not os.path.isfile(_AGENT_CARD_PATH):
+        # fail-loud：卡片缺失时不静默返回空对象，让发现方明确知道不可用。
+        return JSONResponse(
+            status_code=404,
+            content={"error": "agent-card.json not found", "expected": _AGENT_CARD_PATH},
+        )
+
+    with open(_AGENT_CARD_PATH, encoding="utf-8") as f:
+        card = _json.load(f)
+
+    from app.core.version import __version__ as _live_version
+
+    card["version"] = _live_version
+
+    # 卡片可被缓存以减轻发现成本，但版本号变更需即时生效，故用较短 TTL。
+    headers = {
+        "Cache-Control": "public, max-age=300",
+        "Content-Type": "application/json; charset=utf-8",
+    }
+
+    # 一次序列化，GET/HEAD 共用同一 body 字节，保证二者 content-length
+    # 完全一致——否则内容寻址的缓存会把 HEAD 当成缓存旁路。
+    body = _json.dumps(card, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    headers["Content-Length"] = str(len(body))
+
+    if method == "HEAD":
+        return Response(status_code=200, content=b"", headers=headers)
+    return Response(status_code=200, content=body, headers=headers)
 
 
 @asynccontextmanager
@@ -231,6 +284,37 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def health_check():
         return {"status": "ok", "version": settings.APP_VERSION}
+
+    # 运行时版本端点：单一真源 = pyproject.toml [project].version。
+    # 供 A2A agent-card 与外部 agent 发现实际运行版本；
+    # version_resolved=False 表示版本源解析失败（不静默伪造版本）。
+    @app.get("/api/v1/version", summary="运行时版本信息（单一真源：pyproject.toml）")
+    async def version_endpoint():
+        from app.core.version import version_info
+
+        return version_info()
+
+    # A2A Agent Card 发现端点（实现见模块级 _build_agent_card_response）。
+    @app.get(
+        "/.well-known/agent-card.json",
+        summary="A2A Agent Card（agent 发现端点）",
+        tags=["agent-discovery"],
+    )
+    async def agent_card():
+        return _build_agent_card_response()
+
+    # Starlette >=1.6 no longer auto-adds HEAD to GET routes, so HEAD must be
+    # declared explicitly — otherwise the discovery endpoint answers 405 and
+    # some agent registrars treat that as a broken card. HEAD is intentionally
+    # kept out of the OpenAPI schema: it carries no independent contract, just
+    # the same headers as GET with an empty body.
+    @app.api_route(
+        "/.well-known/agent-card.json",
+        methods=["HEAD"],
+        include_in_schema=False,
+    )
+    async def agent_card_head():
+        return _build_agent_card_response(method="HEAD")
 
     @app.get("/metrics")
     async def metrics():

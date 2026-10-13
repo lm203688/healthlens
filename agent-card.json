@@ -1,0 +1,212 @@
+{
+  "name": "HealthLens",
+  "description": "HealthLens 整合医学健康推演 Agent：八轴稳态框架（A–H）+ 六公理内核，融合西医生物标志物、中医古籍与可穿戴数据，提供八轴评估、生物学年龄偏移、反事实因果推演、非药物干预与古籍检索。健康参考工具，非医疗器械，不构成诊断或治疗建议。",
+  "url": "https://healthlens.cc/api/v1",
+  "protocolVersion": "1.0",
+  "version": "0.26.2",
+  "provider": {
+    "organization": "HealthLens",
+    "url": "https://github.com/lm203688/healthlens"
+  },
+  "documentationUrl": "https://github.com/lm203688/healthlens/blob/main/README.md",
+  "supportsAuthenticatedExtendedCard": false,
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false,
+    "stateTransitionHistory": false,
+    "extensions": [
+      {
+        "uri": "https://github.com/lm203688/healthlens#mcp",
+        "description": "实际可编程工具接口为 MCP JSON-RPC 2.0，端点 POST /api/v1/mcp（protocolVersion 2024-11-05），工具清单 GET /api/v1/mcp/tools。",
+        "specs": [
+          {
+            "spec": "https://modelcontextprotocol.io/specification/2024-11-05",
+            "version": "2024-11-05"
+          }
+        ]
+      }
+    ]
+  },
+  "conformanceNote": "本卡片采用 A2A v1.0 格式以便被发现器解析，但 HealthLens **未实现 A2A 任务生命周期操作**（SendMessage / GetTask / CancelTask）。请勿以 A2A JSON-RPC 客户端直接调用；实际调用走 capabilities.extensions 声明的 MCP 接口，或 skills[].interfaceUrl 指向的 REST 端点。此说明如实记录，避免下游 agent 误判协议兼容性。",
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["application/json", "text/plain"],
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  },
+  "supportedInterfaces": [
+    {
+      "url": "https://healthlens.cc/api/v1",
+      "protocolBinding": "HTTP+JSON",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "skills": [
+    {
+      "id": "health-check",
+      "name": "服务健康检查",
+      "description": "返回服务健康状态、版本号与分层配置。无需认证，适合探针与连通性验证。",
+      "tags": ["ops", "health", "discovery"],
+      "examples": ["check service health"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/health",
+      "securityRequirements": []
+    },
+    {
+      "id": "eight-axis-assessment",
+      "name": "八轴稳态评估",
+      "description": "基于生物标志物、可穿戴与自评数据计算八轴（A–H）评分。输出含 penalty_ratio 审计字段的跨轴归一化分数（score = 100 − 100×Σ实际扣分/Σ可用输入最大扣分），score<70 判定为弱轴。需要登录。",
+      "tags": ["assessment", "biomarkers", "core"],
+      "examples": ["评估我的八轴健康状态，我的空腹血糖 6.4，HbA1c 5.4，HRV-RMSSD 28"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/axes/assess",
+      "securityRequirements": [
+        {
+          "bearerAuth": []
+        }
+      ]
+    },
+    {
+      "id": "axis-meta",
+      "name": "八轴定义与机制说明",
+      "description": "返回八轴框架的元定义、六公理、每轴机制解释与可干预杠杆，不含个人数据，可公开调用。适合知识库预加载与 agent 自我校准。",
+      "tags": ["knowledge", "framework", "public"],
+      "examples": ["解释 HealthLens 八轴框架是什么", "列出 A 到 H 各轴的定义"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/axes/meta",
+      "securityRequirements": []
+    },
+    {
+      "id": "axis-evidence",
+      "name": "案例证据检索",
+      "description": "按 case_id 返回单条证据案例（含 DOI、证据等级 L1/L2/L3、轴归属）。案例库 29 条真实文献证据 + 91 条合成夹具，DOI 已逐条 Crossref 核验。不含个人数据，可公开调用。",
+      "tags": ["evidence", "doi", "public"],
+      "examples": [
+        "CASE-006 的证据来源是什么",
+        "给我 L1 级别的证据案例"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/axes/evidence/{case_id}",
+      "securityRequirements": []
+    },
+    {
+      "id": "bio-age",
+      "name": "生物学年龄偏移（H 轴）",
+      "description": "计算生物学年龄偏移（bioage_delta），并与已发表 PhenoAge 文献时钟对标。实现忠实于 Liu 2018 PLoS Med 订正版公式（DOI 10.1371/journal.pmed.1002760），SI 单位。需要登录。",
+      "tags": ["aging", "phenoage", "biomarkers"],
+      "examples": [
+        "我的生物学年龄比实际年龄老多少",
+        "我的 H 轴分数是多少"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/axes/bioage",
+      "securityRequirements": [
+        {
+          "bearerAuth": []
+        }
+      ]
+    },
+    {
+      "id": "causal-structure",
+      "name": "因果结构查询",
+      "description": "返回八轴系统的结构因果模型（SCM）：8 节点、5 边、7 个可干预杠杆、2 个未观测混杂因子，以及桥接敏感度（E-value）。不含个人数据，可公开调用。",
+      "tags": ["causal", "scm", "e-value", "public"],
+      "examples": [
+        "HealthLens 的八轴之间有什么因果假设",
+        "改善睡眠对炎症轴的传导路径是什么"
+      ],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/causal/scm",
+      "securityRequirements": []
+    },
+    {
+      "id": "causal-scenario",
+      "name": "反事实干预推演",
+      "description": "给定基线八轴分数与干预杠杆（睡眠、禁食、抗炎饮食、运动），推演干预后八轴变化，输出反事实效应、杠杆灵敏度、E-value 与 bootstrap 区间。in-silico 模拟，非临床预测，带 not_clinical 标记。非法输入返回 400 fail-loud。需要登录。",
+      "tags": ["causal", "counterfactual", "simulation", "personalized"],
+      "examples": [
+        "如果我只改善睡眠，八轴会怎么变",
+        "12 周抗炎饮食干预的推演结果"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/causal/report",
+      "securityRequirements": [
+        {
+          "bearerAuth": []
+        }
+      ]
+    },
+    {
+      "id": "knowledge-search",
+      "name": "中医古籍知识检索",
+      "description": "检索中医健康知识库（TCM-MKG 图谱 6207 条草药实体 + 古籍原文切片），返回带证据等级的知识条目。不含个人数据，可公开调用。上游出处与许可见 data/LICENSE_AUDIT_2026-10-13.md。",
+      "tags": ["tcm", "knowledge", "herbs", "public"],
+      "examples": [
+        "哪些中药适合改善睡眠",
+        "查一下丹沙的功效与出处"
+      ],
+      "inputModes": ["text/plain", "application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/knowledge/food-therapy/search",
+      "securityRequirements": []
+    },
+    {
+      "id": "food-therapy-recommend",
+      "name": "食疗方案推荐",
+      "description": "基于体质与目标推荐非药物食疗法案（非药物干预，不处方用药）。输出经法域感知 claims 引擎过滤，含合规免责声明。需要登录。",
+      "tags": ["tcm", "diet", "non-pharma", "personalized"],
+      "examples": [
+        "针对气虚体质给我推荐食疗方案",
+        "抗炎饮食建议"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/knowledge/food-therapy/recommend",
+      "securityRequirements": [
+        {
+          "bearerAuth": []
+        }
+      ]
+    },
+    {
+      "id": "frequency-prescription",
+      "name": "放松音频体验处方",
+      "description": "生成频率音频体验方案。**注意：此为放松音频体验，非治疗，不宣称任何疗效**（代码标注 not_clinical，不进八轴机制链）。仅关联放松音频素材，不构成声疗建议。需要登录。",
+      "tags": ["audio", "relaxation", "wellness", "personalized"],
+      "examples": [
+        "推荐一个帮助放松的音频方案",
+        "给我生成一个睡眠放松音频"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/frequency/prescription",
+      "securityRequirements": [
+        {
+          "bearerAuth": []
+        }
+      ]
+    },
+    {
+      "id": "mcp-tools",
+      "name": "MCP 工具接口（JSON-RPC 2.0）",
+      "description": "以 Model Context Protocol (JSON-RPC 2.0, protocolVersion 2024-11-05) 暴露 6 个分层工具（hl_health_check、hl_search_knowledge、hl_get_axis_detail、hl_get_wellness_article、hl_suggest_general_diet、hl_suggest_general_motion）。L1/L2 工具默认公开；L3 个性化推理由服务端 HL_MCP_EXPOSE_PRIVATE 开关控制。",
+      "tags": ["mcp", "protocol", "tools", "interoperability"],
+      "examples": ["列出 HealthLens 提供的 MCP 工具"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "interfaceUrl": "https://healthlens.cc/api/v1/mcp/tools",
+      "securityRequirements": []
+    }
+  ]
+}

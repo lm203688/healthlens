@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.26.2] - 2026-10-13
+
+### Added（S3 工程化落地 + 公开发布合规处置）
+
+**S3-1 A2A Agent Card（智能体发现层）**
+- `agent-card.json`（仓库根，10132B < Google Cloud Agent Registry 10KB 上限）：A2A v1.0 格式，8 个 REQUIRED 字段齐备（name/description/version/supportedInterfaces/capabilities/defaultInputModes/defaultOutputModes/skills），11 个 skill
+- `GET /.well-known/agent-card.json` 发现端点（A2A 规范服务位置）：运行时以 `pyproject.toml` 为单一真源注入版本，卡片版本与运行时版本不可能漂移；`Cache-Control: public, max-age=300`；HEAD 与 GET 共用同一次序列化的 body，保证二者 `content-length` 一致（内容寻址缓存不会把 HEAD 当旁路）
+- **诚实性边界**：`conformanceNote` 如实声明本服务**未实现 A2A 任务生命周期操作**（SendMessage / GetTask / CancelTask），实际可编程接口为 MCP JSON-RPC 2.0，通过 `capabilities.extensions` 指向规范 URI 显式声明；未支持的能力（streaming / pushNotifications / extendedAgentCard）一律显式置 `false`，不省略
+- `tests/test_agent_card.py`：**25 用例**，含 fail-loud 断言「每个 skill 的 interfaceUrl 必须对应 OpenAPI 真实路由（模板路径按段占位匹配）」，锁死「在卡片里编造端点夸大能力」这类虚假声明
+- 兼容性修复：Starlette >=1.6 不再自动为 GET 路由补 HEAD，故 `HEAD` 需显式声明（`include_in_schema=False`，HEAD 无独立契约不进 OpenAPI）；修复过程中发现并修掉一处 `request` 未标注被 FastAPI 误判为必填查询参数的 422
+
+**S3-5 单一版本真源 + 构建垃圾清理**
+- 根因：`.env` 第 3 行 `APP_VERSION=0.9.0`（8/28 残留）+ `.env.example` 0.8.2 使 `Settings.APP_VERSION` 实测为 0.9.0，与 `pyproject.toml` 的 0.26.1 不符——版本号可被环境变量静默覆盖
+- 处置：移除 `.env` / `.env.example` 中的 `APP_VERSION`，改为版本不可被 env 覆盖；`app/core/version.py` 从 `pyproject.toml [project].version` 读取（Python 3.9 兼容：`tomllib` + `tomli` 回退）
+- `GET /api/v1/version` 端点 + `tests/core/test_version.py`（7 用例）
+- `auto-pipeline/dist_build*` / `dist_prev_*` 11 个历史构建目录删除（26M → 5.4M），删除前备份至 `Desktop/_healthlens_dist_backup_2026-10-13`
+
+**S2-4 上游知识平面许可审计（公开发布阻断项）**
+- `data/LICENSE_AUDIT_2026-10-13.md`：逐条核对上游语料许可。核心结论——GitHub 仓库无 LICENSE 文件时默认「保留所有权利」（all rights reserved），**公有领域 ≠ 已许可**；`TCM-Ancient-Books` 经 GitHub API 确认 `license: null`，属公开发布合规阻断
+- `tools/redact_for_public_release.py`：剥离 `source_quote` / `passage` / `efficacy` / `citation` / `source_file` / `book` / `entity` 等原文承载字段（741KB → 404KB），产物写入 `data/publishable/` + `REDACTION_MANIFEST.json`；支持 `--check` / `--keep-verbatim`
+- 三方案（A 脱敏 / B 最小可用 / C 私有部署）已给出可执行路径，实际发布（Zenodo DOI 注册等）需用户决策
+
+### Changed
+- `pyproject.toml`：0.26.1 → 0.26.2（单一真源）；`agent-card.json` 静态版本同步
+
+### Verified
+- 三套测试合计 **441 passed, 0 failed**：`tests/` 377 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+
 ## [0.26.1] - 2026-10-13
 
 ### Added（《科学先进性与技术壁垒评估暨 SCI 就绪度报告 2026-10-12》硬阻断项清零续篇）
