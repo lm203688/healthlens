@@ -13,6 +13,17 @@
   字段说明用了哪些真实输入，便于端到端追溯。
 - 任何结果不构成医疗诊断、处方或治疗建议。
 
+**跨轴归一化（S1-2，2026-10-13）**：
+     score = 100 − 100 × (Σ实际扣分 / Σ可用输入的最大扣分)
+分数反映「可用输入内部的相对严重度」，与可用输入的**数量**解耦：
+同质异常（可用输入全部打满）恒得 0 分、全部正常恒得 100 分，与测了几项无关；
+score<70 ⟺ ratio>0.3 在八轴之间完全等价（弱项阈值跨轴可比）。
+这消除了旧公式 `100 − Σpenalty` 的缺陷——各轴可用输入数不同（A 轴 5 项、
+F 轴 2 项），加总扣分使「少填异常项」的轴分自动变好，弱项阈值 0.5 在轴间不等价。
+诚实边界：可用输入很少时，分数被可测量部分主导（prorated scoring 语义，
+见 `_finalize` docstring），论文中须作为方法学约定明示，不可称作「与数量完全无关」。
+每条结果带 `penalty_ratio` 字段（归一化亏缺比），供论文/审计端到端追溯。
+
 八轴定义（与代码/论文统一的 A–H，已消除 I/J 论文漂移）：
   A 气化-自噬(AMPK-mTOR)      ← 血糖/HbA1c/BMI/腰围/甘油三酯
   B 气血-线粒体能量(NAD+/mtDNA)← HDL/甘油三酯/静息心率/同型半胱氨酸(可选)
@@ -87,6 +98,9 @@ class AxisScore:
     score: 0-100，稳态越好分越高；无数据时为 None（measured=False）。
     status: measured_normal / measured_risk / unmeasured。
     sources: 实际参与计算的真实输入键列表（端到端追溯用）。
+    penalty_ratio: 归一化亏缺比 = Σ实际扣分 / Σ可用输入最大扣分（0-1）。
+        score = 100 − 100 × penalty_ratio。该字段使「分数只取决于可用输入内部
+        的相对严重度、与输入数量无关」可被逐案审计（S1-2）。
     """
 
     axis: str
@@ -96,6 +110,7 @@ class AxisScore:
     measured: bool = False
     sources: list[str] = field(default_factory=list)
     note: str = ""
+    penalty_ratio: float | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -106,6 +121,7 @@ class AxisScore:
             "measured": self.measured,
             "sources": self.sources,
             "note": self.note,
+            "penalty_ratio": self.penalty_ratio,
         }
 
 
@@ -128,6 +144,40 @@ def _gauss_penalty(value: float, ideal: float, tol: float, full_penalty: float) 
     return _clamp(full_penalty * (dev - tol) / max(full_penalty, 1.0) * 0.0 + full_penalty * min(1.0, (dev - tol) / (tol + 1e-9) / 4.0))
 
 
+def _finalize(
+    axis: str,
+    src: list[str],
+    penalty: float,
+    penalty_max: float,
+    note: str,
+    unmeasured_note: str,
+) -> AxisScore:
+    """八轴统一的归一化收尾（S1-2，2026-10-13）。
+
+    - 无任何可用输入 → measured=False / score=None（绝不填 0）。
+    - 否则 score = 100 − 100 × (penalty / penalty_max)，其中 penalty_max 为
+      **可用输入**各自最大扣分之和。成立的性质（已实测）：
+        * 可用输入全部打满 → ratio=1.0 → score=0，与可用数量无关；
+        * 可用输入全部正常 → ratio=0 → score=100，与可用数量无关；
+        * score<70 ⟺ ratio>0.3，在八轴间完全等价（弱项阈值跨轴可比）；
+        * 绝不以「少填」奖励：旧公式 100−Σpenalty 下，少填异常项分数自动变高
+          （1 项全异常=72 vs 5 项全异常=0）；本公式下同质异常恒得同分。
+      诚实边界（非缺陷，是「有限证据下的保守判定」）：当可用输入很少时，分数反映
+      「可测量部分的相对严重度」——只测到一项且该项中度异常时，轴分被该项主导。
+      该语义与 QoL 量表的 prorated scoring（按已答条目计分）一致，须在论文
+      方法学与局限性中明示，不得表述为「与输入数量完全无关」。
+    """
+    if not src:
+        return AxisScore(axis, AXIS_META[axis]["label"], measured=False,
+                         note=unmeasured_note)
+    ratio = _clamp(penalty / penalty_max, 0.0, 1.0) if penalty_max > 0 else 0.0
+    score = _clamp(100.0 - 100.0 * ratio)
+    return AxisScore(axis, AXIS_META[axis]["label"], score=round(score, 1),
+                     status="measured_normal" if score >= 70 else "measured_risk",
+                     measured=True, sources=src, penalty_ratio=round(ratio, 3),
+                     note=note)
+
+
 # ---------------------------------------------------------------------------
 # A 气化-自噬 (AMPK-mTOR) — 血糖代谢稳态
 # ---------------------------------------------------------------------------
@@ -135,10 +185,12 @@ def _gauss_penalty(value: float, ideal: float, tol: float, full_penalty: float) 
 def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     # 空腹血糖
     g = bm.get("glucose")
     if g is not None:
         src.append("glucose")
+        penalty_max += 28
         if g > _t('A', 'fpg', 'impaired_max', 7.0, jurisdiction):
             penalty += 28
         elif g > _t('A', 'fpg', 'normal_max', 6.1, jurisdiction):
@@ -148,6 +200,7 @@ def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> A
     h = bm.get("hba1c")
     if h is not None:
         src.append("hba1c")
+        penalty_max += 22
         if h >= _t('A', 'hba1c', 'impaired_max', 6.5, jurisdiction):
             penalty += 22
         elif h >= _t('A', 'hba1c', 'elevated_max', 6.0, jurisdiction):
@@ -157,6 +210,7 @@ def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> A
     w = bm.get("waist_cm")
     if w is not None:
         src.append("waist_cm")
+        penalty_max += 20
         # 男性/女性腰围 overweight_max（B0-2：从 axes.yaml 加载，保留原值 fallback）
         waist_key = 'waist' if is_male else 'waist_female'
         hi = _t('A', waist_key, 'overweight_max', 102 if is_male else 88, jurisdiction)
@@ -167,6 +221,7 @@ def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> A
     tg = bm.get("triglycerides")
     if tg is not None:
         src.append("triglycerides")
+        penalty_max += 16
         if tg >= _t('A', 'tg', 'elevated_max', 2.3, jurisdiction):
             penalty += 16
         elif tg >= _t('A', 'tg', 'normal_max', 1.7, jurisdiction):
@@ -174,18 +229,16 @@ def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> A
     bmi = bm.get("bmi")
     if bmi is not None:
         src.append("bmi")
+        penalty_max += 18
         if bmi >= _t('A', 'bmi', 'severe_min', 28, jurisdiction) or bmi < _t('A', 'bmi', 'severe_low', 17, jurisdiction):
             penalty += 18
         elif bmi >= _t('A', 'bmi', 'overweight_max', 25, jurisdiction) or bmi < 18.5:
             penalty += 10
-    if not src:
-        return AxisScore("A", AXIS_META["A"]["label"], measured=False,
-                         note="无血糖/糖化/腰围/血脂/BMI 输入，A 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("A", AXIS_META["A"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="AMPK-mTOR 稳态代理：偏离健康血糖/体脂区间越多，自噬流越受抑")
+    return _finalize(
+        "A", src, penalty, penalty_max,
+        note="AMPK-mTOR 稳态代理：偏离健康血糖/体脂区间越多，自噬流越受抑",
+        unmeasured_note="无血糖/糖化/腰围/血脂/BMI 输入，A 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -195,9 +248,11 @@ def _score_axis_A(bm: dict, is_male: bool = True, jurisdiction: str = "cn") -> A
 def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     hdl = bm.get("hdl")
     if hdl is not None:
         src.append("hdl")
+        penalty_max += 16
         # 男性阈值下限，女性 1.3 已在 caller 处理；此处统一用 1.0 简化
         if hdl < _t('B', 'hdl', 'severe_low', 0.7, jurisdiction) + 0.2:  # severe_low + 0.2 ≈ 0.9
             penalty += 16
@@ -206,6 +261,7 @@ def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "c
     tg = bm.get("triglycerides")
     if tg is not None:
         src.append("triglycerides")
+        penalty_max += 16
         if tg >= _t('B', 'tg', 'severe_max', 2.3, jurisdiction):
             penalty += 16
         elif tg >= _t('B', 'tg', 'elevated_max', 1.7, jurisdiction):
@@ -213,6 +269,7 @@ def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "c
     homo = bm.get("homocysteine")
     if homo is not None:
         src.append("homocysteine")
+        penalty_max += 14
         if homo >= _t('B', 'homo_cysteine', 'severe_max', 20, jurisdiction) - 5:
             penalty += 14
         elif homo >= _t('B', 'homo_cysteine', 'elevated_max', 15, jurisdiction) - 5:
@@ -220,18 +277,16 @@ def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "c
     rh = (wearable or {}).get("resting_hr")
     if rh is not None:
         src.append("resting_hr")
+        penalty_max += 10
         if rh >= _t('B', 'resting_hr', 'elevated_max', 90, jurisdiction):
             penalty += 10
         elif rh >= _t('B', 'resting_hr', 'normal_max', 80, jurisdiction):
             penalty += 5
-    if not src:
-        return AxisScore("B", AXIS_META["B"]["label"], measured=False,
-                         note="无 HDL/甘油三酯/同型半胱氨酸/静息心率输入，B 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("B", AXIS_META["B"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="线粒体能量代谢代理：血脂模式与静息心率反映基础代谢与心肺储备")
+    return _finalize(
+        "B", src, penalty, penalty_max,
+        note="线粒体能量代谢代理：血脂模式与静息心率反映基础代谢与心肺储备",
+        unmeasured_note="无 HDL/甘油三酯/同型半胱氨酸/静息心率输入，B 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -241,10 +296,12 @@ def _score_axis_B(bm: dict, wearable: dict | None = None, jurisdiction: str = "c
 def _score_axis_C(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     sbp = bm.get("sbp")
     dbp = bm.get("dbp")
     if sbp is not None:
         src.append("sbp")
+        penalty_max += 22
         if sbp >= _t('C', 'sbp', 'hypertensive_max', 140, jurisdiction):
             penalty += 22
         elif sbp >= _t('C', 'sbp', 'elevated_max', 130, jurisdiction):
@@ -253,6 +310,7 @@ def _score_axis_C(bm: dict, jurisdiction: str = "cn") -> AxisScore:
             penalty += 6
     if dbp is not None:
         src.append("dbp")
+        penalty_max += 12
         if dbp >= _t('C', 'dbp', 'hypertensive_max', 90, jurisdiction):
             penalty += 12
         elif dbp >= _t('C', 'dbp', 'elevated_max', 85, jurisdiction):
@@ -260,6 +318,7 @@ def _score_axis_C(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     hs = bm.get("hs_crp")
     if hs is not None:
         src.append("hs_crp")
+        penalty_max += 15
         if hs > _t('C', 'hs_crp', 'elevated_max', 3.0, jurisdiction):
             penalty += 15
         elif hs > _t('C', 'hs_crp', 'normal_max', 1.0, jurisdiction):
@@ -267,18 +326,16 @@ def _score_axis_C(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     homo = bm.get("homocysteine")
     if homo is not None:
         src.append("homocysteine")
+        penalty_max += 12
         if homo >= _t('C', 'homo_cysteine', 'elevated_max', 15, jurisdiction):
             penalty += 12
         elif homo >= _t('C', 'homo_cysteine', 'normal_max', 10, jurisdiction):
             penalty += 6
-    if not src:
-        return AxisScore("C", AXIS_META["C"]["label"], measured=False,
-                         note="无血压/炎症/同型半胱氨酸输入，C 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("C", AXIS_META["C"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="内皮微循环代理：血压负荷与炎症共同反映络脉通畅度")
+    return _finalize(
+        "C", src, penalty, penalty_max,
+        note="内皮微循环代理：血压负荷与炎症共同反映络脉通畅度",
+        unmeasured_note="无血压/炎症/同型半胱氨酸输入，C 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -289,9 +346,11 @@ def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None, ju
     w = wearable or {}
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     jitter = w.get("sleep_midpoint_jitter")  # 每日睡眠中点标准差（分钟）
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
+        penalty_max += 25
         if jitter >= _t('D', 'sleep_midpoint_jitter', 'severe_max', 90, jurisdiction):
             penalty += 25
         elif jitter >= _t('D', 'sleep_midpoint_jitter', 'elevated_max', 60, jurisdiction):
@@ -301,6 +360,7 @@ def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None, ju
     duration = w.get("sleep_duration_h")  # 平均睡眠时长（小时）
     if duration is not None:
         src.append("sleep_duration_h")
+        penalty_max += 15
         # 长/短睡眠：以 YAML 的 long_max/short_min 为锚，±0.5h 作为严重阈值
         long_max = _t('D', 'sleep_duration', 'long_max', 9.0, jurisdiction)
         short_min = _t('D', 'sleep_duration', 'short_min', 6.0, jurisdiction)
@@ -311,18 +371,16 @@ def _score_axis_D(wearable: dict | None = None, symptoms: list | None = None, ju
     sjl = w.get("social_jetlag_h")  # 社会时差（周末-工作日睡眠中点差，小时）
     if sjl is not None:
         src.append("social_jetlag_h")
+        penalty_max += 15
         if sjl >= _t('D', 'social_time_lag', 'elevated_max', 2.0, jurisdiction):
             penalty += 15
         elif sjl >= _t('D', 'social_time_lag', 'normal_max', 1.0, jurisdiction):
             penalty += 8
-    if not src:
-        return AxisScore("D", AXIS_META["D"]["label"], measured=False,
-                         note="无睡眠节律数据（需可穿戴睡眠/作息记录），D 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("D", AXIS_META["D"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="昼夜节律代理：睡眠规律性与社会时差反映阴阳动态平衡")
+    return _finalize(
+        "D", src, penalty, penalty_max,
+        note="昼夜节律代理：睡眠规律性与社会时差反映阴阳动态平衡",
+        unmeasured_note="无睡眠节律数据（需可穿戴睡眠/作息记录），D 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -333,9 +391,11 @@ def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None, ju
     w = wearable or {}
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     rmssd = w.get("hrv_rmssd")  # ms
     if rmssd is not None:
         src.append("hrv_rmssd")
+        penalty_max += 22
         low_max = _t('E', 'hrv_rmssd', 'low_max', 30, jurisdiction)
         severe_low = _t('E', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
         if rmssd < severe_low - 5:
@@ -347,6 +407,7 @@ def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None, ju
     rh = w.get("resting_hr")
     if rh is not None:
         src.append("resting_hr")
+        penalty_max += 10
         if rh >= _t('E', 'resting_hr', 'elevated_max', 90, jurisdiction):
             penalty += 10
         elif rh >= _t('E', 'resting_hr', 'normal_max', 80, jurisdiction):
@@ -356,15 +417,13 @@ def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None, ju
     hit = [s for s in sym if any(k in str(s) for k in stress_kw)]
     if hit:
         src.append("tcm_symptoms")
+        penalty_max += 15  # min(15, 4*len(hit)) 的上限
         penalty += min(15, 4 * len(hit))
-    if not src:
-        return AxisScore("E", AXIS_META["E"]["label"], measured=False,
-                         note="无 HRV/静息心率/压力症状输入，E 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("E", AXIS_META["E"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="HPA/自主神经代理：HRV 降低与压力症状反映脏腑应激稳态")
+    return _finalize(
+        "E", src, penalty, penalty_max,
+        note="HPA/自主神经代理：HRV 降低与压力症状反映脏腑应激稳态",
+        unmeasured_note="无 HRV/静息心率/压力症状输入，E 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -374,9 +433,11 @@ def _score_axis_E(wearable: dict | None = None, symptoms: list | None = None, ju
 def _score_axis_F(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     hs = bm.get("hs_crp")
     if hs is not None:
         src.append("hs_crp")
+        penalty_max += 30
         if hs > _t('F', 'hs_crp', 'elevated_max', 3.0, jurisdiction):
             penalty += 30
         elif hs > _t('F', 'hs_crp', 'normal_max', 1.0, jurisdiction):
@@ -384,18 +445,16 @@ def _score_axis_F(bm: dict, jurisdiction: str = "cn") -> AxisScore:
     il6 = bm.get("il6")
     if il6 is not None:
         src.append("il6")
+        penalty_max += 25
         if il6 > _t('F', 'il6', 'elevated_max', 5.0, jurisdiction) - 2.0:
             penalty += 25
         elif il6 > _t('F', 'il6', 'normal_max', 2.5, jurisdiction) - 0.7:
             penalty += 12
-    if not src:
-        return AxisScore("F", AXIS_META["F"]["label"], measured=False,
-                         note="无 hs-CRP/IL-6 输入，F 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("F", AXIS_META["F"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="炎症负荷代理：hs-CRP/IL-6 反映正邪（炎症-修复）平衡")
+    return _finalize(
+        "F", src, penalty, penalty_max,
+        note="炎症负荷代理：hs-CRP/IL-6 反映正邪（炎症-修复）平衡",
+        unmeasured_note="无 hs-CRP/IL-6 输入，F 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -406,9 +465,11 @@ def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> Axi
     w = wearable or {}
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     rmssd = w.get("hrv_rmssd")
     if rmssd is not None:
         src.append("hrv_rmssd")
+        penalty_max += 16
         # S0-7（2026-10-13）：G 轴使用与 E 轴**独立调参**的 RMSSD 敏感曲线。
         # 阈值由 axis_config 读取（G: low_max=25 / severe_low=15；E: 30/20），
         # 惩罚幅度也更平缓（16/9/4 vs E 的 22/12/6）。二者组合保证
@@ -428,18 +489,16 @@ def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> Axi
     jitter = w.get("sleep_midpoint_jitter")
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
+        penalty_max += 15
         if jitter >= _t('G', 'sleep_regularity', 'severe_low', 30, jurisdiction):
             penalty += 15
         elif jitter >= _t('G', 'sleep_regularity', 'low_max', 50, jurisdiction):
             penalty += 8
-    if not src:
-        return AxisScore("G", AXIS_META["G"]["label"], measured=False,
-                         note="无 HRV/睡眠规律性输入，G 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("G", AXIS_META["G"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="自主神经平衡代理：HRV 与睡眠规律性反映神/情志稳态")
+    return _finalize(
+        "G", src, penalty, penalty_max,
+        note="自主神经平衡代理：HRV 与睡眠规律性反映神/情志稳态",
+        unmeasured_note="无 HRV/睡眠规律性输入，G 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -460,8 +519,10 @@ def _score_axis_H(
     """
     src = []
     penalty = 0.0
+    penalty_max = 0.0
     if bioage_delta is not None:
         src.append("bioage_delta")
+        penalty_max += 30
         if bioage_delta >= _t('H', 'bioage_delta', 'severe_max', 6.0, jurisdiction):
             penalty += 30
         elif bioage_delta >= _t('H', 'bioage_delta', 'elevated_max', 3.0, jurisdiction):
@@ -471,18 +532,16 @@ def _score_axis_H(
     tl = (bm or {}).get("telomere_length")
     if tl is not None:
         src.append("telomere_length")
+        penalty_max += 15
         if tl < _t('H', 'telomere_length', 'low_max', 0.8, jurisdiction):
             penalty += 15
         elif tl < _t('H', 'telomere_length', 'normal_min', 1.0, jurisdiction):
             penalty += 8
-    if not src:
-        return AxisScore("H", AXIS_META["H"]["label"], measured=False,
-                         note="无表观遗传年龄偏移/端粒输入，H 轴未测量")
-    score = _clamp(100.0 - penalty)
-    return AxisScore("H", AXIS_META["H"]["label"], score=round(score, 1),
-                     status="measured_normal" if score >= 70 else "measured_risk",
-                     measured=True, sources=src,
-                     note="表观遗传完整性代理：生物学年龄偏移反映先天之本耗损")
+    return _finalize(
+        "H", src, penalty, penalty_max,
+        note="表观遗传完整性代理：生物学年龄偏移反映先天之本耗损",
+        unmeasured_note="无表观遗传年龄偏移/端粒输入，H 轴未测量",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -502,6 +561,7 @@ def score_axis(
     """对单轴打分。缺失数据返回 measured=False 的结果。
 
     B0-2: jurisdiction 参数接入 axis_config，按法域读取阈值。
+    S1-2: 分数按可用输入覆盖率归一化（见模块 docstring 与 _finalize）。
     """
     bm = biomarkers or {}
     if axis == "A":
