@@ -18,8 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 **S1-2 四向映射表（国标国际化）**
 - `tools/build_axis_term_mapping.py` → `data/axis_term_mapping.json/.md`：GB/T 20348-2026 术语（中英，`gbt_confirmation_required=True` 待官方确认）↔ 八轴(A–H) ↔ 38 通路 ↔ 古籍（真实数据推导）
 
-**S2-1 因果推断引擎（wellness_simulator 因果化）**
-- `app/lib/causal_simulator.py`：SCM 结构 / 反事实 / 桥接敏感度 / 校准 / bootstrap / E-value（公开 API: `scm_structure` / `counterfactual` / `bridge_sensitivity` / `calibrate` / `causal_report` / `derive_baseline` / `simulate`）。**尚未接入端点（见 Unreleased 待办）**
+**S2-1 因果推断引擎 + 端点（wellness_simulator 因果化）**
+- `app/lib/causal_simulator.py`：SCM 结构 / 反事实 / 桥接敏感度 / 校准 / bootstrap / E-value（公开 API: `scm_structure` / `counterfactual` / `bridge_sensitivity` / `calibrate` / `causal_report` / `derive_baseline` / `simulate`）
+- `app/api/causal.py` + 注册：`/api/v1/causal/{scm,sensitivity,levers}`（公开）+ `{counterfactual,calibrate,report}`（需登录），fail-loud 400（未知轴/未知杠杆/越界分）
+- `tests/api/test_causal.py`：11 用例（含鉴权 + 越界 400）；全量 `389 passed, 0 failed`；已推送 commit `c239cb2`
 
 **S3-4 频率处方引擎**
 - `app/services/frequency_prescription.py` + `app/api/frequency.py`（`GET /tracks`、`POST /prescribe`）
