@@ -1,4 +1,8 @@
-"""频率疗法 API — 小程序对接端点"""
+"""放松音频体验 API — 小程序对接端点（原「频率疗法」）
+
+S3-4（2026-10-13）合规降级：本端点仅提供放松 / 睡眠音频推荐，not_clinical，
+不进入八轴机制链、不宣称任何疗效。字段名（prescription 等）保留以兼容前端。
+"""
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from loguru import logger
@@ -12,7 +16,7 @@ from app.services.frequency_prescription import (
     store_prescription,
 )
 
-router = APIRouter(tags=["频率疗法"])
+router = APIRouter(tags=["放松音频"])
 
 
 # ---------------------------------------------------------------------------
