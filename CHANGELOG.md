@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.26.1] - 2026-10-13
+
+### Added（《科学先进性与技术壁垒评估暨 SCI 就绪度报告 2026-10-12》硬阻断项清零续篇）
+
+**S1-2 跨轴归一化（消除「弱项判定被输入完整度驱动」）**
+- `app/core/axis_scorers.py`：八轴统一 `_finalize()`，score = 100 − 100 × (Σ实际扣分 / Σ可用输入最大扣分)；`AxisScore` 新增 `penalty_ratio` 审计字段
+- 实证修复：旧公式下同一异常态「1 项全异常=72 分 vs 5 项全异常=0 分」（少填看起来更健康）；新公式下同质异常恒同分，score<70 ⟺ ratio>0.3 在八轴间等价
+- 诚实边界（实测证伪「与数量完全无关」后修正文档）：可用输入很少时分数被可测量部分主导（prorated scoring 语义），论文中须作方法学约定明示
+- `tests/core/test_axis_scorers.py` +5 验收用例；全量 `409 passed, 0 failed`
+
+**S1-3 H 轴对标 PhenoAge（文献时钟对标装置）**
+- `app/core/phenoage.py`：忠实实现已发表 PhenoAge 公式（Liu 2018 PLoS Med；公式订正 DOI 10.1371/journal.pmed.1002760），SI 单位纪律（临床单位入口自动换算），fail-loud（缺项/CRP≤0 不编造）
+- 公式正确性锚点：40 岁人群均值 SI 输入 → xb=-9.3615 → PhenoAge=40.3（与手算一致）；健康 25 岁 → 17.0；同岁不健康 → 73.1
+- `tools/phenoage_alignment.py` → `data/phenoage_alignment.json/.md` + 散点 SVG：n=200 合成画像，PhenoAge 偏移 vs HealthLens 生物学年龄偏移 Pearson r=0.806 / Spearman ρ=0.812；**明示合成装置验证、共享输入仅 glucose+CRP、真实队列校准为后续工作**
+- `tests/core/test_phenoage.py`：7 锚点用例
+
+**S1-6 claims 引擎测试 + 策略缺口修复**
+- `tests/lib/test_claims_engine.py`：8 用例（五法域加载、未知法域 fail-closed 回落 EU、US 禁 diagnosis 词/CN 不禁、US 屏蔽 icd_code/CN 放行、端点开关差异、免责声明、审计非阻塞）
+- **修复真实缺口**：`claims_policy/cn.yaml` 补 `general` 默认免责声明——此前 CN 是五法域中唯一缺失 general 的策略，无诊断/风险/pgx 内容的输出完全拿不到免责声明，与「非医疗」红线不一致
+
+**S1-7 Benchmark 去自指涉**
+- `healthlens_agent/benchmark.py`：维度评分分级标注——可测维度（工程落地 78、安全合规 92）改用 probe 实测公式，不可测维度保留定性自评但 `measured=False`，输出 note 明示「不得对外声称为测量结果」
+
+### Fixed
+- **B4**：英文论文 `HealthLens_论文_英文版_全文.md` 结论段「ten axes」→「eight axes（A–H；I/J reserved）」，中/英/代码/勘误四处轴数口径一致
+- **B3**：CASE-029 刊名错标订正——`10.1186/s12967-026-08038-9` 原标 J Nanobiotechnology，Crossref 核验实为 Journal of Translational Medicine（s12967 为该刊前缀；J Nanobiotechnol 前缀为 s12951）；`data/` + `knowledge/evidence/` 两副本 + 生成 md 同步，订正说明入库
+- `tools/gen_case_evidence_md.py`：CASE-006 勘误从硬编码改为数据驱动（`citation_note` 字段透出）
+
+### Verified（本轮实测复核，前序工作确认有效）
+- B1 八轴运行期：`score_all_axes()` 八轴全返回不抛异常（N1 已修）
+- B2 计算验证：`tools/engine_validation.py` 重跑与 `validation_snapshots/BASELINE.json` **完全一致**（7.7 / 0.95 / 154 / L1=134 / 0.697），论文数字=CI 数字
+- B5 E/G 解耦：axes.yaml 分层阈值（E 30/20 vs G 25/15）+ 实测仅 HRV 输入 E≠G（hrv=18: 88 vs 91）
+- 全量测试 **409 passed, 0 failed**（历史 31 failed 全部清零）
+
 ## [0.26.0] - 2026-10-13
 
 ### Added（阶段 B：技术壁垒深挖 S0–S1 实施）
