@@ -73,6 +73,7 @@ def create_app() -> FastAPI:
     from app.api.audit import router as audit_router
     from app.api.auth import router as auth_router
     from app.api.axes import router as axes_router
+    from app.api.causal import router as causal_router
     from app.api.checkin import router as checkin_router
     from app.api.connections import router as connections_router
     from app.api.dashboard import router as dashboard_router
@@ -132,6 +133,7 @@ def create_app() -> FastAPI:
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
     app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
     app.include_router(axes_router, prefix="/api/v1/axes", tags=["八轴稳态"])
+    app.include_router(causal_router, prefix="/api/v1/causal", tags=["因果推演"])
     app.include_router(repair_router, prefix="/api/v1/repair", tags=["细胞修复"])
     app.include_router(fusion_router, prefix="/api/v1/fusion", tags=["融合诊断"])
     app.include_router(diagnosis_agent_router, prefix="/api/v1/diagnosis", tags=["AI诊断Agent"])
