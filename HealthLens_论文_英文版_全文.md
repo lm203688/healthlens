@@ -135,7 +135,7 @@ To demonstrate that the fusion rule is a computable, auditable method, we conduc
 ```
 Sense   <- wearable HRV/sleep, CGM postprandial drift, BCI/EEG
    |
-Infer   <- ten-axis homeostasis scoring + genetic-weakness fusion
+Infer   <- eight-axis homeostasis scoring + genetic-weakness fusion
    |
 Intervene <- non-pharmacological suggestions (daoyin, fasting, food-as-medicine, rhythm, affect)
    |
