@@ -57,12 +57,10 @@ for c in cases:
         # 纯文本来源（含 DOI 或「需全文复核」）
         lines.append(f"- **来源**：{src if isinstance(src, str) else ''}")
     lines.append(f"- **理论作证**：{c['fusion_note']}")
-    if c["id"] == "CASE-006":
+    note = c.get("citation_note")
+    if note:
         lines.append("")
-        lines.append("> **勘误说明**（2026-10-13）：该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」"
-                     "（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。"
-                     "已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，"
-                     "60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。")
+        lines.append(f"> **引用订正**：{note}")
     lines.append("")
 
 out = ROOT / "data" / "case_evidence_db.md"
