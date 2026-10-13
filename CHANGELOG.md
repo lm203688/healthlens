@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.26.0] - 2026-10-13
+
+### Added（阶段 B：技术壁垒深挖 S0–S1 实施）
+
+**S0-5 / S1-1 DOI 证据核验（学术/B2B 一票否决项止血）**
+- `tools/verify_evidence_dois.py`：Crossref REST 逐条解析案例库全部 DOI，诚实标注 `verified` / `hallucination_resolved` / `unverified_text` / `traditional` / `broken_citation` / `synthetic_validation` / `unsourced`
+- 订正 AI 幻觉引用 `10.1038/s41591-026-04102-8`（臆造 "Kirkland AFFIRM"，L1 最高证据位）→ 真实 Farr 2024 `10.1038/s41591-024-03096-2`；CASE-006 事实字段同步改为 60 名绝经后女性骨代谢、结论克制无过度宣称
+- 标记 CASE-030 死链 `10.1016/j.ther.2026.105127`（HTTP 404）为 `broken_citation`
+- 产物：`data/doi_verification_results.json`、`data/DOI_VERIFICATION_REPORT_2026-10-13.md`；每案写入 `citation_status`/`doi_verified`/`doi`/`source_canonical`
+- 如实说明：案例库 29 条真证据 + 91 条合成校验夹具，「≥95% DOI 覆盖」当前数据上不可达，不编造 DOI
+
+**S1-2 四向映射表（国标国际化）**
+- `tools/build_axis_term_mapping.py` → `data/axis_term_mapping.json/.md`：GB/T 20348-2026 术语（中英，`gbt_confirmation_required=True` 待官方确认）↔ 八轴(A–H) ↔ 38 通路 ↔ 古籍（真实数据推导）
+
+**S2-1 因果推断引擎（wellness_simulator 因果化）**
+- `app/lib/causal_simulator.py`：SCM 结构 / 反事实 / 桥接敏感度 / 校准 / bootstrap / E-value（公开 API: `scm_structure` / `counterfactual` / `bridge_sensitivity` / `calibrate` / `causal_report` / `derive_baseline` / `simulate`）。**尚未接入端点（见 Unreleased 待办）**
+
+**S3-4 频率处方引擎**
+- `app/services/frequency_prescription.py` + `app/api/frequency.py`（`GET /tracks`、`POST /prescribe`）
+
+### Changed
+- `data/case_evidence_db.json` meta v1.3：legend 10 轴(A–J) → **8 轴(A–H)** + reserved I/J，与代码/用例对齐（S0-6）；`knowledge/evidence/` 副本同步
+- `tools/gen_case_evidence_md.py`：跳过 HL- 夹具、兼容 string source、输出 CASE-006 勘误
+- 论文 `HealthLens_论文_英文版_全文.md`、`Figure1.svg`：十轴→八轴
+
+### Removed
+- 删除嵌套重复子树 `healthlens/`（30 文件，本地备份 `Desktop/_healthlens_removed_2026-10-13/`；远端 Contents API DELETE 同步，commit `9da05be`）
+
 ## [0.25.0] - 2026-10-10
 
 ### Added（阶段 A：国际化重评估 P0 落地）
