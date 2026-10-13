@@ -184,8 +184,17 @@ def _emit(src: Path, out: dict, write: bool, rel: str, container: str | None = N
     if write:
         dest = OUT_ROOT / (f"{container}/" if container else "") / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(text, encoding="utf-8")
+        # 二进制写盘以保持 LF：text 已用 LF 序列化，Windows 下 write_text 会把
+        # \n 转成 \r\n，使落盘字节比 redacted_bytes 多出换行数（实测
+        # classical_slices.json 多 11,783 字节）。JSON 产物按跨平台惯例用 LF。
+        dest.write_bytes(text.encode("utf-8"))
         stat["dest_sha256"] = sha256_of(dest)
+        # fail-loud：报告的字节数必须等于落盘字节数。统计自欺是本轮事故的同源
+        # 病灶（verbatim_chars_removed 曾在已剥离的记录上统计，恒为 0）。
+        assert dest.stat().st_size == stat["redacted_bytes"], (
+            f"{rel} 落盘 {dest.stat().st_size} 字节与报告 redacted_bytes "
+            f"{stat['redacted_bytes']} 不符，字节统计不可信"
+        )
 
     # --- 校验 1（配置驱动）：STRIP_MAP 声明剥离的字段必须真的消失。 ---
     want = STRIP_MAP.get(rel, {}).get("fields", TCM_STRUCTURED_FIELDS)

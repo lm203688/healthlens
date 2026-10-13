@@ -201,6 +201,42 @@ class TestEndToEndOutput:
         assert stat["verbatim_chars_removed"] > 0
         assert len(slices) == len(src)
 
+    def test_reported_bytes_equal_written_bytes(self, tool, tmp_path):
+        """报告字节数必须等于落盘字节数——统计不可自欺。
+
+        历史 bug（同轮事故）：redacted_bytes 按 LF 序列化文本统计，但
+        write_text 在 Windows 上把 \\n 写成 \\r\\n，实测 classical_slices.json
+        落盘 326,488 字节而报告 314,705，差值恰为 11,783 个 CRLF。
+        报告的「省 36.8%」因此不可信。现已改为二进制写盘并加本断言。
+        """
+        tool.OUT_ROOT = tmp_path
+        for name, stat in tool.redact_tcm_structured(write=True).items():
+            dest = tmp_path / "tcm_structured" / name
+            assert dest.stat().st_size == stat["redacted_bytes"], (
+                f"{name} 落盘 {dest.stat().st_size} != 报告 "
+                f"{stat['redacted_bytes']}，字节统计不可信"
+            )
+        stat = tool.redact_classical_slices(write=True)
+        dest = tmp_path / "classical_slices.json"
+        assert dest.stat().st_size == stat["redacted_bytes"]
+
+    def test_output_uses_lf_not_crlf(self, tool, tmp_path):
+        """JSON 产物按跨平台惯例用 LF，不含 CRLF（避免平台相关的字节漂移）。"""
+        tool.OUT_ROOT = tmp_path
+        tool.redact_classical_slices(write=True)
+        tool.redact_tcm_structured(write=True)  # 同时产出 tcm_structured/
+        for dest in [tmp_path / "classical_slices.json"] + sorted(
+            (tmp_path / "tcm_structured").glob("*.json")
+        ):
+            raw = dest.read_bytes()
+            assert b"\r\n" not in raw, (
+                f"{dest.name} 含 CRLF（{raw.count(b'\\r\\n')} 处），"
+                "应统一为 LF——否则不同平台产物字节数不一致"
+            )
+            assert b"\xef\xbb\xbf" not in raw[:3], (
+                f"{dest.name} 含 UTF-8 BOM，跨平台解析易出问题"
+            )
+
     def test_source_files_never_modified(self, tool, tmp_path):
         """脱敏必须是只读派生：跑完源文件字节与哈希不变。"""
         import hashlib

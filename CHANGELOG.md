@@ -50,6 +50,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   现补 `ROOT/.git/config` 与 `~/.git-credentials` 回退，并把凭据正则由 `[^@]+` 收紧为 `[^@\s]+`。
 - **自写统计 bug**：`verbatim_chars_removed` 原在已剥离的产物记录上统计，恒为 0（自称报告移除量却永远
   报 0）；改为按源记录统计，并新增 `verbatim_chars_by_field` 逐字段明细。
+- **换行符导致报告字节数不可信**：`redacted_bytes` 按 LF 序列化文本统计，但 `Path.write_text()` 在
+  Windows 上把 `\n` 转成 `\r\n`，实测 `classical_slices.json` 落盘 326,488 字节而报告 314,705，
+  差值恰为 11,783 个 CRLF——「省 36.8%」这一统计随之不可信。改为二进制写盘强制 LF（JSON 产物跨平台
+  惯例），并加 fail-loud 断言 `落盘字节 == redacted_bytes`；新增 2 个回归用例锁住「报告字节等于落盘
+  字节」与「产物无 CRLF / 无 BOM」两条不变式。修复后三份产物落盘字节与清单报告值逐个精确相等。
 - **`tests/tools/test_redact_for_public_release.py`：18 用例**，含
   **字段处置完整性**校验——源数据每个字段必须明确归入 剥离 / 经复核保留 / HealthLens 自撰 三者之一，
   新增未分类字段即失败（这正是拦住 `citation` 的那条：它当时属于「无人认领」）；
@@ -62,7 +67,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `pyproject.toml`：0.26.1 → 0.26.2（单一真源）；`agent-card.json` 静态版本同步
 
 ### Verified
-- 三套测试合计 **459 passed, 0 failed**：`tests/` 395 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+- 三套测试合计 **461 passed, 0 failed**：`tests/` 397 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
 
 ## [0.26.1] - 2026-10-13
 
