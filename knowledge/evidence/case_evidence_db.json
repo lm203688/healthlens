@@ -321,7 +321,8 @@
         "journal": "Nature Medicine",
         "year": 2024,
         "publisher": "Springer Science and Business Media LLC"
-      }
+      },
+      "citation_note": "（2026-10-13）该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。"
     },
     {
       "id": "CASE-007",
@@ -1227,11 +1228,12 @@
         "PGC1A_signaling"
       ],
       "gene_link": "I axis (exosome-cell communication) weakness -> exercise as first-line non-drug intervention",
-      "source": "Yu et al. J Nanobiotechnology 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985",
+      "source": "Yu et al. J Transl Med 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985",
       "fusion_note": "I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling",
       "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
       "citation_status": "unverified_text",
-      "doi_verified": false
+      "doi_verified": false,
+      "citation_note": "（刊名订正 2026-10-13：原标 J Nanobiotechnology，但 DOI 10.1186/s12967-026-08038-9 经 Crossref 核验属 Journal of Translational Medicine；s12967 为该刊 DOI 前缀，J Nanobiotechnology 前缀为 s12951）"
     },
     {
       "id": "CASE-030",
