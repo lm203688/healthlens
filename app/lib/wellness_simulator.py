@@ -183,7 +183,8 @@ def derive_baseline_from_checkin(energy: int | None = None,
 def simulate(baseline: dict[str, float],
              levers: list[str],
              weeks: int = 12,
-             lever_scale: float = 1.0) -> dict:
+             lever_scale: float = 1.0,
+             bridges: list[dict] | None = None) -> dict:
     """前向推演 8 轴健康信号演化。
 
     Args:
@@ -191,11 +192,14 @@ def simulate(baseline: dict[str, float],
         levers: 启用的生活方式杠杆 key 列表（见 LEVERS）
         weeks: 推演周数
         lever_scale: 杠杆强度系数（0-1，模拟"执行一致性"）
+        bridges: 自定义轴间耦合网络（默认用 COUPLING_BRIDGES）；供因果化模块做
+                 反事实 / 校准时传入扰动后的网络（S2-1）。
     Returns:
         dict 含 trajectory / final / 限速轴 / 优先杠杆 / 已激活桥接 / 免责
     """
     weeks = max(1, int(weeks))
     scale = max(0.0, min(1.0, float(lever_scale)))
+    bridges = COUPLING_BRIDGES if bridges is None else bridges
     cur = {ax: float(baseline.get(ax, 68.0)) for ax in AXES}
     start = dict(cur)
     active_drives: dict[str, float] = {}
@@ -224,7 +228,7 @@ def simulate(baseline: dict[str, float],
         for ax, amt in active_drives.items():
             nxt[ax] = _clamp(nxt[ax] + amt)
         # 2) 轴间耦合：上游相对其基线的改善，按比例抬升下游
-        for br in COUPLING_BRIDGES:
+        for br in bridges:
             s, d = br["from"], br["to"]
             upstream_gain = prev[s] - start[s]  # 仅传导"已发生的改善"
             if upstream_gain > 0.5:
@@ -254,7 +258,7 @@ def simulate(baseline: dict[str, float],
             return gain / deficit if deficit > 0 else 1.0
         rl = min(weak, key=_gain_ratio)
         # 解释为：是否受上游桥接制约
-        upstream_deps = [b for b in COUPLING_BRIDGES if b["to"] == rl]
+        upstream_deps = [b for b in bridges if b["to"] == rl]
         reason = f"{AXIS_LABELS[rl]}轴基线偏弱且改善较慢"
         if upstream_deps:
             ups = "、".join(AXIS_LABELS[b["from"]] for b in upstream_deps)
@@ -275,7 +279,7 @@ def simulate(baseline: dict[str, float],
             p = dict(tmp)
             for ax, amt in test_drives.items():
                 tmp[ax] = _clamp(tmp[ax] + amt)
-            for br in COUPLING_BRIDGES:
+            for br in bridges:
                 g = p[br["from"]] - start[br["from"]]
                 if g > 0.5:
                     tmp[br["to"]] = _clamp(tmp[br["to"]] + br["coupling"] * g)
@@ -294,7 +298,7 @@ def simulate(baseline: dict[str, float],
     bridges_activated = [
         {"from": s, "from_label": AXIS_LABELS[s],
          "to": d, "to_label": AXIS_LABELS[d],
-         "mechanism": next(b["mechanism"] for b in COUPLING_BRIDGES if b["from"] == s and b["to"] == d)}
+         "mechanism": next(b["mechanism"] for b in bridges if b["from"] == s and b["to"] == d)}
         for (s, d) in sorted(activated)
     ]
 
