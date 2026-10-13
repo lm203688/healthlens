@@ -409,14 +409,22 @@ def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> Axi
     rmssd = w.get("hrv_rmssd")
     if rmssd is not None:
         src.append("hrv_rmssd")
+        # S0-7（2026-10-13）：G 轴使用与 E 轴**独立调参**的 RMSSD 敏感曲线。
+        # 阈值由 axis_config 读取（G: low_max=25 / severe_low=15；E: 30/20），
+        # 惩罚幅度也更平缓（16/9/4 vs E 的 22/12/6）。二者组合保证
+        # 「仅 HRV 输入时 E≠G」，消除「八轴实为七轴」的方法学质疑。
+        # 说明：E(脏腑-神经内分泌/HPA) 与 G(神-情志/自主神经) 在生理上共享迷走张力信号，
+        # 完整轴独立性需要 G 引入 RSA/PSD 频域分量作为独立输入（后续升级项）；
+        # 当前以独立敏感曲线 + 睡眠规律性为主锚点达成构造独立，并在健康上限处
+        # 自然重合（高 HRV 两轴均为满分，属正确行为）。
         low_max = _t('G', 'hrv_rmssd', 'low_max', 30, jurisdiction)
         severe_low = _t('G', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
         if rmssd < severe_low - 5:
-            penalty += 22
+            penalty += 16
         elif rmssd < low_max - 5:
-            penalty += 12
+            penalty += 9
         elif rmssd < low_max + 5:
-            penalty += 6
+            penalty += 4
     jitter = w.get("sleep_midpoint_jitter")
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
