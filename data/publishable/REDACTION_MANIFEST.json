@@ -1,0 +1,48 @@
+{
+  "generated": "2026-10-13T07:39:40Z",
+  "purpose": "知识语料可公开再分发（Zenodo）脱敏副本清单",
+  "audit": "data/LICENSE_AUDIT_2026-10-13.md",
+  "upstream": {
+    "repo": "https://github.com/xiaopangxia/TCM-Ancient-Books",
+    "note": "上游仓库未附带任何许可证（GitHub API license=null，GET /license 返回 404）。按著作权法默认保留所有权利。此处仅保留出处指针以便自查，本副本不含任何上游原文内容。",
+    "evidence": "data/LICENSE_AUDIT_2026-10-13.md §2.2"
+  },
+  "license_of_retained_fields": "MIT",
+  "source_files_unchanged": true,
+  "source_outputs": 3,
+  "total_source_bytes": 741785,
+  "total_redacted_bytes": 404400,
+  "leaked_fields_total": 0,
+  "outputs": [
+    {
+      "source": "data\\classical_slices.json",
+      "dest": "data/publishable/classical_slices.json",
+      "source_sha256": "541d98f17ccb669229cdf535b68758f49e9e1602491798f9666faa7cd55d5168",
+      "source_bytes": 498063,
+      "redacted_bytes": 330464,
+      "bytes_saved_pct": 33.7,
+      "dest_sha256": "afa14b3079ef47064754535acdfaa78932e8219d4c9fc9a00c21ce09c761a607",
+      "leaked_fields": 0
+    },
+    {
+      "source": "data\\tcm_structured\\神农本草经.json",
+      "dest": "data/publishable/tcm_structured/神农本草经.json",
+      "source_sha256": "06c2b0f6c6fc9bfe18e9cff9bdb5a349a30189bb572dc2a1cb2e5aff554effcc",
+      "source_bytes": 149694,
+      "redacted_bytes": 44498,
+      "bytes_saved_pct": 70.3,
+      "dest_sha256": "2b4612fc2b875fb9e0a5bcb309c54dad5ca51007f969145a655072da2a9ef63a",
+      "leaked_fields": 0
+    },
+    {
+      "source": "data\\tcm_structured\\食疗本草.json",
+      "dest": "data/publishable/tcm_structured/食疗本草.json",
+      "source_sha256": "e974523250ab07183020bde799f631b3973d02ffabc8c265c16489f8cd6243d9",
+      "source_bytes": 94028,
+      "redacted_bytes": 29438,
+      "bytes_saved_pct": 68.7,
+      "dest_sha256": "3af818d87e35ffad481ae2218ebb8d57241be6d083c1b9749775f774b0498dc6",
+      "leaked_fields": 0
+    }
+  ]
+}

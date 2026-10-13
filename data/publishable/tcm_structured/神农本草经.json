@@ -1,0 +1,2219 @@
+{
+  "book": "神农本草经",
+  "author": "孙星衍",
+  "dynasty": "清",
+  "source_file": "000-神农本草经.txt",
+  "method": "rule",
+  "entities": [
+    {
+      "type": "herb",
+      "name": "丹沙",
+      "property": "甘微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "云母",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉泉",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石钟乳",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "涅石",
+      "property": "酸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "硝石",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "朴硝",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "滑石",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "空青",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "曾青",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "禹余粮",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "太乙余食",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白石英",
+      "property": "甘微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫石英",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白青",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "扁青",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菖蒲",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鞠华",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "人参",
+      "property": "甘微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天门冬",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘草",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干地黄",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "术",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛膝",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "充蔚子",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女萎",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防葵",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柴胡",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麦门冬",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "独活",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "车前子",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木香",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "署豫",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薏苡仁",
+      "property": "甘微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽泻",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "远志",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙胆",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "细辛",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石斛",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "巴戟天",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白英",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白蒿",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "赤箭",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "奄闾子",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "析子",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓍实",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "赤芝",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青芝",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芝",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄芝",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫芝",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓝实",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芎",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蘼芜",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄连",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "络石",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蒺藜子",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄",
+      "property": "甘微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "肉松蓉",
+      "property": "甘微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防风",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蒲黄",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "香蒲",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "续断",
+      "property": "苦微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "漏芦",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "营实",
+      "property": "酸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天名精",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "决明子",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "丹参",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茜根",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "飞廉",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "五味子",
+      "property": "酸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "旋华",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兰草",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇床子",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地肤子",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "景天",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茵陈",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杜若",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "沙参",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白兔藿",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "徐长卿",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙刍",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "薇衔",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "云实",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王不留行",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "升麻",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "姑活",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "别羁",
+      "property": "苦微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "屈草",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "淮木",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡桂",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菌桂",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "松脂",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "槐实",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柏实",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "榆皮",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酸枣",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干漆",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "五加皮",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓荆实",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "辛夷",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑上寄生",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杜仲",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女贞实",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木兰",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蕤核",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "橘柚",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "发",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙骨",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麝香",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛黄",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "熊脂",
+      "property": "甘微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白胶",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "阿胶",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "丹雄鸡",
+      "property": "甘微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雁肪",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石蜜",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜂子",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜜蜡",
+      "property": "甘微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡蛎",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龟甲",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑螵蛸",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海蛤",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "文蛤",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鲤鱼胆",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藕实茎",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大枣",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葡萄",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓬",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸡头实",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "胡麻",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麻贲",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "冬葵子",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苋实",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瓜蒂",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瓜子",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦菜",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雄黄",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石流黄",
+      "property": "酸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雌黄",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水银",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石膏",
+      "property": "辛微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "磁石",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "凝水石",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "阳起石",
+      "property": "咸微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "孔公孽",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "殷孽",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "铁精",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "理石",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "长石",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "肤青",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "干姜",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "耳实",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葛根",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栝蒌根",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦参",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "当归",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麻黄",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "通草",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芍药",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蠡实",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "瞿麦",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "元参",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦艽",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "百合",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "知母",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贝母",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芷",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "淫羊藿",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄芩",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "狗脊",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙芮",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茅根",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫菀",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫草",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "败酱",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白藓",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "酸酱",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫参",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "本",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石苇",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "萆",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白薇",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水萍",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王瓜",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地榆",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "海藻",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽兰",
+      "property": "苦微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "防己",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "款冬花",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡丹",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马先蒿",
+      "property": "平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "积雪草",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女菀",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "王孙",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀羊泉",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "爵床",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "假苏",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桑根白皮",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "竹叶",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "吴茱萸",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "卮子",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芜荑",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "枳实",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "浓朴",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦皮",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "秦菽",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "紫葳",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "猪苓",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白棘",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "龙眼",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "松罗",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "卫矛",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "合欢",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白马茎",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿茸",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛角",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羚羊角",
+      "property": "咸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牡狗阴茎",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "犀角",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "燕屎",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天鼠屎",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "猥皮",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "露蜂房",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鳖甲",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蟹",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柞蝉",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛴螬",
+      "property": "咸微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌贼鱼骨",
+      "property": "咸微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白僵蚕",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鱼甲",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "樗鸡",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛞蝓",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石龙子",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木虻",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜚虻",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜚廉",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "伏翼",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梅实",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粟米",
+      "property": "咸微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黍米",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓼实",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "葱实",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "KT",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "锻石",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "铅丹",
+      "property": "辛微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "粉锡",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "代赭",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "戎盐",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白垩",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "冬灰",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青琅",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌头",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "天雄",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "半夏",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虎掌",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鸢尾",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大黄",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "亭历",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桔梗",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "莨荡子",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草蒿",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "旋复花",
+      "property": "咸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "藜芦",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "钩吻",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "射干",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇合",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "恒山",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀漆",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "甘遂",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白蔹",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "青葙子",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菌",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白芨",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "大戟",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "泽漆",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "茵芋",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贯众",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荛花",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牙子",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊踯躅",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "商陆",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊蹄",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蓄",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "野狼毒",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "白头翁",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鬼臼",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "羊桃",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "女青",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "连翘",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兰茹",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "乌韭",
+      "property": "甘寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鹿藿",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚤休",
+      "property": "苦微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石长生",
+      "property": "咸微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "陆英",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荩草",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "牛扁",
+      "property": "甘微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "夏枯草",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "芫花",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "巴豆",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜀菽",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "皂荚",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "柳花",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "楝实",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "郁李仁",
+      "property": "酸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "莽草",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桐叶",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "梓白皮",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石南",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "黄环",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "溲疏",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠李",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "药实根",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "栾花",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蔓椒",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "豚卵",
+      "property": "苦温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "麋脂",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "六畜毛蹄甲",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虾蟆",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马刀",
+      "property": "辛微寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蛇蜕",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蚯蚓",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜈蚣",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水蛭",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "班苗",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "贝子",
+      "property": "咸平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "石蚕",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "雀瓮",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蜣螂",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "蝼蛄",
+      "property": "咸寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "马陆",
+      "property": "辛温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "地胆",
+      "property": "辛寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "鼠妇",
+      "property": "酸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "荧火",
+      "property": "辛微温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "衣鱼",
+      "property": "咸温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "桃核仁",
+      "property": "苦平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "杏核仁",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "腐婢",
+      "property": "辛平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "苦瓠",
+      "property": "苦寒",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "水靳",
+      "property": "甘平",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "彼子",
+      "property": "甘温",
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉、石，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "玉、石，下部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，中部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "草药，下部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，中部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "木药，下部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，中部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "兽，下部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，中部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "虫、鱼，下部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "果，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "菜，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "米，上部",
+      "property": null,
+      "evidence_level": "high"
+    },
+    {
+      "type": "herb",
+      "name": "米，中部",
+      "property": null,
+      "evidence_level": "high"
+    }
+  ],
+  "redaction_notice": {
+    "redacted": true,
+    "redaction_date": "2026-10-13",
+    "reason": "上游古籍原文仓库无许可证（保留所有权利），逐字摘录字段不可再分发",
+    "upstream": {
+      "repo": "https://github.com/xiaopangxia/TCM-Ancient-Books",
+      "note": "上游仓库未附带任何许可证（GitHub API license=null，GET /license 返回 404）。按著作权法默认保留所有权利。此处仅保留出处指针以便自查，本副本不含任何上游原文内容。",
+      "evidence": "data/LICENSE_AUDIT_2026-10-13.md §2.2"
+    },
+    "license_of_retained_fields": "MIT (HealthLens 自撰派生结构)",
+    "restoration": "取得上游书面授权后，用 --keep-verbatim 重跑可保留 efficacy 字段",
+    "fields_stripped": [
+      "source_quote",
+      "efficacy"
+    ],
+    "records": 365,
+    "fields_removed": 730,
+    "upstream_file": "000-神农本草经.txt",
+    "method": "rule"
+  }
+}
