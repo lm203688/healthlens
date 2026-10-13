@@ -1,0 +1,207 @@
+{
+  "generated_at": "2026-10-13",
+  "summary": {
+    "total_cases": 120,
+    "verified": 5,
+    "hallucination_resolved": 1,
+    "unverified_text": 14,
+    "traditional": 8,
+    "unsourced": 0,
+    "broken_citation": 1,
+    "synthetic_validation": 91,
+    "distinct_dois_checked": 11,
+    "doi_resolution": {
+      "10.1016/j.clnesp.2024.11.002": "found",
+      "10.1016/j.jhep.2025.06.005": "found",
+      "10.1016/j.sleep.2020.05.009": "found",
+      "10.1016/j.ther.2026.105127": "not_found",
+      "10.1038/s41467-024-45260-9": "found",
+      "10.1038/s41591-024-03096-2": "found",
+      "10.1038/s41591-024-03375-y": "found",
+      "10.1038/s41591-026-04102-8": "hallucinated",
+      "10.1073/pnas.1418490112": "found",
+      "10.1186/s12967-026-08038-9": "found",
+      "10.3390/nu17101695": "found"
+    }
+  },
+  "crossref_details": {
+    "10.1016/j.clnesp.2024.11.002": {
+      "status": "found",
+      "title": "Dawn-to-dusk intermittent fasting is associated with overexpression of autophagy genes: A prospective study on overweight and obese cohort",
+      "journal": "Clinical Nutrition ESPEN",
+      "year": 2025,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.jhep.2025.06.005": {
+      "status": "found",
+      "title": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associated steatotic liver disease",
+      "journal": "Journal of Hepatology",
+      "year": 2025,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.sleep.2020.05.009": {
+      "status": "found",
+      "title": "Decreased functional connectivity within the salience network after two-week morning bright light exposure in individuals with sleep disturbances: a preliminary randomized controlled trial",
+      "journal": "Sleep Medicine",
+      "year": 2020,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.ther.2026.105127": {
+      "status": "not_found"
+    },
+    "10.1038/s41467-024-45260-9": {
+      "status": "found",
+      "title": "Fasting-mimicking diet causes hepatic and blood markers changes indicating reduced biological age and disease risk",
+      "journal": "Nature Communications",
+      "year": 2024,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-024-03096-2": {
+      "status": "found",
+      "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+      "journal": "Nature Medicine",
+      "year": 2024,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-024-03375-y": {
+      "status": "found",
+      "title": "Effects of early, late and self-selected time-restricted eating on visceral adipose tissue and cardiometabolic health in participants with overweight or obesity: a randomized controlled trial",
+      "journal": "Nature Medicine",
+      "year": 2025,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-026-04102-8": {
+      "status": "hallucinated",
+      "replaced_by": "10.1038/s41591-024-03096-2",
+      "replacement_status": "found",
+      "replacement_meta": {
+        "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": 2024,
+        "publisher": "Springer Science and Business Media LLC",
+        "type": "journal-article"
+      },
+      "note": "原 'Kirkland Nature Medicine 2026 AFFIRM' 为 AI 幻觉（DOI 不存在、240人/65-85/步速改善均不实）。替换为真实 Farr 2024 Phase II RCT（60 名绝经后女性 62-88 岁，骨代谢，结果 subtle）。"
+    },
+    "10.1073/pnas.1418490112": {
+      "status": "found",
+      "title": "Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness",
+      "journal": "Proceedings of the National Academy of Sciences",
+      "year": 2014,
+      "publisher": "National Academy of Sciences",
+      "type": "journal-article"
+    },
+    "10.1186/s12967-026-08038-9": {
+      "status": "found",
+      "title": "Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression",
+      "journal": "Journal of Translational Medicine",
+      "year": 2026,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.3390/nu17101695": {
+      "status": "found",
+      "title": "Regulation of Metabolic Aging Through Adenosine Mono Phosphate-Activated Protein Kinase and Mammalian Target of Rapamycin: A Comparative Study of Intermittent Fasting Variations in Obese Young Women",
+      "journal": "Nutrients",
+      "year": 2025,
+      "publisher": "MDPI AG",
+      "type": "journal-article"
+    }
+  },
+  "_crossref_cache": {
+    "10.1016/j.clnesp.2024.11.002": {
+      "status": "found",
+      "title": "Dawn-to-dusk intermittent fasting is associated with overexpression of autophagy genes: A prospective study on overweight and obese cohort",
+      "journal": "Clinical Nutrition ESPEN",
+      "year": 2025,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.jhep.2025.06.005": {
+      "status": "found",
+      "title": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associated steatotic liver disease",
+      "journal": "Journal of Hepatology",
+      "year": 2025,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.sleep.2020.05.009": {
+      "status": "found",
+      "title": "Decreased functional connectivity within the salience network after two-week morning bright light exposure in individuals with sleep disturbances: a preliminary randomized controlled trial",
+      "journal": "Sleep Medicine",
+      "year": 2020,
+      "publisher": "Elsevier BV",
+      "type": "journal-article"
+    },
+    "10.1016/j.ther.2026.105127": {
+      "status": "not_found"
+    },
+    "10.1038/s41467-024-45260-9": {
+      "status": "found",
+      "title": "Fasting-mimicking diet causes hepatic and blood markers changes indicating reduced biological age and disease risk",
+      "journal": "Nature Communications",
+      "year": 2024,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-024-03096-2": {
+      "status": "found",
+      "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+      "journal": "Nature Medicine",
+      "year": 2024,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-024-03375-y": {
+      "status": "found",
+      "title": "Effects of early, late and self-selected time-restricted eating on visceral adipose tissue and cardiometabolic health in participants with overweight or obesity: a randomized controlled trial",
+      "journal": "Nature Medicine",
+      "year": 2025,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.1038/s41591-026-04102-8": {
+      "status": "hallucinated",
+      "replaced_by": "10.1038/s41591-024-03096-2",
+      "replacement_status": "found",
+      "replacement_meta": {
+        "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": 2024,
+        "publisher": "Springer Science and Business Media LLC",
+        "type": "journal-article"
+      },
+      "note": "原 'Kirkland Nature Medicine 2026 AFFIRM' 为 AI 幻觉（DOI 不存在、240人/65-85/步速改善均不实）。替换为真实 Farr 2024 Phase II RCT（60 名绝经后女性 62-88 岁，骨代谢，结果 subtle）。"
+    },
+    "10.1073/pnas.1418490112": {
+      "status": "found",
+      "title": "Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness",
+      "journal": "Proceedings of the National Academy of Sciences",
+      "year": 2014,
+      "publisher": "National Academy of Sciences",
+      "type": "journal-article"
+    },
+    "10.1186/s12967-026-08038-9": {
+      "status": "found",
+      "title": "Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression",
+      "journal": "Journal of Translational Medicine",
+      "year": 2026,
+      "publisher": "Springer Science and Business Media LLC",
+      "type": "journal-article"
+    },
+    "10.3390/nu17101695": {
+      "status": "found",
+      "title": "Regulation of Metabolic Aging Through Adenosine Mono Phosphate-Activated Protein Kinase and Mammalian Target of Rapamycin: A Comparative Study of Intermittent Fasting Variations in Obese Young Women",
+      "journal": "Nutrients",
+      "year": 2025,
+      "publisher": "MDPI AG",
+      "type": "journal-article"
+    }
+  }
+}
