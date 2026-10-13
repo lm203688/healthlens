@@ -112,13 +112,17 @@ axis_f:
       default: { normal_max: 2.5, elevated_max: 5.0, severe_max: 10.0 }
 
 # G 神-情志(自主神经)：自主神经平衡
+# S0-7（2026-10-13）：G 轴的 HRV(RMSSD) 敏感曲线与 E 轴**独立调参**
+# （low_max/severe_low 更严格：25/15 vs E 的 30/20；惩罚更平缓：16/9/4 vs E 的 22/12/6），
+# 保证「仅 HRV 输入时 E≠G」，消除「八轴实为七轴」的方法学质疑。
+# 完整轴独立性还需 RSA/PSD 频域分量作为 G 的独立输入（后续升级，见 axis_scorers.py 注释）。
 axis_g:
   label: "神-情志(自主神经)"
   concept: "神"
-  proxy: "自主神经平衡"
+  proxy: "自主神经平衡（迷走张力 + 睡眠规律性）"
   thresholds:
-    hrv_rmssd:  # HRV RMSSD（ms）
-      default: { normal_min: 50, low_max: 30, severe_low: 20 }
+    hrv_rmssd:  # HRV RMSSD（ms）— 独立调参曲线
+      default: { normal_min: 50, low_max: 25, severe_low: 15 }
     sleep_regularity:  # 睡眠规律性（0-100）
       default: { normal_min: 70, low_max: 50, severe_low: 30 }
 
