@@ -25,8 +25,6 @@
 | F | 正邪-炎症轴(inflammaging) |
 | G | 神-情志轴(迷走张力/HRV/EEG) |
 | H | 先天-肾精轴(干细胞龛/表观时钟) |
-| I | 外泌体-细胞通讯轴(exosome/miRNA/胞间信号) |
-| J | 再生医学轴(iPSC/细胞重编程/组织修复) |
 
 ## 总览：L1=56 ｜ L2=31 ｜ L3=33
 
@@ -139,7 +137,7 @@
 - **来源**：Nature Medicine 2024 ｜ 10.1038/s41591-024-03096-2
 - **理论作证**：把'衰老/肾虚'落到可测量骨代谢结局；H 轴功能代理证据。注意：真实 Farr 2024 结果为 subtle，仅假设生成性，不应夸大功能获益。
 
-> **勘误说明**（2026-10-13）：该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。
+> **引用订正**：（2026-10-13）该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。
 
 ---
 
@@ -526,8 +524,10 @@
 - **证据等级**：L2
 - **基因通路**：Exosome_biogenesis, miRNA_signaling, PGC1A_signaling
 - **融合判定链接**：I axis (exosome-cell communication) weakness -> exercise as first-line non-drug intervention
-- **来源**：Yu et al. J Nanobiotechnology 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985
+- **来源**：Yu et al. J Transl Med 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985
 - **理论作证**：I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling
+
+> **引用订正**：（刊名订正 2026-10-13：原标 J Nanobiotechnology，但 DOI 10.1186/s12967-026-08038-9 经 Crossref 核验属 Journal of Translational Medicine；s12967 为该刊 DOI 前缀，J Nanobiotechnology 前缀为 s12951）
 
 ---
 
