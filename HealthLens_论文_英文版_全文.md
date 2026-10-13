@@ -172,7 +172,7 @@ This loop turns the theory from a text hypothesis into a measurable, falsifiable
 
 ## 10. Conclusion
 
-ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating East and West, classical and modern, experience and technology. It projects classical experience onto modern measurable pathways through six axioms and ten axes, validates directional correctness with a real-world human evidence base, and achieves continuous verification through the SIIV loop and hardware interfaces. The in-silico computational validation shows that the fusion judgement is a reproducible, specific, high-coverage, and auditable method. As a decision-support framework, it can become a research foundation for personalized non-pharmacological intervention; its overall efficacy awaits prospective validation.
+ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating East and West, classical and modern, experience and technology. It projects classical experience onto modern measurable pathways through six axioms and eight axes (A–H; axes I/J reserved for future extension, not implemented), validates directional correctness with a real-world human evidence base, and achieves continuous verification through the SIIV loop and hardware interfaces. The in-silico computational validation shows that the fusion judgement is a reproducible, specific, high-coverage, and auditable method. As a decision-support framework, it can become a research foundation for personalized non-pharmacological intervention; its overall efficacy awaits prospective validation.
 
 ---
 
