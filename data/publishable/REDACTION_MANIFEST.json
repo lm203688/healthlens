@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-13T09:14:12Z",
+  "generated": "2026-10-13T09:27:56Z",
   "purpose": "知识语料可公开再分发（Zenodo）脱敏副本清单",
   "audit": "data/LICENSE_AUDIT_2026-10-13.md",
   "upstream": {
@@ -21,7 +21,7 @@
       "source_bytes": 498063,
       "redacted_bytes": 314705,
       "bytes_saved_pct": 36.8,
-      "dest_sha256": "ea4276b7143ccb68b41713f6aa5d41ac4b6c81ea0818cf17ff967a069cc862be",
+      "dest_sha256": "af1809df8cb80538b95e8784a8a5e84565b7727e2b651c793b04b21fe5083c5e",
       "inert_fields": [],
       "leaked_fields": 0,
       "fields_stripped": [
@@ -51,7 +51,7 @@
       "source_bytes": 149694,
       "redacted_bytes": 44530,
       "bytes_saved_pct": 70.3,
-      "dest_sha256": "65434b657c0697fa6c62fef976ce095eba36302befacb09ce2633e67a31bbe85",
+      "dest_sha256": "d65f036b5aa5f7afb6c1c39ae248535d76ecdde258f5735450c96ec448f05c7d",
       "inert_fields": [],
       "leaked_fields": 0,
       "fields_stripped": [
@@ -72,7 +72,7 @@
       "source_bytes": 94028,
       "redacted_bytes": 29470,
       "bytes_saved_pct": 68.7,
-      "dest_sha256": "8ccf5045fd6e63d4f4eb21d55bc7037098bc65409dda38674bb826328a0b3a87",
+      "dest_sha256": "502d455647e7ce630fb8411a378c4330f7de527373d6e88cef43ed3990d856eb",
       "inert_fields": [],
       "leaked_fields": 0,
       "fields_stripped": [
