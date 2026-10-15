@@ -504,7 +504,14 @@
     "thinking": "⏳ Agent 团队思考中...",
     "placeholder": "描述您的症状，例如：最近容易疲劳、怕冷...",
     "sendBtn": "发送",
-    "agentError": "Agent 服务暂不可用，请刷新重试。"
+    "agentError": "Agent 服务暂不可用，请刷新重试。",
+    "emergency": {
+      "title": "需要立即关注",
+      "category": "信号类别：",
+      "matched": "匹配信号",
+      "close": "我已了解，稍后处理",
+      "fallback": "您描述的内容包含需要立即寻求专业帮助的健康信号。\n请立即拨打 120 急救电话或前往最近的医院急诊科。\nHealthLens 是健康管理平台，不提供医疗诊断或治疗建议。"
+    }
   },
   "nav": {
     "dashboard": "首页",
