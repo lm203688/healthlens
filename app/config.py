@@ -73,6 +73,23 @@ class Settings(BaseSettings):
     OPEN_WEARABLES_API_KEY: str = ""
 
     # ------------------------------------------------------------------
+    # 品牌原生连接器 OAuth2 凭据（S1-5）
+    # 全部留空 = 连接器 fail-loud 拒服务，绝不返回 mock（反骨架化原则）。
+    # 每个 brand 独立 client_id / client_secret / redirect_uri。
+    # ------------------------------------------------------------------
+    WITHINGS_CLIENT_ID: str = ""
+    WITHINGS_CLIENT_SECRET: str = ""
+    WITHINGS_REDIRECT_URI: str = "https://healthlens.cc/api/v1/connections/withings/callback"
+
+    HUAWEI_HEALTH_CLIENT_ID: str = ""
+    HUAWEI_HEALTH_CLIENT_SECRET: str = ""
+    HUAWEI_HEALTH_REDIRECT_URI: str = "https://healthlens.cc/api/v1/connections/huawei/callback"
+
+    XIAOMI_HEALTH_CLIENT_ID: str = ""
+    XIAOMI_HEALTH_CLIENT_SECRET: str = ""
+    XIAOMI_HEALTH_REDIRECT_URI: str = "https://healthlens.cc/api/v1/connections/xiaomi/callback"
+
+    # ------------------------------------------------------------------
     # 边缘网关（edge gateway / healthgateway）
     # 家庭内常开的小盒子把「日粒度健康指标」推上来。
     # EDGE_GATEWAY_TOKEN 由云端签发后写回设备的 /etc/healthlens/edge.env，
