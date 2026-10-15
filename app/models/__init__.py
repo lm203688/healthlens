@@ -34,3 +34,11 @@ from app.models.verification_code import VerificationCode
 from app.models.wellness_checkin import WellnessCheckin
 from app.models.audit_event import AuditEvent
 from app.models.gdpr_consent import GDPRConsent
+from app.models.field_consent import FieldConsent
+from app.models.longitudinal import (
+    LongitudinalStudy,
+    AxisSnapshot,
+    InterventionEvent,
+    BiomarkerReading,
+)
+from app.models.partner import Partner, PartnerApiKey
