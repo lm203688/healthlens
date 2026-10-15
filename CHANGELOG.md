@@ -4,6 +4,51 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.27.0] - 2026-10-15
+
+### Added（S3-2 Powered-by SDK + S2-5 GraphRAG + S3-3 国标闸门 + S1-3 Pulse Gate 测试加固）
+
+**S3-2 Powered-by SDK（合作方生态层）**
+- `app/integrations/sdk/`：`HealthLensClient`（异步 httpx 客户端，支持 health_score / axis_assessment / tcm_recommendations / wellness_report / config / health_check）+ `HealthLensAPIError` 错误分级（500/401/403/非 JSON）
+- `app/integrations/sdk/auth.py`：`verify_api_key`（SHA256 哈希比对 + 过期/吊销检查）+ `api_key_header` FastAPI 依赖（`X-API-Key` header）
+- `app/integrations/sdk/config.py`：`get_partner_config` / `get_api_base_url` 远程配置拉取
+- `app/integrations/sdk/health_check.py`：DB + fusion/tcm/pulse 引擎探测，fail-loud 汇总
+- `app/api/partners.py`：6 个 admin-only 端点（CRUD + activate + API Key 生成/吊销）
+- `app/api/partner_api.py`：6 个合作方端点（health/config/health-score/axis/tcm/wellness-report），API Key 认证
+- `app/models/partner.py`：`Partner` + `PartnerApiKey` ORM（key_hash/前缀/过期/last_used）
+- **62 个测试用例**（Client 构造/错误路径、API Key 认证、Partner 管理、API Key 生命周期、Partner API 端点、端到端、wellness 边界）
+
+**S2-5 GraphRAG 知识图谱（技术护城河）**
+- `app/lib/graphrag_engine.py`：`KnowledgeGraph` 类（纯 Python，无第三方依赖），节点 + 有向边，neighbors（方向+关系过滤）、BFS/shortest_path（深度限制+关系过滤）、query_by_type/property、serialize/deserialize 往返、`GraphDataMissingError` fail-loud
+- `app/lib/graphrag_builder.py`：6 个源数据构建器（tcm_structured/classical_slices/pulse_signatures/axis_term_mapping/tcm_pathway_map）
+- `app/api/graphrag.py`：7 个端点（4 公开 stats/nodes/neighbors/search + 3 登录 query/axis-related/herb-profile）
+- `data/graphrag/knowledge_graph.json`：序列化图谱缓存（1.1MB）
+- **图谱规模**：1661 节点 / 2005 边，节点类型 herb:613 / classical_text:619 / condition:259 / pathway:126 / pulse:28 / axis:8 / term:8
+- **101 个测试用例**（KnowledgeGraph 基本操作、neighbors、BFS、query、stats、serialize/deserialize、6 个源构建器、API 端点、边界值、fail-loud）
+
+**S3-3 国标 2.0 闸门（合规工程化）**
+- `config/national_standards.json`：GB/T 20001.10-2014 配置（9 条款：7 mandatory + 2 optional）
+- `app/core/compliance/gb2001.py`：条款映射内核（`NationalStandardError` / `ClauseResult` / `StandardGateResult` / `check_clause` / `check_document` / `check_document_on_file` / fail-closed 顶层包装）
+- `app/lib/national_standard_gate.py`：集成层（`GateChainResult` / `run_national_standard_gate` / `list_available_standards`）
+- `app/api/national_standard.py`：5 个端点（公开 standards/clauses + 登录 check/compliance-report）
+- **62 个测试用例**（配置加载、条款检查、文档检查、总分计算、fail-closed、文件入口、边界值、免责声明、lib 接口、API 端点）
+
+**S1-3 Pulse Gate 测试加固**
+- `tests/lib/test_pulse_engine.py`：**50 个测试用例**（知识库加载 5、频率纲 5、波形纲 8、深度纲 4、节律纲 5、严重度 5、相兼脉 4、八轴映射 4、养生参考 3、build_observation 3、边界值+fail-loud 4）
+
+### Fixed
+- Team B（GraphRAG）wellness 边界：原草案"不构成医学诊断或治疗建议"字面含禁区词，改为"本图谱仅供健康管理参考，不构成专业健康建议"；测试断言 `wellness_disclaimer` 不含「诊断/治疗/患者/医疗」
+- Team C（国标闸门）路径修正：`CONFIG_PATH = parents[2]` 会指到 `app/config/`（不存在），实际修正为 `parents[3]` → 仓库根 `config/`
+- Team C（国标闸门）URL 路由：国标 ID 含 `/`（`GB/T ...`）导致 404，改用 `{standard_id:path}` 转换器
+
+### Changed
+- `pyproject.toml`：0.26.2 → 0.27.0
+- `app/__init__.py`：新增 3 个路由注册（partners/partner-api/graphrag/national-standard）
+- `app/models/__init__.py`：导入 `Partner` / `PartnerApiKey`
+
+### Verified
+- 三套测试合计 **844 passed, 2 skipped, 0 failed**：`tests/` 780 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+
 ## [0.26.2] - 2026-10-13
 
 ### Added（S3 工程化落地 + 公开发布合规处置）
