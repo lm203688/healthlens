@@ -156,6 +156,69 @@ def list_policies() -> dict[str, str]:
 
 # ── 核心：输出过滤 ──────────────────────────────────────────────
 
+# ── 字段级 fallback 文案（M09：合规但仍有信息量）────────────────
+# 当字段被策略屏蔽时，不直接删除，而是替换为 wellness 安全的降级文案。
+# 这样用户在非 CN 法域也能获得有价值的信息，而非空字段。
+# 每条 fallback 包含：label（字段标签）、value（降级值）、note（说明）
+
+FIELD_FALLBACKS: dict[str, dict[str, Any]] = {
+    "icd_code": {
+        "label": "健康分类参考",
+        "value": "已在健康管理分类中标记",
+        "note": "当前法域不展示具体疾病编码，仅提供健康分类参考",
+    },
+    "severity": {
+        "label": "关注程度",
+        "value": "需关注",
+        "note": "当前法域不提供严重程度分级，仅提示关注",
+    },
+    "pgx_pathogenic_grading": {
+        "label": "药物代谢特征",
+        "value": "存在个体差异",
+        "note": "当前法域不展示致病性分级，建议就诊时与医师沟通药物选择",
+    },
+    "risk_probability": {
+        "label": "健康关注指数",
+        "value": "中等关注",
+        "note": "当前法域不提供风险概率数值，建议结合生活方式调整",
+    },
+    "diagnosis_status": {
+        "label": "健康状态参考",
+        "value": "已评估",
+        "note": "当前法域不提供诊断状态，仅作为健康参考",
+    },
+    "triage_recommendation": {
+        "label": "建议",
+        "value": "建议关注并定期评估",
+        "note": "当前法域不提供分诊建议",
+    },
+    "pgx_phenotype": {
+        "label": "药物代谢倾向",
+        "value": "常规代谢",
+        "note": "当前法域不展示代谢表型，建议就医时告知医师基因测试结果",
+    },
+    "tcm_constitution": {
+        "label": "体质倾向参考",
+        "value": "平和质倾向",
+        "note": "当前法域不提供体质辨识结果，建议咨询专业中医师",
+    },
+    "pathway_signals": {
+        "label": "健康通路信号",
+        "value": "基本平衡",
+        "note": "当前法域不展示通路信号，建议关注整体生活方式",
+    },
+    "syndrome_patterns": {
+        "label": "证候参考",
+        "value": "气血调和",
+        "note": "当前法域不展示证候模式，建议咨询专业中医师",
+    },
+    "risk_level": {
+        "label": "关注层级",
+        "value": "常规关注",
+        "note": "当前法域不展示风险分层，建议定期健康评估",
+    },
+}
+
 # 常见字段路径别名（不同引擎用不同名字）
 _FIELD_ALIASES = {
     "icd_code": {"icd_code", "icd11_code", "icd10_code", "diagnosis_code", "disease_code"},
@@ -201,11 +264,13 @@ def _walk_and_filter(
     blocked: set[str],
     removed: list[str],
     rewritten: list[str],
+    fallbacks: dict[str, dict[str, Any]],
     path_prefix: str = "",
 ) -> Any:
     """递归遍历 payload，按策略过滤 / 屏蔽字段。
 
     返回过滤后的对象。removed 记录被屏蔽的路径。
+    当字段被屏蔽但有 fallback 文案时，用 fallback 替换而非删除。
     """
     if isinstance(obj, dict):
         result = {}
@@ -217,17 +282,40 @@ def _walk_and_filter(
                     canonical_match = canonical
                     break
             if canonical_match and canonical_match in blocked:
-                if "*" not in blocked or True:  # 显式屏蔽优先于 *
+                # 有 fallback 文案 → 替换而非删除
+                if canonical_match in fallbacks:
+                    fb = fallbacks[canonical_match]
+                    result[k] = {
+                        "fallback_label": fb["label"],
+                        "fallback_value": fb["value"],
+                        "fallback_note": fb["note"],
+                    }
+                    rewritten.append(f"{path} (fallback={fb['label']})")
+                elif "*" not in blocked or True:  # 显式屏蔽优先于 *
                     removed.append(path)
-                    continue
-            if "*" in blocked and canonical_match not in allowed:
-                # 通配符屏蔽 + 不在允许列表 → 屏蔽
-                removed.append(path)
                 continue
-            result[k] = _walk_and_filter(v, allowed, blocked, removed, rewritten, path)
+            if "*" in blocked and canonical_match not in allowed:
+                # 通配符屏蔽 → 尝试 fallback
+                if k in fallbacks:
+                    fb = fallbacks[k]
+                    result[k] = {
+                        "fallback_label": fb["label"],
+                        "fallback_value": fb["value"],
+                        "fallback_note": fb["note"],
+                    }
+                    rewritten.append(f"{path} (fallback={fb['label']})")
+                else:
+                    removed.append(path)
+                continue
+            result[k] = _walk_and_filter(
+                v, allowed, blocked, removed, rewritten, fallbacks, path
+            )
         return result
     elif isinstance(obj, list):
-        return [_walk_and_filter(item, allowed, blocked, removed, rewritten, path_prefix) for item in obj]
+        return [
+            _walk_and_filter(item, allowed, blocked, removed, rewritten, fallbacks, path_prefix)
+            for item in obj
+        ]
     else:
         return obj
 
@@ -345,8 +433,9 @@ def filter_output(
         )
 
     # 2. 字段级过滤（递归遍历 payload）
+    # 传入 FIELD_FALLBACKS 让被屏蔽字段降级替换而非直接删除
     filtered_payload = _walk_and_filter(
-        payload, allowed_set, blocked_set, removed, rewritten
+        payload, allowed_set, blocked_set, removed, rewritten, FIELD_FALLBACKS
     )
 
     # 3. 敏感词扫描（针对字符串值）
