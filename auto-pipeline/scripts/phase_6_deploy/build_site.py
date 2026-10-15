@@ -50,7 +50,10 @@ CONTENT_SOURCES = [
     PIPELINE / "content" / "generated",     # 流水线新产出，优先级最高
 ]
 
-FRONTEND = ROOT / "healthlens" / "frontend"
+# 首页来源目录：优先用仓库根 frontend/（2026-10 起 SPA 与首页均在此），
+# 兼容旧布局 healthlens/frontend/。两者都不存在时由调用方 fail-loud。
+_FRONTEND_CANDIDATES = [ROOT / "frontend", ROOT / "healthlens" / "frontend"]
+FRONTEND = next((p for p in _FRONTEND_CANDIDATES if (p / "index.html").is_file()), ROOT / "frontend")
 
 # 后端 sitemap 拉取（ECS 本机 FastAPI，含全部 SEO 长尾页，约 1255 条）
 ECS_HOST = "150.158.119.19"
