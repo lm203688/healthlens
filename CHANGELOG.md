@@ -4,6 +4,64 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.28.0] - 2026-10-16
+
+### Added（SVIEE 五层跃迁：Self-Validating Integrative Evidence Engine）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5，把 HealthLens 从
+"可计算框架"推向"可自证、可演化、可协作的证据引擎"。**内核保持零第三方
+依赖**；重型库（dowhy / pymc / flwr / xgrammar / ragas / biomni）一律
+optional，未装即 fail-loud 抛 `HealthLensUnavailableEngine`。
+
+**L0 协议对齐**
+- `app/lib/protocol_audit.py`：MCP 2026-07-28 breaking + A2A v1.0.1 契约审计器（ast 静态分析 + JSON 检查），6 类 MCP 违规清单 + 7 类 A2A 合规项 + conformanceNote 如实性校验
+- `app/lib/a2a_jws.py`：RFC 8785 JSON Canonicalization Scheme（`pyjson-canonicalize` optional + 纯 Python fallback）+ ES256 JWS 签名/验证 + Agent Card 签名
+
+**L1 统计层（让因果真的可识别）**
+- `app/lib/engine_exceptions.py`：`HealthLensUnavailableEngine` 统一异常（engine_name / required_package / pip_command / detail）
+- `app/lib/dowhy_adapter.py`：SCMExporter 把因果图导出为 DoWhy 格式 + `do_dowhy_refutation` 三类 refuter（placebo / random_common_cause / data_subset），dowhy 缺失走纯 Python fallback
+- `app/lib/nof_one_effect.py`：`estimate_individual_effect`（paired bootstrap 10k + Cohen's d）+ `BayesianHierarchicalAggregator`（PyMC optional + Monte Carlo fallback，Empirical Bayes REML 手算）+ `compute_evalue`（负/零效应防护）
+- `app/lib/safety_bandit.py`：`LinUCB`（纯 Python 矩阵实现）+ `SafetyMask`（复用 tcm_safety / claims_engine / critical_values）+ `SafetyBanditPolicy`（bandit 只在合法动作子集内选）
+- `app/api/evidence.py`：5 端点（refute / individual-effect / aggregate / bandit/step / bandit/status / bandit/update）
+
+**L2 表征层（时序确定性序列化 = 原创点）**
+- `app/lib/ts_serializer.py`：4 阶段管线（preprocess → bin → feature extract → serialize），time/freq/shape/context 4 组特征 + z-score + 频带功率 + Hurst + approximate_entropy；输出 JSON + sha256 指纹，确定性 + 幂等 + 隐私 hash
+- `app/lib/sensor_adapter.py`：Pulse-PPG / PaPaGei optional adapter + 20 维手工特征 fallback（零依赖 baseline）
+- `app/api/timeseries.py`：5 端点（serialize / validate / hash / sensor-probe / schema）
+- `config/serializer_schema_v1.json`：JSON Schema Draft 2020-12
+
+**L3 联邦证据网络（最锋利原创点）**
+- `app/lib/federated/`：`sufficient_stats`（拒绝 raw samples，只收 mean/var/n/effect）+ `aggregation`（BayesianHierarchical REML + Monte Carlo fallback）+ `single_machine_fabric`（3-5 租户冷启动模拟，可复现 seed）+ `target_trial`（IPW 简化版 + placebo/random refutation，对齐 npj Digit Med 2025;8:387）+ `flower_adapter`（Flower optional）
+- `app/api/federated.py`：6 端点（stats / aggregate / tenants / trial/run / trial/status / export/posterior）
+- `config/federated_defaults.json`：先验 / 收敛阈值 / IPW 修剪 / 显式"不含 DP"声明
+
+**L4 评估闭环（真正的壁垒）**
+- `app/lib/rubric_engine.py`：RubricItem + RuleJudge（正则+关键词+红旗）+ LLMJudge（SenseNova 可选）+ position_swap_judge（消除位置偏差）+ ensemble_judge（多 judge 加权投票）
+- `data/rubric_benchmark_v1.json`：30 条种子 rubric，5 类覆盖（axes_interpretation / tcm_terminology / claims_boundary / critical_values / uncertainty_expression）
+- `app/lib/structured_output.py`：XGrammar optional + pydantic fallback 后置校验
+- `app/lib/ragas_adapter.py`：RAGAS optional + 纯 Python n-gram overlap baseline
+- `app/lib/biomni_adapter.py`：Biomni optional（可能未公开发布，报告 §5 L4 明确）
+- `app/api/evaluation.py`：6 端点（run-rubric / judge-answer / judge-answer/pair / ragas-check / biomni-query / protocol-audit / probe）
+
+**新增 tests（本轮累计 666 用例）**
+- test_dowhy_adapter.py / test_nof_one_effect.py / test_safety_bandit.py
+- test_ts_serializer.py（83 用例）/ test_sensor_adapter.py（34）
+- test_federated.py（52）
+- test_protocol_audit.py / test_a2a_jws.py / test_structured_output.py / test_rubric_engine.py / test_ragas_adapter.py / test_biomni_adapter.py
+- 全量测试：1322 passed, 1 failed（预存的 dowhy 未装 CI 用例，与本轮无关）
+
+**修复**
+- `safety_bandit.py` `LinUCB.predict`：修 `xᵀA⁻¹x` 实现（原把向量当矩阵）
+- `nof_one_effect.py` `compute_evalue`：负效应取绝对值、零/NaN 明确 ValueError
+- `nof_one_effect.py` `aggregate_effects`：`n_samples` 走 `kwargs.pop` 分路由，避免端点 `TypeError`
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/引导/干预/个体。
+
+### 部署与验证
+- GitHub `lm203688/healthlens` main 已推送 36 个文件
+- ECS 150.158.119.19 已部署，26 条新路由全部注册进 OpenAPI
+- 线上验证：/api/v1/timeseries/schema [200] · /api/v1/federated/tenants [200] · /api/v1/evidence/bandit/status [200] · /api/v1/evaluation/probe [200]
+
 ## [0.27.0] - 2026-10-15
 
 ### Added（S3-2 Powered-by SDK + S2-5 GraphRAG + S3-3 国标闸门 + S1-3 Pulse Gate 测试加固）
