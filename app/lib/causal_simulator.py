@@ -85,15 +85,88 @@ def scm_structure(bridges: list[dict] | None = None) -> dict:
 # 2. 反事实对比
 # ---------------------------------------------------------------------------
 
+def _effect_ci(baseline: dict[str, float],
+               levers: list[str],
+               weeks: int,
+               lever_scale: float,
+               n: int,
+               seed: int) -> tuple[dict[str, dict], dict]:
+    """反事实**效应**的不确定性带（bootstrap 扰动下逐轴 Δ 的 5/95 分位）。
+
+    与 ``calibrate()`` 的区分：calibrate 给的是「干预轨迹终值」的带宽，
+    这里给的是「干预 − 不干预」这个**差值**的带宽。两者不可互相替代——
+    而效应才是"干预有没有用"这一问题的直接答案。
+
+    每轮迭代同时重跑 actual 与 no_intervention 两条轨迹，并传入**同一份**
+    扰动网络与**同一个** lever_scale。这样做的价值是**可比性**：同一参数
+    环境下对比两条分支，反事实差值才有意义；若两条轨迹各自独立抽样，
+    参数环境本身就成了混淆因素。
+
+    **关于带宽的实际来源（诚实说明，勿过度解读）**：在当前
+    ``simulate()`` 实现下，轴间耦合只在「上游相对基线的改善 > 0.5」时
+    才传导（见 wellness_simulator 的桥接循环）。而 no-intervention 分支
+    ``levers=[]`` 没有任何主动驱动，该条件恒不满足 → 桥接完全不激活 →
+    no-intervention 终值对耦合扰动**免疫**（其方差为 0）。因此效应带宽
+    完全来自 actual 分支，且数值上**恒等于**两条独立轨迹各自带宽之和
+    的情形（此时两者无差别），并不会因为「配对」而更窄。
+
+    配对设计在此仍保留，理由有二：(1) 它保证两条分支处于同一参数环境，
+    这是反事实对比的语义前提；(2) 若日后 simulate 引入基线噪声 / 个体
+    异质性 / 时间序列扰动，使 no-intervention 分支也随扰动波动，配对
+    会通过负协方差自动收窄效应带宽，无需改接口。
+    因此**不要**把「效应带宽 ≈ 轨迹带宽」当作配对失效的证据。
+
+    带宽来源与 ``calibrate`` 相同：耦合系数 ±20% 与执行一致性 0.85–1.0。
+    这是**参数不确定性**，不是个体生物学方差。
+    """
+    rng = random.Random(seed)
+    per_axis: dict[str, list[float]] = {ax: [] for ax in AXES}
+    wi: list[float] = []
+    for _ in range(n):
+        perturbed = copy.deepcopy(COUPLING_BRIDGES)
+        for br in perturbed:
+            br["coupling"] *= rng.uniform(0.8, 1.2)
+        ls = lever_scale * rng.uniform(0.85, 1.0)
+        a = simulate(baseline, levers, weeks, ls, bridges=perturbed)
+        no_int = simulate(baseline, [], weeks, ls, bridges=perturbed)
+        for ax in AXES:
+            per_axis[ax].append(
+                a["final"]["scores"][ax] - no_int["final"]["scores"][ax]
+            )
+        wi.append(a["final"]["wellness_index"] - no_int["final"]["wellness_index"])
+
+    def band(vals: list[float]) -> dict:
+        s = sorted(vals)
+        p5 = s[max(0, int(0.05 * len(s)))]
+        p95 = s[min(len(s) - 1, int(0.95 * len(s)))]
+        return {
+            "p5": round(p5, 2),
+            "p95": round(p95, 2),
+            "width": round(p95 - p5, 2),
+            # 符号稳定性：带宽完全在 0 的同侧。跨 0 只说明「参数扰动下
+            # 符号不稳定」，不等于「效应为零」——耦合系数本身未被因果识别。
+            "sign_stable": p5 > 0 or p95 < 0,
+        }
+
+    out = {ax: band(v) for ax, v in per_axis.items()}
+    return out, band(wi)
+
+
 def counterfactual(baseline: dict[str, float],
                    levers: list[str],
                    weeks: int = 12,
-                   lever_scale: float = 1.0) -> dict:
-    """反事实对比：实际干预轨迹 vs 不干预轨迹。
+                   lever_scale: float = 1.0,
+                   n_bootstrap: int = 200,
+                   seed: int = 20261013) -> dict:
+    """反事实对比：实际干预轨迹 vs 不干预轨迹，含效应的不确定区间。
 
     因果贡献（per axis）= 实际终值 − 不干预终值。
     注意：这是「若不干预会怎样」的对比，在忽略未观测混淆的假设下给出
     干预效应估计；sensitivity 分析量化该假设的脆弱性。
+
+    ``effect_ci_per_axis`` / ``wellness_index_effect_ci`` 给出效应的 5/95
+    分位带（来自 ``_effect_ci`` 的配对 bootstrap）。``n_bootstrap=0`` 时
+    跳过区间计算（仅产出点估计），便于低成本调用与单元测试。
     """
     actual = simulate(baseline, levers, weeks, lever_scale)
     no_intervention = simulate(baseline, [], weeks, lever_scale)
@@ -102,6 +175,17 @@ def counterfactual(baseline: dict[str, float],
         a = actual["final"]["scores"][ax]
         n = no_intervention["final"]["scores"][ax]
         effect[ax] = round(a - n, 2)
+    wellness_index_effect = round(
+        actual["final"]["wellness_index"] - no_intervention["final"]["wellness_index"], 2
+    )
+
+    if n_bootstrap > 0:
+        effect_ci, wi_ci = _effect_ci(
+            baseline, levers, weeks, lever_scale, n_bootstrap, seed
+        )
+    else:
+        effect_ci, wi_ci = {}, {}
+
     return {
         "success": True,
         "not_clinical": True,
@@ -110,13 +194,16 @@ def counterfactual(baseline: dict[str, float],
         "actual_final": actual["final"]["scores"],
         "no_intervention_final": no_intervention["final"]["scores"],
         "effect_per_axis": effect,
-        "wellness_index_effect": round(
-            actual["final"]["wellness_index"] - no_intervention["final"]["wellness_index"], 2
-        ),
+        "effect_ci_per_axis": effect_ci,
+        "wellness_index_effect": wellness_index_effect,
+        "wellness_index_effect_ci": wi_ci,
+        "n_bootstrap": n_bootstrap if n_bootstrap > 0 else 0,
         "disclaimer": (
             "反事实 = 假设未执行生活方式杠杆时本会得到的轨迹；逐轴差值是在"
-            "「无未观测混淆」假设下的干预因果贡献估计。真实世界存在遗传/环境混淆，"
-            "效应需前瞻队列验证。"
+            "「无未观测混淆」假设下的干预因果贡献估计。effect_ci 来自耦合系数"
+            "±20% 与执行一致性 0.85–1.0 的配对扰动，反映启发式网络的参数不确定性，"
+            "不代表个体生物学方差；sign_stable=False 只说明扰动下符号不稳定，"
+            "不等于效应为零。真实世界存在遗传/环境混淆，效应需前瞻队列验证。"
         ),
     }
 
