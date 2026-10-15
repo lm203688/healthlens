@@ -50,6 +50,9 @@ export const api = {
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
   agentTeam:   (body) => request('/agent/team',   { method: 'POST', body: JSON.stringify(body) }),
 
+  /* ===== 健康护栏预检（提交自由文本前调用，命中即强提示就医）===== */
+  emergencyCheck: (text) => request('/emergency/check', { method: 'POST', body: JSON.stringify({ text }) }),
+
   /* ===== 体质分析（TCM）===== */
   tcmConstitution:   () => request('/tcm/constitution'),
   tcmConstitutionPost: (body) => request('/tcm/constitution', { method: 'POST', body: JSON.stringify(body) }),
