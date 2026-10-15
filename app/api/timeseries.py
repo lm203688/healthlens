@@ -233,17 +233,46 @@ def probe_engines() -> ProbeResponse:
     return ProbeResponse(engines=[p.to_dict() for p in probes])
 
 
+def _schema_candidate_paths() -> list[Any]:
+    """schema 文件可能的位置（部署形态差异大，逐个探测）。
+
+    报告定位：配置在 config/serializer_schema_v1.json（源码树规范），
+    但 Docker 部署时 /app/config 常是镜像 COPY 而非 bind mount——
+    与 pulse_engine 的 _candidate_db_paths 保持一致的探测策略。
+    """
+    from pathlib import Path
+
+    here = Path(__file__).resolve()
+    paths: list[Any] = []
+    # 源码树布局（parents[2] = 仓库根）
+    paths.append(here.parents[2] / "config" / "serializer_schema_v1.json")
+    paths.append(Path.cwd() / "config" / "serializer_schema_v1.json")
+    paths.append(Path("/app/config") / "serializer_schema_v1.json")
+    paths.append(Path("/opt/healthlens/config") / "serializer_schema_v1.json")
+    # bind-mount 兜底：/opt/healthlens/data 常是 bind mount，可放镜像外更新的文件
+    paths.append(Path("/opt/healthlens/data") / "serializer_schema_v1.json")
+    return paths
+
+
 @router.get(
     "/schema",
     summary="获取 serializer schema 描述",
     description="返回 config/serializer_schema_v1.json 内容（供外部工具校验）",
 )
 def get_schema() -> dict[str, Any]:
-    from pathlib import Path
     import json
-    schema_path = Path(__file__).resolve().parents[2] / "config" / "serializer_schema_v1.json"
-    try:
-        with open(schema_path, encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="serializer_schema_v1.json 未找到")
+
+    tried: list[str] = []
+    for schema_path in _schema_candidate_paths():
+        tried.append(str(schema_path))
+        try:
+            with open(schema_path, encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            continue
+        except Exception as exc:  # 文件在但坏了
+            tried.append(f"{schema_path} (parse error: {exc})")
+    raise HTTPException(
+        status_code=404,
+        detail=f"serializer_schema_v1.json 未找到。已尝试: {tried}",
+    )
