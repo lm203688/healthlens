@@ -80,34 +80,91 @@ class HuaweiHealthConnector(BaseConnector):
             return resp.json()
 
     async def fetch_health_data(self, access_token: str, days: int = 7) -> dict:
-        """拉取健康数据
+        """拉取华为健康数据（真实 API）。
 
-        Phase 1: 返回模拟数据结构，展示 API 调用方式
-        Phase 2: 真实调用华为健康 API
+        S1-5 反骨架化：缺凭据时诚实报错，绝不返回 mock。
+        上一版 Phase 1 曾以 `huawei_health_mock` 生成数据，违反项目
+        「骨架未接线时必须 fail-loud」原则——已移除。
         """
-        logger.info(f"Fetching Huawei Health data for last {days} days")
+        import httpx
 
-        # Phase 1: 返回模拟数据
+        if not self.client_id or not self.client_secret:
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": "华为健康未配置：请在环境变量设置 HUAWEI_HEALTH_CLIENT_ID 和 HUAWEI_HEALTH_CLIENT_SECRET",
+                "message": "连接器不可用——需先配置 OAuth2 凭据",
+            }
+        if not access_token:
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": "缺少 access_token",
+                "message": "请引导用户完成 OAuth2 授权后重试",
+            }
+
+        logger.info(f"Fetching Huawei Health data for {days} days (real API)")
+
         now = datetime.now(timezone.utc)
-        items = []
-        for i in range(days):
-            date = now - timedelta(days=i)
-            items.append({
-                "date": date.strftime("%Y-%m-%d"),
-                "steps": 8500 + (i * 500 % 3000),
-                "calories": 1800 + (i * 100 % 600),
-                "heart_rate_avg": 72 + (i % 8),
-                "heart_rate_max": 120 + (i * 10 % 40),
-                "sleep_hours": 7.0 + (i % 3) * 0.5,
-                "weight_kg": 70.0 + (i % 5) * 0.2,
-                "source": "huawei_health_mock",
-            })
+        end = now.isoformat()
+        start = (now - timedelta(days=days)).isoformat()
 
-        return {
-            "items_count": len(items),
-            "items": items,
-            "message": f"Fetched {days} days of health data (Phase 1 mock)",
-        }
+        try:
+            async with httpx.AsyncClient(timeout=30) as client:
+                resp = await client.post(
+                    f"{self.DATA_URL}/activity/query",
+                    json={
+                        "query": {
+                            "start_time": start,
+                            "end_time": end,
+                            "types": ["STEPS", "HEART_RATE", "SLEEP"],
+                            "aggregation": "daily",
+                        }
+                    },
+                    headers={
+                        "Authorization": f"Bearer {access_token}",
+                        "Content-Type": "application/json",
+                    },
+                )
+                resp.raise_for_status()
+                data = resp.json()
+
+            # 华为健康 v1 返回 { data: { activities: [...] } } 结构
+            activities = (data.get("data") or {}).get("activities") or data.get("data") or []
+            items = []
+            for act in activities:
+                items.append({
+                    "date": act.get("date") or act.get("start_time", "")[:10],
+                    "steps": act.get("steps", 0),
+                    "calories": act.get("calories", 0),
+                    "heart_rate_avg": act.get("heart_rate_avg", 0),
+                    "heart_rate_max": act.get("heart_rate_max", 0),
+                    "sleep_hours": act.get("sleep_hours", 0),
+                    "weight_kg": act.get("weight_kg", 0),
+                    "source": "huawei_health",
+                })
+
+            return {
+                "items_count": len(items),
+                "items": items,
+                "message": f"Fetched {len(items)} records from Huawei Health ({days} days)",
+            }
+        except httpx.HTTPStatusError as exc:
+            logger.error(f"Huawei Health API HTTP error: {exc.response.status_code}")
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": f"Huawei Health API HTTP {exc.response.status_code}",
+                "message": "华为健康 API 请求失败",
+            }
+        except Exception as exc:
+            logger.error(f"Huawei Health API error: {exc}")
+            return {
+                "items_count": 0,
+                "items": [],
+                "error": str(exc),
+                "message": "华为健康 API 异常",
+            }
 
     async def sync_data(self, access_token: str, user_id: str, since: datetime | None = None) -> dict:
         """同步数据到 HealthLens 格式"""
