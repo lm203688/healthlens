@@ -326,5 +326,13 @@
     "comment": null,
     "corrected_text": null,
     "timestamp": 1791884110.6196628
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792046942.5167701
   }
 ]
