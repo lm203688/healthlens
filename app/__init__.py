@@ -244,6 +244,42 @@ def create_app() -> FastAPI:
     app.include_router(partners_router, prefix="/api/v1/partners", tags=["合作方管理"])
     app.include_router(partner_api_router, prefix="/api/v1/partner-api", tags=["合作方API"])
 
+    # ── v0.28.0 SVIEE（Self-Validating Integrative Evidence Engine）5 层跃迁 ──
+    # 报告《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》交付。
+    # L1 统计层：DoWhy refutation + n-of-1 效应量 + 安全约束 bandit
+    # L2 表征层：时序确定性序列化（原创点） + 传感器基础模型 adapter
+    # L3 联邦层：Flower 单机多租户 + 贝叶斯层次聚合 + 目标试验仿真
+    # L4 评估层：XGrammar 强制解码 + Rubric 基准 + RAGAS/Biomni adapter + 协议对齐审计
+    # 全部采用 try/except 容错加载：单个模块缺失不阻断主服务启动，仅告警跳过，
+    # 与 MCP-HTTP / AGENT / EMERGENCY 三段保持一致的 fail-soft 策略。
+    try:
+        from app.api.evidence import router as evidence_router
+
+        app.include_router(evidence_router, prefix="/api/v1/evidence", tags=["证据层L1"])
+    except Exception as _ev_err:  # noqa: BLE001
+        logger.warning(f"[EVIDENCE-L1] 证据层路由未加载（能力不可用，已跳过）: {_ev_err}")
+
+    try:
+        from app.api.timeseries import router as timeseries_router
+
+        app.include_router(timeseries_router, prefix="/api/v1/timeseries", tags=["表征层L2"])
+    except Exception as _ts_err:  # noqa: BLE001
+        logger.warning(f"[TIMESERIES-L2] 表征层路由未加载（能力不可用，已跳过）: {_ts_err}")
+
+    try:
+        from app.api.federated import router as federated_router
+
+        app.include_router(federated_router, prefix="/api/v1/federated", tags=["联邦层L3"])
+    except Exception as _fd_err:  # noqa: BLE001
+        logger.warning(f"[FEDERATED-L3] 联邦层路由未加载（能力不可用，已跳过）: {_fd_err}")
+
+    try:
+        from app.api.evaluation import router as evaluation_router
+
+        app.include_router(evaluation_router, prefix="/api/v1/evaluation", tags=["评估层L4"])
+    except Exception as _evl_err:  # noqa: BLE001
+        logger.warning(f"[EVALUATION-L4] 评估层路由未加载（能力不可用，已跳过）: {_evl_err}")
+
     # MCP over HTTP（海外 Agent 一行 URL 接入，无需 pip install）
     try:
         from app.api.mcp_http import router as mcp_http_router
