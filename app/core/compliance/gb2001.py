@@ -16,7 +16,16 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-CONFIG_PATH = Path(__file__).resolve().parents[3] / "config" / "national_standards.json"
+# 配置路径：本地项目根在 healthlens/（parents[3]），容器内 app 挂载到 /app/app
+# 但项目根在 /app（parents[3] 指向 /app，config 不在那里）。做 fallback 兼容两种布局。
+# 生产容器已把 /opt/healthlens/config 通过 docker cp 放到 /app/config/，fallback 后
+# 直接命中 parents[3]；若镜像 rebuild 后未挂 config，则回退 parents[2]/config/
+# （app 目录内），由 docker compose 挂载保证存在。
+_GB2001_PATH_CANDIDATES = [
+    Path(__file__).resolve().parents[3] / "config" / "national_standards.json",
+    Path(__file__).resolve().parents[2] / "config" / "national_standards.json",
+]
+CONFIG_PATH = next((p for p in _GB2001_PATH_CANDIDATES if p.exists()), _GB2001_PATH_CANDIDATES[0])
 
 # 缓存：standard_id → 标准 dict（含 clauses / disclaimer 等）
 _standards_cache: dict[str, dict[str, Any]] = {}
