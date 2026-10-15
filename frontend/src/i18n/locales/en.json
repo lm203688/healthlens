@@ -504,7 +504,14 @@
     "thinking": "⏳ Agent team thinking...",
     "placeholder": "Describe your symptoms, e.g., recently feeling tired, cold intolerance...",
     "sendBtn": "Send",
-    "agentError": "Agent service temporarily unavailable, please refresh and retry."
+    "agentError": "Agent service temporarily unavailable, please refresh and retry.",
+    "emergency": {
+      "title": "Immediate Attention Required",
+      "category": "Signal category: ",
+      "matched": "Matched signals",
+      "close": "I understand, will handle later",
+      "fallback": "Your description contains health signals that require immediate professional help.\nPlease call 120 (emergency services) or go to the nearest hospital emergency department immediately.\nHealthLens is a health management platform and does not provide medical diagnosis or treatment advice."
+    }
   },
   "nav": {
     "dashboard": "Dashboard",
