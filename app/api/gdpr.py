@@ -53,6 +53,25 @@ class DeleteRequest(BaseModel):
     reason: Optional[str] = Field(None, description="删除原因（可选）")
 
 
+class FieldConsentStatus(BaseModel):
+    """字段级同意状态"""
+    field_path: str
+    jurisdiction: str
+    purpose: str
+    accepted: bool
+    accepted_at: Optional[str] = None
+    version: str = "2.0"
+
+
+class FieldConsentUpdate(BaseModel):
+    """字段级同意更新"""
+    field_path: str = Field(..., description="字段路径，如 heart_rate、genome.CYP2C19")
+    jurisdiction: str = Field(default="cn", description="法域：cn/us/uk/au/eu")
+    purpose: str = Field(default="analysis", description="目的：analysis/training/share/export")
+    accepted: bool = Field(..., description="是否同意")
+    note: Optional[str] = None
+
+
 # ── Consent Store ────────────────────────────────────────────────
 # P0-22：持久化到数据库，替代内存 dict（重启不丢、多 worker 一致）
 
@@ -406,6 +425,183 @@ async def get_rights():
                     "how_to": "POST /api/v1/gdpr/consent with accepted=false",
                     "response_time": "Immediately",
                 },
+                {
+                    "id": "field_consent",
+                    "article": "Article 7 (Granularity)",
+                    "title": "Field-Level Consent",
+                    "description_zh": "您可以按字段粒度控制数据使用，选择同意或拒绝特定字段用于特定目的。",
+                    "description_en": "You can control data usage at field granularity, choosing to consent or refuse specific fields for specific purposes.",
+                    "how_to": "GET/POST /api/v1/gdpr/field-consent",
+                    "response_time": "Immediately",
+                },
             ]
         }
     }
+
+
+# ── 字段级×法域级同意管理（M13 差异化）──────────────────────────
+
+@router.get("/field-consent")
+async def list_field_consents(
+    request: Request,
+    jurisdiction: Optional[str] = None,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """列出用户的字段级同意记录
+
+    支持按法域筛选。返回所有 (field, jurisdiction, purpose) 组合的同意状态。
+    """
+    from app.models.field_consent import FieldConsent
+
+    stmt = select(FieldConsent).where(FieldConsent.user_id == user.id)
+    if jurisdiction:
+        stmt = stmt.where(FieldConsent.jurisdiction == jurisdiction)
+    result = await db.execute(stmt)
+    rows = result.scalars().all()
+
+    consents = [
+        FieldConsentStatus(
+            field_path=r.field_path,
+            jurisdiction=r.jurisdiction,
+            purpose=r.purpose,
+            accepted=r.accepted,
+            accepted_at=r.accepted_at,
+            version=r.version,
+        )
+        for r in rows
+    ]
+    return {"success": True, "data": {"field_consents": consents, "count": len(consents)}}
+
+
+@router.post("/field-consent")
+async def update_field_consent(
+    request: Request,
+    payload: FieldConsentUpdate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """更新字段级同意
+
+    记录 (user, field_path, jurisdiction, purpose) 四维同意。
+    全局撤回（POST /consent with accepted=false）自动覆盖所有字段级同意。
+    """
+    from app.models.field_consent import FieldConsent
+
+    require_same_region(user, request)
+    now = datetime.now(timezone.utc).isoformat()
+
+    stmt = select(FieldConsent).where(
+        FieldConsent.user_id == user.id,
+        FieldConsent.field_path == payload.field_path,
+        FieldConsent.jurisdiction == payload.jurisdiction,
+        FieldConsent.purpose == payload.purpose,
+    )
+    result = await db.execute(stmt)
+    row = result.scalar_one_or_none()
+
+    if row:
+        row.accepted = payload.accepted
+        row.accepted_at = now if payload.accepted else None
+        row.note = payload.note
+    else:
+        row = FieldConsent(
+            user_id=user.id,
+            field_path=payload.field_path,
+            jurisdiction=payload.jurisdiction,
+            purpose=payload.purpose,
+            accepted=payload.accepted,
+            accepted_at=now if payload.accepted else None,
+            note=payload.note,
+        )
+        db.add(row)
+    await db.commit()
+
+    logger.info(
+        f"Field consent updated | user={user.id} | field={payload.field_path} | "
+        f"jurisdiction={payload.jurisdiction} | purpose={payload.purpose} | accepted={payload.accepted}"
+    )
+    return {"success": True, "data": FieldConsentStatus(
+        field_path=payload.field_path,
+        jurisdiction=payload.jurisdiction,
+        purpose=payload.purpose,
+        accepted=payload.accepted,
+        accepted_at=now if payload.accepted else None,
+    ).model_dump()}
+
+
+@router.post("/field-consent/batch")
+async def batch_update_field_consents(
+    request: Request,
+    payloads: list[FieldConsentUpdate],
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """批量更新字段级同意
+
+    一次提交多个字段同意状态，减少网络往返。
+    """
+    from app.models.field_consent import FieldConsent
+
+    require_same_region(user, request)
+    now = datetime.now(timezone.utc).isoformat()
+    updated = 0
+
+    for payload in payloads:
+        stmt = select(FieldConsent).where(
+            FieldConsent.user_id == user.id,
+            FieldConsent.field_path == payload.field_path,
+            FieldConsent.jurisdiction == payload.jurisdiction,
+            FieldConsent.purpose == payload.purpose,
+        )
+        result = await db.execute(stmt)
+        row = result.scalar_one_or_none()
+
+        if row:
+            row.accepted = payload.accepted
+            row.accepted_at = now if payload.accepted else None
+            row.note = payload.note
+        else:
+            row = FieldConsent(
+                user_id=user.id,
+                field_path=payload.field_path,
+                jurisdiction=payload.jurisdiction,
+                purpose=payload.purpose,
+                accepted=payload.accepted,
+                accepted_at=now if payload.accepted else None,
+                note=payload.note,
+            )
+            db.add(row)
+        updated += 1
+
+    await db.commit()
+    logger.info(f"Batch field consent updated | user={user.id} | count={updated}")
+    return {"success": True, "data": {"updated": updated}}
+
+
+@router.get("/field-consent/check")
+async def check_field_consent(
+    field_path: str,
+    jurisdiction: str = "cn",
+    purpose: str = "analysis",
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """检查字段级同意状态
+
+    供后端业务逻辑调用：在输出某字段前检查用户是否已同意。
+    """
+    from app.models.field_consent import FieldConsent
+
+    stmt = select(FieldConsent).where(
+        FieldConsent.user_id == user.id,
+        FieldConsent.field_path == field_path,
+        FieldConsent.jurisdiction == jurisdiction,
+        FieldConsent.purpose == purpose,
+    )
+    result = await db.execute(stmt)
+    row = result.scalar_one_or_none()
+
+    if row:
+        return {"success": True, "data": {"accepted": row.accepted, "accepted_at": row.accepted_at}}
+    return {"success": True, "data": {"accepted": False, "accepted_at": None}}
