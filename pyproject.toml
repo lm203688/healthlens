@@ -43,6 +43,19 @@ ocr = [
     "paddleocr>=2.7.0",
 ]
 
+# L2 表征层：传感器基础模型（Pulse-PPG / PaPaGei）。
+# 报告出处：《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5 L2。
+# 内核仍保持零第三方依赖；此 extra 用于「可选依赖的重型科学层」。
+# 未安装时 app/lib/sensor_adapter.py 的 list_available_engines() 会返回
+# available=False + reason，load_pulse_ppg_model/load_papagei_model 抛
+# HealthLensUnavailableEngine，zero_shot_embed_wellness 提供 20 维手工
+# 特征 fallback 作为 baseline。
+sensing = [
+    "torch>=2.0",
+    "transformers>=4.40",
+    "sentence-transformers>=2.7",
+]
+
 dev = [
     "pytest",
     "pytest-asyncio",
