@@ -10,21 +10,63 @@ const ROLES = [
   { key: "Referee", color: "#ef4444", labelKey: "agent.roleReferee" },
 ];
 
+/** 急救强提示样式：红色警示，必须醒目，不可被忽略 */
+const EMERGENCY_STYLE = {
+  background: "#fef2f2",
+  border: "2px solid #dc2626",
+  borderRadius: "10px",
+  padding: "16px",
+  marginBottom: "12px",
+};
+
 export default function AgentChat() {
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  // 急救拦截状态：null | { signal, guidance }
+  const [emergency, setEmergency] = useState(null);
 
   async function send() {
     if (!input.trim() || loading) return;
-    const userMsg = { role: "user", content: input.trim() };
+    const text = input.trim();
+    setEmergency(null);
+
+    /* ---- 步骤 1：健康护栏预检 ----
+     * 命中紧急信号 → 渲染强提示，终止后续请求（不消耗 Agent 算力，
+     * 也不让 Agent 在紧急场景下给出 wellness 建议造成延误）。 */
+    try {
+      const res = await api.emergencyCheck(text);
+      const data = await res.json();
+      if (data && data.is_emergency) {
+        setEmergency({ signal: data.signal, guidance: data.guidance });
+        setInput("");
+        return;
+      }
+    } catch {
+      /* 预检失败不阻断主流程——中间件仍会兜底拦截 */
+    }
+
+    /* ---- 步骤 2：正常发起 Agent 请求 ---- */
+    const userMsg = { role: "user", content: text };
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
-      const res = await api.agentTeam({ user_input: userMsg.content });
+      const res = await api.agentTeam({ user_input: text });
+      /* 中间件兜底拦截：HTTP 400 + code=emergency_signal_detected */
+      if (res.status === 400) {
+        try {
+          const data = await res.json();
+          if (data.code === "emergency_signal_detected" || data.code === "extreme_biomarker_value") {
+            setMessages((m) => [...m, userMsg]);
+            setEmergency({ signal: { category: data.category, keywords: data.keywords }, guidance: data.guidance });
+            return;
+          }
+        } catch {}
+        throw new Error("bad request");
+      }
       const data = await res.json();
       if (data.messages && Array.isArray(data.messages)) {
         setMessages((m) => [...m, ...data.messages.map((msg) => ({
@@ -62,7 +104,7 @@ export default function AgentChat() {
       </p>
 
       <div className="flex-1 overflow-y-auto border rounded-lg p-4 mb-3" style={{ maxHeight: "500px" }}>
-        {messages.length === 0 && (
+        {messages.length === 0 && !emergency && (
           <p style={{ color: "#aaa", textAlign: "center", padding: "40px 0" }}>
             {t("agent.emptyHint")}
           </p>
@@ -97,6 +139,47 @@ export default function AgentChat() {
           </div>
         )}
       </div>
+
+      {/* ---- 急救强提示：命中紧急信号时置顶渲染，红色警示不可忽略 ---- */}
+      {emergency && (
+        <div style={EMERGENCY_STYLE}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+            <div style={{ fontSize: "24px", lineHeight: "1" }}>🚨</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: "bold", color: "#dc2626", fontSize: "15px", marginBottom: "8px" }}>
+                {t("agent.emergency.title")}
+                {emergency.signal && emergency.signal.category
+                  ? ` · ${t("agent.emergency.category")}${emergency.signal.category}`
+                  : ""}
+              </div>
+              <div
+                style={{
+                  fontSize: "13px",
+                  lineHeight: "1.7",
+                  color: "#374151",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                {emergency.guidance || t("agent.emergency.fallback")}
+              </div>
+              {emergency.signal && emergency.signal.keywords && emergency.signal.keywords.length > 0 && (
+                <div style={{ marginTop: "8px", fontSize: "11px", color: "#991b1b" }}>
+                  {t("agent.emergency.matched")}: {emergency.signal.keywords.join("、")}
+                </div>
+              )}
+              <div style={{ marginTop: "10px" }}>
+                <button
+                  onClick={() => setEmergency(null)}
+                  className="px-3 py-1 text-xs rounded"
+                  style={{ background: "#fee2e2", color: "#991b1b", border: "1px solid #fca5a5" }}
+                >
+                  {t("agent.emergency.close")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex gap-2">
         <input
