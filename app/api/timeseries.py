@@ -249,7 +249,9 @@ def _schema_candidate_paths() -> list[Any]:
     paths.append(Path.cwd() / "config" / "serializer_schema_v1.json")
     paths.append(Path("/app/config") / "serializer_schema_v1.json")
     paths.append(Path("/opt/healthlens/config") / "serializer_schema_v1.json")
-    # bind-mount 兜底：/opt/healthlens/data 常是 bind mount，可放镜像外更新的文件
+    # bind-mount 兜底：/app/data 在容器内对应宿主机 /opt/healthlens/data，
+    # 是运行时可更新文件（镜像 COPY 的 /app/config 无法热更新）。
+    paths.append(Path("/app/data") / "serializer_schema_v1.json")
     paths.append(Path("/opt/healthlens/data") / "serializer_schema_v1.json")
     return paths
 
