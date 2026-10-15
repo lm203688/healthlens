@@ -125,6 +125,43 @@ class AxisScore:
         }
 
 
+class AxisScoringError(Exception):
+    """单轴打分失败的结构化错误（M06 P0-2）。
+
+    区分两种情形：
+    - **无数据**（合法）：输入缺失时打分器返回 `measured=False`，不抛异常。
+    - **打分崩溃**（bug）：打分器抛异常（如签名不匹配、阈值配置错误），
+      必须被显式记录而非静默吞掉。
+
+    M06 P0-2 的历史教训：N1（H 轴签名回归）导致 `score_all_axes` 每次调用
+    都抛 TypeError，被 `fusion_engine` 的 `except Exception: {}` 静默吞掉，
+    前端/API/日志都看不出「八轴可测量」命题已经失效。现在通过本异常类 +
+    `score_all_axes_report` 强制让失败可见：fusion_engine 记 ERROR 日志，
+    并把 `axis_scoring_errors` 写入响应体，前端可显式提示「部分轴打分失败」。
+    """
+
+    def __init__(
+        self,
+        axis: str,
+        cause: BaseException,
+        *,
+        input_summary: dict | None = None,
+    ):
+        self.axis = axis
+        self.cause = cause
+        self.input_summary = input_summary or {}
+        super().__init__(f"axis {axis} scoring failed: {type(cause).__name__}: {cause}")
+
+    def as_dict(self) -> dict:
+        """结构化输出，供 API 响应 / 日志 / 审计消费。"""
+        return {
+            "axis": self.axis,
+            "error_type": type(self.cause).__name__,
+            "error": str(self.cause),
+            "input_summary": self.input_summary,
+        }
+
+
 # ---------------------------------------------------------------------------
 # 透明小工具
 # ---------------------------------------------------------------------------
@@ -598,12 +635,68 @@ def score_all_axes(
     """
     out: dict[str, AxisScore] = {}
     for ax in ALL_AXES:
-        out[ax] = score_axis(
-            ax, biomarkers=biomarkers, wearable=wearable,
-            symptoms=symptoms, bioage_delta=bioage_delta, is_male=is_male,
-            jurisdiction=jurisdiction,
-        )
+        try:
+            out[ax] = score_axis(
+                ax, biomarkers=biomarkers, wearable=wearable,
+                symptoms=symptoms, bioage_delta=bioage_delta, is_male=is_male,
+                jurisdiction=jurisdiction,
+            )
+        except Exception as cause:
+            # M06 P0-2：fail-loud —— 原实现被 fusion_engine 静默吞掉，导致八轴可测量命题失效。
+            # 现在抛出 AxisScoringError，由 fusion_engine 捕获处理。
+            raise AxisScoringError(
+                axis=ax,
+                cause=cause,
+                input_summary={
+                    "biomarkers": biomarkers,
+                    "wearable": wearable,
+                    "symptoms_count": len(symptoms) if symptoms else 0,
+                    "bioage_delta": bioage_delta,
+                    "is_male": is_male,
+                    "jurisdiction": jurisdiction,
+                },
+            )
     return out
+
+
+def score_all_axes_report(
+    *,
+    biomarkers: dict | None = None,
+    wearable: dict | None = None,
+    symptoms: list | None = None,
+    bioage_delta: float | None = None,
+    is_male: bool = True,
+    jurisdiction: str = "cn",
+) -> tuple[dict[str, AxisScore], list[dict]]:
+    """八轴打分（带错误报告）—— M06 P0-2。
+
+    返回 (axis_scores, errors) 二元组，errors 是失败轴的结构化错误列表。
+    调用方可选择降级（部分轴有结果）或硬失败（视业务策略而定）。
+    """
+    axis_scores = {}
+    errors = []
+    for ax in ALL_AXES:
+        try:
+            axis_scores[ax] = score_axis(
+                ax, biomarkers=biomarkers, wearable=wearable,
+                symptoms=symptoms, bioage_delta=bioage_delta, is_male=is_male,
+                jurisdiction=jurisdiction,
+            )
+        except Exception as cause:
+            err = AxisScoringError(
+                axis=ax,
+                cause=cause,
+                input_summary={
+                    "biomarkers": biomarkers,
+                    "wearable": wearable,
+                    "symptoms_count": len(symptoms) if symptoms else 0,
+                    "bioage_delta": bioage_delta,
+                    "is_male": is_male,
+                    "jurisdiction": jurisdiction,
+                },
+            )
+            errors.append(err.as_dict())
+    return axis_scores, errors
 
 
 def axis_scores_to_dict(scores: dict[str, AxisScore]) -> dict:
