@@ -1,0 +1,17 @@
+{
+  "priors": {
+    "effect_mean": 0,
+    "effect_sd": 2,
+    "tau_prior_mean": 1,
+    "tau_prior_sd": 1
+  },
+  "convergence": {
+    "mc_samples": 10000,
+    "mc_tolerance": 0.01
+  },
+  "ipw": {
+    "trim_fraction": 0.01,
+    "max_weight": 20
+  },
+  "disclosure": "individual data never leaves tenant; only sufficient statistics shared"
+}
