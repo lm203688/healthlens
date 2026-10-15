@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://healthlens.dev/schemas/ts-serializer/v1.json",
+  "title": "HealthLens TS Serializer v1 Output",
+  "description": "确定性时序序列化输出。报告出处：《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5 L2 —— 时序 → 确定性 JSON 序列化（原创点，填补 TEMPO/LiPCoT/tsln 生态空白）。此 schema 供外部工具校验与 LLM grounding。",
+  "type": "object",
+  "required": [
+    "schema",
+    "generator",
+    "channel_name",
+    "unit",
+    "sample_rate_hz",
+    "n_samples",
+    "sampling_duration",
+    "missing_fraction",
+    "features"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "v1",
+      "description": "Schema 版本，v1 为当前唯一稳定版本"
+    },
+    "generator": {
+      "type": "string",
+      "const": "healthlens-ts-serializer",
+      "description": "生成器标识，用于跨生成器审计与追溯"
+    },
+    "channel_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "通道名（HRV/SpO2/EEG/pulse/HR...），用于选择频带定义"
+    },
+    "unit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "采样单位（bpm/ms/umol/μV/% 等）"
+    },
+    "sample_rate_hz": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "采样率（Hz），等间隔假设"
+    },
+    "subject_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{16}$",
+      "description": "受试者 id 的 sha256 前 16 hex（隐私化，避免泄露原始 id）"
+    },
+    "session_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{16}$",
+      "description": "会话 id 的 sha256 前 16 hex（隐私化）"
+    },
+    "n_samples": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "样本总数（含 NaN，缺失比例在 missing_fraction）"
+    },
+    "sampling_duration": {
+      "type": "number",
+      "minimum": 0,
+      "description": "采样时长（秒）= n_samples / sample_rate_hz"
+    },
+    "missing_fraction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "NaN 样本占比"
+    },
+    "bins": {
+      "type": "array",
+      "description": "时间分箱后的统计（默认 bin 宽度 1 秒）",
+      "items": {
+        "type": "object",
+        "required": ["idx", "t_start", "t_end", "n_samples", "mean", "std", "min", "max", "slope"],
+        "additionalProperties": false,
+        "properties": {
+          "idx": { "type": "integer", "minimum": 0 },
+          "t_start": { "type": "number", "minimum": 0 },
+          "t_end": { "type": "number", "minimum": 0 },
+          "n_samples": { "type": "integer", "minimum": 0 },
+          "mean": { "type": "number" },
+          "std": { "type": "number", "minimum": 0 },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "slope": { "type": "number" }
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "description": "特征分组：time_domain / freq_domain / shape / context",
+      "additionalProperties": false,
+      "properties": {
+        "time_domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mean": { "type": "number" },
+            "std": { "type": "number" },
+            "cv": { "type": "number" },
+            "skew": { "type": "number" },
+            "kurtosis": { "type": "number" },
+            "rms": { "type": "number" },
+            "mad": { "type": "number" }
+          }
+        },
+        "freq_domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "dominant_freq": { "type": ["number", "null"] },
+            "spectral_entropy": { "type": ["number", "null"] },
+            "band_powers": {
+              "type": "object",
+              "description": "按通道选择频带（HRV→vLF/LF/HF/vHF；EEG→delta/theta/alpha/beta/gamma），归一化求和=1",
+              "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "shape": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "hurst_exponent": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "maximum": 1,
+              "description": "DFA 简版；白噪声≈0.5，长程正相关>0.5"
+            },
+            "fractal_dimension": {
+              "type": ["number", "null"],
+              "minimum": 1,
+              "maximum": 2
+            },
+            "approximate_entropy": { "type": ["number", "null"] }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sampling_duration": { "type": "number" },
+            "sample_count": { "type": "integer" },
+            "missing_fraction": { "type": "number" },
+            "monotonic_fraction": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    }
+  }
+}
