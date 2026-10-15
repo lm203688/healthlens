@@ -15,8 +15,80 @@ from app.database import get_db
 from app.api.deps import get_current_user, require_admin
 from app.models.user import User
 from app.models.seo import SeoPage, SeoPageTemplate, KeywordCluster
+from app.lib.seo_quality_gate import QualityGateResult, run_quality_gate
 
 router = APIRouter()
+
+
+# ---------------------------------------------------------------------------
+# 发布质量闸门（M14 P0-1）
+# ---------------------------------------------------------------------------
+# 三条发布路径必须全部经过闸门，否则闸门等于不存在：
+#   1. POST /pages/publish/{slug}      —— 单独发布
+#   2. POST /pages/import              —— UPSERT，status 默认 published
+#   3. POST /pages/batch-import        —— 批量 UPSERT，status 默认 published
+#
+# 背景缺陷：闸门模块 app/lib/seo_quality_gate.py 此前**已存在但全仓零调用**，
+# 三条发布路径都不跑校验，占位页（"正在生成中..."、word_count=0）可被一键
+# 发布到公开站点。健康内容属 YMYL，低质批量页是负资产。此处接线并 fail-closed。
+#
+# 闸门结果写入 SeoPage.structured_data["quality_gate"]（复用既有 JSON 列，
+# 不新增表结构、不引入迁移），使「哪一版内容在何时被拦/放行」可事后审计。
+
+GATE_RECORD_KEY = "quality_gate"
+
+
+def _gate_payload(gate: QualityGateResult) -> dict:
+    """把闸门结果压成可序列化的响应体。"""
+    return {
+        "passed": gate.passed,
+        "score": gate.score,
+        "critical_count": len(gate.critical_issues),
+        "warning_count": len(gate.warnings),
+        "critical_issues": list(gate.critical_issues),
+        "warnings": list(gate.warnings),
+        "checks": [
+            {
+                "check_name": c.check_name,
+                "status": c.status.value,
+                "message": c.message,
+                "details": list(c.details),
+            }
+            for c in gate.checks
+        ],
+    }
+
+
+def _gate_record(gate: QualityGateResult, actor_id: str, outcome: str) -> dict:
+    """可写入 JSON 列的闸门审计记录。outcome: blocked|published|review_only"""
+    return {
+        "passed": gate.passed,
+        "score": gate.score,
+        "checked_at": datetime.utcnow().isoformat(),
+        "actor_id": actor_id,
+        "outcome": outcome,
+        "critical_issues": list(gate.critical_issues),
+        "warnings": list(gate.warnings),
+    }
+
+
+def _merge_gate_record(page: SeoPage, record: dict) -> None:
+    """把闸门记录并入 structured_data，保留既有的 JSON-LD 等结构化数据。"""
+    current = page.structured_data if isinstance(page.structured_data, dict) else {}
+    current[GATE_RECORD_KEY] = record
+    page.structured_data = current
+
+
+def _block_detail(gate: QualityGateResult) -> dict:
+    """闸门拦截时的 422 detail：必须给出具体的、可修复的原因。"""
+    return {
+        "code": "quality_gate_blocked",
+        "message": f"质量闸门未通过（评分 {gate.score}/100），已拦截发布",
+        "score": gate.score,
+        "critical_issues": list(gate.critical_issues),
+        "warnings": list(gate.warnings),
+        "hint": "修复上述 blocker 后重试；可用 POST /pages/review/{slug} 预检",
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -214,25 +286,72 @@ async def generate_seo_pages(
 # POST /pages/publish/{slug} - 发布页面 (admin only)
 # ---------------------------------------------------------------------------
 
+@router.post("/pages/review/{slug}", summary="SEO 页面发布前质量预检 (管理员)")
+async def review_seo_page(
+    slug: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin),
+):
+    """跑质量闸门但**不改变 status**。
+
+    用途：让管理员在 publish 前看到「为什么不能发」，而不是反复试 publish。
+    闸门自身异常时 run_quality_gate 内部按 blocker 处理（fail-closed），
+    本端点不会返回假通过。
+    """
+    result = await db.execute(select(SeoPage).where(SeoPage.slug == slug))
+    page = result.scalar_one_or_none()
+    if not page:
+        raise HTTPException(status_code=404, detail="SEO page not found")
+
+    gate = run_quality_gate(page.content_html, slug=page.slug)
+    _merge_gate_record(page, _gate_record(gate, current_user.id, "review_only"))
+    await db.commit()
+
+    logger.info(
+        f"Admin {current_user.id} reviewed SEO page '{slug}': "
+        f"passed={gate.passed} score={gate.score}"
+    )
+    return {
+        "success": True,
+        "message": f"预检完成：{'可发布' if gate.passed else '存在 blocker，不可发布'}",
+        "data": _gate_payload(gate),
+    }
+
+
 @router.post("/pages/publish/{slug}", summary="发布 SEO 页面 (管理员)")
 async def publish_seo_page(
     slug: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
-    result = await db.execute(
-        select(SeoPage).where(SeoPage.slug == slug)
-    )
+    """发布页面。发布前必须通过质量闸门，未通过返回 422 且不改变状态。"""
+    result = await db.execute(select(SeoPage).where(SeoPage.slug == slug))
     page = result.scalar_one_or_none()
     if not page:
         raise HTTPException(status_code=404, detail="SEO page not found")
 
+    # ── 发布闸门（fail-closed）──────────────────────────────────
+    gate = run_quality_gate(page.content_html, slug=page.slug)
+    if not gate.passed:
+        # 被拦的闸门结果同样留痕：记录「谁在何时因何被拦」，便于事后审计。
+        _merge_gate_record(page, _gate_record(gate, current_user.id, "blocked"))
+        await db.commit()
+        logger.warning(
+            f"Admin {current_user.id} publish BLOCKED for '{slug}': "
+            f"score={gate.score}, critical={len(gate.critical_issues)}"
+        )
+        raise HTTPException(status_code=422, detail=_block_detail(gate))
+
     page.status = "published"
     page.published_at = datetime.utcnow()
+    _merge_gate_record(page, _gate_record(gate, current_user.id, "published"))
     await db.commit()
     await db.refresh(page)
 
-    logger.info(f"Admin {current_user.id} published SEO page: {slug}")
+    logger.info(
+        f"Admin {current_user.id} published SEO page: {slug} "
+        f"(gate passed, score={gate.score})"
+    )
 
     return {
         "success": True,
@@ -241,6 +360,7 @@ async def publish_seo_page(
             "slug": page.slug,
             "status": page.status,
             "published_at": page.published_at.isoformat() if page.published_at else None,
+            "quality_gate": _gate_payload(gate),
         },
     }
 
@@ -447,12 +567,30 @@ async def import_seo_page(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
-    """创建或更新一个 SEO 页面（UPSERT by slug）"""
+    """创建或更新一个 SEO 页面（UPSERT by slug）
+
+    目标状态为 published 时必须先过质量闸门——否则这是绕过 publish 闸门的
+    第二条通道（`status` 默认为 published）。draft/archived 不拦：草稿态
+    不上线，无需质量约束。
+    """
     result = await db.execute(
         select(SeoPage).where(SeoPage.slug == body.slug)
     )
     page = result.scalar_one_or_none()
     now = datetime.utcnow()
+
+    target_status = body.status or "published"
+    if target_status == "published":
+        gate = run_quality_gate(body.content_html, slug=body.slug)
+        if not gate.passed:
+            logger.warning(
+                f"Admin {current_user.id} import BLOCKED for '{body.slug}': "
+                f"score={gate.score}, critical={len(gate.critical_issues)}"
+            )
+            raise HTTPException(
+                status_code=422,
+                detail=_block_detail(gate),
+            )
 
     if page:
         page.title = body.title
@@ -513,6 +651,23 @@ async def batch_import_seo_pages(
 
     for item in body.pages:
         try:
+            # 逐项跑闸门：不通过的项记入 failed 并跳过，不中断整批。
+            target_status = item.status or "published"
+            if target_status == "published":
+                gate = run_quality_gate(item.content_html, slug=item.slug)
+                if not gate.passed:
+                    failed.append({
+                        "slug": item.slug,
+                        "error": "quality_gate_blocked",
+                        "score": gate.score,
+                        "critical_issues": list(gate.critical_issues),
+                    })
+                    logger.warning(
+                        f"Admin {current_user.id} batch import BLOCKED "
+                        f"'{item.slug}': score={gate.score}"
+                    )
+                    continue
+
             result = await db.execute(
                 select(SeoPage).where(SeoPage.slug == item.slug)
             )
