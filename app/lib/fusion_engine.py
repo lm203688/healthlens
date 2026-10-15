@@ -92,14 +92,42 @@ def _load_axis_scorers():
 try:
     _axis_scorers = _load_axis_scorers()
     score_all_axes = _axis_scorers.score_all_axes
+    # M06 P0-2：fail-loud 变体（带错误报告，不吞异常）
+    score_all_axes_report = getattr(_axis_scorers, "score_all_axes_report", None)
     axis_scores_to_dict = _axis_scorers.axis_scores_to_dict
     ALL_AXES = _axis_scorers.ALL_AXES
 except Exception:  # noqa: BLE001
     score_all_axes = None  # type: ignore[assignment]
+    score_all_axes_report = None  # type: ignore[assignment]
     axis_scores_to_dict = None  # type: ignore[assignment]
     ALL_AXES = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
 _HAS_AXIS_SCORERS = score_all_axes is not None
+
+
+def _log_axis_scoring_errors(errors: list[dict]) -> None:
+    """M06 P0-2：把单轴打分失败记为 ERROR 级日志（而非 WARNING）。
+
+    原实现在 warning 级静默吞掉异常，导致 N1（H 轴签名回归）在运行期
+    完全不可见——八轴可测量命题失效但无任何信号。现在强制 ERROR 级，
+    并把结构化错误写入响应体，前端/API 可见。
+    """
+    if not errors:
+        return
+    try:
+        from loguru import logger as _logger
+        for e in errors:
+            _logger.error(
+                "fusion_engine: 八轴打分失败 axis={} error_type={} error={}",
+                e.get("axis", "?"), e.get("error_type"), e.get("error"),
+            )
+    except Exception:
+        import logging as _logging
+        for e in errors:
+            _logging.getLogger(__name__).error(
+                "fusion_engine: axis scoring failed axis=%s type=%s err=%s",
+                e.get("axis", "?"), e.get("error_type"), e.get("error"),
+            )
 
 
 try:
@@ -431,17 +459,32 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
 
     # P0-1：八轴真实打分（缺数据轴标 unmeasured）。measured 且低于阈值的轴并入弱项集合，
     # 使融合引擎真正"算"出弱项，而非只靠调用方传入。
+    # M06 P0-2（2026-10-14）：单轴打分失败不再静默吞掉，而是记录为结构化错误
+    # 并写入响应体 `axis_scoring_errors`，前端/API/日志三者可见。
     axis_scores_block: dict = {}
     measured_weak_axes: set[str] = set()
+    axis_scoring_errors: list[dict] = []
     if _HAS_AXIS_SCORERS:
         try:
-            _scores = score_all_axes(
-                biomarkers=profile.biomarkers,
-                wearable=profile.wearable,
-                symptoms=profile.symptoms,
-                bioage_delta=_bioage_delta_for_axis,
-                is_male=profile.is_male,
-            )
+            if score_all_axes_report is not None:
+                # M06 P0-2：带错误报告的变体——单轴崩溃不抛，而是结构化返回
+                _scores, axis_scoring_errors = score_all_axes_report(
+                    biomarkers=profile.biomarkers,
+                    wearable=profile.wearable,
+                    symptoms=profile.symptoms,
+                    bioage_delta=_bioage_delta_for_axis,
+                    is_male=profile.is_male,
+                )
+                if axis_scoring_errors:
+                    _log_axis_scoring_errors(axis_scoring_errors)
+            else:
+                _scores = score_all_axes(
+                    biomarkers=profile.biomarkers,
+                    wearable=profile.wearable,
+                    symptoms=profile.symptoms,
+                    bioage_delta=_bioage_delta_for_axis,
+                    is_male=profile.is_male,
+                )
             # S0-2：只输出 measured 的轴——无数据轴不再污染 axis_scores 结构，
             # 与 test_no_data_still_demo_banner 的 `axis_scores == {}` 断言一致。
             _all_scores_dict = axis_scores_to_dict(_scores)
@@ -464,21 +507,21 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
                 if sc.measured and sc.score < BIOAGE_WEAK_THRESHOLD:
                     measured_weak_axes.add(ax)
         except Exception as _e:  # noqa: BLE001
-            # S0-2（2026-10-12）：静默兜底 → 显式告警。
-            # 此前此处吞掉所有异常，导致 N1（H 轴签名回归）在运行期完全不可见——
-            # 前端/API/日志都看不出"八轴可测量"命题已经失效。
-            # 现在至少记 warning，并带上 traceback 尾行，便于定位。
-            try:
-                from loguru import logger as _logger
-                _logger.warning(
-                    "fusion_engine: score_all_axes failed, axis_scores 置空: {!r}",
-                    _e,
-                )
-            except Exception:
-                import logging as _logging
-                _logging.getLogger(__name__).warning(
-                    "fusion_engine: score_all_axes failed: %r", _e
-                )
+            # M06 P0-2：fail-loud —— 原实现静默吞异常导致八轴可测量命题失效。
+            # 现在记 ERROR 级日志，并把结构化错误写进响应体，前端可显式提示。
+            _axis_scoring_err = {
+                "error_type": type(_e).__name__,
+                "error": str(_e),
+                "input_summary": {
+                    "biomarkers": profile.biomarkers,
+                    "wearable_keys": list((profile.wearable or {}).keys()) if profile.wearable else [],
+                    "symptoms_count": len(profile.symptoms) if profile.symptoms else 0,
+                    "bioage_delta": _bioage_delta_for_axis,
+                    "is_male": profile.is_male,
+                },
+            }
+            axis_scoring_errors.append(_axis_scoring_err)
+            _log_axis_scoring_errors(axis_scoring_errors)
             axis_scores_block = {}
     weak_axes |= measured_weak_axes
 
@@ -567,6 +610,9 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         "weak_axes": sorted(weak_axes),
         "axis_bridges": axis_bridges_for(weak_axes),
         "axis_scores": axis_scores_block,
+        # M06 P0-2：单轴打分失败必须可见（前端可据此提示"部分轴打分失败"）
+        "axis_scoring_errors": axis_scoring_errors,
+        "axis_scoring_ok": len(axis_scoring_errors) == 0,
         "axis_measured_weak": sorted(measured_weak_axes),
         "bioage": bioage_block,
         "recommendations": rec_dicts,
