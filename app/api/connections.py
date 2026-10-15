@@ -28,7 +28,7 @@ def decrypt_token(encrypted: str) -> str:
     return _get_cipher().decrypt(encrypted.encode()).decode()
 
 
-ALLOWED_SOURCE_TYPES = {"huawei_health", "apple_health", "withings", "xiaomi_health", "hospital_lis", "open_wearables"}
+ALLOWED_SOURCE_TYPES = {"huawei_health", "apple_health", "withings", "xiaomi_health", "hospital_lis", "open_wearables", "google_health"}
 
 # Open Wearables 支持的设备提供商列表（mock 模式下返回，真实模式下从 OW API 获取）
 OW_PROVIDERS = [
@@ -446,5 +446,99 @@ async def upload_health_file(
             "source_type": source_type,
             "items_count": len(items),
             "message": f"成功导入 {len(items)} 条健康数据",
+        },
+    }
+
+
+# ---------------------------------------------------------------------------
+# S1-5 连接器状态自检
+# ---------------------------------------------------------------------------
+
+# 品牌原生 OAuth2 连接器的凭据需求（key=source_type, value=所需 env 前缀）
+_OAUTH_CREDENTIAL_MAP = {
+    "withings": ("WITHINGS_CLIENT_ID", "WITHINGS_CLIENT_SECRET", "WITHINGS_REDIRECT_URI"),
+    "huawei_health": ("HUAWEI_HEALTH_CLIENT_ID", "HUAWEI_HEALTH_CLIENT_SECRET", "HUAWEI_HEALTH_REDIRECT_URI"),
+    "xiaomi_health": ("XIAOMI_HEALTH_CLIENT_ID", "XIAOMI_HEALTH_CLIENT_SECRET", "XIAOMI_HEALTH_REDIRECT_URI"),
+}
+
+# 非 OAuth 模式（文件导入 / 中转发）
+_NON_OAUTH_CONNECTORS = {
+    "apple_health": {"mode": "xml_import", "status": "ready",
+                     "note": "通过 iOS 健康App 导出 XML 后上传，无需服务端 OAuth2"},
+    "google_health": {"mode": "json_import", "status": "ready",
+                      "note": "通过 Android 健康 App 导出 JSON 后上传，无需服务端 OAuth2"},
+    "open_wearables": {"mode": "aggregator_api", "status": None,  # 由运行时判断
+                       "note": "统一接入 14 设备；凭证来自 OPEN_WEARABLES_API_KEY"},
+    "hospital_lis": {"mode": "lis_export", "status": "ready",
+                     "note": "医院 LIS 系统导出文件导入"},
+}
+
+
+@router.get("/status", response_model=dict)
+async def list_connector_status():
+    """S1-5 反骨架化：对外暴露每个连接器的实际可用状态。
+
+    设计原则：
+    - 「填齐凭据即接通」——状态直接反映环境变量，不撒谎
+    - 「未配置就 fail-loud」——status 明确标 `needs_credentials`，
+      调用方可据此引导用户完成配置，而非假装可用
+    - 不返回任何 secret 原值，只返回「是否已配置」的布尔
+    """
+    from app.connectors.base import ConnectorRegistry
+
+    registered = set(ConnectorRegistry.available_sources())
+
+    statuses: dict[str, dict] = {}
+
+    # 品牌原生 OAuth2 连接器
+    for source, (cid_key, csecret_key, credirect_key) in _OAUTH_CREDENTIAL_MAP.items():
+        cid = getattr(settings, cid_key, "")
+        csecret = getattr(settings, csecret_key, "")
+        credirect = getattr(settings, credirect_key, "")
+        has_credentials = bool(cid and csecret and credirect)
+        statuses[source] = {
+            "source_type": source,
+            "mode": "oauth2",
+            "registered": source in registered,
+            "status": "ready" if has_credentials else "needs_credentials",
+            "has_client_id": bool(cid),
+            "has_client_secret": bool(csecret),
+            "has_redirect_uri": bool(credirect),
+            "credential_env_keys": [cid_key, csecret_key, credirect_key],
+            "note": (
+                "已配置，可直接 OAuth2 授权" if has_credentials else
+                f"需在环境变量设置 {cid_key}/{csecret_key}/{credirect_key} 后启用"
+            ),
+        }
+
+    # 非 OAuth 连接器
+    for source, meta in _NON_OAUTH_CONNECTORS.items():
+        entry = dict(meta)
+        entry["source_type"] = source
+        entry["registered"] = source in registered
+        if source == "open_wearables":
+            api_key = getattr(settings, "OPEN_WEARABLES_API_KEY", "")
+            api_url = getattr(settings, "OPEN_WEARABLES_API_URL", "")
+            has_credentials = bool(api_key and api_url)
+            entry["status"] = "ready" if has_credentials else "needs_credentials"
+            entry["has_api_key"] = bool(api_key)
+            entry["has_api_url"] = bool(api_url)
+            entry["credential_env_keys"] = ["OPEN_WEARABLES_API_KEY", "OPEN_WEARABLES_API_URL"]
+            entry["note"] = (
+                "已配置，可访问 Open Wearables 聚合 API" if has_credentials else
+                "需在环境变量设置 OPEN_WEARABLES_API_KEY/OPEN_WEARABLES_API_URL 后启用"
+            )
+        statuses[source] = entry
+
+    return {
+        "success": True,
+        "data": {
+            "connectors": statuses,
+            "summary": {
+                "total": len(statuses),
+                "ready": sum(1 for s in statuses.values() if s.get("status") == "ready"),
+                "needs_credentials": sum(1 for s in statuses.values() if s.get("status") == "needs_credentials"),
+                "mock_active": 0,  # 反骨架化后不再返回 mock 数据
+            },
         },
     }
