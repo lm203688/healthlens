@@ -139,17 +139,22 @@ def create_app() -> FastAPI:
     from app.api.fusion import router as fusion_router
     from app.api.gdpr import router as gdpr_router
     from app.api.genome import router as genome_router
+    from app.api.graphrag import router as graphrag_router
+    from app.api.national_standard import router as national_standard_router
     from app.api.geo_infra import geo_router
     from app.api.goals import router as goals_router
     from app.api.growth import router as growth_router
     from app.api.growth_enhanced import router as growth_enhanced_router
     from app.api.health_tools import tools_public_router
     from app.api.knowledge import router as knowledge_router
+    from app.api.longitudinal import router as longitudinal_router
     from app.api.medication_adherence import router as adherence_router
     from app.api.medications import router as medications_router
     from app.api.notifications import router as notifications_router
     from app.api.observations import router as observations_router
     from app.api.payment import router as payment_router
+    from app.api.partner_api import router as partner_api_router
+    from app.api.partners import router as partners_router
     from app.api.points import router as points_router
     from app.api.profiles import router as profiles_router
     from app.api.records import router as records_router
@@ -185,6 +190,7 @@ def create_app() -> FastAPI:
     app.include_router(notifications_router, prefix="/api/v1/notifications", tags=["通知中心"])
     app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
     app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
+    app.include_router(longitudinal_router, prefix="/api/v1/longitudinal", tags=["纵向追踪"])
     app.include_router(axes_router, prefix="/api/v1/axes", tags=["八轴稳态"])
     app.include_router(causal_router, prefix="/api/v1/causal", tags=["因果推演"])
     app.include_router(repair_router, prefix="/api/v1/repair", tags=["细胞修复"])
@@ -199,6 +205,8 @@ def create_app() -> FastAPI:
     app.include_router(freemium_router, prefix="/api/v1/freemium", tags=["积分门禁"])
     app.include_router(growth_enhanced_router, prefix="/api/v1/growth", tags=["推广系统"])
     app.include_router(points_router, prefix="/api/v1/points", tags=["积分系统"])
+    # 知识图谱（GraphRAG S2-5）
+    app.include_router(graphrag_router, prefix="/api/v1/graphrag", tags=["知识图谱"])
     # 号脉终端：脉象解读（agent 可调用的「号脉判断」入口）
     from app.api.pulse import router as pulse_router
 
@@ -224,12 +232,17 @@ def create_app() -> FastAPI:
     app.include_router(payment_router, prefix="/api/v1/payment", tags=["支付"])
     # GDPR 合规（数据导出/删除/同意管理）
     app.include_router(gdpr_router, prefix="/api/v1/gdpr", tags=["GDPR"])
+    # 国标合规闸门（GB/T 20001.10-2014 条款映射）
+    app.include_router(national_standard_router, prefix="/api/v1/national-standard", tags=["国标合规"])
     # 边缘网关（家庭小盒子推上来的日粒度健康指标）
     app.include_router(device_metrics_router, prefix="/api/v1", tags=["边缘网关"])
     # 路由内部自带 /edge 前缀，这里补的 /api/v1 拼上去才是 /api/v1/edge/tickets
     app.include_router(edge_ticket_router, prefix="/api/v1", tags=["边缘网关票据"])
     # 公开分享页面（无需登录）
     app.include_router(share_public_router, tags=["公开分享"])
+    # S3-2 Powered-by SDK：合作方管理（admin） + 合作方对外 API（API Key 认证）
+    app.include_router(partners_router, prefix="/api/v1/partners", tags=["合作方管理"])
+    app.include_router(partner_api_router, prefix="/api/v1/partner-api", tags=["合作方API"])
 
     # MCP over HTTP（海外 Agent 一行 URL 接入，无需 pip install）
     try:
@@ -248,6 +261,14 @@ def create_app() -> FastAPI:
         app.include_router(agent_router)
     except Exception as _agent_err:  # noqa: BLE001
         logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
+
+    # 健康护栏预检端点（前端提交自由文本前调用，命中即渲染强提示）
+    try:
+        from app.api.emergency import router as emergency_router
+
+        app.include_router(emergency_router, prefix="/api/v1/emergency", tags=["健康护栏"])
+    except Exception as _emg_err:  # noqa: BLE001
+        logger.warning(f"[EMERGENCY] 健康护栏预检路由未加载: {_emg_err}")
 
     # 静态前端文件服务 (frontend/) - 带缓存控制
     import os
