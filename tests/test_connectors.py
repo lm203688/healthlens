@@ -30,9 +30,32 @@ def test_huawei_health_connector():
 
 
 @pytest.mark.asyncio
-async def test_huawei_sync_mock():
-    """测试华为健康数据同步(mock)"""
+async def test_huawei_sync_mock(monkeypatch):
+    """测试华为健康数据同步
+
+    S1-5（2026-10-15）：连接器已改为反骨架化 fail-loud 模式，
+    缺凭据时诚实报错，绝不返回 mock。测试通过 monkeypatch
+    fetch_health_data 注入数据来验证 sync_data 的格式转换逻辑，
+    与 Withings 测试保持同一策略。
+    """
     import app.connectors.huawei_health
+    from app.connectors.huawei_health import HuaweiHealthConnector
+
+    async def _mock_fetch(self, access_token, days=7):
+        return {
+            "items_count": 1,
+            "items": [{
+                "date": "2026-10-15",
+                "steps": 8500,
+                "calories": 1800,
+                "heart_rate_avg": 72,
+                "source": "huawei_health",
+            }],
+            "message": "mock data for test",
+        }
+
+    monkeypatch.setattr(HuaweiHealthConnector, "fetch_health_data", _mock_fetch)
+
     connector = ConnectorRegistry.get("huawei_health")
     result = await connector.sync_data("fake_token", "user123")
     assert result["items_count"] > 0
