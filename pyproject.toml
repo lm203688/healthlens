@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "healthlens"
-version = "0.26.2"
+version = "0.27.0"
 description = "HealthLens - 中西医融合健康管理平台"
 requires-python = ">=3.11"
 dependencies = [
