@@ -51,14 +51,34 @@ def test_jurisdiction_differential_us_flags_diagnosis_term():
 
 
 def test_jurisdiction_differential_blocked_fields_us_vs_cn():
-    # US blocked_fields 非空 → icd_code/risk_probability/severity 被移除；
-    # CN blocked_fields 为空 → 保留
+    """US/CN 屏蔽差异（M10 字段级 fallback 后的新语义）：
+    - US blocked_fields 命中 → 字段不删除、值被降级替换为 fallback dict，
+      路径记录到 rewritten_fields；原值不再裸露
+    - CN blocked_fields 为空 → 原值保留、无改写
+    断言的是"敏感原值不会跨法域泄露"这一不变式，而非"字段被物理移除"。
+    """
     r_us = filter_output(PAYLOAD, "us")
     r_cn = filter_output(PAYLOAD, "cn")
-    assert set(r_us.removed_fields) >= {"icd_code", "risk_probability", "severity"}
-    assert "icd_code" not in r_us.payload
-    assert "icd_code" in r_cn.payload  # CN 首发市场放行
+
+    # US：三个敏感字段都被降级替换
+    rewritten_paths = {p.split(" ")[0].split(".")[-1] for p in r_us.rewritten_fields}
+    assert {"icd_code", "risk_probability", "severity"} <= rewritten_paths, (
+        r_us.rewritten_fields
+    )
+
+    # US：payload 里字段键仍存在，但值已换成 fallback 结构（原值不再裸露）
+    assert isinstance(r_us.payload["icd_code"], dict)
+    assert "fallback_value" in r_us.payload["icd_code"]
+    assert r_us.payload["icd_code"]["fallback_value"] != "E11"
+    assert r_us.payload["risk_probability"] != 0.23
+    assert r_us.payload["severity"] != "moderate"
+
+    # CN：首发市场放行，原值保留
+    assert r_cn.payload["icd_code"] == "E11"
+    assert r_cn.payload["risk_probability"] == 0.23
+    assert r_cn.payload["severity"] == "moderate"
     assert r_cn.removed_fields == []
+    assert r_cn.rewritten_fields == []
 
 
 def test_endpoint_toggles_differ_by_jurisdiction():
