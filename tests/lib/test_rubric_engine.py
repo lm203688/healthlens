@@ -146,8 +146,13 @@ class TestBenchmarkLoad:
         }
 
     def test_each_category_has_4_to_6_items(self, benchmark_engine: RubricEngine) -> None:
+        """v1 基准已扩量到 200 条（每类 40 条），保留最小覆盖断言。
+
+        原断言为 4-6 条（v0.28.0 种子期），v0.29.0 报告 §5 L4 要求
+        扩量到 200-300 条以对标 HealthBench。这里只做下界断言。
+        """
         for cat, ids in benchmark_engine.list_categories().items():
-            assert 4 <= len(ids) <= 6, f"{cat}: {len(ids)} items"
+            assert len(ids) >= 4, f"{cat}: only {len(ids)} items (<4)"
 
     def test_load_missing_file_raises(self, tmp_path: Path) -> None:
         engine = RubricEngine()
