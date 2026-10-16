@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "Integrated Steady-State Axis Framework: Evidence Database & Cross-Modal Mapping",
+    "publication_date": "2026-10-15",
+    "doi": {
+      "prefix": "10.5281",
+      "suffix": null
+    },
+    "resource_type": {
+      "type": "DATASET",
+      "subtype": "DB"
+    },
+    "creators": [
+      {
+        "name": "HealthLens Research Team",
+        "affiliation": "HealthLens (open-source project)",
+        "orcid": null
+      }
+    ],
+    "description": "Evidence database (120 entries: 29 with verified DOIs, 91 synthetic validation fixtures) and cross-modal terminology mapping for the eight-axis integrated steady-state framework (A-H). Includes: (1) case evidence database with per-entry DOI verification status, (2) four-way terminology mapping (GB/T 20348 <-> axes <-> pathways <-> classical texts), (3) 613 classical Chinese medicine text fragments with axis annotations, (4) eight-axis threshold configuration (externalized), (5) validation baseline snapshot for reproducibility. All upstream bibliographic fields have been audited via three independent fail-loud defenses against leakage. Evidence coverage rate 24.2% (29/120 verified) is honestly reported.",
+    "subjects": [
+      "Medicine",
+      "Health Science",
+      "Traditional Medicine",
+      "Bioinformatics",
+      "Public Health",
+      "Computer Science"
+    ],
+    "keywords": [
+      "integrative medicine",
+      "traditional Chinese medicine",
+      "computational wellness",
+      "structural causal model",
+      "pharmacogenomics",
+      "evidence verification",
+      "data residency",
+      "jurisdiction-aware compliance",
+      "GB/T 20348"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/HealthLens/healthlens",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      },
+      {
+        "identifier": "https://doi.org/10.5281/zenodo.PENDING",
+        "relation": "preprintOf",
+        "scheme": "doi"
+      }
+    ],
+    "license": {
+      "id": "CC-BY-4.0",
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    },
+    "access_right": "open",
+    "prereserve_doi": false,
+    "publication_type": "publication"
+  },
+  "files": [
+    {
+      "path": "data/case_evidence_db.json",
+      "description": "Case evidence database (120 entries: 29 verified DOIs, 91 synthetic validation fixtures). Schema documented in data/README.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "data/axis_term_mapping.json",
+      "description": "Four-way terminology mapping: GB/T 20348-2026 <-> eight axes (A-H) <-> Western pathways <-> classical texts.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "data/classical_slices.json",
+      "description": "613 classical Chinese medicine text fragments with axis annotations. Each entry marked needs_expert_review=true. Retained bibliographic fields (book/author/dynasty/entity) carry explicit rationale.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "data/doi_verification_results.json",
+      "description": "DOI verification results via Crossref (2026-10-13). Status: verified / hallucination_resolved / unverified_text / traditional / broken_citation / synthetic_validation / unsourced.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "config/axes/axes.yaml",
+      "description": "Eight-axis threshold configuration (externalized from code). Supports jurisdiction-specific overrides.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "validation_snapshots/BASELINE.json",
+      "description": "Compute validation baseline snapshot. Metrics: overall_score / calibration_mean / calibration_p5_p95 / n_bootstrap / n_bridges / evalue_mean / calibration.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "HealthLens_论文_计算验证_补充数据.csv",
+      "description": "Supplementary data for the preprint paper. Includes all compute-verified metrics.",
+      "filesize_bytes": null
+    },
+    {
+      "path": "HealthLens_论文_框架概念图_Figure1.svg",
+      "description": "Figure 1 of the preprint: overview of the eight-axis integrated steady-state framework with cross-modal mappings.",
+      "filesize_bytes": null
+    }
+  ],
+  "upload_notes": {
+    "api_endpoint": "https://zenodo.org/api/deposit/deposits",
+    "auth": "Bearer token (create at https://zenodo.org/settings/user-tokens)",
+    "steps": [
+      "POST /api/deposit/deposits with metadata",
+      "POST /api/deposit/deposits/{id}/files/{filename} with each file",
+      "POST /api/deposit/deposits/{id}/actions/publish to generate DOI",
+      "Backfill DOI to submissions/medrxiv/data_availability_statement.md"
+    ],
+    "prerequisites": [
+      "Zenodo account",
+      "API token",
+      "ORCID for each author (fill into creators[].orcid)",
+      "Fill actual file sizes via `stat -c%s <file>` or equivalent"
+    ]
+  }
+}
