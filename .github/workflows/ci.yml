@@ -38,6 +38,12 @@ jobs:
           pip install --upgrade pip "setuptools>=70" wheel
           pip install -e ".[dev]"
 
+      - name: Version sync gate
+        # 防止 agent-card.json version 与 pyproject.toml 漂移（历史上复发 3 次：
+        # 2026-10-15、2026-10-16、以及每次手工修完仍会再漂移）。
+        # --check 模式不改盘，只门禁；不一致直接 exit 1 阻断主分支。
+        run: python tools/sync_version.py --check
+
       - name: Run tests
         id: tests
         run: |
