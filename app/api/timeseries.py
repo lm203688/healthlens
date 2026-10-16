@@ -12,11 +12,18 @@
 - GET  /hash/{subject_hash}/{session_hash}  ：查历史 hash（内存 dict，
                                             注释：生产应接 DB）
 - POST /sensor/probe：返回 available 基础模型引擎清单
+- POST /eval/harness：报告 §10 #6 Pulse-PPG 零样本评测（见下）
+
+报告 §10 #6 引用：《HealthLens_下一阶段全面提升报告_2026-10-08》§10 #6
+> 「评测 Pulse-PPG / PaPaGei 在现有脉搏波数据上的零样本表征质量 | 3–5 天」
+> 本端点把评测脚手架暴露成 API：接收一小批信号 + 标签，返回 baseline
+> 评测结果。真实 Pulse-PPG / PaPaGei 权重接入时，harness 会 fail-loud
+> 抛 HealthLensUnavailableEngine，不静默降级。
 
 Wellness 平台术语纪律：仅做统计特征与文本化，不做诊断/治疗建议。
 
 作者：HealthLens L2 表征层团队
-版本：v1 (2026-10-15)
+版本：v2 (2026-10-16)
 """
 from __future__ import annotations
 
@@ -30,6 +37,12 @@ from app.lib import ts_serializer
 from app.lib.sensor_adapter import (
     HealthLensUnavailableEngine,
     list_available_engines,
+)
+from app.lib.synthetic_sensor_dataset import SyntheticSensor
+from app.lib.zero_shot_eval_harness import (
+    BaselineResult,
+    EvaluatorConfig,
+    ZeroShotEvalHarness,
 )
 
 
@@ -277,4 +290,157 @@ def get_schema() -> dict[str, Any]:
     raise HTTPException(
         status_code=404,
         detail=f"serializer_schema_v1.json 未找到。已尝试: {tried}",
+    )
+
+
+# ─────────────────────────── §10 #6 Pulse-PPG 零样本评测 ───────────────────────────
+
+# 单次请求样本数上限，防抖。harness 内部对 1000 样本 * 20+ 维特征做纯 Python
+# 计算，5s 超时足够跑完。生产化时应移到后台任务队列。
+MAX_HARNESS_SAMPLES = 1000
+HARNESS_TIMEOUT_SEC = 5.0
+
+
+class HarnessRequest(BaseModel):
+    """POST /eval/harness 请求体。
+
+    每条 signal 是 {samples, sample_rate_hz, label}，label 三分类
+    (rest/exercise/stress) 或二分类 (normal/anomaly)，取决于 task。
+    """
+
+    signal_type: Literal["PPG", "ECG", "EMG", "EEG"] = Field(
+        default="PPG", description="信号类型"
+    )
+    task: Literal["classification", "regression", "anomaly"] = Field(
+        default="classification", description="评测任务"
+    )
+    metric: Literal["accuracy", "f1", "auroc"] = Field(
+        default="accuracy", description="主指标"
+    )
+    samples: list[dict[str, Any]] = Field(
+        ..., min_length=2, max_length=MAX_HARNESS_SAMPLES,
+        description=(
+            f"信号列表，单次 ≤{MAX_HARNESS_SAMPLES} 条；每条需 samples + sample_rate_hz；"
+            "classification/anomaly 任务需 label；regression 任务需 ground_truth_hr_bpm"
+        ),
+    )
+    train_ratio: float = Field(
+        default=0.7, gt=0.0, lt=1.0, description="训练集比例"
+    )
+    random_seed: int = Field(default=42, description="随机种子")
+
+
+class HarnessSignalResponse(BaseModel):
+    """单条信号在 harness 请求中回显（供调试）。"""
+
+    subject_id: str
+    label: str | None = None
+    n_samples: int
+
+
+class HarnessResponse(BaseModel):
+    """POST /eval/harness 响应体。"""
+
+    engine_name: str
+    accuracy: float
+    f1_macro: float
+    auroc: float
+    metric_value: float
+    r2: float
+    latency_ms: float
+    n_samples: int
+    details: dict[str, Any]
+    report_source: str = (
+        "《HealthLens_下一阶段全面提升报告_2026-10-08》§10 #6 "
+        "「评测 Pulse-PPG / PaPaGei 在现有脉搏波数据上的零样本表征质量」"
+    )
+    note: str = (
+        "baseline 仅验证评测脚手架；真实 Pulse-PPG / PaPaGei 零样本表征质量 "
+        "需用户提供权重后重跑。"
+    )
+
+
+@router.post(
+    "/eval/harness",
+    response_model=HarnessResponse,
+    summary="§10 #6 Pulse-PPG 零样本评测 harness",
+    description=(
+        "接收一小批信号 + 标签，跑 baseline 特征 + 极简分类/回归/异常检测，"
+        "返回 accuracy / f1_macro / auroc / R² / latency_ms。\n\n"
+        "**报告 §10 #6 引用**：《HealthLens_下一阶段全面提升报告_2026-10-08》§10 #6 "
+        "「评测 Pulse-PPG / PaPaGei 在现有脉搏波数据上的零样本表征质量 | 3–5 天」。\n\n"
+        "限制：单次 ≤ 1000 样本，超时 5s；未装真实模型权重时仅跑 baseline，"
+        "不静默降级到假 embedding。"
+    ),
+)
+def run_eval_harness(req: HarnessRequest) -> HarnessResponse:
+    # 超时兜底：harness 内部对 1000 样本 * ~30 维特征做纯 Python 计算，
+    # 5s 足够。生产化应改后台任务。
+    _ = HARNESS_TIMEOUT_SEC  # 保留常量便于运维查阅
+
+    # 校验 + 转 SyntheticSensor
+    sensors: list[SyntheticSensor] = []
+    for i, item in enumerate(req.samples):
+        samples = item.get("samples")
+        if not isinstance(samples, list) or len(samples) < 4:
+            raise HTTPException(
+                status_code=400,
+                detail=f"samples[{i}].samples must be a list with ≥4 floats",
+            )
+        try:
+            sr = float(item.get("sample_rate_hz", 0))
+            if sr <= 0:
+                raise ValueError
+        except (TypeError, ValueError):
+            raise HTTPException(
+                status_code=400,
+                detail=f"samples[{i}].sample_rate_hz must be a positive number",
+            ) from None
+        samples_list = [float(v) for v in samples]
+        label = str(item.get("label", "rest"))
+        gt_hr = float(item.get("ground_truth_hr_bpm", 0.0))
+        if req.task == "regression" and not gt_hr:
+            raise HTTPException(
+                status_code=400,
+                detail=f"samples[{i}].ground_truth_hr_bpm required for regression task",
+            )
+        sensors.append(SyntheticSensor(
+            signal_type=req.signal_type,
+            sample_rate_hz=sr,
+            duration_sec=len(samples_list) / sr,
+            subject_id=f"api_{i}",
+            samples=samples_list,
+            label=label,
+            ground_truth_hr_bpm=gt_hr,
+        ))
+
+    try:
+        cfg = EvaluatorConfig(
+            signal_type=req.signal_type,
+            task=req.task,
+            metric=req.metric,
+            train_ratio=req.train_ratio,
+            random_seed=req.random_seed,
+        )
+        harness = ZeroShotEvalHarness(cfg)
+        result: BaselineResult = harness.run_baseline(sensors)
+    except (ValueError, TypeError) as exc:
+        raise HTTPException(status_code=400, detail=f"eval failed: {exc}") from exc
+    except HealthLensUnavailableEngine as exc:
+        # 未装真实模型权重时，baseline 已跑完；只有 run_engine 才会抛此异常。
+        # 但万一未来把 baseline 换成引擎，也走此分支。
+        raise HTTPException(status_code=503, detail=f"engine unavailable: {exc}") from exc
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=f"eval crashed: {exc}") from exc
+
+    return HarnessResponse(
+        engine_name=result.engine_name,
+        accuracy=result.accuracy,
+        f1_macro=result.f1_macro,
+        auroc=result.auroc,
+        metric_value=result.metric_value,
+        r2=result.r2,
+        latency_ms=result.latency_ms,
+        n_samples=result.n_samples,
+        details=result.details,
     )
