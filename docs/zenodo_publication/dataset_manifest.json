@@ -1,0 +1,222 @@
+{
+  "manifest_version": "1.0",
+  "generated_at": "2026-10-16",
+  "reference_protocol": "HealthLens_下一阶段愿景与跃迁方案_2026-10-15.md §6 §8-E",
+  "target_platform": {
+    "name": "Zenodo",
+    "api_endpoint": "https://zenodo.org/api/deposit/deposits",
+    "api_doc": "https://developers.zenodo.org/",
+    "authentication": "Bearer token (user-managed, not stored in this repo)",
+    "doi_prefix": "10.5281"
+  },
+  "dataset": {
+    "title": "HealthLens Integrated Steady-State Axis Framework: Evidence Database, Cross-Modal Mapping, and n-of-1 Bayesian Aggregation",
+    "subtitle": "Rubric benchmark + knowledge graph (redacted) + case evidence (verified only)",
+    "publication_date": "2026-10-16",
+    "resource_type": {
+      "type": "DATASET",
+      "subtype": "DB"
+    },
+    "doi_placeholder": "10.5281/zenodo.<DATASET_ID_PLACEHOLDER>",
+    "language": "en",
+    "license": {
+      "id": "CC-BY-4.0",
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+    },
+    "access_right": "open",
+    "publication_type": "publication",
+    "prereserve_doi": false,
+    "prerequisites_for_upload": [
+      "Zenodo account (researcher-managed)",
+      "API token (researcher-managed)",
+      "ORCID for each author (fill into creators[].orcid)",
+      "Actual file sizes via `stat -c%s <file>` or equivalent",
+      "GraphRAG public-release checklist passed (see docs/zenodo_publication/graphrag_publication_checklist.md)"
+    ],
+    "creators": [
+      {
+        "name": "HealthLens Research Team",
+        "affiliation": "HealthLens (open-source project)",
+        "orcid": null,
+        "role": "creators"
+      }
+    ],
+    "description": "Evidence database, cross-modal terminology mapping, and rubric benchmark for the HealthLens eight-axis integrated steady-state framework (A-H). Includes: (1) case evidence database with per-entry DOI verification status (14 verified out of 120, honestly reported; 91 entries are synthetic validation fixtures), (2) four-way terminology mapping (GB/T 20348-2026 <-> eight axes <-> Western pathways <-> classical texts), (3) classical Chinese medicine text fragments with axis annotations (613 entries, all marked needs_expert_review=true), (4) rubric benchmark for LLM-judge and human-expert alignment (60 entries), (5) eight-axis threshold configuration (externalized). All upstream bibliographic fields have been audited via three independent fail-loud defenses against leakage. Evidence coverage rate 11.7% (14/120 verified_crossref) is honestly reported; S1-1 95% target not achievable under current mixed schema.",
+    "subjects": [
+      "Medicine",
+      "Health Science",
+      "Traditional Medicine",
+      "Bioinformatics",
+      "Public Health",
+      "Computer Science",
+      "Statistical Methods",
+      "Reproducible Research"
+    ],
+    "keywords": [
+      "integrative medicine",
+      "traditional Chinese medicine",
+      "computational wellness",
+      "n-of-1 trial",
+      "crossover study",
+      "bayesian hierarchical model",
+      "federated aggregation",
+      "structural causal model",
+      "pharmacogenomics",
+      "evidence verification",
+      "data residency",
+      "jurisdiction-aware compliance",
+      "GB/T 20348",
+      "SPIRIT-AI",
+      "CONSORT-AI",
+      "rubric benchmark",
+      "phenoage"
+    ],
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/HealthLens/healthlens",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      },
+      {
+        "identifier": "https://osf.io/<PREREG_PLACEHOLDER>",
+        "relation": "isSupplementedBy",
+        "scheme": "url"
+      },
+      {
+        "identifier": "arXiv:XXXX.XXXXX",
+        "relation": "isSupplementTo",
+        "scheme": "url",
+        "note": "Fill actual arXiv preprint ID once submitted"
+      }
+    ],
+    "funders": [
+      {
+        "name": "HealthLens Open-Source Community",
+        "logo_url": null,
+        "award_uri": null
+      }
+    ],
+    "rights": [
+      "CC-BY-4.0",
+      "Wellness research dataset - not for clinical decision-making"
+    ]
+  },
+  "subsets": [
+    {
+      "id": "rubric_benchmark",
+      "title": "Rubric Benchmark for LLM-Judge and Human-Expert Alignment",
+      "primary_file": "data/rubric_benchmark_v1.json",
+      "description": "60-entry rubric benchmark with axis labels, evidence tiers, and human-expert ground-truth scores. Used to calibrate LLM judge reliability against humans.",
+      "record_count": 60,
+      "license": "CC-BY-4.0",
+      "schema": "data/README.md#rubric_benchmark",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "id": "knowledge_graph_redacted",
+      "title": "Cross-Modal Terminology Mapping (Redacted for Public Release)",
+      "primary_file": "data/graphrag/redacted/axis_term_mapping.json",
+      "description": "Four-way terminology mapping between GB/T 20348-2026 standards, eight axes (A-H), Western pathways, and classical Chinese medicine texts. Redacted via tools/redact_for_public_release.py before release; extraction-attack assessment pending (see graphrag_publication_checklist.md).",
+      "additional_files": [
+        "data/axis_term_mapping.json",
+        "data/classical_slices.json"
+      ],
+      "record_count": 613,
+      "license": "CC-BY-4.0",
+      "schema": "data/README.md#axis_term_mapping",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "id": "case_evidence_verified",
+      "title": "Case Evidence Database (Verified Only)",
+      "primary_file": "data/case_evidence_db.json",
+      "description": "120-case evidence database with honest citation_status per entry. Verified entries (verified/verified_crossref) directly reference publications resolved via Crossref /works/<doi>. Traditional entries (古籍/食疗) reference classical texts. Synthetic validation fixtures marked as such. Coverage rate 11.7% (14/120) is honestly reported.",
+      "record_count": 120,
+      "citation_status_breakdown": {
+        "verified": 6,
+        "verified_crossref": 8,
+        "hallucination_resolved": 1,
+        "broken_citation": 1,
+        "unverified_no_publication": 14,
+        "unverified_text": 4,
+        "traditional": 8,
+        "synthetic_validation": 91
+      },
+      "license": "CC-BY-4.0",
+      "schema": "data/case_evidence_db.json#meta",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "data/doi_verification_results.json",
+      "description": "DOI verification results via Crossref (2026-10-13). Status: verified / hallucination_resolved / unverified_text / traditional / broken_citation / synthetic_validation / unsourced.",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "path": "data/case_evidence_db_report_2026-10-16.md",
+      "description": "DOI enrichment report (2026-10-16): new verified_crossref entries, unmatched cases with search keywords, disclaimer on synthetic validation fixtures.",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "path": "data/phenoage_alignment.json",
+      "description": "PhenoAge/GrimAge alignment data for biological-age-shift secondary endpoint.",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "path": "config/axes/axes.yaml",
+      "description": "Eight-axis threshold configuration (externalized from code). Supports jurisdiction-specific overrides.",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    },
+    {
+      "path": "validation_snapshots/BASELINE.json",
+      "description": "Compute validation baseline snapshot for reproducibility.",
+      "filesize_bytes": null,
+      "checksum_sha256": null
+    }
+  ],
+  "protocol_documents": [
+    {
+      "path": "docs/prospective_cohort/study_protocol.md",
+      "description": "SPIRIT-AI formatted study protocol for the n-of-1 prospective cohort (2026-2027)."
+    },
+    {
+      "path": "docs/prospective_cohort/informed_consent.md",
+      "description": "GDPR/PIPL aligned informed consent template."
+    },
+    {
+      "path": "docs/prospective_cohort/data_dictionary.md",
+      "description": "32-field data dictionary aligned with app/models/longitudinal.py."
+    },
+    {
+      "path": "docs/prospective_cohort/analysis_plan.md",
+      "description": "Statistical analysis plan with Bayesian priors, missing data handling, and multiple-comparison correction."
+    },
+    {
+      "path": "docs/prospective_cohort/osf_preprint_draft.md",
+      "description": "OSF pre-registration draft with URL placeholder."
+    },
+    {
+      "path": "docs/prospective_cohort/recruitment_questionnaire.md",
+      "description": "15-question recruitment questionnaire for cohort enrollment."
+    }
+  ],
+  "use_policy": {
+    "license": "CC-BY-4.0",
+    "citation_requirement": "Citing works MUST cite both the dataset DOI and the code DOI (see CITATION.cff for BibTeX/Zotero template).",
+    "non_clinical_disclaimer": "This dataset is for wellness research only. It MUST NOT be used for individual clinical diagnosis or treatment decisions.",
+    "extraction_attack_notice": "GraphRAG components are released after extraction-attack assessment (see graphrag_publication_checklist.md). Users are advised not to attempt prompt-injection or adversarial extraction against the taxonomy structure.",
+    "compliance": {
+      "china": ["PIPL", "DSL", "GB/T 35273-2020", "GB/T 22239-2019"],
+      "eu": ["GDPR Art.6", "GDPR Art.7", "GDPR Art.9 (health data - explicit consent required for secondary use)"]
+    }
+  }
+}
