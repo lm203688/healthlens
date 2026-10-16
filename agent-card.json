@@ -3,7 +3,7 @@
   "description": "HealthLens 整合医学健康推演 Agent：八轴稳态框架（A–H）+ 六公理内核，融合西医生物标志物、中医古籍与可穿戴数据，提供八轴评估、生物学年龄偏移、反事实因果推演、非药物干预与古籍检索。健康参考工具，非医疗器械，不构成诊断或治疗建议。",
   "url": "https://healthlens.cc/api/v1",
   "protocolVersion": "1.0.1",
-  "version": "0.29.0",
+  "version": "0.30.0",
   "provider": {
     "organization": "HealthLens",
     "url": "https://github.com/lm203688/healthlens"
@@ -31,8 +31,8 @@
       },
       {
         "uri": "https://google.github.io/A2A/specification/v1.0.1/",
-        "description": "A2A v1.0.1：声明 verbs SendMessage / ListTasks；JSON-RPC 端点尚未在生产环境暴露。",
-        "verbs": ["SendMessage", "ListTasks"],
+        "description": "A2A v1.0.1：已实现 SendMessage / ListTasks / GetTask / CancelTask 的 JSON-RPC 端点（POST /a2a），JWS 签名 optional。",
+        "verbs": ["SendMessage", "ListTasks", "GetTask", "CancelTask"],
         "specs": [
           {
             "spec": "https://google.github.io/A2A/specification/v1.0.1/",
@@ -42,7 +42,7 @@
       }
     ]
   },
-  "conformanceNote": "A2A v1.0.1 结构；已实现 Agent Card 与 JWS 签名（signing_key 指向 KMS 引用，jws_signature 部署时由 app.lib.a2a_jws 生成）；**未实现** SendMessage / GetTask / CancelTask / ListTasks 的 JSON-RPC 端点。实际调用走 capabilities.EXTENSIONS[0] 的 MCP JSON-RPC 2.0（2026-07-28）或 skills[].interfaceUrl 的 REST 端点。",
+  "conformanceNote": "A2A v1.0.1；已实现 Agent Card + JWS 签名（signing_key 为 KMS 引用，jws_signature 部署时生成）；**已实现** SendMessage / ListTasks / GetTask / CancelTask 的 JSON-RPC 端点（POST /a2a），JWS 签名 optional（Bearer <jws> 存在则校验，无 header 不阻断）。SendMessage 为薄包装，复用 MCP 工具（hl_health_check / hl_search_knowledge / hl_get_axis_detail 等）作为 agent 执行体。STATE_TRANSITION_HISTORY 仍 false（**未实现**为独立能力）。并行接口保留 MCP JSON-RPC 2.0 与 skills[].interfaceUrl REST 端点。",
   "defaultInputModes": ["text/plain", "application/json"],
   "defaultOutputModes": ["application/json", "text/plain"],
   "securitySchemes": {
