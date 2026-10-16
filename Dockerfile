@@ -52,6 +52,10 @@ COPY app/ ./app/
 # healthlens_agent 是 app/api/agent.py 等模块的直接依赖（`from healthlens_agent.pipeline import ...`），
 # 必须进镜像，不能依赖 bind mount。
 COPY healthlens_agent/ ./healthlens_agent/
+# skills/ 是 healthlens_agent/mcp_server.py 的直接依赖（`from skills.tcm_text_mining.run import run`、
+# `from skills.evidence_grading.run import run`），MCP / A2A SendMessage 调用 hl_search_knowledge /
+# hl_evidence_grade 时动态 import 该包；缺它就 fail-loud 抛 "No module named 'skills'"。
+COPY skills/ ./skills/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
 
