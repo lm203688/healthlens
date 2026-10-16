@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>健康灵镜 · 产品卡</title>
+<style>
+  :root{
+    --bg:#0a0e0c;
+    --bg-2:#0f1512;
+    --panel:#131a17;
+    --line:#1e2a25;
+    --ink:#e6f4ee;
+    --ink-2:#9db3ab;
+    --ink-3:#6b8078;
+    --green:#00ff9d;
+    --green-dim:#00c47d;
+    --green-glow:rgba(0,255,157,.18);
+    --free:#8a9d96;
+    --pro:#00ff9d;
+    --shadow:0 10px 40px rgba(0,0,0,.55);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC","Hiragino Sans GB","Source Han Sans SC",sans-serif;
+    background:
+      radial-gradient(900px 500px at 80% -5%, rgba(0,255,157,.06), transparent 60%),
+      radial-gradient(700px 500px at -10% 110%, rgba(0,255,157,.04), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding:20px 16px 40px;
+  }
+  .card{
+    max-width:440px;
+    margin:0 auto;
+    background:linear-gradient(180deg,var(--bg-2),var(--panel));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+
+  /* 顶部品牌区 */
+  .brand{
+    padding:26px 24px 20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(0,255,157,.05),transparent);
+  }
+  .brand .art{
+    width:74px;height:74px;flex:0 0 74px;
+    border-radius:18px;
+    background:radial-gradient(circle at 50% 42%,#0d1c16,#050807);
+    border:1px solid #223a30;
+    display:grid;place-items:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .brand .art svg{width:100%;height:100%;display:block;}
+  .brand .art .scan{
+    position:absolute;left:6px;right:6px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--green),transparent);
+    top:50%;opacity:.65;
+    animation:scan 3.6s ease-in-out infinite;
+  }
+  @keyframes scan{
+    0%,100%{top:22%;opacity:.15}
+    50%{top:78%;opacity:.7}
+  }
+  .brand-text{flex:1;min-width:0;}
+  .brand-name{
+    font-size:22px;font-weight:700;letter-spacing:.5px;
+    color:var(--ink);display:flex;align-items:center;gap:8px;
+  }
+  .brand-name .cn{background:linear-gradient(90deg,#eafff5,#9fffd8);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .pro-tag{
+    font-size:10px;font-weight:600;letter-spacing:1px;
+    padding:2px 7px;border-radius:999px;
+    border:1px solid var(--green-dim);
+    color:var(--green);
+    background:rgba(0,255,157,.08);
+    white-space:nowrap;
+  }
+  .brand-sub{
+    font-size:11px;color:var(--ink-3);letter-spacing:2px;margin-top:2px;
+    font-family:"SF Mono","Cascadia Code",Consolas,monospace;
+  }
+  .tagline{
+    margin-top:6px;font-size:13px;color:var(--ink-2);
+  }
+  .tagline b{color:var(--green);font-weight:600;}
+
+  /* 内容区 */
+  .body{padding:20px 24px 22px;}
+  .price-row{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    padding-bottom:16px;border-bottom:1px dashed var(--line);
+  }
+  .price-old{font-size:13px;color:var(--ink-3);text-decoration:line-through;}
+  .price-new{font-size:34px;font-weight:800;color:var(--green);line-height:1;}
+  .price-new .unit{font-size:15px;font-weight:600;margin-right:2px;}
+  .price-new .suffix{font-size:13px;color:var(--ink-2);font-weight:500;margin-left:3px;}
+  .price-note{font-size:11px;color:var(--ink-3);}
+
+  .unlock-title{
+    margin:16px 0 12px;
+    display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:600;color:var(--ink);
+  }
+  .unlock-title::before{
+    content:"";width:3px;height:14px;border-radius:2px;
+    background:var(--green);box-shadow:0 0 8px var(--green-glow);
+  }
+
+  /* 对比表 */
+  .table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}
+  .table th,.table td{padding:9px 6px;text-align:left;vertical-align:top;}
+  .table thead th{
+    font-size:11px;font-weight:600;letter-spacing:1px;
+    color:var(--ink-3);text-transform:uppercase;
+    padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+  .table thead th.col-pro{color:var(--green);text-align:center;}
+  .table thead th.col-free{color:var(--free);text-align:center;}
+  .table tbody tr{border-bottom:1px solid rgba(30,42,37,.6);}
+  .table tbody tr:last-child{border-bottom:none;}
+  .feat{color:var(--ink-2);padding-right:6px;line-height:1.5;}
+  .cell{width:34px;text-align:center;font-size:14px;}
+  .cell.free{color:var(--free);}
+  .cell.pro{color:var(--green);font-weight:700;}
+  .cell .lock{font-size:12px;opacity:.7;}
+
+  /* CTA */
+  .cta{
+    margin-top:20px;
+    display:block;width:100%;
+    padding:15px 18px;
+    font-size:15px;font-weight:700;letter-spacing:1px;
+    color:#04140d;
+    background:linear-gradient(180deg,#3dffb5,#00e88c);
+    border:none;border-radius:14px;
+    box-shadow:0 8px 22px rgba(0,255,157,.25), inset 0 1px 0 rgba(255,255,255,.4);
+    cursor:pointer;text-decoration:none;
+    font-family:inherit;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .cta:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(0,255,157,.35);}
+  .cta:active{transform:translateY(0);}
+  .cta-sub{
+    margin-top:9px;text-align:center;
+    font-size:11px;color:var(--ink-3);
+    font-family:"SF Mono",Consolas,monospace;letter-spacing:.5px;
+  }
+
+  /* 页脚 */
+  .foot{
+    padding:14px 24px 20px;
+    border-top:1px solid var(--line);
+    font-size:11px;color:var(--ink-3);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    flex-wrap:wrap;
+  }
+  .foot .status{display:flex;align-items:center;gap:6px;}
+  .foot .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 6px var(--green);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .placeholder-note{
+    margin-top:14px;text-align:center;font-size:10px;color:var(--ink-3);
+    opacity:.55;letter-spacing:.3px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <!-- 品牌 -->
+    <div class="brand">
+      <div class="art">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="lg" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="#00ff9d" stop-opacity="0.35"/>
+              <stop offset="55%" stop-color="#00ff9d" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00ff9d"/>
+              <stop offset="100%" stop-color="#00c47d"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="42" r="38" fill="url(#lg)"/>
+          <circle cx="50" cy="42" r="26" fill="none" stroke="#1f4a38" stroke-width="1" opacity="0.7"/>
+          <circle cx="50" cy="42" r="18" fill="none" stroke="#2a6b52" stroke-width="1" opacity="0.8"/>
+          <circle cx="50" cy="42" r="10" fill="none" stroke="#3a9a75" stroke-width="1.2"/>
+          <circle cx="50" cy="42" r="4.5" fill="url(#gl)" opacity="0.9"/>
+          <g stroke="#00ff9d" stroke-width="1" opacity="0.5" stroke-linecap="round">
+            <line x1="50" y1="6" x2="50" y2="14"/>
+            <line x1="50" y1="70" x2="50" y2="78"/>
+            <line x1="14" y1="42" x2="22" y2="42"/>
+            <line x1="78" y1="42" x2="86" y2="42"/>
+          </g>
+        </svg>
+        <div class="scan"></div>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">
+          <span class="cn">健康灵镜</span>
+          <span class="pro-tag">PRO</span>
+        </div>
+        <div class="brand-sub">HEALTHLENS · v1.0.0</div>
+        <div class="tagline">AI 健康管家 · <b>让健康看得清</b></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <!-- 价格 -->
+      <div class="price-row">
+        <span class="price-old">¥299</span>
+        <span class="price-new"><span class="unit">¥</span>99<span class="suffix">/ 永久</span></span>
+      </div>
+
+      <!-- 功能解锁对比 -->
+      <div class="unlock-title">付费解锁 · 免费版 vs 专业版</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>功能模块</th>
+            <th class="col-free">免费</th>
+            <th class="col-pro">专业版</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feat">智能体 AI 咨询</td>
+            <td class="cell free">基础</td>
+            <td class="cell pro">不限次</td>
+          </tr>
+          <tr>
+            <td class="feat">健康档案 · 云端同步</td>
+            <td class="cell free"><span class="lock">◌</span> 1 条</td>
+            <td class="cell pro">无上限</td>
+          </tr>
+          <tr>
+            <td class="feat">AI 健康报告 · 全维度解读</td>
+            <td class="cell free">◌ 3 次</td>
+            <td class="cell pro">不限次</td>
+          </tr>
+          <tr>
+            <td class="feat">数据可视化 · 时间线</td>
+            <td class="cell free">◌ 近 7 日</td>
+            <td class="cell pro">全部历史</td>
+          </tr>
+          <tr>
+            <td class="feat">AI 决策中心</td>
+            <td class="cell free">◌</td>
+            <td class="cell pro">✓</td>
+          </tr>
+          <tr>
+            <td class="feat">本地健康知识库</td>
+            <td class="cell free">◌</td>
+            <td class="cell pro">✓</td>
+          </tr>
+          <tr>
+            <td class="feat">专家建议与处方参考</td>
+            <td class="cell free">◌</td>
+            <td class="cell pro">✓</td>
+          </tr>
+          <tr>
+            <td class="feat">PDF 报告导出</td>
+            <td class="cell free">◌</td>
+            <td class="cell pro">✓</td>
+          </tr>
+          <tr>
+            <td class="feat">多设备云端同步</td>
+            <td class="cell free">◌</td>
+            <td class="cell pro">✓</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- CTA -->
+      <a class="cta" href="#">立即升级 · 解锁全部能力</a>
+      <div class="cta-sub">7 天无理由退款 · 支持 Apple Pay / 微信支付</div>
+    </div>
+
+    <div class="foot">
+      <span class="status"><span class="dot"></span>AI 引擎在线 · 本地优先</span>
+      <span>© 2026 HealthLens</span>
+    </div>
+
+    <div class="placeholder-note">产品 logo 占位 · 替换 .brand .art 内 SVG 为实际 logo</div>
+  </div>
+</body>
+</html>
