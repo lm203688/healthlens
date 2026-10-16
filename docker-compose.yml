@@ -16,6 +16,8 @@ services:
       # config/ 是可读配置（federated_defaults / national_standards / serializer_schema / axes），
       # 运行时只读，用 :ro 防容器写坏。pyproject.toml 与 agent-card.json 由 Dockerfile COPY 进镜像层。
       - ./config:/app/config:ro
+      # logs/ 挂宿主机：容器重建/替换后日志仍在（否则 /app/logs/ 是镜像层内路径，recreate 就丢）。
+      - ./logs:/app/logs
     env_file:
       - .env
     depends_on:
