@@ -40,6 +40,8 @@ RUN apt-get update \
 COPY --from=builder /install /usr/local
 
 # Copy dependency spec (runtime may need to check versions)
+# 注意：以下 COPY 的文件/目录必须进镜像层——它们不在 docker-compose bind mount 列表里，
+# 否则 `docker compose up -d --force-recreate` 重建容器后就会丢失（v0.28/v0.29 部署坑）。
 COPY pyproject.toml ./
 
 # Create non-root user
@@ -47,8 +49,18 @@ RUN groupadd -r appuser && useradd -r -g appuser -d /app appuser
 
 # Copy application code
 COPY app/ ./app/
+# healthlens_agent 是 app/api/agent.py 等模块的直接依赖（`from healthlens_agent.pipeline import ...`），
+# 必须进镜像，不能依赖 bind mount。
+COPY healthlens_agent/ ./healthlens_agent/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
+
+# 以下三项不在 bind mount 列表内——只能靠镜像层 COPY：
+#   - config/           运行时读取（federated_defaults / national_standards / serializer_schema / axes）
+#   - agent-card.json   /.well-known/agent-card.json 端点直接读该文件
+# pyproject.toml 已在上面 COPY。
+COPY config/ ./config/
+COPY agent-card.json ./agent-card.json
 
 # Create required directories and fix ownership
 RUN mkdir -p /app/data /app/logs \
