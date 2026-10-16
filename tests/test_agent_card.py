@@ -235,24 +235,37 @@ class TestNoFabricatedCapabilities:
         assert "SendMessage" in note, "conformanceNote 应点名 SendMessage 等未实现操作"
 
     def test_real_tool_interface_declared_as_extension(self):
-        """实际可编程接口（MCP JSON-RPC 2.0）必须通过 extensions 显式声明。"""
-        exts = CARD["capabilities"].get("extensions", [])
-        assert exts, "capabilities.extensions 不能为空：应声明实际工具协议"
+        """实际可编程接口（MCP JSON-RPC 2.0）必须通过 EXTENSIONS 显式声明。
+
+        参考：HealthLens_下一阶段愿景与跃迁方案_2026-10-15.md §5 L0
+        A2A v1.0.1 起能力声明 key 采用 SCREAMING_SNAKE_CASE。
+        """
+        exts = CARD["capabilities"].get("EXTENSIONS", [])
+        assert exts, "capabilities.EXTENSIONS 不能为空：应声明实际工具协议"
+        # MCP 扩展应在首位（实际可编程接口）
         ext = exts[0]
-        assert "MCP" in ext["description"], "extensions 应声明 MCP 工具接口"
-        assert ext.get("specs"), "extensions 应指向协议规范 URI"
+        assert "MCP" in ext["description"], "EXTENSIONS[0] 应声明 MCP 工具接口"
+        assert ext.get("specs"), "EXTENSIONS[0] 应指向协议规范 URI"
 
     def test_capabilities_do_not_claim_unsupported_features(self):
-        """HealthLens 无 SSE 流式与推送能力，不得声明。"""
+        """HealthLens 无 SSE 流式与推送能力，不得声明。
+
+        参考：HealthLens_下一阶段愿景与跃迁方案_2026-10-15.md §5 L0
+        A2A v1.0.1 起能力声明 key 采用 SCREAMING_SNAKE_CASE。
+        """
         caps = CARD["capabilities"]
-        assert caps.get("streaming") is False, "不支持 SSE 流式，streaming 必须为 false"
-        assert caps.get("pushNotifications") is False, "不支持推送通知，pushNotifications 必须为 false"
-        assert caps.get("extendedAgentCard") is False, "未实现扩展卡片，extendedAgentCard 必须为 false"
+        assert caps.get("STREAMING") is False, "不支持 SSE 流式，STREAMING 必须为 false"
+        assert caps.get("PUSH_NOTIFICATIONS") is False, "不支持推送通知，PUSH_NOTIFICATIONS 必须为 false"
+        assert caps.get("EXTENDED_AGENT_CARD") is False, "未实现扩展卡片，EXTENDED_AGENT_CARD 必须为 false"
 
     def test_extended_agent_card_flag_matches_capability(self):
-        """supportsAuthenticatedExtendedCard 与 capabilities.extendedAgentCard 必须自洽。"""
+        """supportsAuthenticatedExtendedCard 与 capabilities.EXTENDED_AGENT_CARD 必须自洽。
+
+        顶层 supportsAuthenticatedExtendedCard 是 A2A 标准 camelCase 字段（不在 capabilities.* 下），
+        保持 camelCase；只有 capabilities.* 层改为 SCREAMING_SNAKE_CASE。
+        """
         assert CARD["supportsAuthenticatedExtendedCard"] is False
-        assert CARD["capabilities"].get("extendedAgentCard") is False
+        assert CARD["capabilities"].get("EXTENDED_AGENT_CARD") is False
 
 
 class TestDiscoveryEndpoint:
