@@ -123,6 +123,7 @@ def create_app() -> FastAPI:
 
     # 注册路由
     from app.api.analytics import router as analytics_router
+    from app.api.a2a import router as a2a_router
     from app.api.audit import router as audit_router
     from app.api.auth import router as auth_router
     from app.api.axes import router as axes_router
@@ -200,6 +201,8 @@ def create_app() -> FastAPI:
     app.include_router(feedback_router, prefix="/api/v1/feedback", tags=["用户反馈"])
     app.include_router(checkin_router, prefix="/api/v1/checkin", tags=["自测闭环"])
     app.include_router(audit_router, prefix="/api/v1/audit", tags=["运行时审计"])
+    # A2A v1.0.1 JSON-RPC 端点（§5 L0 协议对齐：SendMessage/ListTasks/GetTask/CancelTask）
+    app.include_router(a2a_router, tags=["A2A v1.0.1"])
     app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["行为分析"])
     app.include_router(growth_router, prefix="/api/v1/growth", tags=["推广系统"])
     app.include_router(freemium_router, prefix="/api/v1/freemium", tags=["积分门禁"])
