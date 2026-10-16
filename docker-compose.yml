@@ -13,6 +13,9 @@ services:
     volumes:
       - ./app:/app/app
       - ./data:/app/data
+      # config/ 是可读配置（federated_defaults / national_standards / serializer_schema / axes），
+      # 运行时只读，用 :ro 防容器写坏。pyproject.toml 与 agent-card.json 由 Dockerfile COPY 进镜像层。
+      - ./config:/app/config:ro
     env_file:
       - .env
     depends_on:
@@ -42,6 +45,8 @@ services:
     volumes:
       - ./app:/app/app
       - ./data:/app/data
+      # 与 web 一致：config/ 只读挂载。
+      - ./config:/app/config:ro
     env_file:
       - .env
     depends_on:
