@@ -396,8 +396,8 @@ def do_dowhy_refutation(
             )
 
     # auto 模式：优先 dowhy（实际 CI 环境装不上，纯走 fallback）
-    dowhy_pkg = _try_import_dowhy() if dowhy_mode == "auto" else None
-    use_dowhy = dowhy_pkg is not None and dowhy_mode in {"dowhy", "auto"}
+    dowhy_pkg = _try_import_dowhy() if dowhy_mode in {"auto", "dowhy"} else None
+    use_dowhy = dowhy_pkg is not None
 
     outcome = outcome or SCMExporter.OUTCOME_NODE
     original_effect = _counterfactual_effect(simulator_baseline, treatment, weeks, lever_scale)
