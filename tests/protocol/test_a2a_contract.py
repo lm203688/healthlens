@@ -331,18 +331,21 @@ class TestConformanceHonesty:
     def test_38_conformance_note_present(self) -> None:
         assert CARD.get("conformanceNote"), "conformanceNote 不能为空"
 
-    def test_39_conformance_note_discloses_unimplemented(self) -> None:
+    def test_39_conformance_note_declares_implemented(self) -> None:
+        """v0.30.0 起 A2A JSON-RPC 端点已落地，note 必须声明已实现。"""
         note = CARD["conformanceNote"]
-        assert ("未实现" in note) or ("not implemented" in note.lower())
+        assert ("已实现" in note) or ("implemented" in note.lower())
 
-    def test_40_conformance_note_names_specific_gaps(self) -> None:
-        """note 必须点名 SendMessage / ListTasks 等未实现操作，不能含糊。"""
+    def test_40_conformance_note_names_specific_endpoints(self) -> None:
+        """note 必须点名 4 个已实现的 A2A 端点，不能含糊。"""
         note = CARD["conformanceNote"]
         assert "SendMessage" in note
         assert "ListTasks" in note
+        assert "GetTask" in note
+        assert "CancelTask" in note
 
     def test_41_conformance_note_mentions_mcp_alternative(self) -> None:
-        """note 应告知下游：实际调用走 MCP JSON-RPC 2.0。"""
+        """note 应告知下游：同时保留 MCP JSON-RPC 2.0 作为并行接口。"""
         note = CARD["conformanceNote"]
         assert "MCP" in note or "mcp" in note
 
