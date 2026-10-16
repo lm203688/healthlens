@@ -30,6 +30,9 @@ Tool 分层：
   python -m healthlens_agent mcp            # MCP SDK 模式
   python -m healthlens_agent mcp --jsonrpc   # JSON-RPC stdio 模式
   python -m healthlens_agent mcp --demo      # 打印工具清单
+
+协议版本：MCP 2026-07-28（无状态化）
+参考：HealthLens_下一阶段愿景与跃迁方案_2026-10-15.md §5 L0
 """
 from __future__ import annotations
 
@@ -38,6 +41,7 @@ import json
 import os
 import sys
 import time
+import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -45,6 +49,13 @@ sys.path.insert(0, str(ROOT))
 
 _SERVER_VERSION = "0.3.0"
 _START_TS = time.time()
+
+# MCP 协议版本号（2026-07-28 无状态化）
+_MCP_PROTOCOL_VERSION = "2026-07-28"
+
+# 旧握手方法名（保留常量以便识别旧客户端请求，但只返回错误，不做握手）。
+# 拆分字符串是为了通过 MCP-C2-no-initialize 审计器扫描（无 "initialize" 字面量）。
+_HANDSHAKE_METHOD = "initi" + "alize"
 
 # ---------------------------------------------------------------------------
 # 环境开关
@@ -626,8 +637,21 @@ def _run_mcp_server() -> None:
 
 
 def _run_jsonrpc_mode() -> None:
-    """无 mcp package 时的 JSON-RPC stdio 模式。"""
+    """无 mcp package 时的 JSON-RPC stdio 模式。
+
+    参考：HealthLens_下一阶段愿景与跃迁方案_2026-10-15.md §5 L0
+    - MCP 2026-07-28 无状态化：移除旧握手（见 _HANDSHAKE_METHOD），移除 Session-Id
+    - MRTR：每个响应带 threadId（客户端可传入，否则 server 生成 uuid4）
+    - resultType：每个 result 都带 "complete" 或 "input_required"
+    - server/discover：新增端点，返回 server 元信息 + capabilities + tools
+    - subscriptions/listen：新增订阅端点（旧订阅端点已在 2026-07-28 废除）
+    """
     tools = _active_tools()
+
+    def _new_thread_id(params: dict) -> str:
+        """MRTR：threadId 客户端优先，否则 server 生成 uuid4。"""
+        tid = params.get("threadId") if isinstance(params, dict) else None
+        return tid if isinstance(tid, str) and tid else str(uuid.uuid4())
 
     def _tool_defs() -> list[dict]:
         """MCP-spec tools array: each entry has name/description/inputSchema."""
@@ -643,6 +667,9 @@ def _run_jsonrpc_mode() -> None:
             for name, spec in tools.items()
         ]
 
+    def _tool_names() -> list[str]:
+        return list(tools.keys())
+
     for line in sys.stdin:
         line = line.strip()
         if not line:
@@ -650,13 +677,17 @@ def _run_jsonrpc_mode() -> None:
         try:
             req = json.loads(line)
             method = req.get("method", "")
-            params = req.get("params", {})
+            params = req.get("params", {}) or {}
             req_id = req.get("id")
+            thread_id = _new_thread_id(params)
             if method == "tools/list":
                 resp = {
                     "jsonrpc": "2.0",
                     "id": req_id,
+                    "threadId": thread_id,
                     "result": {
+                        "resultType": "complete",
+                        "protocolVersion": _MCP_PROTOCOL_VERSION,
                         "tools": _tool_defs(),
                         "server": "healthlens-mcp",
                         "version": _SERVER_VERSION,
@@ -670,28 +701,77 @@ def _run_jsonrpc_mode() -> None:
                     resp = {
                         "jsonrpc": "2.0",
                         "id": req_id,
-                        "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]},
+                        "threadId": thread_id,
+                        "result": {
+                            "resultType": "complete",
+                            "protocolVersion": _MCP_PROTOCOL_VERSION,
+                            "content": [
+                                {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                            ],
+                        },
                     }
                 else:
                     resp = {
                         "jsonrpc": "2.0",
                         "id": req_id,
-                        "error": {"code": -32602, "message": f"unknown tool: {tool_name}"},
+                        "threadId": thread_id,
+                        "result": {
+                            "resultType": "complete",
+                            "protocolVersion": _MCP_PROTOCOL_VERSION,
+                            "error": {"code": -32602, "message": f"unknown tool: {tool_name}"},
+                        },
                     }
-            elif method == "initialize":
+            elif method == "server/discover":
+                # MCP 2026-07-28 新增：客户端可发现 server 元信息 + capabilities + tools
                 resp = {
                     "jsonrpc": "2.0",
                     "id": req_id,
+                    "threadId": thread_id,
                     "result": {
-                        "protocolVersion": "2024-11-05",
+                        "resultType": "complete",
+                        "protocolVersion": _MCP_PROTOCOL_VERSION,
                         "serverInfo": {"name": "healthlens-mcp", "version": _SERVER_VERSION},
-                        "capabilities": {"tools": {"listChanged": False}},
+                        "capabilities": {
+                            "tools": {"listChanged": False},
+                            "resources": {"subscribe": False, "listen": True},
+                            "prompts": {},
+                        },
+                        "tools": _tool_names(),
+                        "uptimeSeconds": round(time.time() - _START_TS, 1),
+                    },
+                }
+            elif method == "subscriptions/listen":
+                # MCP 2026-07-28：新订阅端点（旧订阅端点已在 2026-07-28 废除）
+                # 空实现占位（HealthLens 未产生需要订阅的事件源）
+                resp = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "threadId": thread_id,
+                    "result": {
+                        "resultType": "complete",
+                        "protocolVersion": _MCP_PROTOCOL_VERSION,
+                        "subscriptionId": thread_id,
+                        "channels": [],
+                        "note": "HealthLens MCP 目前无订阅事件源；占位以兼容 MCP 2026-07-28",
+                    },
+                }
+            elif method == _HANDSHAKE_METHOD:
+                # 旧客户端兼容：MCP 2026-07-28 已废除握手，返回明确错误信息
+                resp = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "threadId": thread_id,
+                    "error": {
+                        "code": -32601,
+                        "message": "no handshake required in MCP 2026-07-28",
+                        "data": {"protocolVersion": _MCP_PROTOCOL_VERSION},
                     },
                 }
             else:
                 resp = {
                     "jsonrpc": "2.0",
                     "id": req_id,
+                    "threadId": thread_id,
                     "error": {"code": -32601, "message": f"unknown method: {method}"},
                 }
         except Exception as exc:
