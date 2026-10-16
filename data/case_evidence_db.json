@@ -89,15 +89,26 @@
         "doi": "10.1016/j.clnesp.2024.11.002"
       },
       "fusion_note": "古籍'脾主运化' ↔ 自噬流上调，方向一致；属 A 轴强证据。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.1016/j.clnesp.2024.11.002",
       "source_canonical": {
         "title": "Dawn-to-dusk intermittent fasting is associated with overexpression of autophagy genes: A prospective study on overweight and obese cohort",
         "journal": "Clinical Nutrition ESPEN",
         "year": 2025,
         "publisher": "Elsevier BV"
-      }
+      },
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "间歇性断食(IF) 4 周",
+        "气化 / 脾运化（促运化、通腑）",
+        "AMPK↑ / mTOR↓ → 自噬流(autophagic flux)上调",
+        "LAMP2",
+        "LC3B",
+        "ATG5",
+        "AMPK_signaling",
+        "Autophagy"
+      ]
     },
     {
       "id": "CASE-002",
@@ -139,15 +150,26 @@
         "doi": "10.3390/nu17101695"
       },
       "fusion_note": "重要边界：断食非万能，年轻女性短周期 AMPK/mTOR 不显 → 印证 A5 非负伤/窗口公理与个性化必要性。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.3390/nu17101695",
       "source_canonical": {
         "title": "Regulation of Metabolic Aging Through Adenosine Mono Phosphate-Activated Protein Kinase and Mammalian Target of Rapamycin: A Comparative Study of Intermittent Fasting Variations in Obese Young Women",
         "journal": "Nutrients",
         "year": 2025,
         "publisher": "MDPI AG"
-      }
+      },
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "间歇性断食 vs 限时进食(TRF) 20 天",
+        "气化 / 节律（子午流注雏形）",
+        "AMPK/mTOR 调控；进食窗口影响昼夜振幅",
+        "AMPK",
+        "mTOR",
+        "体成分/代谢",
+        "AMPK_signaling",
+        "Circadian"
+      ]
     },
     {
       "id": "CASE-003",
@@ -184,15 +206,25 @@
         "doi": "10.1038/s41467-024-45260-9"
       },
       "fusion_note": "为'先天-肾精轴'提供可量化代理（表观时钟），是 H 轴首个强人体证据。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.1038/s41467-024-45260-9",
       "source_canonical": {
         "title": "Fasting-mimicking diet causes hepatic and blood markers changes indicating reduced biological age and disease risk",
         "journal": "Nature Communications",
         "year": 2024,
         "publisher": "Springer Science and Business Media LLC"
-      }
+      },
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "模拟禁食(FMD) 3 个月",
+        "辟谷 / 气化重启",
+        "周期性低热量触发自噬与表观重编程 → 生理年龄下降",
+        "表观遗传生理年龄",
+        "代谢标记",
+        "Autophagy",
+        "Epigenetic_clock"
+      ]
     },
     {
       "id": "CASE-004",
@@ -235,9 +267,16 @@
         "doi": "Sports Medicine 2024 线粒体信号网络; Little et al.（投稿前需全文复核）"
       },
       "fusion_note": "把'导引/动则生阳'机制化为 PGC-1α 轴，B 轴核心证据。",
-      "citation_status": "unverified_text",
-      "doi_verified": false,
-      "doi": "Sports Medicine 2024 线粒体信号网络; Little et al.（投稿前需全文复核）"
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1152/japplphysiol.01262.2011",
+      "source_canonical": {
+        "title": "Does SIRT1 determine exercise-induced skeletal muscle mitochondrial biogenesis: differences between in vitro and in vivo experiments?",
+        "journal": "Journal of Applied Physiology",
+        "year": "2012",
+        "publisher": "American Physiological Society"
+      },
+      "enrichment_note": "综述/机制讨论文献，直接对应 AMPK→SIRT1→PGC-1α 轴；对应用例标注的运动/线粒体生物合成机制。"
     },
     {
       "id": "CASE-005",
@@ -269,10 +308,24 @@
         "p21"
       ],
       "gene_link": "C 轴（络脉-清瘀）弱项 → 食源槲皮素(红洋葱/苹果/茶)作日常 senolytic 候选",
-      "source": "Hickson et al. EBioMedicine 2019, 47:446-456 (PMID:31542391); Justice et al. EBioMedicine 2019, 40:554-563 (PMID:30616998)",
+      "source": {
+        "title": "Senolytics decrease senescent cells in humans: Preliminary report from a clinical trial of Dasatinib plus Quercetin in individuals with diabetic kidney disease",
+        "journal": "EBioMedicine",
+        "year": 2019,
+        "doi": "10.1016/j.ebiom.2019.08.069",
+        "note": "原 source 文本（人工复核用）：Hickson et al. EBioMedicine 2019, 47:446-456 (PMID:31542391); Justice et al. EBioMedicine 2019, 40:554-563 (PMID:30616998)"
+      },
       "fusion_note": "'瘀血/络脉'首次获现代细胞学对应（衰老细胞负荷），C 轴强证据；药食同源槲皮素为可消费组分。",
-      "citation_status": "unverified_text",
-      "doi_verified": false
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1016/j.ebiom.2019.08.069",
+      "source_canonical": {
+        "title": "Senolytics decrease senescent cells in humans: Preliminary report from a clinical trial of Dasatinib plus Quercetin in individuals with diabetic kidney disease",
+        "journal": "EBioMedicine",
+        "year": "2019",
+        "publisher": "Elsevier BV"
+      },
+      "enrichment_note": "Hickson 2019 D+Q 首次人体 senolytic 试验；支持 CASE-005 表述的『衰老细胞负荷下降』效应量。"
     },
     {
       "id": "CASE-006",
@@ -313,8 +366,8 @@
         "note": "原幻觉 DOI 10.1038/s41591-026-04102-8（'AFFIRM' 试验）已替换为真实 Phase II RCT；真实结果为骨形成标志物早期升高、骨降解无明确改善（subtle），非功能改善。"
       },
       "fusion_note": "把'衰老/肾虚'落到可测量骨代谢结局；H 轴功能代理证据。注意：真实 Farr 2024 结果为 subtle，仅假设生成性，不应夸大功能获益。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.1038/s41591-024-03096-2",
       "source_canonical": {
         "title": "Effects of intermittent senolytic therapy on bone metabolism in postmenopausal women: a phase 2 randomized controlled trial",
@@ -322,7 +375,17 @@
         "year": 2024,
         "publisher": "Springer Science and Business Media LLC"
       },
-      "citation_note": "（2026-10-13）该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。"
+      "citation_note": "（2026-10-13）该案例原误引为「Kirkland AFFIRM 240 人 Phase II RCT，步速握力显著改善」（DOI 10.1038/s41591-026-04102-8），经 Crossref 核验该 DOI 不存在、属 AI 幻觉。已彻底更正为真实的 Farr 2024 Phase II RCT（Nature Medicine 2024;30(9):2605-2612，DOI 10.1038/s41591-024-03096-2，60 名绝经后女性 62–88 岁），并如实描述其 subtle / 中性结局（骨形成标志物早期升高、骨降解无明确改善，未报告功能改善）。",
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "D+Q (dasatinib+quercetin) 间歇性 senolytic 给药 — Farr 2024 Phase II RCT",
+        "扶正祛瘀 / 延缓衰老",
+        "衰老细胞清除 → 骨代谢调节（真实结果：骨形成标志物早期升高、骨降解无明确改善）",
+        "骨形成标志物 P1NP",
+        "骨降解标志物 CTX",
+        "Senescence",
+        "Physical_function"
+      ]
     },
     {
       "id": "CASE-007",
@@ -353,10 +416,24 @@
         "Glucose_metabolism"
       ],
       "gene_link": "D 轴（昼夜）弱项(如 PER/CRY 多态) → 早 TRE 个性化候选",
-      "source": "Dote-Montero et al. Nature Medicine 2025, 31:524-533, DOI:10.1038/s41591-024-03375-y",
+      "source": {
+        "title": "Effects of early, late and self-selected time-restricted eating on visceral adipose tissue and cardiometabolic health in participants with overweight or obesity: a randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": 2025,
+        "doi": "10.1038/s41591-024-03375-y",
+        "note": "原 source 文本（人工复核用）：Dote-Montero et al. Nature Medicine 2025, 31:524-533, DOI:10.1038/s41591-024-03375-y"
+      },
       "fusion_note": "为'子午流注'提供现代 RCT 证据：进食时机本身即是干预，D 轴旗舰证据。",
-      "citation_status": "unverified_text",
-      "doi_verified": false
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1038/s41591-024-03375-y",
+      "source_canonical": {
+        "title": "Effects of early, late and self-selected time-restricted eating on visceral adipose tissue and cardiometabolic health in participants with overweight or obesity: a randomized controlled trial",
+        "journal": "Nature Medicine",
+        "year": "2025",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "enrichment_note": "Dote-Montero 2025 TREND 试验；支持 CASE-007 early TRE 优效结论。"
     },
     {
       "id": "CASE-008",
@@ -389,10 +466,24 @@
         "Inflammation"
       ],
       "gene_link": "痰湿质/脂肪肝倾向(基因) → 16:8 候选",
-      "source": "Oh et al. J Hepatol 2025, DOI:10.1016/j.jhep.2025.06.005 (31 citations)",
+      "source": {
+        "title": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associated steatotic liver disease",
+        "journal": "Journal of Hepatology",
+        "year": 2025,
+        "doi": "10.1016/j.jhep.2025.06.005",
+        "note": "原 source 文本（人工复核用）：Oh et al. J Hepatol 2025, DOI:10.1016/j.jhep.2025.06.005 (31 citations)"
+      },
       "fusion_note": "把'痰湿/肝'与现代肝脂量化对齐，D+F 轴强证据。",
-      "citation_status": "unverified_text",
-      "doi_verified": false
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1016/j.jhep.2025.06.005",
+      "source_canonical": {
+        "title": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associated steatotic liver disease",
+        "journal": "Journal of Hepatology",
+        "year": "2025",
+        "publisher": "Elsevier BV"
+      },
+      "enrichment_note": "Oh 2025 J Hepatol RCT；支持 CASE-008 TRE liver fat↓25.8% 效应量。"
     },
     {
       "id": "CASE-009",
@@ -429,9 +520,20 @@
         "doi": "2024 16+8 抗衰抗炎（投稿前需全文复核）"
       },
       "fusion_note": "本土人群证据，增强'治未病'适用性。",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "2024 16+8 抗衰抗炎（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "16:8 限时进食 抗衰抗炎（协和/湘雅）",
+        "节律养生 / 扶正",
+        "TRE 降低炎症与衰老相关标记",
+        "炎症标记",
+        "衰老相关标记",
+        "Inflammation",
+        "Senescence"
+      ],
+      "doi_candidate_note": "2024 16+8 抗衰抗炎（投稿前需全文复核）"
     },
     {
       "id": "CASE-010",
@@ -463,9 +565,18 @@
         "doi": "Cell Metabolism 2024 CGM 57人（投稿前需全文复核）"
       },
       "fusion_note": "说明'隐性血糖应激'普遍 → 可穿戴感知是理论闭环的数据基础（呼应 #61）。",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "Cell Metabolism 2024 CGM 57人（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "连续血糖监测(CGM) 餐后暴露",
+        "气化失司 / 血糖波动（未病先防）",
+        "量化餐后血糖漂移 → 个体化饮食/进食窗口",
+        "餐后血糖 >140 mg/dL",
+        "Glucose_metabolism"
+      ],
+      "doi_candidate_note": "Cell Metabolism 2024 CGM 57人（投稿前需全文复核）"
     },
     {
       "id": "CASE-011",
@@ -508,9 +619,16 @@
         "doi": "tai-chi HRV review（投稿前需全文复核）"
       },
       "fusion_note": "把'调神/和气血'可测量化为 HRV/迷走张力，G 轴核心非用药证据。",
-      "citation_status": "unverified_text",
-      "doi_verified": false,
-      "doi": "tai-chi HRV review（投稿前需全文复核）"
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1016/j.ctcp.2016.03.007",
+      "source_canonical": {
+        "title": "Effects of Tai Chi exercise on heart rate variability",
+        "journal": "Complementary Therapies in Clinical Practice",
+        "year": "2016",
+        "publisher": "Elsevier BV"
+      },
+      "enrichment_note": "太极/HRV meta 分析；直接支持 CASE-011 HRV 提升结论。"
     },
     {
       "id": "CASE-012",
@@ -551,9 +669,21 @@
         "doi": "meditation HRV review（投稿前需全文复核）"
       },
       "fusion_note": "为 BCI(EEG) 闭环提供'神/情志'可测靶点（呼应 #61）。",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "meditation HRV review（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "冥想 / 呼吸训练（HRV、压力）",
+        "调息 / 安神 / 疏肝",
+        "迷走神经刺激 → HRV↑、HPA 轴下调、默认网络重调",
+        "HRV",
+        "感知压力",
+        "EEG α/θ",
+        "Vagal_tone",
+        "HPA_axis"
+      ],
+      "doi_candidate_note": "meditation HRV review（投稿前需全文复核）"
     },
     {
       "id": "CASE-013",
@@ -586,9 +716,19 @@
         "doi": "Kirkland 2024 Nature Aging（投稿前需全文复核）"
       },
       "fusion_note": "体现'药食同源'的现代机制落点；L3 不进强个性化，仅作养生提示。",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "Kirkland 2024 Nature Aging（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "药食同源 senolytic（槲皮素食源：红洋葱/苹果/茶）",
+        "药食同源 / 活血（食养清瘀）",
+        "槲皮素为 D+Q 中 senolytic 组分 → 日常低剂量清瘀",
+        "衰老细胞负荷",
+        "Senescence",
+        "p16_INK4a"
+      ],
+      "doi_candidate_note": "Kirkland 2024 Nature Aging（投稿前需全文复核）"
     },
     {
       "id": "CASE-014",
@@ -631,7 +771,8 @@
       "fusion_note": "四气'温'→A/B 轴（气化/气血-代谢）投影；属食养级传统经验，标 L3。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-015",
@@ -674,7 +815,8 @@
       "fusion_note": "'平'性食养→G/F 轴；安神对应 HRV/EEG 可测靶点（呼应 #61）。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-016",
@@ -716,7 +858,8 @@
       "fusion_note": "'平'性清补→F/D 轴；与 CGM 餐后漂移验证可闭环。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-017",
@@ -758,7 +901,8 @@
       "fusion_note": "'平'性清肝→D/F 轴；属食养级，禁作药。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-018",
@@ -801,7 +945,8 @@
       "fusion_note": "'微寒'滋阴→B/H 轴；为'肾精/气血'食养投影。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-019",
@@ -838,7 +983,8 @@
       "fusion_note": "'寒'性清热→F 轴；与 CASE-009 抗炎轴一致。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-020",
@@ -881,7 +1027,8 @@
       "fusion_note": "'寒'性清心→G/A 轴；安神对应 HRV/EEG 闭环。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-021",
@@ -923,7 +1070,8 @@
       "fusion_note": "'寒'性化痰湿→D/F 轴；与 CASE-008 痰湿/肝脂呼应。",
       "citation_status": "traditional",
       "doi_verified": false,
-      "doi": "traditional"
+      "doi": "traditional",
+      "disclaimer": "传统中医食疗条目，来源为古籍与本草学文献；不做现代 DOI 化，保留古籍证据等级 L3。"
     },
     {
       "id": "CASE-022",
@@ -971,15 +1119,26 @@
         "doi": "10.1073/pnas.1418490112"
       },
       "fusion_note": "对应古籍'夜卧避光、无扰阳气'；机制是 ipRGC→SCN→松果体褪黑素轴，无需'松果体活化'表述。作 D 轴'避害'实证。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.1073/pnas.1418490112",
       "source_canonical": {
         "title": "Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness",
         "journal": "Proceedings of the National Academy of Sciences",
         "year": 2014,
         "publisher": "National Academy of Sciences"
-      }
+      },
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "避蓝光：夜间(睡前4h)避免短波蓝光暴露（发光eBook/手机屏 vs 印刷书）",
+        "昼夜养护：夜卧避光、敛阳入阴（D轴阴阳-昼夜轴·保护性实证）",
+        "视网膜 ipRGC(黑视蛋白)→SCN→松果体轴：夜间短波(蓝)光经此信号抑制松果体褪黑素分泌、延迟昼夜相位；等价于'夜卧不敛阳'，扰动 D 轴稳态",
+        "褪黑素分泌",
+        "昼夜相位(DLMO)",
+        "睡眠潜伏期",
+        "Circadian_CLOCK_BMAL1",
+        "Melatonin_signaling"
+      ]
     },
     {
       "id": "CASE-023",
@@ -1019,15 +1178,26 @@
         "doi": "10.1016/j.sleep.2020.05.009"
       },
       "fusion_note": "对应古籍'日出而作、晨兴升阳'；晨光=无成本 D 轴养护实证，呼应早 TRE(CASE-007)。",
-      "citation_status": "verified",
-      "doi_verified": true,
+      "citation_status": "unverified_no_publication",
+      "doi_verified": false,
       "doi": "10.1016/j.sleep.2020.05.009",
       "source_canonical": {
         "title": "Decreased functional connectivity within the salience network after two-week morning bright light exposure in individuals with sleep disturbances: a preliminary randomized controlled trial",
         "journal": "Sleep Medicine",
         "year": 2020,
         "publisher": "Elsevier BV"
-      }
+      },
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "晨光暴露：晨间 1h 明亮光(10,000 lux)暴露",
+        "昼夜养护：晨兴沐阳、升发阳气（D轴阴阳-昼夜轴·正面实证）",
+        "晨光经视网膜→SCN 提前昼夜相位、强化褪黑素节律幅度；等价于'晨兴升阳'，巩固 D 轴稳态",
+        "睡眠效率",
+        "睡眠潜伏期",
+        "显著性网络FC(右前岛叶)",
+        "Circadian_CLOCK_BMAL1",
+        "Melatonin_signaling"
+      ]
     },
     {
       "id": "CASE-024",
@@ -1065,9 +1235,16 @@
         "doi": "待补（论文标题: High numerical aperture confocal volumetric mesoscope reveals mesoscale subcellular dynamics in vivo；华中科技大学同济医院王伟团队 × 清华大学戴琼海院士团队；RUSH3D-HR 介观共聚焦体积显微镜）"
       },
       "fusion_note": "对应古籍'针刺足三里扶正祛邪'——本例是'古籍经验命题↔现代通路证据'对齐的旗舰实证，支撑 A2 可测量才可干预、A6 经验可错。动物/急性炎症模型，仅作机制背书与背景证据，禁诊疗化引用、禁暗示治疗疾病。",
-      "citation_status": "unverified_text",
-      "doi_verified": false,
-      "doi": "待补（论文标题: High numerical aperture confocal volumetric mesoscope reveals mesoscale subcellular dynamics in vivo；华中科技大学同济医院王伟团队 × 清华大学戴琼海院士团队；RUSH3D-HR 介观共聚焦体积显微镜）"
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "doi": "10.1038/s41587-026-03231-z",
+      "source_canonical": {
+        "title": "High numerical aperture confocal volumetric mesoscope reveals mesoscale subcellular dynamics in vivo",
+        "journal": "Nature Biotechnology",
+        "year": "2026",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "enrichment_note": "RUSH3D-HR 介观共聚焦显微镜活体成像；首次可视化电针抗炎的中性粒细胞群聚事件（群聚频率炎症态~10×，电针后↓>5×）。"
     },
     {
       "id": "CASE-024",
@@ -1108,9 +1285,21 @@
       },
       "fusion_note": "把'导引/气血流通'机制化为外泌体胞间信号传导——运动的收益不局限于局部，而是通过外泌体实现全身性细胞间通讯。I轴核心证据。",
       "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "运动外泌体综述（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "运动诱导外泌体释放（肌肉-脂肪串扰）",
+        "导引 / 气血流通（动则气血周流，外达四肢百骸）",
+        "运动→骨骼肌/脂肪组织释放外泌体(exosome)，携带miRNA(miR-133a/miR-206/miR-126)→调节远端组织代谢、血管新生、抗炎",
+        "循环外泌体浓度",
+        "外泌体miR-133a（肌肉源）",
+        "外泌体miR-126（内皮源）",
+        "Exosome_biogenesis",
+        "miRNA_signaling"
+      ],
+      "doi_candidate_note": "运动外泌体综述（投稿前需全文复核）"
     },
     {
       "id": "CASE-025",
@@ -1151,9 +1340,21 @@
       },
       "fusion_note": "为'辟谷/气化重启'增加外泌体维度——断食的全身修复效应部分通过外泌体miRNA实现，打通A轴与I轴。",
       "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "断食外泌体研究（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "间歇性断食调节外泌体miRNA谱",
+        "辟谷 / 气化重启（断食激活全身修复信号）",
+        "断食→细胞释放外泌体携带特定miRNA(miR-21/miR-155/miR-223)→调节免疫、代谢、自噬相关通路",
+        "外泌体miR-21（抗炎）",
+        "外泌体miR-155（免疫调节）",
+        "外泌体cargo自噬相关蛋白",
+        "Autophagy",
+        "Exosome_miRNA"
+      ],
+      "doi_candidate_note": "断食外泌体研究（投稿前需全文复核）"
     },
     {
       "id": "CASE-026",
@@ -1194,9 +1395,21 @@
       },
       "fusion_note": "为'经络/通络载药'提供外泌体载体假说——外泌体是细胞天然的'快递员'，可作为药食同源成分的生物利用度增强器。I+C轴桥接证据。",
       "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
-      "citation_status": "unverified_text",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "外泌体药物递送综述（投稿前需全文复核）"
+      "doi": null,
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "外泌体递送天然活性成分（姜黄素/槲皮素纳米载体）",
+        "药食同源 / 通络载药（经络传输药力）",
+        "天然姜黄素/槲皮素被包裹进外泌体→提高生物利用度（40-50×）→靶向递送至炎症/衰老组织→增强senolytic/抗炎效果",
+        "姜黄素生物利用度",
+        "炎症组织靶向递送效率",
+        "衰老细胞清除效率",
+        "Exosome_delivery",
+        "Senescence"
+      ],
+      "doi_candidate_note": "外泌体药物递送综述（投稿前需全文复核）"
     },
     {
       "id": "CASE-029",
@@ -1228,12 +1441,26 @@
         "PGC1A_signaling"
       ],
       "gene_link": "I axis (exosome-cell communication) weakness -> exercise as first-line non-drug intervention",
-      "source": "Yu et al. J Transl Med 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985",
+      "source": {
+        "title": "Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression",
+        "journal": "Journal of Translational Medicine",
+        "year": 2026,
+        "doi": "10.1186/s12967-026-08038-9",
+        "note": "原 source 文本（人工复核用）：Yu et al. J Transl Med 2026, DOI:10.1186/s12967-026-08038-9; Wang et al. Front Physiol 2026, 16:1680485; Jing et al. Front Cardiovasc Med 2026, 13:1863985"
+      },
       "fusion_note": "I axis core evidence: exercise benefits extend beyond local muscle to全身 via exosome signaling",
       "notes": "I/J axis residue removed 2026-10-10 (canonical=八轴 A-H)",
-      "citation_status": "unverified_text",
-      "doi_verified": false,
-      "citation_note": "（刊名订正 2026-10-13：原标 J Nanobiotechnology，但 DOI 10.1186/s12967-026-08038-9 经 Crossref 核验属 Journal of Translational Medicine；s12967 为该刊 DOI 前缀，J Nanobiotechnology 前缀为 s12951）"
+      "citation_status": "verified_crossref",
+      "doi_verified": true,
+      "citation_note": "（刊名订正 2026-10-13：原标 J Nanobiotechnology，但 DOI 10.1186/s12967-026-08038-9 经 Crossref 核验属 Journal of Translational Medicine；s12967 为该刊 DOI 前缀，J Nanobiotechnology 前缀为 s12951）",
+      "doi": "10.1186/s12967-026-08038-9",
+      "source_canonical": {
+        "title": "Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular remodeling and disease progression",
+        "journal": "Journal of Translational Medicine",
+        "year": "2026",
+        "publisher": "Springer Science and Business Media LLC"
+      },
+      "enrichment_note": "Yu 2026 J Transl Med；支持 CASE-029 运动外泌体 miR-133a 结论。"
     },
     {
       "id": "CASE-030",
@@ -1268,9 +1495,20 @@
       "gene_link": "D axis (circadian) weakness -> TRE as preferred IF regimen for liver fat",
       "source": "ScienceDirect 2026, DOI:10.1016/j.ther.2026.105127 (19 RCTs, 1149 participants)",
       "fusion_note": "Confirms TRE as D-axis flagship intervention; network evidence level upgraded",
-      "citation_status": "broken_citation",
+      "citation_status": "unverified_no_publication",
       "doi_verified": false,
-      "doi": "10.1016/j.ther.2026.105127"
+      "doi": "10.1016/j.ther.2026.105127",
+      "disclaimer": "Effect size synthesized from internal model, not directly citable to a single publication.",
+      "search_keywords": [
+        "Intermittent fasting strategies network meta-analysis",
+        "节律饮食/运化痰湿",
+        "TRE most effective IF regimen for hepatic steatosis reduction; ADF most effective for weight loss and HOMA-IR",
+        "Liver fat (TRF)",
+        "HOMA-IR (ADF)",
+        "Circadian",
+        "Hepatic_lipid",
+        "Insulin_sensitivity"
+      ]
     },
     {
       "case_id": "HL-0030",
@@ -1288,7 +1526,8 @@
       "generated_at": "2026-08-27T14:31:14.682848",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0031",
@@ -1306,7 +1545,8 @@
       "generated_at": "2026-08-27T14:31:14.682981",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0032",
@@ -1324,7 +1564,8 @@
       "generated_at": "2026-08-27T14:31:14.682987",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0033",
@@ -1342,7 +1583,8 @@
       "generated_at": "2026-08-27T14:31:14.682993",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0034",
@@ -1360,7 +1602,8 @@
       "generated_at": "2026-08-27T14:31:14.682997",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0035",
@@ -1378,7 +1621,8 @@
       "generated_at": "2026-08-27T14:31:14.683001",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0036",
@@ -1396,7 +1640,8 @@
       "generated_at": "2026-08-27T14:31:14.683004",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0037",
@@ -1414,7 +1659,8 @@
       "generated_at": "2026-08-27T14:31:14.683010",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0038",
@@ -1432,7 +1678,8 @@
       "generated_at": "2026-08-27T14:31:14.683013",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0039",
@@ -1450,7 +1697,8 @@
       "generated_at": "2026-08-27T14:31:14.683017",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0040",
@@ -1468,7 +1716,8 @@
       "generated_at": "2026-08-27T14:31:14.683021",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0041",
@@ -1486,7 +1735,8 @@
       "generated_at": "2026-08-27T14:31:14.683024",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0042",
@@ -1504,7 +1754,8 @@
       "generated_at": "2026-08-27T14:31:14.683027",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0043",
@@ -1522,7 +1773,8 @@
       "generated_at": "2026-08-27T14:31:14.683032",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0044",
@@ -1540,7 +1792,8 @@
       "generated_at": "2026-08-27T14:31:14.683034",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0045",
@@ -1558,7 +1811,8 @@
       "generated_at": "2026-08-27T14:31:14.683038",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0046",
@@ -1576,7 +1830,8 @@
       "generated_at": "2026-08-27T14:31:14.683041",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0047",
@@ -1594,7 +1849,8 @@
       "generated_at": "2026-08-27T14:31:14.683044",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0048",
@@ -1612,7 +1868,8 @@
       "generated_at": "2026-08-27T14:31:14.683047",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0049",
@@ -1630,7 +1887,8 @@
       "generated_at": "2026-08-27T14:31:14.683051",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0050",
@@ -1648,7 +1906,8 @@
       "generated_at": "2026-08-27T14:31:14.683055",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0051",
@@ -1666,7 +1925,8 @@
       "generated_at": "2026-08-27T14:31:14.683059",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0052",
@@ -1684,7 +1944,8 @@
       "generated_at": "2026-08-27T14:31:14.683062",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0053",
@@ -1702,7 +1963,8 @@
       "generated_at": "2026-08-27T14:31:14.683065",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0054",
@@ -1720,7 +1982,8 @@
       "generated_at": "2026-08-27T14:31:14.683068",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0055",
@@ -1738,7 +2001,8 @@
       "generated_at": "2026-08-27T14:31:14.683071",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0056",
@@ -1756,7 +2020,8 @@
       "generated_at": "2026-08-27T14:31:14.683074",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0057",
@@ -1774,7 +2039,8 @@
       "generated_at": "2026-08-27T14:31:14.683077",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0058",
@@ -1792,7 +2058,8 @@
       "generated_at": "2026-08-27T14:31:14.683081",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0059",
@@ -1810,7 +2077,8 @@
       "generated_at": "2026-08-27T14:31:14.683083",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0060",
@@ -1828,7 +2096,8 @@
       "generated_at": "2026-08-27T14:31:14.683087",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0061",
@@ -1846,7 +2115,8 @@
       "generated_at": "2026-08-27T14:31:14.683090",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0062",
@@ -1864,7 +2134,8 @@
       "generated_at": "2026-08-27T14:31:14.683094",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0063",
@@ -1882,7 +2153,8 @@
       "generated_at": "2026-08-27T14:31:14.683098",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0064",
@@ -1900,7 +2172,8 @@
       "generated_at": "2026-08-27T14:31:14.683101",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0065",
@@ -1918,7 +2191,8 @@
       "generated_at": "2026-08-27T14:31:14.683105",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0066",
@@ -1936,7 +2210,8 @@
       "generated_at": "2026-08-27T14:31:14.683108",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0067",
@@ -1954,7 +2229,8 @@
       "generated_at": "2026-08-27T14:31:14.683117",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0068",
@@ -1972,7 +2248,8 @@
       "generated_at": "2026-08-27T14:31:14.683120",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0069",
@@ -1990,7 +2267,8 @@
       "generated_at": "2026-08-27T14:31:14.683123",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0070",
@@ -2008,7 +2286,8 @@
       "generated_at": "2026-08-27T14:31:14.683127",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0071",
@@ -2026,7 +2305,8 @@
       "generated_at": "2026-08-27T14:31:14.683131",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0072",
@@ -2044,7 +2324,8 @@
       "generated_at": "2026-08-27T14:31:14.683134",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0073",
@@ -2062,7 +2343,8 @@
       "generated_at": "2026-08-27T14:31:14.683137",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0074",
@@ -2080,7 +2362,8 @@
       "generated_at": "2026-08-27T14:31:14.683140",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0075",
@@ -2098,7 +2381,8 @@
       "generated_at": "2026-08-27T14:31:14.683143",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0076",
@@ -2116,7 +2400,8 @@
       "generated_at": "2026-08-27T14:31:14.683146",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0077",
@@ -2134,7 +2419,8 @@
       "generated_at": "2026-08-27T14:31:14.683149",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0078",
@@ -2152,7 +2438,8 @@
       "generated_at": "2026-08-27T14:31:14.683152",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0079",
@@ -2170,7 +2457,8 @@
       "generated_at": "2026-08-27T14:31:14.683156",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0080",
@@ -2188,7 +2476,8 @@
       "generated_at": "2026-08-27T14:31:14.683161",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0081",
@@ -2206,7 +2495,8 @@
       "generated_at": "2026-08-27T14:31:14.683165",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0082",
@@ -2224,7 +2514,8 @@
       "generated_at": "2026-08-27T14:31:14.683168",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0083",
@@ -2242,7 +2533,8 @@
       "generated_at": "2026-08-27T14:31:14.683171",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0084",
@@ -2260,7 +2552,8 @@
       "generated_at": "2026-08-27T14:31:14.683174",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0085",
@@ -2278,7 +2571,8 @@
       "generated_at": "2026-08-27T14:31:14.683177",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0086",
@@ -2296,7 +2590,8 @@
       "generated_at": "2026-08-27T14:31:14.683180",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0087",
@@ -2314,7 +2609,8 @@
       "generated_at": "2026-08-27T14:31:14.683183",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0088",
@@ -2332,7 +2628,8 @@
       "generated_at": "2026-08-27T14:31:14.683188",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0089",
@@ -2350,7 +2647,8 @@
       "generated_at": "2026-08-27T14:31:14.683191",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0090",
@@ -2368,7 +2666,8 @@
       "generated_at": "2026-08-27T14:31:14.683195",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0091",
@@ -2386,7 +2685,8 @@
       "generated_at": "2026-08-27T14:31:14.683199",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0092",
@@ -2404,7 +2704,8 @@
       "generated_at": "2026-08-27T14:31:14.683203",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0093",
@@ -2422,7 +2723,8 @@
       "generated_at": "2026-08-27T14:31:14.683208",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0094",
@@ -2440,7 +2742,8 @@
       "generated_at": "2026-08-27T14:31:14.683215",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0095",
@@ -2458,7 +2761,8 @@
       "generated_at": "2026-08-27T14:31:14.683221",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0096",
@@ -2476,7 +2780,8 @@
       "generated_at": "2026-08-27T14:31:14.683226",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0097",
@@ -2494,7 +2799,8 @@
       "generated_at": "2026-08-27T14:31:14.683231",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0098",
@@ -2512,7 +2818,8 @@
       "generated_at": "2026-08-27T14:31:14.683234",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0099",
@@ -2530,7 +2837,8 @@
       "generated_at": "2026-08-27T14:31:14.683237",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0100",
@@ -2548,7 +2856,8 @@
       "generated_at": "2026-08-27T14:31:14.683241",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0101",
@@ -2566,7 +2875,8 @@
       "generated_at": "2026-08-27T14:31:14.683245",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0102",
@@ -2584,7 +2894,8 @@
       "generated_at": "2026-08-27T14:31:14.683248",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0103",
@@ -2602,7 +2913,8 @@
       "generated_at": "2026-08-27T14:31:14.683251",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0104",
@@ -2620,7 +2932,8 @@
       "generated_at": "2026-08-27T14:31:14.683255",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0105",
@@ -2638,7 +2951,8 @@
       "generated_at": "2026-08-27T14:31:14.683258",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0106",
@@ -2656,7 +2970,8 @@
       "generated_at": "2026-08-27T14:31:14.683261",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0107",
@@ -2674,7 +2989,8 @@
       "generated_at": "2026-08-27T14:31:14.683266",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0108",
@@ -2692,7 +3008,8 @@
       "generated_at": "2026-08-27T14:31:14.683271",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0109",
@@ -2710,7 +3027,8 @@
       "generated_at": "2026-08-27T14:31:14.683274",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0110",
@@ -2728,7 +3046,8 @@
       "generated_at": "2026-08-27T14:31:14.683278",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0111",
@@ -2746,7 +3065,8 @@
       "generated_at": "2026-08-27T14:31:14.683281",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0112",
@@ -2764,7 +3084,8 @@
       "generated_at": "2026-08-27T14:31:14.683284",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0113",
@@ -2782,7 +3103,8 @@
       "generated_at": "2026-08-27T14:31:14.683287",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0114",
@@ -2800,7 +3122,8 @@
       "generated_at": "2026-08-27T14:31:14.683292",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0115",
@@ -2818,7 +3141,8 @@
       "generated_at": "2026-08-27T14:31:14.683295",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0116",
@@ -2836,7 +3160,8 @@
       "generated_at": "2026-08-27T14:31:14.683298",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0117",
@@ -2854,7 +3179,8 @@
       "generated_at": "2026-08-27T14:31:14.683302",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0118",
@@ -2872,7 +3198,8 @@
       "generated_at": "2026-08-27T14:31:14.683305",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0119",
@@ -2890,7 +3217,8 @@
       "generated_at": "2026-08-27T14:31:14.683309",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     },
     {
       "case_id": "HL-0120",
@@ -2908,7 +3236,8 @@
       "generated_at": "2026-08-27T14:31:14.683313",
       "is_synthetic": true,
       "citation_status": "synthetic_validation",
-      "doi_verified": false
+      "doi_verified": false,
+      "disclaimer": "此条目为按低分轴自动生成的验证夹具，非文献案例；effect_size 由内部模型合成，不直接可引用至单一出版物。"
     }
   ],
   "version": "1.3",
