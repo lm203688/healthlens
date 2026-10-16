@@ -101,10 +101,9 @@ class TestRealMcpServerScan:
         s = r.to_dict()["summary"]
         assert s["total_checks"] == 6
         assert "passed" in s and "failed" in s and "all_passed" in s
-        # 当前 mcp_server.py 有 initialize 字面量（第 681 行），必 fail
-        assert any(
-            c.check_id == "MCP-C2-no-initialize" and not c.pass_ for c in r.checks
-        ), "当前 mcp_server.py 应检出 initialize 残留"
+        # v0.29.0 起 mcp_server.py 已升级到 MCP 2026-07-28，C2 应通过（无 initialize 残留）
+        c2 = next(c for c in r.checks if c.check_id == "MCP-C2-no-initialize")
+        assert c2.pass_ is True, "v0.29.0 mcp_server.py 应已移除 initialize 握手"
 
     def test_real_mcp_no_session_id(self, real_mcp_path: str) -> None:
         r = audit_mcp(real_mcp_path)
@@ -117,17 +116,23 @@ class TestRealMcpServerScan:
         c6 = next(c for c in r.checks if c.check_id == "MCP-C6-no-sse-recovery")
         assert c6.pass_ is True
 
-    def test_real_mcp_missing_result_type(self, real_mcp_path: str) -> None:
+    def test_real_mcp_result_type_present(self, real_mcp_path: str) -> None:
         r = audit_mcp(real_mcp_path)
         c3 = next(c for c in r.checks if c.check_id == "MCP-C3-use-result-type")
-        # 当前代码未实现 resultType（MRTR）
-        assert c3.pass_ is False
+        # v0.29.0 起 MRTR：所有 result 都带 resultType
+        assert c3.pass_ is True
 
-    def test_real_mcp_missing_server_discover(self, real_mcp_path: str) -> None:
+    def test_real_mcp_server_discover_present(self, real_mcp_path: str) -> None:
         r = audit_mcp(real_mcp_path)
         c5 = next(c for c in r.checks if c.check_id == "MCP-C5-impl-server-discover")
-        # 当前代码未实现 server/discover
-        assert c5.pass_ is False
+        # v0.29.0 起已实现 server/discover
+        assert c5.pass_ is True
+
+    def test_real_mcp_subscriptions_listen_present(self, real_mcp_path: str) -> None:
+        r = audit_mcp(real_mcp_path)
+        c4 = next(c for c in r.checks if c.check_id == "MCP-C4-subscriptions-listen")
+        # v0.29.0 起已加 subscriptions/listen 占位（且无旧 resources/subscribe）
+        assert c4.pass_ is True
 
 
 # ─────────────────────────── 2. Mock 违规文件必 fail ───────────────────────────
@@ -512,10 +517,13 @@ class TestRunFullAudit:
     def test_current_audit_report_shape(self) -> None:
         """锁定当前代码库审计输出的形状（供 CI 回归）。"""
         r = run_full_audit()
-        # 当前 mcp_server.py 应有 6 项 check，至少 3 项 fail（initialize/resultType/discover）
+        # v0.29.0：mcp_server.py 已升级 MCP 2026-07-28，agent-card.json 已升级 A2A v1.0.1
+        # → MCP 与 A2A 全部 check 都应 pass，仅允许可选 info 级 warn。
         m = r["mcp"]
         assert m["summary"]["total_checks"] == 6
-        assert m["summary"]["failed"] >= 2
+        assert m["summary"]["all_passed"] is True, (
+            f"v0.29.0 MCP 审计应全部通过，实际 failed={m['summary']['failed']}"
+        )
         a = r["a2a"]
         assert a["summary"]["total_checks"] == 7
 
