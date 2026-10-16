@@ -1,0 +1,62 @@
+{
+  "title": "An Integrated Steady-State Axis Framework for Computational Wellness: A Cross-Modal Mapping Between Traditional Chinese Medicine, Western Pathophysiology, and Compliance-Aware Reasoning",
+  "short_title": "Integrated Steady-State Axis Framework",
+  "abstract": "We describe a computational wellness framework that maps eight physiologically-grounded steady-state axes (A-H) between traditional Chinese medicine terminology, Western pathophysiological pathways, and jurisdiction-aware output filters. Unlike prior efforts that treat traditional and integrative medicine as qualitative overlays, the framework exposes each axis as a scored, threshold-parameterized unit with an explicit structural causal model over inter-axis coupling. We provide (1) an evidence-verified case database with per-entry DOI status, (2) a cross-modal terminology mapping table (GB/T 20348 <-> axes <-> pathways <-> classical texts), (3) an eight-axis structural causal simulator producing counterfactual trajectories, calibration bands, and E-value sensitivity analysis, and (4) a compliance layer enforcing jurisdiction-specific output restrictions across five legal regimes (CN, US, UK, EU, AU) via a fail-closed claims engine. All 491 automated tests pass; 29 case entries carry verified DOI citations while 91 synthetic fixtures are explicitly labeled as such. The framework is not a diagnostic or therapeutic system; it is a well-defined computational reference for integrative wellness signaling, designed for independent replication and longitudinal data integration.",
+  "subject_area": "Medicine > Epidemiology",
+  "secondary_subject_area": "Health Policy",
+  "research_design": "Observational Study + Methodological Framework",
+  "evidence_level": "L1 (engineering prototype + synthetic fixture validation)",
+  "authors": [
+    {
+      "name": "HealthLens Research Team",
+      "institution": "HealthLens (independent research, open-source)",
+      "orcid": "PENDING_USER_FILL",
+      "correspondence": true
+    }
+  ],
+  "funding": "This work was conducted as independent open-source research with no external funding. All software is distributed under the project's open-source license.",
+  "competing_interests": "The authors declare no competing interests. HealthLens operates as an open-source wellness platform and does not sell the framework described in this preprint.",
+  "data_availability": "The case evidence database, terminology mapping, calibration baselines, and DOI verification results are available at the Zenodo DOI cited in the Data Availability Statement (see data_availability_statement.md).",
+  "ethics": "This study did not involve human subjects and did not require institutional review board approval. All quantitative analysis is based on publicly documented evidence and synthetic fixtures explicitly labeled as such.",
+  "confidentiality": "No private health information is included in the submitted materials. The case evidence database has been audited via tools/redact_for_public_release.py with three independent fail-loud defenses against upstream bibliographic leakage.",
+  "reproducibility": "All reported numerical results can be reproduced by running `python tools/engine_validation.py` against the current codebase. The validation snapshot mechanism uses git-SHA + timestamp naming to prevent silent overwrite.",
+  "limitations": [
+    "The framework is a wellness reference, not a diagnostic or therapeutic system.",
+    "Only 29 case entries carry verified DOI citations; the remaining 91 are synthetic validation fixtures and are labeled as such in the database metadata.",
+    "The structural causal simulator's coupling coefficients are heuristic prior beliefs, not causally identified parameters; sensitivity is quantified via E-value analysis but not formally tested against prospective cohort data.",
+    "No longitudinal human data has been collected as of the submission date; the n-of-1 tracking data infrastructure is provided but empty.",
+    "The compliance layer is tested across five legal regimes but has not been legally reviewed by qualified practitioners in any jurisdiction."
+  ],
+  "keywords": [
+    "integrative medicine",
+    "traditional Chinese medicine",
+    "computational wellness",
+    "structural causal model",
+    "pharmacogenomics",
+    "health informatics",
+    "regulatory compliance",
+    "wellness framework",
+    "evidence verification"
+  ],
+  "supplementary_materials": [
+    "HealthLens_论文_计算验证_补充数据.csv",
+    "data/doi_verification_results.json",
+    "data/case_evidence_db.json",
+    "data/axis_term_mapping.json",
+    "config/axes/axes.yaml"
+  ],
+  "figures": [
+    {
+      "file": "HealthLens_论文_框架概念图_Figure1.svg",
+      "caption": "Overview of the eight-axis integrated steady-state framework, showing cross-modal mappings between traditional Chinese medicine terminology (GB/T 20348), Western pathophysiological pathways, classical text fragments, and the jurisdiction-aware output filter."
+    }
+  ],
+  "versions": [
+    {
+      "version": "v1",
+      "date": "2026-10-15",
+      "note": "Initial submission"
+    }
+  ],
+  "license": "CC BY-NC-ND 4.0 (default medRxiv preprint license; users may override to CC BY 4.0 at submission time)"
+}
