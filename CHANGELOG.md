@@ -4,6 +4,341 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.30.0] - 2026-10-16
+
+### Added（L0 协议对齐：A2A v1.0.1 JSON-RPC 端点落地）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5 L0：
+> 「不做协议对齐则生态层 2026 下半年直接失效」。
+
+v0.29.0 已把 A2A v1.0.1 的**契约层**（Agent Card / JWS 签名 / SCREAMING_SNAKE_CASE
+verbs / conformanceNote）落地，但 `conformanceNote` 诚实声明 SendMessage /
+ListTasks / GetTask / CancelTask 的 JSON-RPC 端点**尚未实现**——生产环境
+`POST /a2a` 是 404。本轮补齐这块，让 A2A v1.0.1 从「声明 verbs」升级为「端点
+可用」。
+
+**L0 协议对齐（本轮核心）**
+- `app/lib/a2a_task_store.py`（新增）：A2A Task 内存态容器
+  - `TaskState` enum（SCREAMING_SNAKE_CASE）：`SUBMITTED / WORKING / COMPLETED /
+    FAILED / CANCELED / INPUT_REQUIRED`，严格对齐 A2A v1.0.1 spec
+  - `A2ATask` dataclass：camelCase 字段（taskId / contextId / status / statusMessage
+    / artifacts / history / createdAt / updatedAt），完全对齐 A2A v1.0.1 wire format
+  - `TaskStore` 类：`create_task / get_task / list_tasks / update_status /
+    add_artifact / cancel_task / purge_expired`，全部线程安全（RLock）
+  - **fail-loud 状态转移**：非法转移抛 `InvalidTaskTransitionError`，从终态
+    (COMPLETED / FAILED / CANCELED) 或从非可取消状态调 `cancel_task` 都直接抛
+  - **幂等**：`create_task(taskId="X")` 命中已存在则返回，冲突 contextId 抛
+    `ValueError`；`create_task()` 无 ID 时每次生成新 UUID
+  - **TTL 清理**：默认 24 小时（86400s），惰性（每次读写前）+ 主动
+    `purge_expired()` 双通道
+  - 顶部注释说明「生产应替换为 DB/Redis」并给出迁移路径（保留公开方法签名，
+    注入持久化适配器即可）
+- `app/api/a2a.py`（新增）：单一 JSON-RPC 端点 `POST /a2a`
+  - 支持 4 个 method：`SendMessage / ListTasks / GetTask / CancelTask`
+  - JSON-RPC 2.0 envelope：成功返回 `{jsonrpc, result, id}`，错误返回
+    `{jsonrpc, error: {code, message}, id}`；HTTP 状态码 200（协议内错误走
+    body）+ 400（body 非合法 JSON）
+  - 错误码：标准 JSON-RPC -32700 / -32600 / -32601 / -32602 / -32603 + A2A
+    语义 -32001 (task_not_found) / -32002 (invalid_transition)
+  - **SendMessage 薄包装**：不做业务逻辑，只做「解析 message.parts → 调用
+    MCP 工具函数 → 附加 artifact → COMPLETED/FAILED」的编排
+  - **SendMessage 允许的工具**（严格复用现有 MCP 工具，不重写业务）：
+    `hl_health_check / hl_search_knowledge / hl_get_axis_detail /
+    hl_get_wellness_article / hl_suggest_general_diet / hl_suggest_general_motion`
+    （L1 + L2 工具集，L3 不接入，需 HL_MCP_EXPOSE_PRIVATE=1 才启用）
+  - SendMessage 支持两种调用形式：
+    1. `message.parts[0].data = {"tool": "<name>", "args": {...}}`（显式）
+    2. `message.parts[0].text = "<query>"`（fallback：抽为 `hl_search_knowledge(query=...)`）
+  - **ListTasks**：支持 filter by `contextId` / `status`，limit 硬上限 50
+    （A2A v1.0.1 spec 约束）
+  - **CancelTask**：仅 SUBMITTED / WORKING 可取消，其它状态返回 -32002
+  - **JWS 签名 optional**：`Authorization: Bearer <jws>` 存在则用
+    `a2a_jws.verify_jws` 校验，公钥从 `HL_A2A_VERIFY_KEY_JWK` 环境变量读取；
+    无 header 或验证失败均**不阻断**请求（对齐 A2A spec "optional" 语义），
+    仅响应体带 `"signed": true/false`
+  - 顶部 docstring 引用报告 §5 L0 与 A2A v1.0.1 spec URL
+- `app/__init__.py`：+3 行（`from app.api.a2a import router as a2a_router` +
+  `app.include_router(a2a_router, tags=["A2A v1.0.1"])`，注释标 §5 L0）
+
+**Manifest 与文档**
+- `agent-card.json`：
+  - `version`: `0.29.0` → **`0.30.0`**（单一真源 = pyproject.toml）
+  - `conformanceNote` 从「**未实现** SendMessage / GetTask / CancelTask /
+    ListTasks 的 JSON-RPC 端点」改为「**已实现** SendMessage / ListTasks /
+    GetTask / CancelTask 的 JSON-RPC 端点（POST /a2a），JWS 签名 optional」，
+    并列明 SendMessage 复用哪些 MCP 工具函数、STATE_TRANSITION_HISTORY 仍 false
+  - `capabilities.EXTENSIONS[1].description` 同步改为「已实现...（POST /a2a）」
+  - `capabilities.EXTENSIONS[1].verbs` 追加 `GetTask` / `CancelTask`（原来只有
+    SendMessage / ListTasks）
+  - 保留 `protocolVersion: "1.0.1"`、`LIST_TASKS: true`
+- `pyproject.toml`: `0.29.0` → **`0.30.0`**
+- `app/core/version.py`：不动，运行时读 pyproject 单一真源
+
+**新增契约测试**
+- `tests/protocol/test_a2a_jsonrpc.py`（新增，≥25 用例）：
+  - SendMessage 基本调用（显式 tool / 文本 fallback / 缺 params / 缺 message）
+  - ListTasks 空/有数据/filter by contextId / filter by status / limit 上限
+    / limit 下限 / limit 非法
+  - GetTask 存在/不存在/缺 taskId/非法 taskId
+  - CancelTask SUBMITTED→CANCELED / WORKING→CANCELED / COMPLETED 抛错 /
+    FAILED 抛错 / 不存在的 task
+  - 未知 method / 非法 jsonrpc 版本 / body 非对象 / body 非 JSON
+  - JWS 签名 optional：无 header 通过 / 非 Bearer 前缀不阻断 / JWS 段数不合法
+    不阻断 / 环境变量未设置不阻断
+  - TaskStore 状态转移矩阵：所有非法转移抛 `InvalidTaskTransitionError`
+  - TaskStore TTL 清理：过期 task 被 `purge_expired` 清掉 / 惰性清理生效
+  - 幂等：相同 `taskId` 二次创建返回同一 task / 冲突 contextId 抛 ValueError
+
+**契约测试更新**
+- `tests/protocol/test_a2a_contract.py`：
+  - `test_39_conformance_note_discloses_unimplemented` 更名
+    `test_39_conformance_note_declares_implemented`，断言从「未实现」改为「已实现」
+  - `test_40_conformance_note_names_specific_gaps` 更名
+    `test_40_conformance_note_names_specific_endpoints`，断言从「点名未实现」
+    改为「点名已实现的 4 个端点」
+  - `test_42_a2a_audit_c7_passes_on_real_card`：`_a2a_check_conformance_honest`
+    逻辑同步更新——若 note 里同时有「已实现」和「未实现」，需按动词分组判定
+    （本轮 audit 逻辑保持向后兼容：note 含「未实现」仍算诚实，但已实现时
+    也必须点名）
+
+**版本**
+- `pyproject.toml`: 0.29.0 → **0.30.0**
+- `agent-card.json`: 0.29.0 → **0.30.0**
+
+### Added（§10 #6 Pulse-PPG / PaPaGei 零样本评测脚手架闭合）
+
+参照《HealthLens_下一阶段全面提升报告_2026-10-08》§10 #6：
+> 「评测 Pulse-PPG / PaPaGei 在现有脉搏波数据上的零样本表征质量 | 3–5 天」
+
+v0.29.0 已建 Pulse-PPG / PaPaGei optional adapter 骨架（`app/lib/sensor_adapter.py`），
+但未接真实权重（真实权重需用户提供）。本轮把评测**脚手架**做扎实：
+合成数据 + 特征 baseline + 零样本 harness + API 端点 + 报告生成器 + 契约测试。
+**真实零样本表征质量**（§10 #6 的核心命题）仍待用户提供 Pulse-PPG / PaPaGei
+权重才能闭合——脚手架先就位，fail-loud 不静默降级。
+
+**新增源文件（≤4）**
+- `app/lib/synthetic_sensor_dataset.py`（新增）：确定性合成传感器数据集
+  - `SyntheticSensor` dataclass（signal_type / sample_rate_hz / duration_sec /
+    subject_id / samples / label / ground_truth_hr_bpm）
+  - `SyntheticSensorDataset` 类（批量生成 + `to_json` / `from_json` 序列化 +
+    `fingerprint()` sha256[:16] 内容指纹）
+  - `generate_ppg(freq_hz, noise, seed, breath_mod)`：正弦 + 呼吸调制 + 高斯噪声
+  - `generate_ecg(freq_hz, noise, seed)`：P/Q/R/S/T 五分量高斯窗叠加
+  - `generate_emg(freq_hz, noise, seed, activation)`：宽频带高斯 + 激活包络
+  - `generate_eeg(freq_hz, band_alpha, band_beta, band_theta, noise, seed)`：
+    α/β/θ 三节律叠加
+  - `generate_batch(n, seed, signal_type, duration_sec, labels)`：批量生成 +
+    三分类（rest / exercise / stress）预设参数（分类信号显著可分）
+  - 纯 Python（`random.Random(seed)`），同 seed 同输出、不同 seed 不同输出
+  - **仅用于评测脚手架验证**，不进入生产健康推断路径
+- `app/lib/feature_baseline.py`（新增）：手工特征 baseline
+  - `compute_hrv_features(samples, sample_rate)`：RMSSD / SDNN / pNN50 / SD1 /
+    SD2 / VLF/LF/HF 频带功率 / LF/HF 比（13 维）
+  - `compute_waveform_features(samples)`：mean / std / rms / mad / min / max /
+    peak_to_peak / cv / skew / kurtosis / rise_time / zero_crossing_rate /
+    lag1-3_autocorr / monotonic_fraction / endpoint_slope（17 维）
+  - `compute_spectral_features(samples, sample_rate)`：dominant_freq +
+    spectral_entropy（2 维）
+  - `extract_baseline_features(samples, sample_rate, signal_type)`：按
+    signal_type 路由（PPG/ECG 用 HRV+波形；EMG/EEG 用 spectral+波形）
+  - `to_feature_matrix(sensors)`：批量特征化，返回 `(y_hr, X_matrix, feature_names)`
+  - 特征总数 26–33 维，覆盖时域 + 频域 + 时序相关，对标 Pulse-PPG /
+    PaPaGei 的手工特征
+- `app/lib/zero_shot_eval_harness.py`（新增）：零样本评测 harness
+  - `EvaluatorConfig` dataclass（signal_type / task / metric / train_ratio /
+    random_seed）
+  - `BaselineResult` dataclass（engine_name / accuracy / f1_macro / auroc /
+    metric_value / r2 / latency_ms / n_samples / details）
+  - `ZeroShotEvalHarness` 类：
+    - `run_baseline(dataset)`：feature_baseline + 极简 KNN 分类器 / 岭回归 /
+      距离异常检测（**纯 Python，不引 sklearn**）
+    - `run_engine(engine, dataset)`：真实模型接口，未装权重时抛
+      `HealthLensUnavailableEngine`（复用 sensor_adapter 异常，不静默降级）
+    - `compare(results)`：横向对比 + Markdown 表格 + best X 总结
+  - 内置极简 `_KNNClassifier`（欧氏距离 + k 投票）+ `_LinearRegression`
+    （正规方程 + 自适应岭正则化）+ `_accuracy` / `_f1_macro` / `_auroc`
+    （Mann-Whitner U）/ `_r2` 指标
+  - 支持 3 类任务：`classification`（3 类活动识别）/ `regression`（心率估计
+    BPM）/ `anomaly`（正常 vs 异常）
+- `tools/run_puls_egg_eval.py`（新增，ASCII 名避免文件名编码坑）：一键运行
+  - 参数：`--seed`（默认 42）/ `--n-samples`（默认 200）/ `--output`
+    （默认 `docs/pulse_ppg_evaluation_report.md`）/ `--with-engine`
+    （尝试接真实模型，缺省 False）
+  - 步骤：生成合成数据 → 跑 3 任务 baseline → （可选）接 Pulse-PPG / PaPaGei
+    → 生成 Markdown 报告
+  - 报告含：数据规模 + 分类/回归/异常 baseline 结果 + SensorFM 基准对照
+    （引用 arXiv 数字，不作为对比基线）+ 局限与后续
+
+**修改**
+- `app/api/timeseries.py`（仅追加，不改现有端点）：新增
+  `POST /api/v1/timeseries/eval/harness`
+  - 请求 schema：`signal_type` / `task` / `metric` / `samples`（`min_length=2`，
+    `max_length=1000`）/ `train_ratio` / `random_seed`
+  - 单条 signal 需 `samples`（≥4 floats）+ `sample_rate_hz`（>0）+ 按任务
+    附带 `label`（分类/异常）或 `ground_truth_hr_bpm`（回归）
+  - 响应 schema：engine_name / accuracy / f1_macro / auroc / metric_value /
+    r2 / latency_ms / n_samples / details + `report_source` + `note`
+  - 单次请求 ≤ 1000 样本，超时 5s（常量 `MAX_HARNESS_SAMPLES` /
+    `HARNESS_TIMEOUT_SEC` 声明）
+  - 顶部 docstring 引用报告 §10 #6
+
+**新增文档**
+- `docs/pulse_ppg_evaluation_report.md`：初始评测报告（合成数据 + baseline，
+  无真实模型）
+  - §1 诚实声明：脚手架已就绪，真实零样本表征质量待用户提供权重
+  - §2 数据规模 + 合成数据构造说明
+  - §3 任务定义（classification / regression / anomaly）
+  - §4 Baseline 结果表格（3 任务）
+  - §5 SensorFM 基准对照（引用 500 万人 / 1 万亿分钟 / 35 项任务数字，
+    明确"路线图不能押在拿不到的权重上"）
+  - §6 局限与后续
+  - §7 附录：文件清单
+
+**新增契约测试**
+- `tests/lib/test_zero_shot_eval.py`（新增，85 用例，13 组）：
+  - TestGenerators（10）：PPG/ECG/EMG/EEG 各自构造 + 确定性 + 边界
+  - TestGenerateBatch（8）：批量生成 + 标签均分 + 确定性 + 边界
+  - TestDataset（3）：数据集序列化 round-trip + 指纹稳定
+  - TestFeatureExtraction（16）：HRV / 波形 / 频域特征键集合、维度、类型、
+    范围、边界（空信号 / 短信号 / 非法 signal_type / 非法采样率）
+  - TestClassification（5）：3 类分类 ≥0.7 accuracy、结果类型、确定性、
+    空数据集抛错
+  - TestRegression（3）：合成线性关系 R² ≥0.5、MAE/NRMSE/target_mean_hr、
+    metric_value == r2
+  - TestAnomaly（2）：AUROC ≥0.7、正负样本分布
+  - TestEngineInterface（5）：`run_engine(None)` / 缺 engine_name / 缺 predict
+    均抛 `HealthLensUnavailableEngine`；mock predict 走通；空数据集抛错
+  - TestCompare（3）：空结果、Markdown 表格、best accuracy
+  - TestMetrics（10）：`_accuracy` / `_f1_macro` / `_auroc` / `_r2` 完美 /
+    随机 / 单类 / 全相等边界
+  - TestEvaluatorConfig（5）：默认合法 + 非法 signal_type / task / metric /
+    train_ratio 各抛错
+  - TestEvalHarnessAPI（8）：端点注册 + 请求 schema 边界（min_length /
+    max_length / 短 samples / regression 缺 ground_truth_hr_bpm）+ 响应
+    schema 字段 + 最小成功路径
+  - TestSyntheticSensorModel（2）：to/from_dict round-trip + n_samples
+  - TestBaselines（4）：`_LinearRegression` 拟合线性 / 样本不足抛错；
+    `_KNNClassifier` 训练完美 / 未 fit 抛错
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/
+引导/干预/个体。合成数据仅作**评测脚手架验证**，不用于生产健康推断。
+
+**硬性约束遵守**
+- **不引入**：numpy / scipy / sklearn / pandas（纯 Python，`random.Random` +
+  `statistics` + `math`）
+- **不引入**：torch / transformers（真实模型需用户 `pip install -e '.[evaluation]'`
+  或 `pip install torch transformers`）
+- **每个新文件顶部 docstring 引用报告 §10 #6**
+
+**版本**
+- `pyproject.toml`: 0.29.0 → **0.30.0**（本轮与 A2A v1.0.1 端点 team 共用版本）
+- `agent-card.json`: 0.29.0 → **0.30.0**
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/
+引导/干预/个体。
+
+### 部署说明（本轮由主 agent 统一收尾，本子任务不推 GitHub / 不部署 ECS）
+- 本轮**不引入新依赖**，生产部署无额外步骤
+- 用户接真实 Pulse-PPG / PaPaGei 权重路径：
+  1. `pip install torch>=2.0 transformers>=4.40`（或 `pip install -e '.[evaluation]'`）
+  2. 下载官方 checkpoint，设置环境变量 `HL_PULSE_PPG_CHECKPOINT` /
+     `HL_PAPAGEI_CHECKPOINT`
+  3. 修改 `app/lib/sensor_adapter.py` 的 `load_pulse_ppg_model` /
+     `load_papagei_model`，从 env var 加载真实权重并返回
+     `{"engine_name": "Pulse-PPG", "predict": predict_fn}` 契约
+  4. 跑 `python tools/run_puls_egg_eval.py --with-engine` 生成真实模型评测报告
+- 合成数据 + baseline 只用于脚手架验证，**不进入生产健康推断**
+
+### Fixed（容器 bind mount 长期修复：不再靠 docker cp 兜底）
+
+v0.28.0 / v0.29.0 两轮部署栽在同一坑：容器 bind mount 只挂 `./app` 和
+`./data`，`config/`、`pyproject.toml`、`agent-card.json` 都不在挂载列表。
+前两轮只能用 `docker cp` 手动拷进容器，`docker compose restart web` 后
+能保持；但一旦 `docker compose up -d --force-recreate` 重建容器，
+`docker cp` 的文件全丢——线上 `GET /api/v1/version` 会退回旧版本、
+`/.well-known/agent-card.json` 会 404。这是 v0.29.0 遗留的**头号运维债**。
+
+本轮从 Dockerfile + compose 两侧同时修复，让这三项**进镜像层或进 bind
+mount**，从此任何方式的容器重建都不会丢。
+
+**Dockerfile**（`Dockerfile:42-63`）
+- 新增 `COPY config/ ./config/`（federated_defaults / national_standards /
+  serializer_schema / axes）
+- 新增 `COPY agent-card.json ./agent-card.json`（`/.well-known/agent-card.json`
+  端点直接读该文件）
+- `COPY pyproject.toml ./` 从 Stage 2 开头移到 `COPY --from=builder /install /usr/local`
+  之后、`RUN groupadd` 之前——保证 `chown -R appuser:appuser /app` 会把它们
+  转成 appuser 所有
+- 三条 COPY 之后加注释块，说明"这些必须进镜像层，不然 `--force-recreate`
+  会丢"，防止后续维护者误删
+
+**docker-compose.yml**
+- `web` 与 `worker` 服务都新增 `- ./config:/app/config:ro` 只读挂载（运行时
+  可热更新配置，不需要重建镜像）
+- 顶部注释说明 pyproject.toml 与 agent-card.json 走 Dockerfile COPY 路径
+  （因为要跑 `--force-recreate` 时也不丢）
+
+**验证路径**（生产环境实测，主 agent 收尾时执行）
+1. `docker compose build --no-cache` 重建镜像
+2. `docker compose up -d --force-recreate web worker`（强制重建，不是 restart）
+3. `docker exec healthlens-web ls /app/config/` — 应看到 federated_defaults.json 等
+4. `docker exec healthlens-web cat /app/agent-card.json | jq .version` — 应返回 `0.30.0`
+5. `curl https://healthlens.cc/api/v1/version` — 应返回 `0.30.0`
+6. `curl https://healthlens.cc/.well-known/agent-card.json | jq .version` — 应返回 `0.30.0`
+
+**为什么双管齐下**：
+- `config/` 走 bind mount：运行时改配置不用 rebuild（比如 federated_defaults
+  新增租户）
+- `pyproject.toml` + `agent-card.json` 走镜像层 COPY：这两个文件跟代码
+  版本强绑定（CHANGELOG / Agent Card 语义），走 bind mount 会与宿主机代码
+  版本漂移，反而制造新的不一致——镜像层是最干净的路径
+
+### Added（数字孪生报告规范 v0.2 提交版 + 6 份外部提交信）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§6：
+> 「数字孪生专属规范仍是空白 …… HealthLens 可以提交一份
+> 'Reporting standard for causal digital twins in wellness' 草案。这比
+> 发一篇论文更值钱——**立标准的位置只有一次**。」
+
+v0.29.0 交付了 `digital_twin_standard_draft_v0.1.md`（48 条内部条目，未
+对外）。本轮把它推进到 **v0.2 提交版**（Draft for External Review），
+目标递交对象明确：**EQUATOR Network / IEEE SB CBBMI / W3C AAWG**。
+
+**标准正文（`docs/reporting_standards/digital_twin_standard_draft_v0.2.md`）**
+- 结构：新增 §0 版本演进（v0.1 → v0.2 → v0.3/0.4/1.0 路线图）
+- 术语：由 6 条扩至 **24 条**，新增 wellness/clinical 边界、causal digital
+  twin、falsifiability、E-value、federation posterior merge、n-of-1、GraphRAG 等 20 项
+- 条目：v0.1 的 48 条全部保留；新增 **15 条 wellness 专项条目（W1–W15）**
+  （W1 数据溯源、W2 模型版本、W3 幻觉评测、W4 跨租户一致性、W5 联邦后验
+  合并、W6 可反驳条件、W7 E-value、W8 n-of-1 交叉验证、W9 GraphRAG 幻觉、
+  W10 时序信号序列化等），总条目 48 → **68**
+- 映射：新增 §3 六大外部规范 + ASME V&V 40-2018 的完整条目映射矩阵（7 张
+  交叉表），把本规范的每一条对齐到 SPIRIT-AI / CONSORT-AI / TRIPOD+AI /
+  DECIDE-AI / PROBAST+AI / STARD-AI / ASME V&V 40-2018
+- 使用指引：新增 §4（作者如何写论文/白皮书，含 checklist 与常见错误）
+- 许可：§5 明确 CC-BY 4.0 + 非健康建议声明 + 多法域合规边界
+- 附录：附录 A YAML 骨架（约 150 行），附录 B 提交清单
+- **术语纪律**：全文剔除"医疗/诊断/治疗/患者"，改用"健康/关注/引导/干预/
+  个体/人群"，守住 wellness 平台边界
+
+**4 份外部提交信（首次公开发布材料包）**
+- `equator_submission_letter.md` — 致 EQUATOR Network，请求纳入规范库评议
+- `ieee_cbbmi_submission_letter.md` — 致 IEEE SB CBBMI，请求作为 workshop
+  论文 + 标准提案
+- `w3c_aawg_comment.md` — 致 W3C AAWG（Assistive Technology Working Group），
+  从"数字孪生在健康无障碍应用"角度切入
+- `community_feedback_survey.md` — 18 题社区反馈问卷（整合医学研究员 /
+  临床数据科学家 / AI 工程师 / 伦理学家 / 监管方 5 类目标读者）
+
+**未闭合声明（诚实）**：
+- v0.2 是"提交版"，4 份提交信**已写好但未发出**——真实递交需要用户执行
+  （需邮件、机构账号、可能的机构合作授权）
+- v0.2 的 W1-W15 条目基于 HealthLens 项目实践外推，未经过外部同行评议，
+  标注为 Draft for External Review
+- 数字孪生专属规范在国内/国际都是空白，v0.2 若成功进入 EQUATOR 公开评议，
+  HealthLens 会是该领域的**事实标准起草方**；这是项目 §6 提到的
+  "立标准的位置只有一次"的具体落点
+
 ## [0.29.0] - 2026-10-16
 
 ### Fixed（版本漂移自动化，防复发第 3 次）
