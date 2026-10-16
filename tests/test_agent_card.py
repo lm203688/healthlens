@@ -227,12 +227,16 @@ class TestNoFabricatedCapabilities:
                 f"{expected!r} 不一致"
             )
 
-    def test_conformance_note_discloses_a2a_gap(self):
-        """必须如实声明未实现 A2A 任务生命周期，避免下游 agent 误判协议兼容。"""
+    def test_conformance_note_declares_a2a_endpoints(self):
+        """v0.30.0 起 A2A JSON-RPC 端点已落地；note 必须点名 4 个已实现端点。"""
         note = CARD.get("conformanceNote", "")
-        assert note, "缺少 conformanceNote：卡片必须披露 A2A 任务生命周期未实现"
-        assert "未实现" in note or "NOT implemented" in note.lower()
-        assert "SendMessage" in note, "conformanceNote 应点名 SendMessage 等未实现操作"
+        assert note, "缺少 conformanceNote：卡片必须披露 A2A 端点状态"
+        # 至少一个"已实现"关键词（中英皆可）
+        assert "已实现" in note or "implemented" in note.lower()
+        assert "SendMessage" in note
+        assert "ListTasks" in note
+        assert "GetTask" in note
+        assert "CancelTask" in note
 
     def test_real_tool_interface_declared_as_extension(self):
         """实际可编程接口（MCP JSON-RPC 2.0）必须通过 EXTENSIONS 显式声明。
