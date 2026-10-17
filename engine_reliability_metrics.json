@@ -1,0 +1,143 @@
+{
+  "method": "input_perturbation_bootstrap",
+  "parameters": {
+    "n_iterations": 1000,
+    "perturbation_pct": 0.05,
+    "seed": 20261017,
+    "n_profiles": 20,
+    "icc_model": "Shrout_Fleiss_2_1",
+    "kappa_weights": "linear",
+    "kappa_bins": 5
+  },
+  "results": [
+    {
+      "axis": "A",
+      "baseline_mean": 90.13,
+      "baseline_sd": 24.98,
+      "icc_2_1": 0.9935,
+      "icc_ci_low": 0.9933,
+      "icc_ci_high": 0.9936,
+      "weighted_kappa": 1.0,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "B",
+      "baseline_mean": 85.46,
+      "baseline_sd": 25.66,
+      "icc_2_1": 0.9569,
+      "icc_ci_low": 0.9557,
+      "icc_ci_high": 0.9582,
+      "weighted_kappa": 1.0,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "C",
+      "baseline_mean": 77.79,
+      "baseline_sd": 31.21,
+      "icc_2_1": 0.9751,
+      "icc_ci_low": 0.9743,
+      "icc_ci_high": 0.9758,
+      "weighted_kappa": 1.0,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "D",
+      "baseline_mean": 75.88,
+      "baseline_sd": 36.7,
+      "icc_2_1": 0.9813,
+      "icc_ci_low": 0.9807,
+      "icc_ci_high": 0.9818,
+      "weighted_kappa": 0.9605,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "E",
+      "baseline_mean": 80.7,
+      "baseline_sd": 31.55,
+      "icc_2_1": 0.9964,
+      "icc_ci_low": 0.9963,
+      "icc_ci_high": 0.9965,
+      "weighted_kappa": 1.0,
+      "score_range": [
+        6.4,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "F",
+      "baseline_mean": 75.0,
+      "baseline_sd": 43.3,
+      "icc_2_1": 1.0,
+      "icc_ci_low": 1.0,
+      "icc_ci_high": 1.0,
+      "weighted_kappa": 1.0,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "G",
+      "baseline_mean": 71.24,
+      "baseline_sd": 31.84,
+      "icc_2_1": 0.9832,
+      "icc_ci_low": 0.9827,
+      "icc_ci_high": 0.9837,
+      "weighted_kappa": 0.872,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    },
+    {
+      "axis": "H",
+      "baseline_mean": 85.95,
+      "baseline_sd": 25.6,
+      "icc_2_1": 0.9668,
+      "icc_ci_low": 0.9658,
+      "icc_ci_high": 0.9677,
+      "weighted_kappa": 0.9338,
+      "score_range": [
+        0.0,
+        100.0
+      ],
+      "n_reliable": 1000,
+      "reliability_grade": "excellent"
+    }
+  ],
+  "interpretation": {
+    "grade_thresholds": {
+      "excellent": "ICC >= 0.90",
+      "good": "0.75 <= ICC < 0.90",
+      "moderate": "0.50 <= ICC < 0.75",
+      "insufficient": "ICC < 0.50"
+    },
+    "note": "Fixed-threshold scorers are expected to have high ICC when inputs are far from thresholds; lower ICC indicates threshold-edge instability."
+  }
+}
