@@ -26,9 +26,11 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    Integer,
     Numeric,
     String,
     Text,
+    UniqueConstraint,
     JSON,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -119,9 +121,24 @@ class AxisSnapshot(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )  # manual / wearable_sync / biomarker_import / composite
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
+    # D4 联邦预埋（2026-10-17，S4 联邦学习架构方案）：
+    # - version_id 乐观锁：联邦成员并发提交时避免"最后写入胜"导致的静默数据丢失。
+    #   更新时 SQLAlchemy 生成 WHERE version_id = :expected_version 语句，
+    #   若行数=0 则抛 StaleDataError——重复提交不双算。
+    # - UniqueConstraint(study_id, date, source)：同一 study + date + 来源渠道
+    #   至多一份快照，防止联邦聚合器重复计入同一观测。
+    # - 保留 created_at / updated_at（TimestampMixin），审计可追溯。
+    version_id: Mapped[int] = mapped_column(
+        Integer, default=1, nullable=False
+    )
+
     __table_args__ = (
         Index("ix_snapshots_study_date", "study_id", "date"),
         Index("ix_snapshots_user_date", "user_id", "date"),
+        UniqueConstraint(
+            "study_id", "date", "source",
+            name="uq_snapshots_study_date_source",
+        ),
     )
 
 
@@ -189,7 +206,18 @@ class BiomarkerReading(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     reference_high: Mapped[Decimal | None] = mapped_column(Numeric(15, 5), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
+    # D4 联邦预埋：version_id 乐观锁，防止联邦聚合器重复计入同一化验单。
+    version_id: Mapped[int] = mapped_column(
+        Integer, default=1, nullable=False
+    )
+
     __table_args__ = (
         Index("ix_readings_study_time", "study_id", "sampled_at"),
         Index("ix_readings_loinc", "loinc_code"),
+        # 同一 study + 同一采样时刻 + 同一 Loinc 指标 → 唯一一条读数
+        # 防止联邦聚合器因网络抖动/重试导致的重复写入
+        UniqueConstraint(
+            "study_id", "sampled_at", "loinc_code",
+            name="uq_readings_study_ts_loinc",
+        ),
     )
