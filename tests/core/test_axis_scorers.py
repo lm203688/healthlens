@@ -16,7 +16,8 @@ def test_axis_with_real_data_is_measured_and_scored():
     bm = {"glucose": 6.4, "hba1c": 6.1, "waist_cm": 98, "triglycerides": 2.0,
           "bmi": 26.5, "hdl": 0.95, "sbp": 135, "dbp": 88, "hs_crp": 2.2}
     wearable = {"hrv_rmssd": 22, "resting_hr": 82, "sleep_midpoint_jitter": 65,
-                "sleep_duration_h": 6.0, "social_jetlag_h": 1.5}
+                "sleep_duration_h": 6.0, "sleep_duration_cv": 0.25,
+                "social_jetlag_h": 1.5}
     res = score_all_axes(biomarkers=bm, wearable=wearable,
                                    symptoms=["疲劳", "焦虑"], bioage_delta=4.0, is_male=True)
     # 有数据 → measured=True 且 score 在 0-100
@@ -107,7 +108,10 @@ def test_s1_2_weak_threshold_equivalent_across_axes():
         ("D", {}, {}, {"sleep_midpoint_jitter": 120}, {"sleep_midpoint_jitter": 10}),
         ("E", {}, {}, {"hrv_rmssd": 10}, {"hrv_rmssd": 55}),
         ("F", {"hs_crp": 8.0}, {"hs_crp": 0.4}, {}, {}),
-        ("G", {}, {}, {"hrv_rmssd": 5}, {"hrv_rmssd": 55, "sleep_midpoint_jitter": 10}),
+        # H5（2026-10-17）：G 轴必须至少一项睡眠信号才 measured；
+        # 仅 HRV 输入会退化为 HPA（E 领域）的重叠测量，故构造上要求 sleep_* 至少一项。
+        ("G", {}, {}, {"sleep_duration_cv": 0.7, "hrv_rmssd": 5},
+         {"sleep_duration_cv": 0.1, "hrv_rmssd": 55, "sleep_midpoint_jitter": 10}),
     ]
     for axis, bad_bm, good_bm, bad_w, good_w in cases:
         bad = score_axis(axis, biomarkers=bad_bm, wearable=bad_w)
@@ -133,3 +137,75 @@ def test_s1_2_penalty_ratio_audit_field():
     assert d["score"] == round(100.0 - 100.0 * r.penalty_ratio, 1)
     # 中间态：glucose 6.4 → 18/104（penalty_ratio 按 3 位小数存储）
     assert r.penalty_ratio == round(18 / 104, 3)
+
+
+# ---------------------------------------------------------------------------
+# H5（2026-10-17，10-16 全面评估 + 10-17 科学评估双报告指向的硬伤）：
+# E/G 轴共线——满分区 hrv_rmssd=45 时 E=G=100，"八轴实为 7.5 轴"。
+# 修复：G 轴要求至少一项睡眠信号才 measured，且引入 sleep_duration_cv 作为
+# 与 E 无重叠的第二主输入；HRV 在 G 中降为副锚点。以下测试锁定该行为。
+# ---------------------------------------------------------------------------
+
+def test_h5_g_unmeasured_when_only_hrv_present():
+    """仅 HRV 输入时 G 未测量——HRV 单独只能测 HPA（E 的领域），无法测神/情志。"""
+    r = score_axis("G", wearable={"hrv_rmssd": 45})
+    assert r.measured is False
+    assert r.score is None
+    assert r.sources == []
+    # 说明文本必须诚实表达构造独立性理由
+    assert "睡眠" in r.note or "未测量" in r.note
+
+
+def test_h5_g_measured_requires_sleep_input():
+    """G 轴至少需要一项睡眠信号（sleep_midpoint_jitter / sleep_duration_cv / sleep_duration_h）。"""
+    for signal, value in (
+        ("sleep_midpoint_jitter", 10),
+        ("sleep_duration_cv", 0.1),
+        ("sleep_duration_h", 8.0),
+    ):
+        r = score_axis("G", wearable={signal: value})
+        assert r.measured is True, f"G 应能通过 {signal} 单独被测量"
+        assert signal in r.sources
+
+
+def test_h5_e_g_not_collinear_at_full_health():
+    """核心断言：在满分区健康态下，E 与 G 输入源完全不同——避免"八轴实为 7.5 轴"。
+
+    修复前：hrv_rmssd=45 单独输入时 E=G=100（逐点重合）。
+    修复后：G 需要睡眠信号，E 只用 hrv_rmssd；即使两者都有数据，
+    使用的 measurement channel 也不重叠。
+    """
+    wearable = {
+        "hrv_rmssd": 45,
+        "sleep_duration_cv": 0.1,
+        "sleep_midpoint_jitter": 10,
+        "resting_hr": 60,
+    }
+    e = score_axis("E", wearable=wearable)
+    g = score_axis("G", wearable=wearable)
+    # E 只应使用 HRV + 静息心率；G 主输入是睡眠维度
+    assert "hrv_rmssd" in e.sources
+    assert "sleep_duration_cv" in g.sources
+    assert "sleep_midpoint_jitter" in g.sources
+    # 关键：E 的输入源集合与 G 不重叠（构造独立）
+    e_sources = set(e.sources) - {"hrv_rmssd"}
+    g_sources = set(g.sources) - {"hrv_rmssd"}  # HRV 是副锚点，从比较集合中排除
+    assert e_sources.isdisjoint(g_sources), f"E/G 主输入源重叠: {e_sources & g_sources}"
+
+
+def test_h5_g_response_differs_from_e_on_bad_sleep():
+    """G 轴对睡眠紊乱的响应独立于 E 轴对 HRV 异常的响应。"""
+    # 睡眠严重紊乱但 HRV 完全健康——G 应有明显扣分，E 不受影响
+    w = {"hrv_rmssd": 60, "sleep_duration_cv": 0.8, "sleep_midpoint_jitter": 90}
+    e = score_axis("E", wearable=w)
+    g = score_axis("G", wearable=w)
+    assert e.measured is True
+    assert g.measured is True
+    assert e.score >= 70, f"HRV 健康时 E 应高分，实得 {e.score}"
+    assert g.score < 70, f"睡眠严重紊乱时 G 应低分，实得 {g.score}"
+    # 反向：HRV 严重异常但睡眠健康——E 扣分，G 保持健康
+    w2 = {"hrv_rmssd": 5, "sleep_duration_cv": 0.1, "sleep_midpoint_jitter": 10}
+    e2 = score_axis("E", wearable=w2)
+    g2 = score_axis("G", wearable=w2)
+    assert e2.score < 70, f"HRV 严重异常时 E 应低分，实得 {e2.score}"
+    assert g2.score >= 70, f"睡眠健康时 G 应高分，实得 {g2.score}"
