@@ -499,30 +499,60 @@ def _score_axis_F(bm: dict, jurisdiction: str = "cn") -> AxisScore:
 # ---------------------------------------------------------------------------
 
 def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> AxisScore:
+    """G 神-情志(自主神经)轴打分——构造独立于 E(HPA)轴的第二主输入。
+
+    H5 修复（2026-10-17，10-16 全面评估与 10-17 科学评估双报告指向的硬伤）：
+    此前 G 轴以 HRV(RMSSD) 为主锚点，与 E 轴共享迷走张力信号，在满分区
+    （hrv_rmssd=45 及以上）时逐点重合（E=G=100），审稿人可复现「八轴实为
+    7.5 轴」的统计学把柄。
+
+    科学修复：G 轴引入 `sleep_duration_cv`（睡眠时长变异系数）作为**第二主
+    输入**，且**要求至少一个睡眠相关信号存在**才能被测量：
+      - E 主通道：急性应激（HRV + 静息心率 + 压力症状）
+      - G 主通道：慢性作息稳定度（睡眠时长 CV + 睡眠中点抖动）
+      - HRV 在 G 中降为**副锚点**（weight 从 16 降到 8，独立敏感曲线保留）
+
+    若输入仅有 HRV（无 sleep_duration_cv / sleep_midpoint_jitter / sleep_duration_h），
+    则 G 返回 unmeasured——这是构造独立性要求的诚实表达：HRV 单独只能测到
+    HPA 应激（E 的领域），不能测到「神-情志」的作息稳定度。
+    """
     w = wearable or {}
     src = []
     penalty = 0.0
     penalty_max = 0.0
-    rmssd = w.get("hrv_rmssd")
-    if rmssd is not None:
-        src.append("hrv_rmssd")
-        penalty_max += 16
-        # S0-7（2026-10-13）：G 轴使用与 E 轴**独立调参**的 RMSSD 敏感曲线。
-        # 阈值由 axis_config 读取（G: low_max=25 / severe_low=15；E: 30/20），
-        # 惩罚幅度也更平缓（16/9/4 vs E 的 22/12/6）。二者组合保证
-        # 「仅 HRV 输入时 E≠G」，消除「八轴实为七轴」的方法学质疑。
-        # 说明：E(脏腑-神经内分泌/HPA) 与 G(神-情志/自主神经) 在生理上共享迷走张力信号，
-        # 完整轴独立性需要 G 引入 RSA/PSD 频域分量作为独立输入（后续升级项）；
-        # 当前以独立敏感曲线 + 睡眠规律性为主锚点达成构造独立，并在健康上限处
-        # 自然重合（高 HRV 两轴均为满分，属正确行为）。
-        low_max = _t('G', 'hrv_rmssd', 'low_max', 30, jurisdiction)
-        severe_low = _t('G', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
-        if rmssd < severe_low - 5:
-            penalty += 16
-        elif rmssd < low_max - 5:
-            penalty += 9
-        elif rmssd < low_max + 5:
-            penalty += 4
+
+    # 检测是否有任何睡眠相关输入（G 轴的主测量通道）
+    has_sleep_input = any(
+        w.get(k) is not None
+        for k in ("sleep_midpoint_jitter", "sleep_duration_cv", "sleep_duration_h")
+    )
+
+    # H5 构造独立性闸门：无睡眠信号则 G 未测量（HRV 单独不足以刻画神/情志）
+    if not has_sleep_input:
+        return _finalize(
+            "G", [], 0.0, 0.0,
+            note="自主神经平衡代理：睡眠规律性 + 睡眠时长变异为主输入，HRV 为副锚点；反映神/情志稳态",
+            unmeasured_note=(
+                "无睡眠相关输入（sleep_midpoint_jitter/sleep_duration_cv/sleep_duration_h），"
+                "G 轴未测量。说明：仅 HRV 输入不足以刻画神/情志的作息稳定度，"
+                "会退化为 HPA 应激（E 轴领域）的重叠测量，故在构造上要求至少一项睡眠信号。"
+            ),
+        )
+
+    # 主输入 1：睡眠时长变异系数（H5 新增的第二主输入，与 E 无重叠）
+    dur_cv = w.get("sleep_duration_cv")
+    if dur_cv is not None:
+        src.append("sleep_duration_cv")
+        penalty_max += 12
+        # 睡眠时长变异系数 < 0.2 = 作息极稳定；> 0.5 = 严重紊乱（熬夜/昼夜颠倒）
+        if dur_cv >= _t('G', 'sleep_duration_cv', 'severe_low', 0.5, jurisdiction):
+            penalty += 12
+        elif dur_cv >= _t('G', 'sleep_duration_cv', 'low_max', 0.3, jurisdiction):
+            penalty += 6
+        elif dur_cv >= _t('G', 'sleep_duration_cv', 'elevated_max', 0.2, jurisdiction):
+            penalty += 2
+
+    # 主输入 2：睡眠中点抖动（原有主输入，保留）
     jitter = w.get("sleep_midpoint_jitter")
     if jitter is not None:
         src.append("sleep_midpoint_jitter")
@@ -531,10 +561,42 @@ def _score_axis_G(wearable: dict | None = None, jurisdiction: str = "cn") -> Axi
             penalty += 15
         elif jitter >= _t('G', 'sleep_regularity', 'low_max', 50, jurisdiction):
             penalty += 8
+
+    # 主输入 3（可选）：睡眠时长偏短——补充睡眠时长维度，与 E 无重叠
+    dur_h = w.get("sleep_duration_h")
+    if dur_h is not None:
+        src.append("sleep_duration_h")
+        penalty_max += 10
+        # < 6h 严重不足；< 7h 不足
+        if dur_h < _t('G', 'sleep_duration_h', 'severe_low', 6.0, jurisdiction):
+            penalty += 10
+        elif dur_h < _t('G', 'sleep_duration_h', 'low_max', 7.0, jurisdiction):
+            penalty += 5
+
+    # 副锚点：RMSSD（独立敏感曲线，但权重降到 8，避免与 E 逐点重合）
+    rmssd = w.get("hrv_rmssd")
+    if rmssd is not None:
+        src.append("hrv_rmssd")
+        penalty_max += 8
+        # S0-7（2026-10-13）保留：G 轴使用与 E 轴独立调参的 RMSSD 敏感曲线
+        # （G: low_max=30 / severe_low=20；E: 30/20）+ 更平缓惩罚（8/5/2 vs E 的 22/12/6）
+        low_max = _t('G', 'hrv_rmssd', 'low_max', 30, jurisdiction)
+        severe_low = _t('G', 'hrv_rmssd', 'severe_low', 20, jurisdiction)
+        if rmssd < severe_low - 5:
+            penalty += 8
+        elif rmssd < low_max - 5:
+            penalty += 5
+        elif rmssd < low_max + 5:
+            penalty += 2
+
     return _finalize(
         "G", src, penalty, penalty_max,
-        note="自主神经平衡代理：HRV 与睡眠规律性反映神/情志稳态",
-        unmeasured_note="无 HRV/睡眠规律性输入，G 轴未测量",
+        note="自主神经平衡代理：睡眠规律性 + 睡眠时长变异为主输入，HRV 为副锚点；反映神/情志稳态",
+        unmeasured_note=(
+            "无睡眠相关输入（sleep_midpoint_jitter/sleep_duration_cv/sleep_duration_h），"
+            "G 轴未测量。说明：仅 HRV 输入不足以刻画神/情志的作息稳定度，"
+            "会退化为 HPA 应激（E 轴领域）的重叠测量，故在构造上要求至少一项睡眠信号。"
+        ),
     )
 
 
