@@ -4,6 +4,58 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.31.0] - 2026-10-17
+
+### Added（P0 打地基 + P1 口径修复）
+
+- `tests/test_schema_parity.py`：ORM 表 ↔ alembic 迁移差集门禁（5 用例），CI 红灯即阻塞
+- `constraints.txt` + `tests/test_constraints_lock.py`：依赖锁定门禁（12 用例），`==` 精确 pin + PEP 503 包名规范化
+- `tools/reliability_bootstrap.py`：输入扰动 bootstrap 出八轴 ICC/Kappa（C2 信度量化，537 行）
+- `alembic/versions/007_add_remaining_models.py`：补齐 32 张 ORM 表迁移（tcm_classical_books / longitudinal_studies / axis_snapshots / biomarker_readings 等）
+- `alembic/versions/008_federated_optimistic_lock.py`：`version_id` 乐观锁 + 唯一索引 `(study_id, date, source)` / `(study_id, sampled_at, loinc_code)`，防联邦双算
+- `tests/lib/test_migration_roundtrip.py`：全链 upgrade→downgrade→upgrade 幂等往返（6 用例）
+- `tests/test_federated_migration.py`：联邦预埋迁移验收（5 用例，含 CAS 乐观锁 + 唯一约束）
+
+### Added（2026-10-18 收尾：冒烟枪根因修复 + D1 flwr 实证）
+
+- `alembic/versions/009_users_missing_columns.py`：**H1 冒烟枪根因修复**——001 漏建 users 六列（is_active/nickname/referral_code/utm_*），全新部署 `alembic upgrade head` 后注册即崩；本迁移以 ORM 为真源补齐
+- `alembic/versions/010_drop_orphan_source_name.py`：列级 parity 发现的反向漂移——001 多建 `data_connections.source_name`（ORM 零引用），删除
+- `tests/lib/test_schema_column_parity.py`：**列级** parity 门禁（5 用例）——空库跑真实迁移链后逐表比对 ORM 列集合。教训：表名 parity（007 之后全绿）查不出 `users.is_active` 这类列级缺口，冒烟枪的根因级防线在此
+- **D1 flwr 实证修真 bug**：CI heavy-lib job 加装 `.[federated]`（flwr）后跑真实断言，立刻抓到 `make_flower_server` 用了已废弃的 `Server(config=...)` API（flwr≥1.5 起只收 `client_manager`/`strategy`）——"重型库分支从不真实执行"的活案例；改为签名探测兼容新旧 API；旧测试的 hasattr 探针空转恒真（假覆盖）已重写为真实工厂调用
+- `pyproject.toml` 新增 `federated` extra（flwr）；CI `heavy-lib-test` job 安装后真实执行（dowhy 严格模式 + flwr 构造 + 未知 strategy 拒绝）
+
+### Changed（口径修复 S1–S6）
+
+- **S1 轴数三套口径**：§3 拆为 "Implemented (A–H)" + "Reserved (I–J, not implemented)"，删证据列
+- **S2 证据分级越级**："human or RCT-level (L1+L2)" → "multi-trial human evidence (L1) or single-trial/strong-mechanism+animal (L2)"
+- **S3 收敛效度→领域预期一致性**：`convergent_validity_rate` → `domain_expectation_concordance`，保留旧键向后兼容
+- **S4 calibration bands**：manifest "calibration bands" → "prior-uncertainty bands"，limitations 明示非经验校准
+- **S5/S6**：limitation 补 profile battery 非预注册 + 信度量化脚本就绪
+
+### Fixed（E/G 共线 + 频率疗法暗示）
+
+- G 轴引入 `sleep_duration_cv` 第二主输入，HRV 降为副锚点（weight 16→8），构造独立性闸门：无睡眠信号则 G=unmeasured
+- hrv=45 时 E=100, G=unmeasured（非 E=G=100）——八轴实为八轴
+- `app/config.py` CORS 生产硬拒：`is_production && CORS_ORIGINS==["*"]` → `critical_security_issues` → 启动 SystemExit
+- `agent-card.json`：9176B（<10KB 注册上限，CRLF→LF）；C7 诚实性审计修复（conformanceNote 恢复"未实现"能力边界披露）；案例库口径 "29 真+91 合成" → "120 条 = 7 Crossref 验真 + 8 古籍 + 14 诚实未验证 + 91 合成"（与数据直查零偏差）
+- `tools/reliability_bootstrap.py`：`n_profiles` 20→动态实际值（18），元数据与画像电池一致
+
+### Changed（manifest 口径对齐）
+
+- tests 491→1737、DOI 22→7（已核验）、"prior-uncertainty bands"、limitations 补 4 条
+- ORCID 仍 PENDING_USER_FILL（用户操作）
+
+### 验证（2026-10-18 全新部署冒烟，H1 硬阻断清零）
+
+```
+全新空库 alembic upgrade head → rc=0
+TestClient POST /api/v1/auth/register            → 200
+TestClient POST /api/v1/longitudinal/studies     → 201
+列级 parity：ORM 56 表全部列 ⊆ 迁移后 schema，零缺口
+```
+
+- `pyproject.toml`: 0.30.0 → **0.31.0**
+
 ## [0.30.0] - 2026-10-16
 
 ### Added（L0 协议对齐：A2A v1.0.1 JSON-RPC 端点落地）

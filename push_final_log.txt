@@ -405,3 +405,37 @@ Total todo: 341
 [319/341] = mcp-server/test_install.sh
 [320/341] ABSENT mcp_servers/healthlens_domain_mcp.py
   [OK via classic] mcp_servers/healthlens_domain_mcp.py
+[321/341] ABSENT push_final_log.txt
+  [OK via classic] push_final_log.txt
+[322/341] = push_log.txt
+[323/341] DIFF push_resilient_log.txt
+  [OK via classic] push_resilient_log.txt
+[324/341] = pyproject.toml
+[325/341] = scripts/check_axis_a.py
+[326/341] = scripts/check_search.py
+[327/341] = scripts/check_server_json.py
+[328/341] = scripts/check_tools_list.py
+[329/341] DIFF scripts/generate_multilingual_sitemap.py
+  [OK via classic] scripts/generate_multilingual_sitemap.py
+[330/341] = scripts/run_redteam_ci.py
+[331/341] = scripts/translate_geo_content.py
+[332/341] = scripts/translate_geo_pages.py
+[333/341] = tests/api/test_dashboard.py
+[334/341] ABSENT tests/core/test_axis_scorers.py
+  [OK via classic] tests/core/test_axis_scorers.py
+[335/341] = tests/core/test_pgx_engine.py
+[336/341] = tests/core/test_pii_sanitizer.py
+[337/341] = tests/core/test_risk_engine.py
+[338/341] = tests/test_connectors.py
+[339/341] = tests/test_edge_gateway.py
+[340/341] = tests/test_edge_ticket.py
+[341/341] = tests/test_pulse_engine.py
+
+=== Summary ===
+  same: 251
+  absent: 82
+  diff: 8
+  skip_large: 0
+  error: 0
+  pushed: 90
+  fail: 0

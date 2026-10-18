@@ -4,7 +4,7 @@
     "n_iterations": 1000,
     "perturbation_pct": 0.05,
     "seed": 20261017,
-    "n_profiles": 20,
+    "n_profiles": 18,
     "icc_model": "Shrout_Fleiss_2_1",
     "kappa_weights": "linear",
     "kappa_bins": 5

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "healthlens"
-version = "0.30.0"
+version = "0.31.0"
 description = "HealthLens - 中西医融合健康管理平台"
 requires-python = ">=3.11"
 dependencies = [
@@ -54,6 +54,33 @@ sensing = [
     "torch>=2.0",
     "transformers>=4.40",
     "sentence-transformers>=2.7",
+]
+
+# D1 重型库 CI 真实执行（2026-10-17，10-16 全面评估报告 D1）：
+# dowhy / flwr / pymc / xgrammar / ragas / biomni 等重型科学层。
+# 内核仍保持"零第三方依赖"约束（app/lib/engine_exceptions.py 兜底），
+# 但生产/CI 上必须能真实执行——之前 `pragma: no cover` + CI 从不装
+# 导致 dowhy 严格模式分支从未真实跑过（历史 dowhy 死代码 bug 的根因）。
+#
+# 用法：CI 独立 job 装 .[science] 后跑 `pytest tests/lib -m "science"`
+# Dockerfile 走 pip install . 时不装（生产镜像不背 GB 级依赖），
+# 需要 dowhy 时通过可选 extra 或 docker-compose 单独 sidecar 提供。
+science = [
+    "dowhy>=0.11,<1.0",
+    "causalinference>=0.4.7",
+    "scipy>=1.11",
+    "pandas>=2.0",
+    "statsmodels>=0.14",
+    "networkx>=3.2",
+]
+
+# D1 联邦层重型库（2026-10-18 补齐）：flwr 单机多租户 fabric 的严格模式
+# 分支此前被 `pragma: no cover` + CI 从不安装双重掩盖。CI heavy-lib job
+# 装 .[federated] 后跑 tests/test_heavy_lib_ci.py 真实执行。
+# pymc / xgrammar / ragas / biomni 暂不列入（安装成本高、测试仅探针），
+# 保持 CI 时长可控；其分支由 tests/test_heavy_lib_ci.py 的 skipif 诚实跳过。
+federated = [
+    "flwr>=1.0",
 ]
 
 dev = [

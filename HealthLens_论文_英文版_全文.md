@@ -20,7 +20,7 @@
 
 **Methods**: (1) Six paradigm axioms constrain the framework; (2) an eight-axis mapping (A–H) is constructed (A: gasification/autophagy, B: qi-blood/mitochondria, C: luo-network/stasis-clearance, D: yin-yang/circadian, E: zang-fu/neuroendocrine, F: zheng-xie/inflammation, G: shen/affect, H: congenital/epi-clock; axes I/J reserved for future extension, not implemented); (3) a real-world case evidence base (n=120; L1=56, L2=31, L3=33) anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validation (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.
 
-**Results**: The framework anchors each axis to modern mechanisms and human evidence (e.g., 4-week fasting raised LAMP2 4.2-fold and LC3B 1.9-fold; dasatinib plus quercetin reduced p16-positive senescent cells by 35% in a first-in-human pilot (9 diabetic kidney disease patients); in a 60-person Phase II RCT in postmenopausal women, bone-formation markers rose at early timepoints but no clear effect was seen on bone-degradation markers; 16:8 time-restricted eating reduced hepatic fat by 25.8% in a 333-person randomized controlled trial). Computational validation showed 100% reproducibility, 100% weakness-profile coverage (95% with L1-grade evidence), zero personalized recommendations for control profiles, and 70% convergent validity with traditional-medicine domain expectations.
+**Results**: The framework anchors each axis to modern mechanisms and human evidence (e.g., 4-week fasting raised LAMP2 4.2-fold and LC3B 1.9-fold; dasatinib plus quercetin reduced p16-positive senescent cells by 35% in a first-in-human pilot (9 diabetic kidney disease patients); in a 60-person Phase II RCT in postmenopausal women, bone-formation markers rose at early timepoints but no clear effect was seen on bone-degradation markers; 16:8 time-restricted eating reduced hepatic fat by 25.8% in a 333-person randomized controlled trial). Computational validation showed 100% reproducibility, 100% weakness-profile coverage (95% with L1-grade evidence), zero personalized recommendations for control profiles, and 70% domain-expectation concordance with a traditional-medicine keyword dictionary encoded by the authors (an exploratory content-validity proxy, not a psychometric convergent-validity estimate).
 
 **Conclusion**: ISSBF provides a computable, verifiable, non-medical theoretical skeleton for integrating classical and modern medicine. It can serve as a decision-support foundation for personalized non-pharmacological intervention. The framework as a whole requires prospective validation.
 
@@ -51,9 +51,11 @@ The framework is constrained by six inviolable axioms:
 
 ---
 
-## 3. Ten Steady-State Biology Axes
+## 3. Eight Steady-State Biology Axes (A–H)
 
-Each axis maps a classical construct onto a modern measurable pathway and anchors evidence (Figure 1):
+Each implemented axis maps a classical construct onto a modern measurable pathway and anchors evidence (Figure 1). Axes I–J are reserved for future extension and are **not implemented** in the current engine — they are listed in a separate table below without representative evidence, so that the scope of the present validation is unambiguous.
+
+### 3.1 Implemented Axes (A–H)
 
 | Axis | Classical construct | Modern pathway | Representative evidence |
 |---|---|---|---|
@@ -65,8 +67,15 @@ Each axis maps a classical construct onto a modern measurable pathway and anchor
 | **F: Zheng-xie-Inflammation** | zheng-xie / damp-heat | Low-grade inflammation + CD4+T-cell immunosenescence | Fasting: IL-6 and TNF-alpha decreased [1]; CD4-Eomes+ cells modulate tissue senescence (Nature Aging 2025) |
 | **G: Shen-Affect** | shen / affect | HRV (RMSSD), EEG | Meditation: EEG alpha increased, HRV increased [12] |
 | **H: Congenital-Kidney-essence** | congenital / kidney-essence | Epigenetic clock + CD4 CTL expansion (longevity) | FMD 3 cycles: biological age reduced 2.5 years [3]; CD4 CTL expansion in centenarians (Cell Reports 2026) |
-| **I: Exosome intercellular signaling** | qi-blood circulation / luo-network communication | Exosome/miRNA cargo, CFTR-mediated vesicle release | Exercise-induced circulating exosomes increased 2-3-fold [19,20]; cancer-detection cfRNA via GeneLLM [24] |
-| **J: Regenerative medicine** | kidney-essence / prenatal qi | iPSC reprogramming, cellular rejuvenation | mRNA-LNP delivery of Oct4/Sox2/Klf4 reduces senescent-cell burden (UPenn 2025); siRNA-RIVER trial: HSC rejuvenation (Phase I) [24] |
+
+### 3.2 Reserved Axes (I–J, Not Implemented)
+
+These two axes describe biologically plausible but currently un-modeled constructs. They are declared as extensions of the framework and are deliberately excluded from all fusion-engine outputs, validation metrics, and recommendation counts in this paper.
+
+| Axis | Classical construct | Modern pathway | Implementation status |
+|---|---|---|---|
+| **I: Exosome intercellular signaling** | qi-blood circulation / luo-network communication | Exosome/miRNA cargo, CFTR-mediated vesicle release | Reserved; not implemented in v0.30.0 |
+| **J: Regenerative medicine** | kidney-essence / prenatal qi | iPSC reprogramming, cellular rejuvenation | Reserved; not implemented in v0.30.0 |
 
 **Mapping philosophy**: Classical constructs are not proven equal to modern pathways; they are projected as experiential priors onto axes, then upgraded or vetoed by modern mechanisms and human evidence.
 
@@ -115,18 +124,35 @@ To demonstrate that the fusion rule is a computable, auditable method, we conduc
 | Mean personalized recommendations per control profile | 0.0 |
 | Weakness-profile coverage (at least 1 personalized) | 100% |
 | Weakness-profile L1-coverage | 95% |
-| Convergent validity vs. traditional-medicine domain expectations | 70% |
+| Domain-expectation concordance (author-encoded keyword dictionary; exploratory content-validity proxy) | 70% |
 | Contraindication exclusion (weak F+D plus pregnancy) | 1 entry (CASE-017) |
 
 > **Data freeze note**: These numbers originate from `tools/engine_validation.py` at git commit `7b75e9a`, snapshot frozen to `validation_snapshots/BASELINE.json`. Any future script or case-library change triggers automatic CI baseline diff detection requiring manual confirmation — eliminating the three-way disconnect between paper text, repository metrics, and live-run results (N2 hard-blocker fix).
 
-**Axis activation distribution** (hits per weakness profile): A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3 -- all initial eight axes were activated, with no axis collapse. (Axes I and J were added after initial validation and require independent computational validation.)
+**Axis activation distribution** (hits per weakness profile): A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3 -- all eight implemented axes were activated, with no axis collapse. Reserved axes I–J were not exercised and are excluded from this distribution by construction.
 
-**Evidence-grade distribution** (personalized recommendation pool, n=154): L1=134 (87%), L2=16 (10%), L3=4 (3%) -- approximately 97% supported by human or RCT-level (L1 plus L2) evidence.
+**Evidence-grade distribution** (personalized recommendation pool, n=154): L1=134 (87%), L2=16 (10%), L3=4 (3%) -- approximately 97% supported by either multi-trial human evidence (L1) or single-trial / strong-mechanism + animal evidence (L2); L2 by its own definition does not require human RCTs, so the pooled percentage is not a claim that 97% of the pool is human-RCT-level.
 
 **Specificity**: Control profiles produced zero personalized recommendations, proving the intersection logic responds to real input rather than emitting indiscriminately.
 
 **Limitation**: This validation tests the engine logic itself (reproducibility, specificity, coverage, validity) and does not represent the human efficacy of the recommended interventions; intervention efficacy must be assessed by independent prospective studies.
+
+### 6.1 Reliability under Input Perturbation
+
+Because the scorers are fixed-threshold functions, their measurement stability can be quantified without human subjects. We applied an input-perturbation bootstrap to the 18-profile battery described above: every numeric input (biomarkers, wearable signals, bioage offset) was independently perturbed by ±5%, the eight-axis scoring was re-run, and this was repeated 1,000 times per profile (seed 20261017). Reliability is reported as ICC(2,1) (Shrout & Fleiss) with Fisher-Z 95% confidence intervals, plus linear-weighted Cohen's kappa over five score bands.
+
+| Axis | ICC(2,1) | 95% CI | Weighted Kappa | Grade |
+|---|---|---|---|---|
+| A (gasification/autophagy) | 0.994 | [0.993, 0.994] | 1.000 | excellent |
+| B (qi-blood/mitochondria) | 0.957 | [0.956, 0.958] | 1.000 | excellent |
+| C (luo-network/stasis) | 0.975 | [0.974, 0.976] | 1.000 | excellent |
+| D (yin-yang/circadian) | 0.981 | [0.981, 0.982] | 0.961 | excellent |
+| E (zang-fu/neuroendocrine) | 0.996 | [0.996, 0.997] | 1.000 | excellent |
+| F (zheng-xie/inflammation) | 1.000 | [1.000, 1.000] | 1.000 | excellent |
+| G (shen/affect) | 0.983 | [0.983, 0.984] | 0.872 | excellent |
+| H (congenital/epi-clock) | 0.967 | [0.966, 0.968] | 0.934 | excellent |
+
+Interpretation and caveats: (i) all eight axes reach the "excellent" band (ICC ≥ 0.90) under ±5% input perturbation, i.e. the fixed-threshold scorers are stable when inputs sit away from thresholds; expectedly, threshold-edge profiles would show lower stability, and the edge cases included in the battery (glucose 5.6 mmol/L, HRV 32 ms) exercise exactly that regime. (ii) The E/G pair is now measured on structurally distinct input domains -- E on the HPA/stress domain (HRV + resting heart rate) and G on the affect/circadian-regularity domain (sleep regularity + midpoint jitter, with HRV as a secondary anchor); G is reported as unmeasured rather than duplicating E when no sleep signal is present. The two axes' ICC values are therefore computed over different input sets and are not directly comparable to each other. (iii) The profile battery is author-constructed and not pre-registered; reliability figures characterize scorer stability, not clinical measurement validity, which requires prospective human data.
 
 ---
 
