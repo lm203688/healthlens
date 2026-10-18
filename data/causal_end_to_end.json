@@ -36,10 +36,10 @@
     ]
   },
   "data_summary": {
-    "n_individuals": 100,
+    "n_individuals": 400,
     "seed": 20261018,
-    "pre_mean": 8.1821,
-    "post_mean": 7.949,
+    "pre_mean": 8.1756,
+    "post_mean": 7.9248,
     "first_3_rows": [
       {
         "id": 0,
@@ -77,18 +77,18 @@
     ]
   },
   "att": {
-    "att": -0.2331,
-    "ci_lower": -0.359,
-    "ci_upper": -0.1081,
-    "se": 0.063,
-    "se_analytic": 0.6702,
-    "n": 100,
-    "n_bootstrap": 2000,
+    "att": -0.2509,
+    "ci_lower": -0.3123,
+    "ci_upper": -0.1909,
+    "se": 0.0309,
+    "se_analytic": 0.6646,
+    "n": 400,
+    "n_bootstrap": 10000,
     "ci_level": 0.95
   },
   "evalue": {
-    "evalue_att": 1.8382,
-    "evalue_ci_boundary": 1.8382
+    "evalue_att": 1.8906,
+    "evalue_ci_boundary": 1.8906
   },
   "scm": {
     "nodes": [

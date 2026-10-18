@@ -29,9 +29,11 @@ IMR **强制要求所有作者 ORCID iD**。
 
 | 占位符 | 替换为 |
 |---|---|
+| 占位符 | 替换为 |
+|---|---|
 | `{{YOUR_ORCID_ID}}` | 你刚拿到的 ORCID（如 `0000-0002-1234-5678`） |
 | `{{YOUR_PHONE}}` | 你的手机或邮箱接收电话（+86 前缀） |
-| `{{WORD_COUNT}}` | Word 状态栏字数（打开稿件底部左角） |
+| `{{WORD_COUNT}}` | Word 状态栏字数（打开稿件底部左角）；或运行 `python tools/fill_placeholders.py --auto-word-count --orcid YOUR_ORCID` 自动从 docx 提取字数 |
 
 同样处理 `cover_letter.md` 里的占位符。
 
@@ -56,7 +58,7 @@ IMR **强制要求所有作者 ORCID iD**。
 [18] https://doi.org/10.1038/s41591-026-04102-8
 ```
 
-用 Web of Science 或 PubMed 交叉核对作者列表和页码。**特别是 [18] AFFIRM 是 2026 年预印本**，投稿前必须确认真实出版状态。
+用 Web of Science 或 PubMed 交叉核对作者列表和页码。**CASE-006（senolytics Phase II RCT）已更正为真实引用：Farr et al., Nature Medicine 2024, 30(9):2605-2612, doi:10.1038/s41591-024-03096-2**（60 名绝经后女性，骨代谢 subtle 结果）；此前项目文档误引为"Kirkland AFFIRM 2026 (DOI 10.1038/s41591-026-04102-8)"，经查证该 DOI 不存在、试验名 AFFIRM 无对应已发表研究，已于 2026-10-13 更正，投稿前请再次核对。
 
 ### 0.5 伦理 + 数据声明
 
@@ -187,8 +189,14 @@ IMR 会问一系列问题，标准答案：
 |---|---|---|
 | `manuscript_IMR.docx` | DOCX | 主稿件（**必传**） |
 | `CoverLetter.docx` | DOCX | 投稿信（如系统要求文件） |
-| `Figure1_Ten_Axis_Framework.eps` | EPS | Figure 1 矢量图（**推荐**） |
-| `Figure1_Ten_Axis_Framework.png` | PNG | Figure 1 备份（600 dpi） |
+| `Figure1_Eight_Axis_Framework.svg` | SVG | Figure 1 矢量源文件（**必传**，八轴 A–H + I/J reserved，2026-10-19 重绘） |
+| `Figure1_Ten_Axis_Framework.eps` | EPS | ⚠️ **DEPRECATED** — 早期十轴版本，仅留档；提交前请用 SVG 重导出 EPS |
+| `Figure1_Ten_Axis_Framework.png` | PNG | ⚠️ **DEPRECATED** — 早期十轴版本，仅留档；提交前请用 SVG 重导出 PNG（600 dpi） |
+
+> **Figure 1 重绘提示**（2026-10-19 更新）：论文正文已改为八轴（A–H），
+> I/J 保留为 reserved 位置。SVG 源文件已同步更新；.eps/.png 需要用户在提交前
+> 用 Inkscape (`inkscape --export-type=pdf`) 或在线 SVG→EPS 转换工具重导出。
+> 参考 SVG：仓库根目录 `HealthLens_论文_框架概念图_Figure1.svg`。
 
 **不需要单独上传**（已在稿件内）：
 - Table 1（IMR 要求放在文末）

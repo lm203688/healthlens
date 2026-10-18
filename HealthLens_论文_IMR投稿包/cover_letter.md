@@ -26,7 +26,7 @@ We propose the **Integrated Steady-State Biology Framework (ISSBF)**, which axio
 The framework is anchored on a stratified case evidence base (n = 120) whose entries are disclosed by verification status: 7 Crossref-verified human-trial or classical-experience entries, 8 traditional-text entries, 14 unverified_no_publication entries (unpublished, not citable as evidence grades), and 91 synthetic_validation entries used only as fusion-logic test fixtures (recorded as S class, not L1–L3). Several of the Crossref-verified entries are recent high-impact human trials:
 
 - **Bou Malhab et al., Clin Nutr ESPEN 2025** — 4-week fasting raised LAMP2 4.2-fold
-- **Kirkland et al., Nature Medicine 2026 (AFFIRM)** — dasatinib plus quercetin improved gait speed in a 240-person Phase II RCT
+- **Farr et al., Nature Medicine 2024** — intermittent dasatinib plus quercetin Phase II RCT in 60 postmenopausal women, early bone-formation marker increase, no clear effect on bone-degradation marker
 - **Dote-Montero et al., Nature Medicine 2025** — time-restricted eating in a 197-person RCT
 - **Oh et al., Journal of Hepatology 2025** — 16:8 time-restricted eating reduced hepatic fat 25.8% in a 333-person RCT
 - **Brandhorst et al., Nature Communications 2024** — fasting-mimicking diet reduced biological age by 2.5 years

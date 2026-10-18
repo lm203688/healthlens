@@ -255,7 +255,7 @@
     "id": "TRIPOD-AI#T18",
     "text": "TRIPOD-AI T18: Comparison with previous models",
     "status": "S",
-    "evidence": "napshot frozen to `validation_snapshots/BASELINE.json`. Any future script or case-library change triggers automatic CI baseline",
+    "evidence": "napshot frozen to `validation_snapshots/BASELINE.json` (timestamp `20261018T024919Z`, in-silico validation). Any future script o",
     "location": "paper.md"
   },
   {

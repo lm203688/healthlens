@@ -276,14 +276,19 @@ def main():
     ap.add_argument("--n-bootstrap", type=int, default=10000)
     ap.add_argument("--n-individuals", type=int, default=400)
     ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--output-dir", type=str, default=None,
+                    help="Write JSON+MD to this directory instead of the tracked "
+                         "data/ location. Use this in tests to avoid overwriting "
+                         "the tracked artifact with faster/speedup params.")
     args = ap.parse_args()
     spec = DAGSpec(n_individuals=args.n_individuals)
     result = run(spec, n_bootstrap=args.n_bootstrap, seed=args.seed)
     if args.json_only:
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return 0
-    out_json = ROOT / "data" / "causal_end_to_end.json"
-    out_md = ROOT / "data" / "CAUSAL_END_TO_END_REPORT.md"
+    out_dir = Path(args.output_dir).resolve() if args.output_dir else (ROOT / "data")
+    out_json = out_dir / "causal_end_to_end.json"
+    out_md = out_dir / "CAUSAL_END_TO_END_REPORT.md"
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     out_md.write_text(render_markdown(result), encoding="utf-8")

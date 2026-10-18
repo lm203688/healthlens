@@ -86,7 +86,7 @@ submission; the tool exits non-zero if any item is `M`.
 - ✅ **TRIPOD-AI#T17** — TRIPOD-AI T17: External validation
   - _Evidence_ [paper.md]: `ve as `case_evidence_db.json`.  ### 6.2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critiqu`
 - ✅ **TRIPOD-AI#T18** — TRIPOD-AI T18: Comparison with previous models
-  - _Evidence_ [paper.md]: `napshot frozen to `validation_snapshots/BASELINE.json`. Any future script or case-library change triggers automatic CI baseline`
+  - _Evidence_ [paper.md]: `napshot frozen to `validation_snapshots/BASELINE.json` (timestamp `20261018T024919Z`, in-silico validation). Any future script o`
 - ✅ **TRIPOD-AI#T19** — TRIPOD-AI T19: Impact of missing data
   - _Evidence_ [paper.md]: `3) [9]; early TRE优于late TRE for insulin sensitivity [8] | | **E: Zang-fu-Neuroendocrine** | zang-fu / kidney life-gate | HPA axis,`
 - ✅ **TRIPOD-AI#T20** — TRIPOD-AI T20: Handling confounders

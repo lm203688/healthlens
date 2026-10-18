@@ -334,5 +334,69 @@
     "comment": null,
     "corrected_text": null,
     "timestamp": 1792046942.5167701
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792360038.775608
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792360291.9925675
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792360503.520835
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792360678.1139297
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792361627.370332
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792362293.6296067
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792362454.5164316
+  },
+  {
+    "user_id": "u1",
+    "case_id": "H_axis_001",
+    "action": "accept",
+    "comment": null,
+    "corrected_text": null,
+    "timestamp": 1792362604.1586661
   }
 ]

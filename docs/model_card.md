@@ -1,6 +1,6 @@
 # HealthLens Model Card
 
-Version: v0.30.0  ·  Date: 2026-10-18  ·  License: MIT (code) + CC-BY-4.0 (data)
+Version: v0.31.0  ·  Date: 2026-10-19  ·  License: MIT (code) + CC-BY-4.0 (data)
 
 > **Not a medical device.** HealthLens is a wellness framework. Nothing in
 > this model card is a diagnostic, therapeutic, or predictive medical claim.
@@ -16,14 +16,14 @@ beyond the original model-card template.
 | Field | Value |
 |---|---|
 | **Model name** | HealthLens Integrated Steady-State Axis Framework |
-| **Version** | v0.30.0 |
-| **Date released** | 2026-10-18 |
+| **Version** | v0.31.0 |
+| **Date released** | 2026-10-19 |
 | **Developer(s)** | HealthLens Research Team |
 | **Model type** | Rule-based fusion engine over eight physiological axes (A-H); no trained ML model, no learned weights |
 | **Intended use** | Wellness reference and structural causal exploration; supports prospective n-of-1 cohort tracking |
 | **Out of scope** | Diagnostic, therapeutic, or predictive medical use; not an FDA-regulated device; not a Clinical Decision Support System |
 | **Training data** | None (deterministic fixed-threshold rules) |
-| **Evaluation data** | 120-entry evidence DB (29 verified + 91 synthetic); 18 profile reliability battery; 200 cross-instrument synthetic profiles; 2,500 multi-seed runs; 300 adversarial profiles |
+| **Evaluation data** | 120-entry evidence DB (7 Crossref-verified + 8 traditional-text + 14 unverified_no_publication + 91 synthetic_validation); 18 profile reliability battery; 200 cross-instrument synthetic profiles; 2,500 multi-seed runs; 300 adversarial profiles |
 | **Hardware** | Runs on a Raspberry Pi-class edge node; no GPU required |
 | **Software stack** | Python 3.13, FastAPI, SQLAlchemy, Alembic, DoWhy (optional), Flower (optional) |
 | **Random seeds** | 20261017 (reliability bootstrap), 20261018 (all other quantitative runs) |
@@ -77,7 +77,7 @@ It is **not** intended for:
 | Adversarial robustness (300 profiles) | 0 crashes, 0 OOR, 0 NaN | Section 6.4 |
 | PhenoAge alignment (Liu 2018) | r=0.806, MAE 5.2y, RMSE 7.1y | data/phenoage_alignment.json |
 | Checklist compliance (DECIDE+TRIPOD+SPIRIT, 52 items) | 47 S + 5 P = 95.2% | data/CHECKLIST_COMPLIANCE_REPORT.md |
-| Evidence DB coverage | 29 verified / 120 total = 24.2% | data/case_evidence_db.json |
+| Evidence DB verified coverage | 7 verified / 120 total = 5.8% (4 L1 + 3 L2 via Crossref); +8 traditional-text, +14 unverified_no_publication, +91 synthetic_validation | data/case_evidence_db.json |
 
 ## 4. Bias, Fairness, and Harm Considerations
 
@@ -121,9 +121,15 @@ synthetic; this is a limitation.
 
 ### 5.1 Data composition
 
-- **Case evidence DB** (120 entries): 29 verified via Crossref (L1: 8,
-  L2: 9, L3: 12), 91 synthetic validation fixtures labelled `S` (S class,
-  weight 0.5). Coverage 24.2% verified.
+- **Case evidence DB** (120 entries): 7 verified via Crossref (L1: 4, L2: 3),
+  8 traditional-text entries (L3: 8), 14 `unverified_no_publication` entries
+  (L1: 4, L2: 8, L3: 2, not citable as evidence grades), 91 synthetic
+  validation fixtures labelled `S` (S class, weight 0.5, held separately from
+  L1–L3 grades). Verified coverage 5.8% (7/120). Historical `29 verified`
+  count from the 2026-10-18 snapshot (model-card v0.30.0) has been retracted
+  here: it conflated traditional-text and unverified entries with true
+  Crossref-resolved citations; the retraction is documented in
+  `data/doi_verification_results.json`.
 - **Four-way terminology mapping**: 613 classical Chinese-medicine text
   fragments mapped across GB/T 20348-2026, eight axes, biological pathways,
   and TCM classical texts.

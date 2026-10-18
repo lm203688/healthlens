@@ -109,7 +109,7 @@
 | 收敛效度 | 70% |
 | 禁忌排除 | 1条(CASE-017) |
 
-> 数据冻结说明：以上数字来自 `tools/engine_validation.py` 于 git commit `7b75e9a` 的实跑结果，快照已冻结至 `validation_snapshots/BASELINE.json`。后续若脚本或案例库发生变更，CI 将自动检测 baseline diff 并要求人工确认，杜绝论文正文、仓库指标、实跑结果三者失联（N2 硬阻断修复）。
+> 数据冻结说明：以上数字来自 `tools/engine_validation.py` 于 git commit `a9d916a`（时间戳 `20261018T024919Z`）的实跑结果，快照已冻结至 `validation_snapshots/BASELINE.json`。后续若脚本或案例库发生变更，CI 将自动检测 baseline diff 并要求人工确认，杜绝论文正文、仓库指标、实跑结果三者失联（N2 硬阻断修复；冻结 SHA 于 2026-10-19 刷新为 a9d916a，与 tracked baseline 一致，替换早前 `7b75e9a` 的引用）。
 
 轴激活分布：A=4, B=5, C=4, D=5, E=3, F=5, G=4, H=3——初始8轴均被激活（I/J轴为后续扩展，需独立验证）。
 
