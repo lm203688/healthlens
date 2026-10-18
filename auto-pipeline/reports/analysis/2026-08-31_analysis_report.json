@@ -1,0 +1,1274 @@
+{
+  "report_id": "analysis_2026-08-31",
+  "generated_at": "2026-08-31T03:01:59.477563",
+  "total_items": 18,
+  "summary": {
+    "approved": 8,
+    "watch": 10,
+    "reject": 0
+  },
+  "top_scorers": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "score": 78.7,
+      "category": "approved"
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "score": 78.7,
+      "category": "approved"
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "score": 78.7,
+      "category": "approved"
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "score": 78.7,
+      "category": "approved"
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "score": 78.7,
+      "category": "approved"
+    }
+  ],
+  "approved_items": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "approved",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6273, Language: Python",
+      "market_signals": {
+        "github_stars": 6273,
+        "forks": 675,
+        "updated_at": "2026-08-30T17:36:51Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 6273, Language: Python"
+      }
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "approved",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 5699, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 5699,
+        "forks": 339,
+        "updated_at": "2026-08-30T18:32:40Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 5699, Language: TypeScript"
+      }
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "approved",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4814, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4814,
+        "forks": 322,
+        "updated_at": "2026-08-30T16:38:23Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 4814, Language: TypeScript"
+      }
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "approved",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2426, Language: Python",
+      "market_signals": {
+        "github_stars": 2426,
+        "forks": 461,
+        "updated_at": "2026-08-30T16:02:32Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 2426, Language: Python"
+      }
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "approved",
+      "summary": "The AI-native health data engine — collect, standardize, and reason over labs, wearables & genomics.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1061, Language: Python",
+      "market_signals": {
+        "github_stars": 1061,
+        "forks": 197,
+        "updated_at": "2026-08-27T10:05:21Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 1061, Language: Python"
+      }
+    },
+    {
+      "id": "gh_44771262",
+      "title": "microsoft/HealthClinic.biz",
+      "category": "approved",
+      "summary": "The samples contained in this repo are used to present an end-to-end demo scenario based on a fictitious B2B and multitenant system, named “HealthClinic.biz” that provides different websites, mobile a",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/microsoft/HealthClinic.biz",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 503, Language: JavaScript",
+      "market_signals": {
+        "github_stars": 503,
+        "forks": 288,
+        "updated_at": "2026-07-28T11:47:14Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [],
+      "total_score": 78.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 25,
+        "signal_count": 3,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "趋势分析文章",
+          "知识库更新"
+        ],
+        "rationale": "Stars: 503, Language: JavaScript"
+      }
+    },
+    {
+      "id": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "approved",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline",
+      "total_score": 71.2,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "行业洞察",
+          "用户教育内容"
+        ],
+        "rationale": "基因归因+量化修复是差异化核心竞争力"
+      }
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "approved",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline",
+      "total_score": 71.2,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 12.0,
+        "feasibility": 0.8
+      },
+      "recommendation": {
+        "action": "develop_content",
+        "priority": "high",
+        "content_types": [
+          "行业洞察",
+          "用户教育内容"
+        ],
+        "rationale": "可探索频率干预模块与现有方案的融合"
+      }
+    }
+  ],
+  "watch_items": [
+    {
+      "id": "pm_42668978",
+      "title": "Analysis of Generative Artificial Intelligence Governance in Publicly Available Documentation of Global and Saudi Universities Offering Health Informa",
+      "category": "watch",
+      "summary": "Source: PubMed, Published: 2026",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42668978/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42668978",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ],
+      "total_score": 69.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 10.5,
+        "feasibility": 0.7
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "pm_42668925",
+      "title": "Clinical Efficacy and Patient Adherence Hurdles of Remote Patient Monitoring (RPM) Frameworks in Managing Hypertension and Type 2 Diabetes: A Scoping ",
+      "category": "watch",
+      "summary": "Source: PubMed, Published: 2026 Jul",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42668925/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42668925",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Jul"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ],
+      "total_score": 69.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 10.5,
+        "feasibility": 0.7
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "pm_42668923",
+      "title": "Healthcare professionals' intention to adopt a smart diabetic foot screening system: A UTAUT-informed mixed-methods study.",
+      "category": "watch",
+      "summary": "Source: PubMed, Published: 2026 Jan-D",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42668923/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42668923",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Jan-D"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ],
+      "total_score": 69.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 10.5,
+        "feasibility": 0.7
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "pm_42668898",
+      "title": "Systematic Analysis of Plasma-Derived Extracellular Vesicle-Enriched Samples in Age-Related Macular Degeneration Reveals Oxidative Stress Linked to Al",
+      "category": "watch",
+      "summary": "Source: PubMed, Published: 2026 Sep",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42668898/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42668898",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Sep"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ],
+      "total_score": 69.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 10.5,
+        "feasibility": 0.7
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "pm_42668811",
+      "title": "Short-term BMI changes associated with self-selected weight-control dietary patterns among Chinese office-based adults using a digital health platform",
+      "category": "watch",
+      "summary": "Source: PubMed, Published: 2026 Jan-D",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42668811/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42668811",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Jan-D"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ],
+      "total_score": 69.7,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 30.0,
+        "relevance": "high",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 10.5,
+        "feasibility": 0.7
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "arx_32172",
+      "title": "Learning a Continuous Sepsis Severity Score Without Hour-by-Hour Supervision: A Two-Site Retrospective Study",
+      "category": "watch",
+      "summary": "Currently used sepsis severity indices rely on fixed variables and weights established decades ago, which are coarsely discretized and calibrated to a cohort that no longer reflects contemporary criti",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.27421v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 58.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 18.0,
+        "relevance": "medium",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "arx_04713",
+      "title": "QuantumBoostNet: A Hybrid Classical-Quantum Architecture for Enhanced Accuracy in Cardiac Ultrasound View Identification",
+      "category": "watch",
+      "summary": "Accurate identification of the correct view or angle in cardiac ultrasound (echocardiogram) is a critical component of cardiologic imaging. This step is essential for precise anatomical interpretation",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.27302v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 58.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 18.0,
+        "relevance": "medium",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "arx_53765",
+      "title": "A Point-of-Prescription Safety-Check System for Adverse Drug Reactions in Rural Bangladeshi Hospitals: A Feasibility Study",
+      "category": "watch",
+      "summary": "Adverse drug reactions (ADRs) are a major, largely preventable source of patient harm. In high-income settings, electronic health records store a patient's allergy history and warn prescribers when a ",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.27239v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 58.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 18.0,
+        "relevance": "medium",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "arx_36215",
+      "title": "Graph-Based Pseudo-multimodal Contrastive Learning for 12-Lead ECG Representations",
+      "category": "watch",
+      "summary": "12-lead electrocardiogram (ECG) is a standard, non-invasive examination widely used for diagnosing coronary artery disease, where clinical interpretation relies on comparing waveform patterns across m",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.26964v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 58.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 18.0,
+        "relevance": "medium",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    },
+    {
+      "id": "arx_77070",
+      "title": "Dose-PlanNet: Physics Based Radiotherapy Dose Prediction with Deep Learning",
+      "category": "watch",
+      "summary": "Automating prostate radiotherapy treatment planning is dosimetrically complex, particularly for extreme hypofractionated regimens. In this study, we introduce Dose-PlanNet, a physics-guided 3D deep le",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.26901v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ],
+      "total_score": 58.4,
+      "score_breakdown": {
+        "source_score": 11.7,
+        "source_count": 1,
+        "source_types": 1,
+        "goal_score": 18.0,
+        "relevance": "medium",
+        "market_score": 17.5,
+        "signal_count": 2,
+        "feasibility_score": 11.2,
+        "feasibility": 0.75
+      },
+      "recommendation": {
+        "action": "monitor",
+        "review_interval": "2weeks",
+        "key_indicators": [
+          "市场接受度",
+          "技术成熟度",
+          "竞品动态"
+        ]
+      }
+    }
+  ],
+  "rejected_items": [],
+  "content_pipeline": {
+    "knowledge_articles": [],
+    "trend_analysis": [
+      {
+        "id": "gh_1189384516",
+        "title": "repowise-dev/repowise",
+        "category": "approved",
+        "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/repowise-dev/repowise",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 6273, Language: Python",
+        "market_signals": {
+          "github_stars": 6273,
+          "forks": 675,
+          "updated_at": "2026-08-30T17:36:51Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "ai",
+          "code-complexity",
+          "code-health",
+          "code-intelligence",
+          "code-quality"
+        ],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 6273, Language: Python"
+        }
+      },
+      {
+        "id": "gh_1006104934",
+        "title": "CodeWithCJ/SparkyFitness",
+        "category": "approved",
+        "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/CodeWithCJ/SparkyFitness",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 5699, Language: TypeScript",
+        "market_signals": {
+          "github_stars": 5699,
+          "forks": 339,
+          "updated_at": "2026-08-30T18:32:40Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "ai",
+          "artificial-intelligence",
+          "fitness",
+          "fitness-app",
+          "fitness-tracker"
+        ],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 5699, Language: TypeScript"
+        }
+      },
+      {
+        "id": "gh_1052828228",
+        "title": "qixing-jk/all-api-hub",
+        "category": "approved",
+        "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/qixing-jk/all-api-hub",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 4814, Language: TypeScript",
+        "market_signals": {
+          "github_stars": 4814,
+          "forks": 322,
+          "updated_at": "2026-08-30T16:38:23Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "ai",
+          "cc-switch",
+          "chatgpt",
+          "chatgpt-api",
+          "cherrystudio"
+        ],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 4814, Language: TypeScript"
+        }
+      },
+      {
+        "id": "gh_1086572146",
+        "title": "the-momentum/open-wearables",
+        "category": "approved",
+        "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/the-momentum/open-wearables",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 2426, Language: Python",
+        "market_signals": {
+          "github_stars": 2426,
+          "forks": 461,
+          "updated_at": "2026-08-30T16:02:32Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "apple-health",
+          "apple-watch",
+          "fastapi",
+          "fitness",
+          "fitness-analysis"
+        ],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 2426, Language: Python"
+        }
+      },
+      {
+        "id": "gh_1106398326",
+        "title": "thetahealth/mirobody",
+        "category": "approved",
+        "summary": "The AI-native health data engine — collect, standardize, and reason over labs, wearables & genomics.",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/thetahealth/mirobody",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 1061, Language: Python",
+        "market_signals": {
+          "github_stars": 1061,
+          "forks": 197,
+          "updated_at": "2026-08-27T10:05:21Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "ai-agents",
+          "fhir",
+          "genomics",
+          "health",
+          "health-data"
+        ],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 1061, Language: Python"
+        }
+      },
+      {
+        "id": "gh_44771262",
+        "title": "microsoft/HealthClinic.biz",
+        "category": "approved",
+        "summary": "The samples contained in this repo are used to present an end-to-end demo scenario based on a fictitious B2B and multitenant system, named “HealthClinic.biz” that provides different websites, mobile a",
+        "sources": [
+          {
+            "name": "GitHub",
+            "url": "https://github.com/microsoft/HealthClinic.biz",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "Stars: 503, Language: JavaScript",
+        "market_signals": {
+          "github_stars": 503,
+          "forks": 288,
+          "updated_at": "2026-07-28T11:47:14Z"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [],
+        "total_score": 78.7,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 25,
+          "signal_count": 3,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "趋势分析文章",
+            "知识库更新"
+          ],
+          "rationale": "Stars: 503, Language: JavaScript"
+        }
+      }
+    ],
+    "user_education": [
+      {
+        "id": "comp_001",
+        "title": "国内竞品健康管理App功能对比分析",
+        "category": "approved",
+        "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+        "sources": [
+          {
+            "name": "竞品分析",
+            "url": "",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+        "market_signals": {
+          "dau_growth": "稳定",
+          "付费率": "3-8%"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "竞品分析",
+          "市场格局"
+        ],
+        "is_static": true,
+        "source_type": "static_baseline",
+        "total_score": 71.2,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "行业洞察",
+            "用户教育内容"
+          ],
+          "rationale": "基因归因+量化修复是差异化核心竞争力"
+        }
+      },
+      {
+        "id": "comp_002",
+        "title": "PEMF频率疗法在家用设备中的应用增长",
+        "category": "approved",
+        "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+        "sources": [
+          {
+            "name": "竞品分析",
+            "url": "",
+            "relevance": 0.8
+          }
+        ],
+        "relevance_to_healthlens": "high",
+        "actionable_insight": "可探索频率干预模块与现有方案的融合",
+        "market_signals": {
+          "market_size": "12亿美元",
+          "cagr": "8.5%"
+        },
+        "technical_feasibility": 0.8,
+        "tags": [
+          "竞品分析",
+          "市场格局"
+        ],
+        "is_static": true,
+        "source_type": "static_baseline",
+        "total_score": 71.2,
+        "score_breakdown": {
+          "source_score": 11.7,
+          "source_count": 1,
+          "source_types": 1,
+          "goal_score": 30.0,
+          "relevance": "high",
+          "market_score": 17.5,
+          "signal_count": 2,
+          "feasibility_score": 12.0,
+          "feasibility": 0.8
+        },
+        "recommendation": {
+          "action": "develop_content",
+          "priority": "high",
+          "content_types": [
+            "行业洞察",
+            "用户教育内容"
+          ],
+          "rationale": "可探索频率干预模块与现有方案的融合"
+        }
+      }
+    ]
+  },
+  "key_insights": [
+    "本周共分析 18 条情报",
+    "其中 8 条通过决策门禁，建议立即推进",
+    "10 条进入观察列表，持续跟踪",
+    "高优先级项目: repowise-dev/repowis, CodeWithCJ/SparkyFit, qixing-jk/all-api-hu"
+  ]
+}

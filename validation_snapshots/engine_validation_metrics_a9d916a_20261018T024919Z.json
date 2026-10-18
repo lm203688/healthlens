@@ -1,0 +1,36 @@
+{
+  "n_profiles": 22,
+  "n_case": 20,
+  "n_control": 2,
+  "determinism_mismatch": 0,
+  "determinism_rate": 1.0,
+  "mean_personalized_case": 6.35,
+  "mean_personalized_control": 0.0,
+  "coverage_any_personalized": 1.0,
+  "coverage_L1": 0.75,
+  "axis_activation": {
+    "A": 4,
+    "B": 5,
+    "C": 4,
+    "D": 5,
+    "E": 3,
+    "F": 5,
+    "G": 4,
+    "H": 3
+  },
+  "evidence_dist_personalized": {
+    "L3": 79,
+    "L1": 28,
+    "L2": 20
+  },
+  "evidence_total_personalized": 127,
+  "domain_expectation_concordance": 0.879,
+  "convergent_validity_rate": 0.879,
+  "contra_excluded_count": 1,
+  "_meta": {
+    "git_sha": "a9d916a",
+    "timestamp_utc": "20261018T024919Z",
+    "script": "tools/engine_validation.py",
+    "note": "in-silico validation; numbers here ARE the paper's numbers (S0-4 freeze)"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "report_id": "ops_f_20260730",
+  "generated_at": "2026-07-30T08:16:01.652529",
+  "overall_status": "healthy",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "ok",
+      "http_code": 200
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "ok",
+      "http_code": 200
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "ok",
+      "http_code": 200
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "ok",
+      "http_code": 200
+    }
+  ],
+  "containers": [
+    {
+      "name": "ssh_timeout",
+      "status": "unreachable"
+    }
+  ],
+  "security_issues": [],
+  "medical_terms": [],
+  "actions_needed": []
+}

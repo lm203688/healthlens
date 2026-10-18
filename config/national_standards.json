@@ -1,0 +1,24 @@
+{
+  "version": "v1.0",
+  "date": "2026-10-15",
+  "standards": [
+    {
+      "id": "GB/T 20001.10-2014",
+      "title": "标准化工作指南 第10部分：质量管理体系标准和环境管理体系标准的结构和内容一致性",
+      "scope": "wellness_service_documentation",
+      "clauses": [
+        {"id": "4.1", "title": "范围", "requirement": "适用范围声明", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "5.1", "title": "目的和范围", "requirement": "明确服务目的和适用边界", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "5.2", "title": "规范性引用文件", "requirement": "引用文件完整且有效", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "5.3", "title": "术语和定义", "requirement": "术语定义准确一致", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "6", "title": "总则", "requirement": "总则性要求", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "7", "title": "管理体系要求", "requirement": "管理体系要求完整", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "8", "title": "运行要求", "requirement": "运行要求明确", "priority": "mandatory", "check_method": "text_presence"},
+        {"id": "9", "title": "绩效评价", "requirement": "绩效评价方法", "priority": "optional", "check_method": "text_presence"},
+        {"id": "10", "title": "改进", "requirement": "持续改进机制", "priority": "optional", "check_method": "text_presence"}
+      ],
+      "disclaimer": "本闸门为健康管理服务文档提供结构化合规参考，不构成法律或监管合规声明。实际合规请咨询专业机构。"
+    }
+  ],
+  "disclaimer": "本国标闸门为健康管理服务文档提供结构化参考，非医疗诊断标准，不构成法律或监管合规声明。"
+}

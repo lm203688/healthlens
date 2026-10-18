@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthLens 示例报告 · 个性化融合引擎输出</title>
+<style>
+  :root{
+    --bg:#f7f9fb; --card:#ffffff; --ink:#1f2933; --sub:#5b6b7b;
+    --line:#e3e9ef; --brand:#1f8a70; --brand-soft:#e6f4f0;
+    --l1:#b8860b; --l1bg:#fff7e0; --l2:#1f6f9c; --l2bg:#e7f1f8; --l3:#6b7280; --l3bg:#eef1f4;
+    --pers:#7a3fb0; --persbg:#f3e9fa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+    line-height:1.6;padding:24px 14px 56px}
+  .wrap{max-width:760px;margin:0 auto}
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--brand);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+  h1{font-size:21px;margin:0}
+  .demo-badge{display:inline-block;margin:10px 0 18px;padding:4px 12px;border-radius:999px;
+    background:var(--brand-soft);color:var(--brand);font-size:13px;font-weight:600}
+  .summary{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+  .summary h2{font-size:15px;margin:0 0 10px;color:var(--sub)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:5px 11px;border-radius:8px;background:#f0f4f8;font-size:13px;font-weight:600}
+  .chip.ax{background:var(--persbg);color:var(--pers)}
+  .note{font-size:12.5px;color:var(--sub);margin-top:10px}
+  table{width:100%;border-collapse:separate;border-spacing:0 10px}
+  .rec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:block}
+  .rec-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .tag{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px}
+  .tag.pers{background:var(--persbg);color:var(--pers)}
+  .tag.gen{background:#eef1f4;color:#6b7280}
+  .badge{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:6px}
+  .b-l1{background:var(--l1bg);color:var(--l1)}
+  .b-l2{background:var(--l2bg);color:var(--l2)}
+  .b-l3{background:var(--l3bg);color:var(--l3)}
+  .cid{font-size:12px;color:var(--sub);font-weight:600}
+  .axis{font-size:12.5px;color:var(--brand);font-weight:600}
+  .tcm{font-size:14px;font-weight:600;margin:2px 0 4px}
+  .row{font-size:13px;color:var(--ink);margin:2px 0}
+  .row .k{color:var(--sub);font-weight:600}
+  .mon{font-size:12.5px;color:#374151;background:#f6f8fa;border-radius:6px;padding:2px 7px;display:inline-block;margin-top:3px}
+  .disclaimer{margin-top:22px;background:#fff8f1;border:1px solid #f3d9bd;border-radius:12px;
+    padding:12px 14px;font-size:12.5px;color:#8a5a2b}
+  .foot{margin-top:18px;font-size:12px;color:var(--sub);text-align:center}
+  a{color:var(--brand);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="logo">H</div>
+    <h1>HealthLens 示例报告</h1>
+  </div>
+  <div class="demo-badge">示例 · 非真实用户定制 · 由融合引擎真实输出生成</div>
+
+  <div class="summary">
+    <h2>检测到的弱项轴 / 通路（示例输入）</h2>
+    <div class="chips">
+      <span class="chip ax">B 轴 · 气血-线粒体 (PGC-1α/SIRT1)</span>
+      <span class="chip">mitochondrial</span>
+      <span class="chip">Circadian_CLOCK_BMAL1（D 轴·阴阳-昼夜）</span>
+    </div>
+    <div class="note">融合逻辑：基因弱项通路 ∩ 古籍候选 → 加权高分；证据分级 L1&gt;L2&gt;L3；缺基因数据时整批标记为"示例"。</div>
+  </div>
+
+  <table>
+    <tr><td>
+      <div class="rec">
+        <div class="rec-top">
+          <span class="tag pers">个性化</span>
+          <span class="badge b-l1">L1 强证据</span>
+          <span class="cid">CASE-004</span>
+          <span class="axis">气血-线粒体 · 神-情志</span>
+        </div>
+        <div class="tcm">古籍候选：导引 / 行气（动则生阳）</div>
+        <div class="row"><span class="k">基因交集：</span>mitochondrial；轴 B</div>
+        <div class="row"><span class="k">干预方案：</span>规律运动（有氧 / HIIT）线粒体适应</div>
+        <div class="row"><span class="k">可监测指标：</span><span class="mon">PGC-1α 核转位</span><span class="mon">新线粒体蛋白</span><span class="mon">适应窗口</span></div>
+      </div>
+    </td></tr>
+
+    <tr><td>
+      <div class="rec">
+        <div class="rec-top">
+          <span class="tag pers">个性化</span>
+          <span class="badge b-l2">L2 中证据</span>
+          <span class="cid">CASE-011</span>
+          <span class="axis">气血-线粒体 · 神-情志</span>
+        </div>
+        <div class="tcm">古籍候选：导引 / 调神 / 和气血</div>
+        <div class="row"><span class="k">基因交集：</span>轴 B</div>
+        <div class="row"><span class="k">干预方案：</span>太极 / 导引（HRV 与迷走张力）</div>
+        <div class="row"><span class="k">可监测指标：</span><span class="mon">HRV(RMSSD)</span><span class="mon">平衡/跌倒风险</span><span class="mon">皮质醇</span></div>
+      </div>
+    </td></tr>
+
+    <tr><td>
+      <div class="rec">
+        <div class="rec-top">
+          <span class="tag pers">个性化</span>
+          <span class="badge b-l2">L2 中证据</span>
+          <span class="cid">CASE-022</span>
+          <span class="axis">阴阳-昼夜 (CLOCK/BMAL1)</span>
+        </div>
+        <div class="tcm">古籍候选：昼夜养护 · 夜卧避光、敛阳入阴</div>
+        <div class="row"><span class="k">基因交集：</span>circadianclockbmal1</div>
+        <div class="row"><span class="k">干预方案：</span>避蓝光：夜间（睡前 4h）避免短波蓝光暴露</div>
+        <div class="row"><span class="k">可监测指标：</span><span class="mon">褪黑素分泌</span><span class="mon">昼夜相位(DLMO)</span><span class="mon">睡眠潜伏期</span></div>
+      </div>
+    </td></tr>
+
+    <tr><td>
+      <div class="rec">
+        <div class="rec-top">
+          <span class="tag pers">个性化</span>
+          <span class="badge b-l2">L2 中证据</span>
+          <span class="cid">CASE-023</span>
+          <span class="axis">阴阳-昼夜 (CLOCK/BMAL1)</span>
+        </div>
+        <div class="tcm">古籍候选：晨兴沐阳、升发阳气</div>
+        <div class="row"><span class="k">基因交集：</span>circadianclockbmal1</div>
+        <div class="row"><span class="k">干预方案：</span>晨光暴露：晨间 1h 明亮光（10,000 lux）</div>
+        <div class="row"><span class="k">可监测指标：</span><span class="mon">睡眠效率</span><span class="mon">睡眠潜伏期</span><span class="mon">显著性网络FC(右前岛叶)</span></div>
+      </div>
+    </td></tr>
+
+    <tr><td>
+      <div class="rec">
+        <div class="rec-top">
+          <span class="tag pers">个性化</span>
+          <span class="badge b-l3">L3 群体证据</span>
+          <span class="cid">CASE-014</span>
+          <span class="axis">气化/自噬 · 气血-线粒体</span>
+        </div>
+        <div class="tcm">古籍候选：食物性味 · 温（四气）· 温中散寒、行气</div>
+        <div class="row"><span class="k">基因交集：</span>轴 B</div>
+        <div class="row"><span class="k">干预方案：</span>食疗：生姜（温）</div>
+        <div class="row"><span class="k">可监测指标：</span><span class="mon">温中散寒</span><span class="mon">胃肠动力</span><span class="mon">代谢产热</span></div>
+      </div>
+    </td></tr>
+  </table>
+
+  <div class="disclaimer">
+    【免责声明】HealthLens 提供基于古籍经验与现代稳态生物学证据的养生 / 修复参考，
+    不构成医疗诊断、处方或治疗建议。个体差异显著，涉及疾病、用药、孕期及特殊体质请遵医嘱。
+    基因相关建议仅基于通路级群体证据，禁单 SNP 决定个人方案。本页为示例输出，非真实用户定制。
+  </div>
+
+  <div class="foot">
+    想看自己的 8 轴基线？<a href="https://healthlens.cc/">前往 HealthLens →</a><br>
+    报告由融合引擎 v0.2 真实生成 · 证据可追溯至 case_evidence_db.json（24 条）
+  </div>
+</div>
+</body>
+</html>

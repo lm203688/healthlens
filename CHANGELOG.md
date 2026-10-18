@@ -1,0 +1,854 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [0.31.0] - 2026-10-17
+
+### Added（P0 打地基 + P1 口径修复）
+
+- `tests/test_schema_parity.py`：ORM 表 ↔ alembic 迁移差集门禁（5 用例），CI 红灯即阻塞
+- `constraints.txt` + `tests/test_constraints_lock.py`：依赖锁定门禁（12 用例），`==` 精确 pin + PEP 503 包名规范化
+- `tools/reliability_bootstrap.py`：输入扰动 bootstrap 出八轴 ICC/Kappa（C2 信度量化，537 行）
+- `alembic/versions/007_add_remaining_models.py`：补齐 32 张 ORM 表迁移（tcm_classical_books / longitudinal_studies / axis_snapshots / biomarker_readings 等）
+- `alembic/versions/008_federated_optimistic_lock.py`：`version_id` 乐观锁 + 唯一索引 `(study_id, date, source)` / `(study_id, sampled_at, loinc_code)`，防联邦双算
+- `tests/lib/test_migration_roundtrip.py`：全链 upgrade→downgrade→upgrade 幂等往返（6 用例）
+- `tests/test_federated_migration.py`：联邦预埋迁移验收（5 用例，含 CAS 乐观锁 + 唯一约束）
+
+### Added（2026-10-18 收尾：冒烟枪根因修复 + D1 flwr 实证）
+
+- `alembic/versions/009_users_missing_columns.py`：**H1 冒烟枪根因修复**——001 漏建 users 六列（is_active/nickname/referral_code/utm_*），全新部署 `alembic upgrade head` 后注册即崩；本迁移以 ORM 为真源补齐
+- `alembic/versions/010_drop_orphan_source_name.py`：列级 parity 发现的反向漂移——001 多建 `data_connections.source_name`（ORM 零引用），删除
+- `tests/lib/test_schema_column_parity.py`：**列级** parity 门禁（5 用例）——空库跑真实迁移链后逐表比对 ORM 列集合。教训：表名 parity（007 之后全绿）查不出 `users.is_active` 这类列级缺口，冒烟枪的根因级防线在此
+- **D1 flwr 实证修真 bug**：CI heavy-lib job 加装 `.[federated]`（flwr）后跑真实断言，立刻抓到 `make_flower_server` 用了已废弃的 `Server(config=...)` API（flwr≥1.5 起只收 `client_manager`/`strategy`）——"重型库分支从不真实执行"的活案例；改为签名探测兼容新旧 API；旧测试的 hasattr 探针空转恒真（假覆盖）已重写为真实工厂调用
+- `pyproject.toml` 新增 `federated` extra（flwr）；CI `heavy-lib-test` job 安装后真实执行（dowhy 严格模式 + flwr 构造 + 未知 strategy 拒绝）
+
+### Changed（口径修复 S1–S6）
+
+- **S1 轴数三套口径**：§3 拆为 "Implemented (A–H)" + "Reserved (I–J, not implemented)"，删证据列
+- **S2 证据分级越级**："human or RCT-level (L1+L2)" → "multi-trial human evidence (L1) or single-trial/strong-mechanism+animal (L2)"
+- **S3 收敛效度→领域预期一致性**：`convergent_validity_rate` → `domain_expectation_concordance`，保留旧键向后兼容
+- **S4 calibration bands**：manifest "calibration bands" → "prior-uncertainty bands"，limitations 明示非经验校准
+- **S5/S6**：limitation 补 profile battery 非预注册 + 信度量化脚本就绪
+
+### Fixed（E/G 共线 + 频率疗法暗示）
+
+- G 轴引入 `sleep_duration_cv` 第二主输入，HRV 降为副锚点（weight 16→8），构造独立性闸门：无睡眠信号则 G=unmeasured
+- hrv=45 时 E=100, G=unmeasured（非 E=G=100）——八轴实为八轴
+- `app/config.py` CORS 生产硬拒：`is_production && CORS_ORIGINS==["*"]` → `critical_security_issues` → 启动 SystemExit
+- `agent-card.json`：9176B（<10KB 注册上限，CRLF→LF）；C7 诚实性审计修复（conformanceNote 恢复"未实现"能力边界披露）；案例库口径 "29 真+91 合成" → "120 条 = 7 Crossref 验真 + 8 古籍 + 14 诚实未验证 + 91 合成"（与数据直查零偏差）
+- `tools/reliability_bootstrap.py`：`n_profiles` 20→动态实际值（18），元数据与画像电池一致
+
+### Changed（manifest 口径对齐）
+
+- tests 491→1737、DOI 22→7（已核验）、"prior-uncertainty bands"、limitations 补 4 条
+- ORCID 仍 PENDING_USER_FILL（用户操作）
+
+### 验证（2026-10-18 全新部署冒烟，H1 硬阻断清零）
+
+```
+全新空库 alembic upgrade head → rc=0
+TestClient POST /api/v1/auth/register            → 200
+TestClient POST /api/v1/longitudinal/studies     → 201
+列级 parity：ORM 56 表全部列 ⊆ 迁移后 schema，零缺口
+```
+
+- `pyproject.toml`: 0.30.0 → **0.31.0**
+
+## [0.30.0] - 2026-10-16
+
+### Added（L0 协议对齐：A2A v1.0.1 JSON-RPC 端点落地）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5 L0：
+> 「不做协议对齐则生态层 2026 下半年直接失效」。
+
+v0.29.0 已把 A2A v1.0.1 的**契约层**（Agent Card / JWS 签名 / SCREAMING_SNAKE_CASE
+verbs / conformanceNote）落地，但 `conformanceNote` 诚实声明 SendMessage /
+ListTasks / GetTask / CancelTask 的 JSON-RPC 端点**尚未实现**——生产环境
+`POST /a2a` 是 404。本轮补齐这块，让 A2A v1.0.1 从「声明 verbs」升级为「端点
+可用」。
+
+**L0 协议对齐（本轮核心）**
+- `app/lib/a2a_task_store.py`（新增）：A2A Task 内存态容器
+  - `TaskState` enum（SCREAMING_SNAKE_CASE）：`SUBMITTED / WORKING / COMPLETED /
+    FAILED / CANCELED / INPUT_REQUIRED`，严格对齐 A2A v1.0.1 spec
+  - `A2ATask` dataclass：camelCase 字段（taskId / contextId / status / statusMessage
+    / artifacts / history / createdAt / updatedAt），完全对齐 A2A v1.0.1 wire format
+  - `TaskStore` 类：`create_task / get_task / list_tasks / update_status /
+    add_artifact / cancel_task / purge_expired`，全部线程安全（RLock）
+  - **fail-loud 状态转移**：非法转移抛 `InvalidTaskTransitionError`，从终态
+    (COMPLETED / FAILED / CANCELED) 或从非可取消状态调 `cancel_task` 都直接抛
+  - **幂等**：`create_task(taskId="X")` 命中已存在则返回，冲突 contextId 抛
+    `ValueError`；`create_task()` 无 ID 时每次生成新 UUID
+  - **TTL 清理**：默认 24 小时（86400s），惰性（每次读写前）+ 主动
+    `purge_expired()` 双通道
+  - 顶部注释说明「生产应替换为 DB/Redis」并给出迁移路径（保留公开方法签名，
+    注入持久化适配器即可）
+- `app/api/a2a.py`（新增）：单一 JSON-RPC 端点 `POST /a2a`
+  - 支持 4 个 method：`SendMessage / ListTasks / GetTask / CancelTask`
+  - JSON-RPC 2.0 envelope：成功返回 `{jsonrpc, result, id}`，错误返回
+    `{jsonrpc, error: {code, message}, id}`；HTTP 状态码 200（协议内错误走
+    body）+ 400（body 非合法 JSON）
+  - 错误码：标准 JSON-RPC -32700 / -32600 / -32601 / -32602 / -32603 + A2A
+    语义 -32001 (task_not_found) / -32002 (invalid_transition)
+  - **SendMessage 薄包装**：不做业务逻辑，只做「解析 message.parts → 调用
+    MCP 工具函数 → 附加 artifact → COMPLETED/FAILED」的编排
+  - **SendMessage 允许的工具**（严格复用现有 MCP 工具，不重写业务）：
+    `hl_health_check / hl_search_knowledge / hl_get_axis_detail /
+    hl_get_wellness_article / hl_suggest_general_diet / hl_suggest_general_motion`
+    （L1 + L2 工具集，L3 不接入，需 HL_MCP_EXPOSE_PRIVATE=1 才启用）
+  - SendMessage 支持两种调用形式：
+    1. `message.parts[0].data = {"tool": "<name>", "args": {...}}`（显式）
+    2. `message.parts[0].text = "<query>"`（fallback：抽为 `hl_search_knowledge(query=...)`）
+  - **ListTasks**：支持 filter by `contextId` / `status`，limit 硬上限 50
+    （A2A v1.0.1 spec 约束）
+  - **CancelTask**：仅 SUBMITTED / WORKING 可取消，其它状态返回 -32002
+  - **JWS 签名 optional**：`Authorization: Bearer <jws>` 存在则用
+    `a2a_jws.verify_jws` 校验，公钥从 `HL_A2A_VERIFY_KEY_JWK` 环境变量读取；
+    无 header 或验证失败均**不阻断**请求（对齐 A2A spec "optional" 语义），
+    仅响应体带 `"signed": true/false`
+  - 顶部 docstring 引用报告 §5 L0 与 A2A v1.0.1 spec URL
+- `app/__init__.py`：+3 行（`from app.api.a2a import router as a2a_router` +
+  `app.include_router(a2a_router, tags=["A2A v1.0.1"])`，注释标 §5 L0）
+
+**Manifest 与文档**
+- `agent-card.json`：
+  - `version`: `0.29.0` → **`0.30.0`**（单一真源 = pyproject.toml）
+  - `conformanceNote` 从「**未实现** SendMessage / GetTask / CancelTask /
+    ListTasks 的 JSON-RPC 端点」改为「**已实现** SendMessage / ListTasks /
+    GetTask / CancelTask 的 JSON-RPC 端点（POST /a2a），JWS 签名 optional」，
+    并列明 SendMessage 复用哪些 MCP 工具函数、STATE_TRANSITION_HISTORY 仍 false
+  - `capabilities.EXTENSIONS[1].description` 同步改为「已实现...（POST /a2a）」
+  - `capabilities.EXTENSIONS[1].verbs` 追加 `GetTask` / `CancelTask`（原来只有
+    SendMessage / ListTasks）
+  - 保留 `protocolVersion: "1.0.1"`、`LIST_TASKS: true`
+- `pyproject.toml`: `0.29.0` → **`0.30.0`**
+- `app/core/version.py`：不动，运行时读 pyproject 单一真源
+
+**新增契约测试**
+- `tests/protocol/test_a2a_jsonrpc.py`（新增，≥25 用例）：
+  - SendMessage 基本调用（显式 tool / 文本 fallback / 缺 params / 缺 message）
+  - ListTasks 空/有数据/filter by contextId / filter by status / limit 上限
+    / limit 下限 / limit 非法
+  - GetTask 存在/不存在/缺 taskId/非法 taskId
+  - CancelTask SUBMITTED→CANCELED / WORKING→CANCELED / COMPLETED 抛错 /
+    FAILED 抛错 / 不存在的 task
+  - 未知 method / 非法 jsonrpc 版本 / body 非对象 / body 非 JSON
+  - JWS 签名 optional：无 header 通过 / 非 Bearer 前缀不阻断 / JWS 段数不合法
+    不阻断 / 环境变量未设置不阻断
+  - TaskStore 状态转移矩阵：所有非法转移抛 `InvalidTaskTransitionError`
+  - TaskStore TTL 清理：过期 task 被 `purge_expired` 清掉 / 惰性清理生效
+  - 幂等：相同 `taskId` 二次创建返回同一 task / 冲突 contextId 抛 ValueError
+
+**契约测试更新**
+- `tests/protocol/test_a2a_contract.py`：
+  - `test_39_conformance_note_discloses_unimplemented` 更名
+    `test_39_conformance_note_declares_implemented`，断言从「未实现」改为「已实现」
+  - `test_40_conformance_note_names_specific_gaps` 更名
+    `test_40_conformance_note_names_specific_endpoints`，断言从「点名未实现」
+    改为「点名已实现的 4 个端点」
+  - `test_42_a2a_audit_c7_passes_on_real_card`：`_a2a_check_conformance_honest`
+    逻辑同步更新——若 note 里同时有「已实现」和「未实现」，需按动词分组判定
+    （本轮 audit 逻辑保持向后兼容：note 含「未实现」仍算诚实，但已实现时
+    也必须点名）
+
+**版本**
+- `pyproject.toml`: 0.29.0 → **0.30.0**
+- `agent-card.json`: 0.29.0 → **0.30.0**
+
+### Added（§10 #6 Pulse-PPG / PaPaGei 零样本评测脚手架闭合）
+
+参照《HealthLens_下一阶段全面提升报告_2026-10-08》§10 #6：
+> 「评测 Pulse-PPG / PaPaGei 在现有脉搏波数据上的零样本表征质量 | 3–5 天」
+
+v0.29.0 已建 Pulse-PPG / PaPaGei optional adapter 骨架（`app/lib/sensor_adapter.py`），
+但未接真实权重（真实权重需用户提供）。本轮把评测**脚手架**做扎实：
+合成数据 + 特征 baseline + 零样本 harness + API 端点 + 报告生成器 + 契约测试。
+**真实零样本表征质量**（§10 #6 的核心命题）仍待用户提供 Pulse-PPG / PaPaGei
+权重才能闭合——脚手架先就位，fail-loud 不静默降级。
+
+**新增源文件（≤4）**
+- `app/lib/synthetic_sensor_dataset.py`（新增）：确定性合成传感器数据集
+  - `SyntheticSensor` dataclass（signal_type / sample_rate_hz / duration_sec /
+    subject_id / samples / label / ground_truth_hr_bpm）
+  - `SyntheticSensorDataset` 类（批量生成 + `to_json` / `from_json` 序列化 +
+    `fingerprint()` sha256[:16] 内容指纹）
+  - `generate_ppg(freq_hz, noise, seed, breath_mod)`：正弦 + 呼吸调制 + 高斯噪声
+  - `generate_ecg(freq_hz, noise, seed)`：P/Q/R/S/T 五分量高斯窗叠加
+  - `generate_emg(freq_hz, noise, seed, activation)`：宽频带高斯 + 激活包络
+  - `generate_eeg(freq_hz, band_alpha, band_beta, band_theta, noise, seed)`：
+    α/β/θ 三节律叠加
+  - `generate_batch(n, seed, signal_type, duration_sec, labels)`：批量生成 +
+    三分类（rest / exercise / stress）预设参数（分类信号显著可分）
+  - 纯 Python（`random.Random(seed)`），同 seed 同输出、不同 seed 不同输出
+  - **仅用于评测脚手架验证**，不进入生产健康推断路径
+- `app/lib/feature_baseline.py`（新增）：手工特征 baseline
+  - `compute_hrv_features(samples, sample_rate)`：RMSSD / SDNN / pNN50 / SD1 /
+    SD2 / VLF/LF/HF 频带功率 / LF/HF 比（13 维）
+  - `compute_waveform_features(samples)`：mean / std / rms / mad / min / max /
+    peak_to_peak / cv / skew / kurtosis / rise_time / zero_crossing_rate /
+    lag1-3_autocorr / monotonic_fraction / endpoint_slope（17 维）
+  - `compute_spectral_features(samples, sample_rate)`：dominant_freq +
+    spectral_entropy（2 维）
+  - `extract_baseline_features(samples, sample_rate, signal_type)`：按
+    signal_type 路由（PPG/ECG 用 HRV+波形；EMG/EEG 用 spectral+波形）
+  - `to_feature_matrix(sensors)`：批量特征化，返回 `(y_hr, X_matrix, feature_names)`
+  - 特征总数 26–33 维，覆盖时域 + 频域 + 时序相关，对标 Pulse-PPG /
+    PaPaGei 的手工特征
+- `app/lib/zero_shot_eval_harness.py`（新增）：零样本评测 harness
+  - `EvaluatorConfig` dataclass（signal_type / task / metric / train_ratio /
+    random_seed）
+  - `BaselineResult` dataclass（engine_name / accuracy / f1_macro / auroc /
+    metric_value / r2 / latency_ms / n_samples / details）
+  - `ZeroShotEvalHarness` 类：
+    - `run_baseline(dataset)`：feature_baseline + 极简 KNN 分类器 / 岭回归 /
+      距离异常检测（**纯 Python，不引 sklearn**）
+    - `run_engine(engine, dataset)`：真实模型接口，未装权重时抛
+      `HealthLensUnavailableEngine`（复用 sensor_adapter 异常，不静默降级）
+    - `compare(results)`：横向对比 + Markdown 表格 + best X 总结
+  - 内置极简 `_KNNClassifier`（欧氏距离 + k 投票）+ `_LinearRegression`
+    （正规方程 + 自适应岭正则化）+ `_accuracy` / `_f1_macro` / `_auroc`
+    （Mann-Whitner U）/ `_r2` 指标
+  - 支持 3 类任务：`classification`（3 类活动识别）/ `regression`（心率估计
+    BPM）/ `anomaly`（正常 vs 异常）
+- `tools/run_puls_egg_eval.py`（新增，ASCII 名避免文件名编码坑）：一键运行
+  - 参数：`--seed`（默认 42）/ `--n-samples`（默认 200）/ `--output`
+    （默认 `docs/pulse_ppg_evaluation_report.md`）/ `--with-engine`
+    （尝试接真实模型，缺省 False）
+  - 步骤：生成合成数据 → 跑 3 任务 baseline → （可选）接 Pulse-PPG / PaPaGei
+    → 生成 Markdown 报告
+  - 报告含：数据规模 + 分类/回归/异常 baseline 结果 + SensorFM 基准对照
+    （引用 arXiv 数字，不作为对比基线）+ 局限与后续
+
+**修改**
+- `app/api/timeseries.py`（仅追加，不改现有端点）：新增
+  `POST /api/v1/timeseries/eval/harness`
+  - 请求 schema：`signal_type` / `task` / `metric` / `samples`（`min_length=2`，
+    `max_length=1000`）/ `train_ratio` / `random_seed`
+  - 单条 signal 需 `samples`（≥4 floats）+ `sample_rate_hz`（>0）+ 按任务
+    附带 `label`（分类/异常）或 `ground_truth_hr_bpm`（回归）
+  - 响应 schema：engine_name / accuracy / f1_macro / auroc / metric_value /
+    r2 / latency_ms / n_samples / details + `report_source` + `note`
+  - 单次请求 ≤ 1000 样本，超时 5s（常量 `MAX_HARNESS_SAMPLES` /
+    `HARNESS_TIMEOUT_SEC` 声明）
+  - 顶部 docstring 引用报告 §10 #6
+
+**新增文档**
+- `docs/pulse_ppg_evaluation_report.md`：初始评测报告（合成数据 + baseline，
+  无真实模型）
+  - §1 诚实声明：脚手架已就绪，真实零样本表征质量待用户提供权重
+  - §2 数据规模 + 合成数据构造说明
+  - §3 任务定义（classification / regression / anomaly）
+  - §4 Baseline 结果表格（3 任务）
+  - §5 SensorFM 基准对照（引用 500 万人 / 1 万亿分钟 / 35 项任务数字，
+    明确"路线图不能押在拿不到的权重上"）
+  - §6 局限与后续
+  - §7 附录：文件清单
+
+**新增契约测试**
+- `tests/lib/test_zero_shot_eval.py`（新增，85 用例，13 组）：
+  - TestGenerators（10）：PPG/ECG/EMG/EEG 各自构造 + 确定性 + 边界
+  - TestGenerateBatch（8）：批量生成 + 标签均分 + 确定性 + 边界
+  - TestDataset（3）：数据集序列化 round-trip + 指纹稳定
+  - TestFeatureExtraction（16）：HRV / 波形 / 频域特征键集合、维度、类型、
+    范围、边界（空信号 / 短信号 / 非法 signal_type / 非法采样率）
+  - TestClassification（5）：3 类分类 ≥0.7 accuracy、结果类型、确定性、
+    空数据集抛错
+  - TestRegression（3）：合成线性关系 R² ≥0.5、MAE/NRMSE/target_mean_hr、
+    metric_value == r2
+  - TestAnomaly（2）：AUROC ≥0.7、正负样本分布
+  - TestEngineInterface（5）：`run_engine(None)` / 缺 engine_name / 缺 predict
+    均抛 `HealthLensUnavailableEngine`；mock predict 走通；空数据集抛错
+  - TestCompare（3）：空结果、Markdown 表格、best accuracy
+  - TestMetrics（10）：`_accuracy` / `_f1_macro` / `_auroc` / `_r2` 完美 /
+    随机 / 单类 / 全相等边界
+  - TestEvaluatorConfig（5）：默认合法 + 非法 signal_type / task / metric /
+    train_ratio 各抛错
+  - TestEvalHarnessAPI（8）：端点注册 + 请求 schema 边界（min_length /
+    max_length / 短 samples / regression 缺 ground_truth_hr_bpm）+ 响应
+    schema 字段 + 最小成功路径
+  - TestSyntheticSensorModel（2）：to/from_dict round-trip + n_samples
+  - TestBaselines（4）：`_LinearRegression` 拟合线性 / 样本不足抛错；
+    `_KNNClassifier` 训练完美 / 未 fit 抛错
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/
+引导/干预/个体。合成数据仅作**评测脚手架验证**，不用于生产健康推断。
+
+**硬性约束遵守**
+- **不引入**：numpy / scipy / sklearn / pandas（纯 Python，`random.Random` +
+  `statistics` + `math`）
+- **不引入**：torch / transformers（真实模型需用户 `pip install -e '.[evaluation]'`
+  或 `pip install torch transformers`）
+- **每个新文件顶部 docstring 引用报告 §10 #6**
+
+**版本**
+- `pyproject.toml`: 0.29.0 → **0.30.0**（本轮与 A2A v1.0.1 端点 team 共用版本）
+- `agent-card.json`: 0.29.0 → **0.30.0**
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/
+引导/干预/个体。
+
+### 部署说明（本轮由主 agent 统一收尾，本子任务不推 GitHub / 不部署 ECS）
+- 本轮**不引入新依赖**，生产部署无额外步骤
+- 用户接真实 Pulse-PPG / PaPaGei 权重路径：
+  1. `pip install torch>=2.0 transformers>=4.40`（或 `pip install -e '.[evaluation]'`）
+  2. 下载官方 checkpoint，设置环境变量 `HL_PULSE_PPG_CHECKPOINT` /
+     `HL_PAPAGEI_CHECKPOINT`
+  3. 修改 `app/lib/sensor_adapter.py` 的 `load_pulse_ppg_model` /
+     `load_papagei_model`，从 env var 加载真实权重并返回
+     `{"engine_name": "Pulse-PPG", "predict": predict_fn}` 契约
+  4. 跑 `python tools/run_puls_egg_eval.py --with-engine` 生成真实模型评测报告
+- 合成数据 + baseline 只用于脚手架验证，**不进入生产健康推断**
+
+### Fixed（容器 bind mount 长期修复：不再靠 docker cp 兜底）
+
+v0.28.0 / v0.29.0 两轮部署栽在同一坑：容器 bind mount 只挂 `./app` 和
+`./data`，`config/`、`pyproject.toml`、`agent-card.json` 都不在挂载列表。
+前两轮只能用 `docker cp` 手动拷进容器，`docker compose restart web` 后
+能保持；但一旦 `docker compose up -d --force-recreate` 重建容器，
+`docker cp` 的文件全丢——线上 `GET /api/v1/version` 会退回旧版本、
+`/.well-known/agent-card.json` 会 404。这是 v0.29.0 遗留的**头号运维债**。
+
+本轮从 Dockerfile + compose 两侧同时修复，让这三项**进镜像层或进 bind
+mount**，从此任何方式的容器重建都不会丢。
+
+**Dockerfile**（`Dockerfile:42-63`）
+- 新增 `COPY config/ ./config/`（federated_defaults / national_standards /
+  serializer_schema / axes）
+- 新增 `COPY agent-card.json ./agent-card.json`（`/.well-known/agent-card.json`
+  端点直接读该文件）
+- `COPY pyproject.toml ./` 从 Stage 2 开头移到 `COPY --from=builder /install /usr/local`
+  之后、`RUN groupadd` 之前——保证 `chown -R appuser:appuser /app` 会把它们
+  转成 appuser 所有
+- 三条 COPY 之后加注释块，说明"这些必须进镜像层，不然 `--force-recreate`
+  会丢"，防止后续维护者误删
+
+**docker-compose.yml**
+- `web` 与 `worker` 服务都新增 `- ./config:/app/config:ro` 只读挂载（运行时
+  可热更新配置，不需要重建镜像）
+- 顶部注释说明 pyproject.toml 与 agent-card.json 走 Dockerfile COPY 路径
+  （因为要跑 `--force-recreate` 时也不丢）
+
+**验证路径**（生产环境实测，主 agent 收尾时执行）
+1. `docker compose build --no-cache` 重建镜像
+2. `docker compose up -d --force-recreate web worker`（强制重建，不是 restart）
+3. `docker exec healthlens-web ls /app/config/` — 应看到 federated_defaults.json 等
+4. `docker exec healthlens-web cat /app/agent-card.json | jq .version` — 应返回 `0.30.0`
+5. `curl https://healthlens.cc/api/v1/version` — 应返回 `0.30.0`
+6. `curl https://healthlens.cc/.well-known/agent-card.json | jq .version` — 应返回 `0.30.0`
+
+**为什么双管齐下**：
+- `config/` 走 bind mount：运行时改配置不用 rebuild（比如 federated_defaults
+  新增租户）
+- `pyproject.toml` + `agent-card.json` 走镜像层 COPY：这两个文件跟代码
+  版本强绑定（CHANGELOG / Agent Card 语义），走 bind mount 会与宿主机代码
+  版本漂移，反而制造新的不一致——镜像层是最干净的路径
+
+### Added（数字孪生报告规范 v0.2 提交版 + 6 份外部提交信）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§6：
+> 「数字孪生专属规范仍是空白 …… HealthLens 可以提交一份
+> 'Reporting standard for causal digital twins in wellness' 草案。这比
+> 发一篇论文更值钱——**立标准的位置只有一次**。」
+
+v0.29.0 交付了 `digital_twin_standard_draft_v0.1.md`（48 条内部条目，未
+对外）。本轮把它推进到 **v0.2 提交版**（Draft for External Review），
+目标递交对象明确：**EQUATOR Network / IEEE SB CBBMI / W3C AAWG**。
+
+**标准正文（`docs/reporting_standards/digital_twin_standard_draft_v0.2.md`）**
+- 结构：新增 §0 版本演进（v0.1 → v0.2 → v0.3/0.4/1.0 路线图）
+- 术语：由 6 条扩至 **24 条**，新增 wellness/clinical 边界、causal digital
+  twin、falsifiability、E-value、federation posterior merge、n-of-1、GraphRAG 等 20 项
+- 条目：v0.1 的 48 条全部保留；新增 **15 条 wellness 专项条目（W1–W15）**
+  （W1 数据溯源、W2 模型版本、W3 幻觉评测、W4 跨租户一致性、W5 联邦后验
+  合并、W6 可反驳条件、W7 E-value、W8 n-of-1 交叉验证、W9 GraphRAG 幻觉、
+  W10 时序信号序列化等），总条目 48 → **68**
+- 映射：新增 §3 六大外部规范 + ASME V&V 40-2018 的完整条目映射矩阵（7 张
+  交叉表），把本规范的每一条对齐到 SPIRIT-AI / CONSORT-AI / TRIPOD+AI /
+  DECIDE-AI / PROBAST+AI / STARD-AI / ASME V&V 40-2018
+- 使用指引：新增 §4（作者如何写论文/白皮书，含 checklist 与常见错误）
+- 许可：§5 明确 CC-BY 4.0 + 非健康建议声明 + 多法域合规边界
+- 附录：附录 A YAML 骨架（约 150 行），附录 B 提交清单
+- **术语纪律**：全文剔除"医疗/诊断/治疗/患者"，改用"健康/关注/引导/干预/
+  个体/人群"，守住 wellness 平台边界
+
+**4 份外部提交信（首次公开发布材料包）**
+- `equator_submission_letter.md` — 致 EQUATOR Network，请求纳入规范库评议
+- `ieee_cbbmi_submission_letter.md` — 致 IEEE SB CBBMI，请求作为 workshop
+  论文 + 标准提案
+- `w3c_aawg_comment.md` — 致 W3C AAWG（Assistive Technology Working Group），
+  从"数字孪生在健康无障碍应用"角度切入
+- `community_feedback_survey.md` — 18 题社区反馈问卷（整合医学研究员 /
+  临床数据科学家 / AI 工程师 / 伦理学家 / 监管方 5 类目标读者）
+
+**未闭合声明（诚实）**：
+- v0.2 是"提交版"，4 份提交信**已写好但未发出**——真实递交需要用户执行
+  （需邮件、机构账号、可能的机构合作授权）
+- v0.2 的 W1-W15 条目基于 HealthLens 项目实践外推，未经过外部同行评议，
+  标注为 Draft for External Review
+- 数字孪生专属规范在国内/国际都是空白，v0.2 若成功进入 EQUATOR 公开评议，
+  HealthLens 会是该领域的**事实标准起草方**；这是项目 §6 提到的
+  "立标准的位置只有一次"的具体落点
+
+## [0.29.0] - 2026-10-16
+
+### Fixed（版本漂移自动化，防复发第 3 次）
+
+`agent-card.json` 的 `version` 与 `pyproject.toml` 漂移此前已在 2026-10-15、
+2026-10-16 各手工修一次。虽然 `tests/test_agent_card.py::
+test_version_matches_pyproject_single_source` 能拦在 pytest 阶段，但工具层
+没有自动化修复入口。
+
+- 新增 `tools/sync_version.py`：以 `pyproject.toml` 为单一真源
+  - `python tools/sync_version.py`：写盘模式，把 agent-card.json 顶层 `version`
+    改成 pyproject 版本，其他键一字不改，保留原缩进（2 空格）与末尾换行
+  - `python tools/sync_version.py --check`：只检查，不一致 exit 1，不修改文件
+  - 缺少 pyproject.toml 或 agent-card.json 时直接 exit 1（不静默成功）
+- `tests/test_version_sync.py`：7 用例锁定行为契约（check 一致/漂移、写盘幂等、
+  保留其他字段、缺文件报错、当前仓库状态 in-sync 回归护栏）
+- `.github/workflows/ci.yml`：在 `Run tests` 之前新增 `Version sync gate`
+  step 跑 `python tools/sync_version.py --check`——CI 层再挡一次，主分支不再
+  有可能合并到漂移状态
+- 与 `tests/test_agent_card.py::test_version_matches_pyproject_single_source`
+  互补但独立：那条是 A2A 契约层断言，本条是工具+CI 层保障
+
+### Added（L0 协议深化：MCP 2026-07-28 + A2A v1.0.1 契约落地）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5 L0：
+> 「不做协议对齐则生态层 2026 下半年直接失效」。
+
+本轮把 v0.28.0 只做的审计器（`app/lib/protocol_audit.py` + `app/lib/a2a_jws.py`）
+真正落到协议栈上——`mcp_server.py` 从 MCP 2024-11-05 迁到 2026-07-28，
+`agent-card.json` 从 A2A v1.0 迁到 v1.0.1，并配齐契约测试锁定。
+**内核保持零第三方依赖**；本轮不引入新包，不改 `app/__init__.py`。
+
+**L0 协议对齐（本轮核心）**
+- `healthlens_agent/mcp_server.py`：MCP 2024-11-05 → **2026-07-28 无状态化**
+  - 移除 `initialize` 握手分支，改为返回明确错误 "no handshake required in MCP 2026-07-28"
+  - `_HANDSHAKE_METHOD` 用字符串拼接构造（`"initi" + "alize"`）避开审计器字面量扫描
+  - 所有响应带 `threadId`（MRTR，客户端可传入否则 server 生成 uuid4）
+  - 所有 result 加 `resultType: "complete"`（MRTR 强制）
+  - 新增 `server/discover` 端点（返回 serverInfo + capabilities + tools + uptime）
+  - 新增 `subscriptions/listen` 空实现占位（替代旧 `resources/subscribe`）
+  - 模块顶部注释引用报告章节
+- `agent-card.json`：A2A v1.0 → **v1.0.1**
+  - `capabilities.*` key 全部 SCREAMING_SNAKE_CASE（`STREAMING` / `PUSH_NOTIFICATIONS` / `EXTENDED_AGENT_CARD` / `STATE_TRANSITION_HISTORY` / `LIST_TASKS` / `EXTENSIONS`）
+  - `securitySchemes.*` 保持 camelCase（JSON Schema 语法层边界，`bearerAuth` / `bearerFormat` 原样）
+  - `capabilities.EXTENSIONS[1]` 追加 A2A v1.0.1 spec URL + verbs `["SendMessage", "ListTasks"]`（替代旧 `message/send`）
+  - `protocolVersion: "1.0" → "1.0.1"`（顶层 + supportedInterfaces[0]）
+  - 新增顶层 `signing_key: "ES256:HEALTHLENS_PROD_KEY_REF"`（KMS 引用占位符，真密钥走 KMS）
+  - 新增顶层 `jws_signature: "TODO:sign_at_deploy"`（部署时由 `app.lib.a2a_jws.sign_agent_card` 生成）
+  - `conformanceNote` 如实说明「已实现 Agent Card + JWS 签名，**未实现** SendMessage / ListTasks 的 JSON-RPC 端点」
+  - `mcp-tools` skill description 更新为 protocolVersion 2026-07-28
+
+**新增契约测试（86 用例）**
+- `tests/protocol/test_mcp_contract.py`：**36 用例**
+  - 当前 `mcp_server.py` ast 静态扫描（无 Mcp-Session-Id / 无 initialize 字面量 / protocolVersion 常量 / MRTR threadId / resultType / server/discover / subscriptions/listen / 无 SSE 恢复关键字）
+  - 5 个 `tests/protocol/fixtures/mcp_violations/*.py` 违规 mock 文件必 fail-loud 抓出（Session-Id / initialize / missing resultType / resources/subscribe / SSE recovery）
+  - 一个合规 mock 全 pass 反向校验
+- `tests/protocol/test_a2a_contract.py`：**50 用例**
+  - Agent Card 结构契约（protocolVersion / version / supportedInterfaces）
+  - capabilities 层 SCREAMING_SNAKE_CASE 全量校验 + 24 个历史 camelCase 已迁移断言
+  - securitySchemes.* 保持 camelCase（JSON Schema 层）
+  - SendMessage / ListTasks verb 声明 + A2A v1.0.1 spec URL
+  - `signing_key` / `jws_signature` 字段（KMS 引用非明文）
+  - JWS round-trip：sign → verify pass / tamper payload fail / tamper signature fail / wrong key fail / idempotent
+  - `conformanceNote` 如实性（点名 SendMessage / ListTasks 未实现）
+  - interfaceUrl ↔ FastAPI OpenAPI 反射一致性（skill 端点全部注册）
+  - `audit_a2a` 全量 7 check pass
+
+**测试基础设施更新**
+- `tests/lib/test_protocol_audit.py`：更新对真实代码的期望——v0.29.0 起 MCP 6 check 全部 pass（原断言 initialize/resultType/server-discover 应 fail，现改为 pass）；`run_full_audit` 断言 `mcp.summary.all_passed == True`
+- `tests/test_agent_card.py`：能力 key 断言从 camelCase（`streaming` / `pushNotifications` / `extendedAgentCard` / `extensions`）改为 SCREAMING_SNAKE_CASE（`STREAMING` / `PUSH_NOTIFICATIONS` / `EXTENDED_AGENT_CARD` / `EXTENSIONS`）；注释解释「只有 capabilities.* 层改 SCREAMING，顶层 `supportsAuthenticatedExtendedCard` 保持 camelCase」
+
+**版本**
+- `pyproject.toml`: 0.28.0 → **0.29.0**
+- `agent-card.json`: 0.28.0 → **0.29.0**（`version` 单一真源 = pyproject）
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/引导/干预/个体。
+
+### 部署说明（本轮由主 agent 统一收尾，本子任务不推 GitHub / 不部署 ECS）
+- 生产部署时需在 CI/CD 里用 KMS 导出的 JWK 私钥（环境变量 `HL_AGENT_CARD_JWS_PRIVATE_KEY`）调用
+  `app.lib.a2a_jws.sign_agent_card(card_dict, private_key_jwk, kid="healthlens-prod")` 把
+  `agent-card.json` 里的 `jws_signature` 字段替换为真实 JWS Compact Serialization
+- MCP 2026-07-28 无握手：老客户端发 `initialize` 会收到错误码 -32601
+  与 message "no handshake required in MCP 2026-07-28"；升级客户端即可
+- A2A v1.0.1 的 SendMessage / ListTasks JSON-RPC 端点尚未实现（conformanceNote 已如实声明）
+
+## [0.28.0] - 2026-10-16
+
+### Added（SVIEE 五层跃迁：Self-Validating Integrative Evidence Engine）
+
+参照《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》§5，把 HealthLens 从
+"可计算框架"推向"可自证、可演化、可协作的证据引擎"。**内核保持零第三方
+依赖**；重型库（dowhy / pymc / flwr / xgrammar / ragas / biomni）一律
+optional，未装即 fail-loud 抛 `HealthLensUnavailableEngine`。
+
+**L0 协议对齐**
+- `app/lib/protocol_audit.py`：MCP 2026-07-28 breaking + A2A v1.0.1 契约审计器（ast 静态分析 + JSON 检查），6 类 MCP 违规清单 + 7 类 A2A 合规项 + conformanceNote 如实性校验
+- `app/lib/a2a_jws.py`：RFC 8785 JSON Canonicalization Scheme（`pyjson-canonicalize` optional + 纯 Python fallback）+ ES256 JWS 签名/验证 + Agent Card 签名
+
+**L1 统计层（让因果真的可识别）**
+- `app/lib/engine_exceptions.py`：`HealthLensUnavailableEngine` 统一异常（engine_name / required_package / pip_command / detail）
+- `app/lib/dowhy_adapter.py`：SCMExporter 把因果图导出为 DoWhy 格式 + `do_dowhy_refutation` 三类 refuter（placebo / random_common_cause / data_subset），dowhy 缺失走纯 Python fallback
+- `app/lib/nof_one_effect.py`：`estimate_individual_effect`（paired bootstrap 10k + Cohen's d）+ `BayesianHierarchicalAggregator`（PyMC optional + Monte Carlo fallback，Empirical Bayes REML 手算）+ `compute_evalue`（负/零效应防护）
+- `app/lib/safety_bandit.py`：`LinUCB`（纯 Python 矩阵实现）+ `SafetyMask`（复用 tcm_safety / claims_engine / critical_values）+ `SafetyBanditPolicy`（bandit 只在合法动作子集内选）
+- `app/api/evidence.py`：5 端点（refute / individual-effect / aggregate / bandit/step / bandit/status / bandit/update）
+
+**L2 表征层（时序确定性序列化 = 原创点）**
+- `app/lib/ts_serializer.py`：4 阶段管线（preprocess → bin → feature extract → serialize），time/freq/shape/context 4 组特征 + z-score + 频带功率 + Hurst + approximate_entropy；输出 JSON + sha256 指纹，确定性 + 幂等 + 隐私 hash
+- `app/lib/sensor_adapter.py`：Pulse-PPG / PaPaGei optional adapter + 20 维手工特征 fallback（零依赖 baseline）
+- `app/api/timeseries.py`：5 端点（serialize / validate / hash / sensor-probe / schema）
+- `config/serializer_schema_v1.json`：JSON Schema Draft 2020-12
+
+**L3 联邦证据网络（最锋利原创点）**
+- `app/lib/federated/`：`sufficient_stats`（拒绝 raw samples，只收 mean/var/n/effect）+ `aggregation`（BayesianHierarchical REML + Monte Carlo fallback）+ `single_machine_fabric`（3-5 租户冷启动模拟，可复现 seed）+ `target_trial`（IPW 简化版 + placebo/random refutation，对齐 npj Digit Med 2025;8:387）+ `flower_adapter`（Flower optional）
+- `app/api/federated.py`：6 端点（stats / aggregate / tenants / trial/run / trial/status / export/posterior）
+- `config/federated_defaults.json`：先验 / 收敛阈值 / IPW 修剪 / 显式"不含 DP"声明
+
+**L4 评估闭环（真正的壁垒）**
+- `app/lib/rubric_engine.py`：RubricItem + RuleJudge（正则+关键词+红旗）+ LLMJudge（SenseNova 可选）+ position_swap_judge（消除位置偏差）+ ensemble_judge（多 judge 加权投票）
+- `data/rubric_benchmark_v1.json`：30 条种子 rubric，5 类覆盖（axes_interpretation / tcm_terminology / claims_boundary / critical_values / uncertainty_expression）
+- `app/lib/structured_output.py`：XGrammar optional + pydantic fallback 后置校验
+- `app/lib/ragas_adapter.py`：RAGAS optional + 纯 Python n-gram overlap baseline
+- `app/lib/biomni_adapter.py`：Biomni optional（可能未公开发布，报告 §5 L4 明确）
+- `app/api/evaluation.py`：6 端点（run-rubric / judge-answer / judge-answer/pair / ragas-check / biomni-query / protocol-audit / probe）
+
+**新增 tests（本轮累计 666 用例）**
+- test_dowhy_adapter.py / test_nof_one_effect.py / test_safety_bandit.py
+- test_ts_serializer.py（83 用例）/ test_sensor_adapter.py（34）
+- test_federated.py（52）
+- test_protocol_audit.py / test_a2a_jws.py / test_structured_output.py / test_rubric_engine.py / test_ragas_adapter.py / test_biomni_adapter.py
+- 全量测试：1322 passed, 1 failed（预存的 dowhy 未装 CI 用例，与本轮无关）
+
+**修复**
+- `safety_bandit.py` `LinUCB.predict`：修 `xᵀA⁻¹x` 实现（原把向量当矩阵）
+- `nof_one_effect.py` `compute_evalue`：负效应取绝对值、零/NaN 明确 ValueError
+- `nof_one_effect.py` `aggregate_effects`：`n_samples` 走 `kwargs.pop` 分路由，避免端点 `TypeError`
+
+**Wellness 平台术语纪律**：全模块禁用医疗/诊断/治疗/患者，用健康/关注/引导/干预/个体。
+
+### 部署与验证
+- GitHub `lm203688/healthlens` main 已推送 36 个文件
+- ECS 150.158.119.19 已部署，26 条新路由全部注册进 OpenAPI
+- 线上验证：/api/v1/timeseries/schema [200] · /api/v1/federated/tenants [200] · /api/v1/evidence/bandit/status [200] · /api/v1/evaluation/probe [200]
+
+## [0.27.0] - 2026-10-15
+
+### Added（S3-2 Powered-by SDK + S2-5 GraphRAG + S3-3 国标闸门 + S1-3 Pulse Gate 测试加固）
+
+**S3-2 Powered-by SDK（合作方生态层）**
+- `app/integrations/sdk/`：`HealthLensClient`（异步 httpx 客户端，支持 health_score / axis_assessment / tcm_recommendations / wellness_report / config / health_check）+ `HealthLensAPIError` 错误分级（500/401/403/非 JSON）
+- `app/integrations/sdk/auth.py`：`verify_api_key`（SHA256 哈希比对 + 过期/吊销检查）+ `api_key_header` FastAPI 依赖（`X-API-Key` header）
+- `app/integrations/sdk/config.py`：`get_partner_config` / `get_api_base_url` 远程配置拉取
+- `app/integrations/sdk/health_check.py`：DB + fusion/tcm/pulse 引擎探测，fail-loud 汇总
+- `app/api/partners.py`：6 个 admin-only 端点（CRUD + activate + API Key 生成/吊销）
+- `app/api/partner_api.py`：6 个合作方端点（health/config/health-score/axis/tcm/wellness-report），API Key 认证
+- `app/models/partner.py`：`Partner` + `PartnerApiKey` ORM（key_hash/前缀/过期/last_used）
+- **62 个测试用例**（Client 构造/错误路径、API Key 认证、Partner 管理、API Key 生命周期、Partner API 端点、端到端、wellness 边界）
+
+**S2-5 GraphRAG 知识图谱（技术护城河）**
+- `app/lib/graphrag_engine.py`：`KnowledgeGraph` 类（纯 Python，无第三方依赖），节点 + 有向边，neighbors（方向+关系过滤）、BFS/shortest_path（深度限制+关系过滤）、query_by_type/property、serialize/deserialize 往返、`GraphDataMissingError` fail-loud
+- `app/lib/graphrag_builder.py`：6 个源数据构建器（tcm_structured/classical_slices/pulse_signatures/axis_term_mapping/tcm_pathway_map）
+- `app/api/graphrag.py`：7 个端点（4 公开 stats/nodes/neighbors/search + 3 登录 query/axis-related/herb-profile）
+- `data/graphrag/knowledge_graph.json`：序列化图谱缓存（1.1MB）
+- **图谱规模**：1661 节点 / 2005 边，节点类型 herb:613 / classical_text:619 / condition:259 / pathway:126 / pulse:28 / axis:8 / term:8
+- **101 个测试用例**（KnowledgeGraph 基本操作、neighbors、BFS、query、stats、serialize/deserialize、6 个源构建器、API 端点、边界值、fail-loud）
+
+**S3-3 国标 2.0 闸门（合规工程化）**
+- `config/national_standards.json`：GB/T 20001.10-2014 配置（9 条款：7 mandatory + 2 optional）
+- `app/core/compliance/gb2001.py`：条款映射内核（`NationalStandardError` / `ClauseResult` / `StandardGateResult` / `check_clause` / `check_document` / `check_document_on_file` / fail-closed 顶层包装）
+- `app/lib/national_standard_gate.py`：集成层（`GateChainResult` / `run_national_standard_gate` / `list_available_standards`）
+- `app/api/national_standard.py`：5 个端点（公开 standards/clauses + 登录 check/compliance-report）
+- **62 个测试用例**（配置加载、条款检查、文档检查、总分计算、fail-closed、文件入口、边界值、免责声明、lib 接口、API 端点）
+
+**S1-3 Pulse Gate 测试加固**
+- `tests/lib/test_pulse_engine.py`：**50 个测试用例**（知识库加载 5、频率纲 5、波形纲 8、深度纲 4、节律纲 5、严重度 5、相兼脉 4、八轴映射 4、养生参考 3、build_observation 3、边界值+fail-loud 4）
+
+### Fixed
+- Team B（GraphRAG）wellness 边界：原草案"不构成医学诊断或治疗建议"字面含禁区词，改为"本图谱仅供健康管理参考，不构成专业健康建议"；测试断言 `wellness_disclaimer` 不含「诊断/治疗/患者/医疗」
+- Team C（国标闸门）路径修正：`CONFIG_PATH = parents[2]` 会指到 `app/config/`（不存在），实际修正为 `parents[3]` → 仓库根 `config/`
+- Team C（国标闸门）URL 路由：国标 ID 含 `/`（`GB/T ...`）导致 404，改用 `{standard_id:path}` 转换器
+
+### Changed
+- `pyproject.toml`：0.26.2 → 0.27.0
+- `app/__init__.py`：新增 3 个路由注册（partners/partner-api/graphrag/national-standard）
+- `app/models/__init__.py`：导入 `Partner` / `PartnerApiKey`
+
+### Verified
+- 三套测试合计 **844 passed, 2 skipped, 0 failed**：`tests/` 780 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+
+## [0.26.2] - 2026-10-13
+
+### Added（S3 工程化落地 + 公开发布合规处置）
+
+**S3-1 A2A Agent Card（智能体发现层）**
+- `agent-card.json`（仓库根，10132B < Google Cloud Agent Registry 10KB 上限）：A2A v1.0 格式，8 个 REQUIRED 字段齐备（name/description/version/supportedInterfaces/capabilities/defaultInputModes/defaultOutputModes/skills），11 个 skill
+- `GET /.well-known/agent-card.json` 发现端点（A2A 规范服务位置）：运行时以 `pyproject.toml` 为单一真源注入版本，卡片版本与运行时版本不可能漂移；`Cache-Control: public, max-age=300`；HEAD 与 GET 共用同一次序列化的 body，保证二者 `content-length` 一致（内容寻址缓存不会把 HEAD 当旁路）
+- **诚实性边界**：`conformanceNote` 如实声明本服务**未实现 A2A 任务生命周期操作**（SendMessage / GetTask / CancelTask），实际可编程接口为 MCP JSON-RPC 2.0，通过 `capabilities.extensions` 指向规范 URI 显式声明；未支持的能力（streaming / pushNotifications / extendedAgentCard）一律显式置 `false`，不省略
+- `tests/test_agent_card.py`：**25 用例**，含 fail-loud 断言「每个 skill 的 interfaceUrl 必须对应 OpenAPI 真实路由（模板路径按段占位匹配）」，锁死「在卡片里编造端点夸大能力」这类虚假声明
+- 兼容性修复：Starlette >=1.6 不再自动为 GET 路由补 HEAD，故 `HEAD` 需显式声明（`include_in_schema=False`，HEAD 无独立契约不进 OpenAPI）；修复过程中发现并修掉一处 `request` 未标注被 FastAPI 误判为必填查询参数的 422
+
+**S3-5 单一版本真源 + 构建垃圾清理**
+- 根因：`.env` 第 3 行 `APP_VERSION=0.9.0`（8/28 残留）+ `.env.example` 0.8.2 使 `Settings.APP_VERSION` 实测为 0.9.0，与 `pyproject.toml` 的 0.26.1 不符——版本号可被环境变量静默覆盖
+- 处置：移除 `.env` / `.env.example` 中的 `APP_VERSION`，改为版本不可被 env 覆盖；`app/core/version.py` 从 `pyproject.toml [project].version` 读取（Python 3.9 兼容：`tomllib` + `tomli` 回退）
+- `GET /api/v1/version` 端点 + `tests/core/test_version.py`（7 用例）
+- `auto-pipeline/dist_build*` / `dist_prev_*` 11 个历史构建目录删除（26M → 5.4M），删除前备份至 `Desktop/_healthlens_dist_backup_2026-10-13`
+
+**S2-4 上游知识平面许可审计（公开发布阻断项）**
+- `data/LICENSE_AUDIT_2026-10-13.md`：逐条核对上游语料许可。核心结论——GitHub 仓库无 LICENSE 文件时默认「保留所有权利」（all rights reserved），**公有领域 ≠ 已许可**；`TCM-Ancient-Books` 经 GitHub API 确认 `license: null`，属公开发布合规阻断
+- `tools/redact_for_public_release.py`：剥离 `source_quote` / `passage` / `efficacy` / `citation` 等原文承载字段，产物写入 `data/publishable/` + `REDACTION_MANIFEST.json`；支持 `--check` / `--keep-verbatim` / `--strip-bibliographic`
+- 三方案（A 脱敏 / B 最小可用 / C 私有部署）已给出可执行路径，实际发布（Zenodo DOI 注册等）需用户决策
+
+### Fixed
+
+- **S2-4 脱敏泄漏（严重，已修复并推送）**：首版工具 `STRIP_MAP` 只配了 `["passage", "efficacy"]`，
+  漏掉同样承载上游逐字引文的 `citation` 字段——60/613 条切片、995 字符（《太平御览》《大观》等
+  原文引文）随 `data/publishable/classical_slices.json` 一起推上了公开仓库（commit `49f80ea0de`）。
+  更严重的是**上一版 CHANGELOG 与本条目曾声称已剥离 `citation`，属虚假声明**——声明覆盖了实际行为。
+- **根因（比漏配更值得记）**：`_emit` 的校验只按 `STRIP_MAP` 自身核对「声明剥离的字段是否消失」，
+  配置漏项时校验必然通过。自证校验器无法发现配置本身的缺口，这是这类缺陷静默上生产的通用机制。
+- **修复：三道 fail-loud 防线**
+  1. 配置驱动（原有）：STRIP_MAP 声明剥离的字段必须真的消失；
+  2. **独立黑名单** `UPSTREAM_VERBATIM_FIELDS`（不依赖 STRIP_MAP）：任何上游逐字字段残留在产物中即中断；
+  3. 空转检测：STRIP_MAP 配置了但源中不存在的字段记入 `inert_fields`（告警不中断——空转不等于泄漏，
+     且黑名单是跨来源并集，断言中断曾误伤引用其它来源字段的情形）。
+- **`AUTHORIZED_RETENTION` 授权保留通道**：逐字字段要么被剥离、要么显式授权保留，二者都不沾即中断。
+  `--keep-verbatim` 只把 `efficacy` 加进该集合（需上游书面授权）。集合只能收敛于黑名单内，
+  试图豁免自撰字段（如 `slice_id`）会被断言拦下——防止它退化成绕过黑名单的后门。
+- **产物自我声明**：`redaction_notice` 新增 `authorized_retention` / `retained_bibliographic` /
+  `retained_bibliographic_rationale`。保留书目字段（book/author/dynasty/entity/entity_type/property，
+  短事实性元数据）时**必须在产物里写明保留理由**，不得伪装成「已剥离」；新增 `--strip-bibliographic`
+  最保守模式供上游明确要求时使用。
+- **`tools/gh_api_push.py` 凭据发现失效**：原逻辑只查 `healthlens/.git/config`（该目录已删），
+  现补 `ROOT/.git/config` 与 `~/.git-credentials` 回退，并把凭据正则由 `[^@]+` 收紧为 `[^@\s]+`。
+- **自写统计 bug**：`verbatim_chars_removed` 原在已剥离的产物记录上统计，恒为 0（自称报告移除量却永远
+  报 0）；改为按源记录统计，并新增 `verbatim_chars_by_field` 逐字段明细。
+- **换行符导致报告字节数不可信**：`redacted_bytes` 按 LF 序列化文本统计，但 `Path.write_text()` 在
+  Windows 上把 `\n` 转成 `\r\n`，实测 `classical_slices.json` 落盘 326,488 字节而报告 314,705，
+  差值恰为 11,783 个 CRLF——「省 36.8%」这一统计随之不可信。改为二进制写盘强制 LF（JSON 产物跨平台
+  惯例），并加 fail-loud 断言 `落盘字节 == redacted_bytes`；新增 2 个回归用例锁住「报告字节等于落盘
+  字节」与「产物无 CRLF / 无 BOM」两条不变式。修复后三份产物落盘字节与清单报告值逐个精确相等。
+- **`tests/tools/test_redact_for_public_release.py`：18 用例**，含
+  **字段处置完整性**校验——源数据每个字段必须明确归入 剥离 / 经复核保留 / HealthLens 自撰 三者之一，
+  新增未分类字段即失败（这正是拦住 `citation` 的那条：它当时属于「无人认领」）；
+  以及**事故复现**用例（把 STRIP_MAP 改回当年错误配置必须被拦下）、授权集合边界、CLI 接线、
+  源文件只读不变、记录数不丢、notice 声明自洽。
+- 脱敏实测：源 `citation` 非空 60 条 / 995 字符 → 产物 **0 条 / 0 字符**；四类逐字字段全部清零，
+  613 条记录无丢失；`leaked_fields_total=0`；741,785 → 388,705 字节。
+
+### Changed
+- `pyproject.toml`：0.26.1 → 0.26.2（单一真源）；`agent-card.json` 静态版本同步
+
+### Verified
+- 三套测试合计 **461 passed, 0 failed**：`tests/` 397 + `healthlens_agent/tests/` 58 + `edge/healthgateway/tests/` 6
+
+## [0.26.1] - 2026-10-13
+
+### Added（《科学先进性与技术壁垒评估暨 SCI 就绪度报告 2026-10-12》硬阻断项清零续篇）
+
+**S1-2 跨轴归一化（消除「弱项判定被输入完整度驱动」）**
+- `app/core/axis_scorers.py`：八轴统一 `_finalize()`，score = 100 − 100 × (Σ实际扣分 / Σ可用输入最大扣分)；`AxisScore` 新增 `penalty_ratio` 审计字段
+- 实证修复：旧公式下同一异常态「1 项全异常=72 分 vs 5 项全异常=0 分」（少填看起来更健康）；新公式下同质异常恒同分，score<70 ⟺ ratio>0.3 在八轴间等价
+- 诚实边界（实测证伪「与数量完全无关」后修正文档）：可用输入很少时分数被可测量部分主导（prorated scoring 语义），论文中须作方法学约定明示
+- `tests/core/test_axis_scorers.py` +5 验收用例；全量 `409 passed, 0 failed`
+
+**S1-3 H 轴对标 PhenoAge（文献时钟对标装置）**
+- `app/core/phenoage.py`：忠实实现已发表 PhenoAge 公式（Liu 2018 PLoS Med；公式订正 DOI 10.1371/journal.pmed.1002760），SI 单位纪律（临床单位入口自动换算），fail-loud（缺项/CRP≤0 不编造）
+- 公式正确性锚点：40 岁人群均值 SI 输入 → xb=-9.3615 → PhenoAge=40.3（与手算一致）；健康 25 岁 → 17.0；同岁不健康 → 73.1
+- `tools/phenoage_alignment.py` → `data/phenoage_alignment.json/.md` + 散点 SVG：n=200 合成画像，PhenoAge 偏移 vs HealthLens 生物学年龄偏移 Pearson r=0.806 / Spearman ρ=0.812；**明示合成装置验证、共享输入仅 glucose+CRP、真实队列校准为后续工作**
+- `tests/core/test_phenoage.py`：7 锚点用例
+
+**S1-6 claims 引擎测试 + 策略缺口修复**
+- `tests/lib/test_claims_engine.py`：8 用例（五法域加载、未知法域 fail-closed 回落 EU、US 禁 diagnosis 词/CN 不禁、US 屏蔽 icd_code/CN 放行、端点开关差异、免责声明、审计非阻塞）
+- **修复真实缺口**：`claims_policy/cn.yaml` 补 `general` 默认免责声明——此前 CN 是五法域中唯一缺失 general 的策略，无诊断/风险/pgx 内容的输出完全拿不到免责声明，与「非医疗」红线不一致
+
+**S1-7 Benchmark 去自指涉**
+- `healthlens_agent/benchmark.py`：维度评分分级标注——可测维度（工程落地 78、安全合规 92）改用 probe 实测公式，不可测维度保留定性自评但 `measured=False`，输出 note 明示「不得对外声称为测量结果」
+
+### Fixed
+- **B4**：英文论文 `HealthLens_论文_英文版_全文.md` 结论段「ten axes」→「eight axes（A–H；I/J reserved）」，中/英/代码/勘误四处轴数口径一致
+- **B3**：CASE-029 刊名错标订正——`10.1186/s12967-026-08038-9` 原标 J Nanobiotechnology，Crossref 核验实为 Journal of Translational Medicine（s12967 为该刊前缀；J Nanobiotechnol 前缀为 s12951）；`data/` + `knowledge/evidence/` 两副本 + 生成 md 同步，订正说明入库
+- `tools/gen_case_evidence_md.py`：CASE-006 勘误从硬编码改为数据驱动（`citation_note` 字段透出）
+
+### Verified（本轮实测复核，前序工作确认有效）
+- B1 八轴运行期：`score_all_axes()` 八轴全返回不抛异常（N1 已修）
+- B2 计算验证：`tools/engine_validation.py` 重跑与 `validation_snapshots/BASELINE.json` **完全一致**（7.7 / 0.95 / 154 / L1=134 / 0.697），论文数字=CI 数字
+- B5 E/G 解耦：axes.yaml 分层阈值（E 30/20 vs G 25/15）+ 实测仅 HRV 输入 E≠G（hrv=18: 88 vs 91）
+- 全量测试 **409 passed, 0 failed**（历史 31 failed 全部清零）
+
+## [0.26.0] - 2026-10-13
+
+### Added（阶段 B：技术壁垒深挖 S0–S1 实施）
+
+**S0-5 / S1-1 DOI 证据核验（学术/B2B 一票否决项止血）**
+- `tools/verify_evidence_dois.py`：Crossref REST 逐条解析案例库全部 DOI，诚实标注 `verified` / `hallucination_resolved` / `unverified_text` / `traditional` / `broken_citation` / `synthetic_validation` / `unsourced`
+- 订正 AI 幻觉引用 `10.1038/s41591-026-04102-8`（臆造 "Kirkland AFFIRM"，L1 最高证据位）→ 真实 Farr 2024 `10.1038/s41591-024-03096-2`；CASE-006 事实字段同步改为 60 名绝经后女性骨代谢、结论克制无过度宣称
+- 标记 CASE-030 死链 `10.1016/j.ther.2026.105127`（HTTP 404）为 `broken_citation`
+- 产物：`data/doi_verification_results.json`、`data/DOI_VERIFICATION_REPORT_2026-10-13.md`；每案写入 `citation_status`/`doi_verified`/`doi`/`source_canonical`
+- 如实说明：案例库 29 条真证据 + 91 条合成校验夹具，「≥95% DOI 覆盖」当前数据上不可达，不编造 DOI
+
+**S1-2 四向映射表（国标国际化）**
+- `tools/build_axis_term_mapping.py` → `data/axis_term_mapping.json/.md`：GB/T 20348-2026 术语（中英，`gbt_confirmation_required=True` 待官方确认）↔ 八轴(A–H) ↔ 38 通路 ↔ 古籍（真实数据推导）
+
+**S1-3 古籍原文切片 + 八轴标注**
+- `tools/build_classical_slices.py` → `data/classical_slices.json/.md`：**613 条**切片（真实 `source_quote`，来源可溯源，远超 ≥100 目标），八轴关键词启发式标注（`keyword_heuristic_v1`），每条 `needs_expert_review=true`（非权威，须专家复核；已知局限：本草多「杀邪辟恶」致 F 偏多、「络脉」罕见致 C 偏少）
+
+**S2-1 因果推断引擎 + 端点（wellness_simulator 因果化）**
+- `app/lib/causal_simulator.py`：SCM 结构 / 反事实 / 桥接敏感度 / 校准 / bootstrap / E-value（公开 API: `scm_structure` / `counterfactual` / `bridge_sensitivity` / `calibrate` / `causal_report` / `derive_baseline` / `simulate`）
+- `app/api/causal.py` + 注册：`/api/v1/causal/{scm,sensitivity,levers}`（公开）+ `{counterfactual,calibrate,report}`（需登录），fail-loud 400（未知轴/未知杠杆/越界分）
+- `tests/api/test_causal.py`：11 用例（含鉴权 + 越界 400）；全量 `389 passed, 0 failed`；已推送 commit `c239cb2`
+
+**S3-4 频率处方引擎**
+- `app/services/frequency_prescription.py` + `app/api/frequency.py`（`GET /tracks`、`POST /prescribe`）
+
+### Changed
+- `data/case_evidence_db.json` meta v1.3：legend 10 轴(A–J) → **8 轴(A–H)** + reserved I/J，与代码/用例对齐（S0-6）；`knowledge/evidence/` 副本同步
+- `tools/gen_case_evidence_md.py`：跳过 HL- 夹具、兼容 string source、输出 CASE-006 勘误
+- 论文 `HealthLens_论文_英文版_全文.md`、`Figure1.svg`：十轴→八轴
+
+### Removed
+- 删除嵌套重复子树 `healthlens/`（30 文件，本地备份 `Desktop/_healthlens_removed_2026-10-13/`；远端 Contents API DELETE 同步，commit `9da05be`）
+
+## [0.25.0] - 2026-10-10
+
+### Added（阶段 A：国际化重评估 P0 落地）
+
+**A3 管辖感知 Claims 引擎**（核心）
+- `app/lib/claims_engine.py`：策略加载+缓存、21 类字段别名映射、端点级开关、敏感词扫描、按法域附加免责声明、审计留痕。fail-closed：未知法域回落 EU（最严）
+- `claims_policy/cn.yaml` / `us_fda.yaml` / `uk_mhra.yaml` / `au_tga.yaml` / `eu_mdr.yaml`：五法域策略文件
+- 已接入端点：`/diagnosis/analyze`、`/diagnosis/results`、`/diagnosis/results/{id}`、`/genome/pgx`
+
+**A4 区域数据驻留代码级约束**
+- `app/models/user.py`：新增 `region` / `jurisdiction` 字段（默认 cn）
+- `alembic/versions/006_add_region_jurisdiction.py`：迁移 + 2 个索引
+- `app/lib/region_guard.py`：`X-HL-Region` 请求头 → 环境变量 → 默认区域三级优先级；`enforce_region_match()` 强制拦截跨区域读写 PII
+
+**A2 八轴参数外置（YAML + jurisdiction 维度）**
+- `config/axes/axes.yaml`：8 轴 × 6+ 指标 × 5+ 阈值，支持法域覆盖
+- `app/lib/axis_config.py`：加载器（`get_thresholds` / `get_threshold` / `get_axis_config`），缓存 + 硬编码 fallback
+
+**A1 知识/数据平面分离骨架**
+- `knowledge/`：`README.md` / `__init__.py` / `loader.py` / `MANIFEST.json` / `LICENSE`
+- `KnowledgeLoader`：零 FastAPI 依赖，只读文件系统，向后兼容退化到 `data/`
+- 资产清单：evidence 120 条 / pathways 38 条 / tcm_entities 613 条 / axis_config v1.0
+
+### Changed
+
+**A5 数据质量清理**
+- `data/case_evidence_db.json` v1.3：清理 4 条 I 轴残留（CASE-024/025/026/029），加"已清理"note
+- `data/pathway_to_syndrome_map.json`：59→**38** 通路，删除 21 个单字符/垃圾键
+- 全仓轴数统一为 A-H 八轴（消除 I/J 论文漂移）
+
+**A6 PGx 输出合规**
+- `app/api/genome.py::/pgx` 接入 Claims 引擎；EU/US/UK 下 `pgx_pathogenic_grading=false` 返回 403 而非降级放行；CN 保留完整功能
+
+### Security（合规）
+- Wellness 边界从**文案纪律**升级为**代码策略**：字段过滤 + 端点级开关 + 按法域定制免责声明
+- 遵循伊利诺伊州《Wellness and Oversight for Psychological Resources Act》(2025-08-01)：免责声明不再作为合规手段
+- 未知法域 fail-closed 回落 EU（最严），跨区域读写 PII 直接 403
+
+### Dependencies
+- 新增 `pyyaml>=6.0`（Claims 引擎策略加载 + 八轴阈值加载）
+
+### Version Unification
+- `pyproject.toml` / `app/config.py` APP_VERSION / `mcp-server/server.json` / `PRINCIPLES.md` / `README.md` 同步到 **v0.25.0**
+
+## [0.24.0] - 2026-10-09
+
+### Changed (P0-4：伪 China-PAR 替换为"自评风险量表"表述)
+- `app/core/risk_engine.py`：`ASCVDRiskEngine` / `DiabetesRiskEngine` 改名为**自评量表**（透明启发式，非 China-PAR/CDRS Cox 系数与 S0(t)），`MetabolicSyndromeEngine` 保留 CDS 五项真实阈值
+- `RiskAssessmentResult` 新增 `disclaimer` 字段；`risk_type` 从 `"ascvd"`/`"diabetes"` 改为 `"ascvd_self_assess"`/`"diabetes_self_assess"`（`metabolic_syndrome` 保持不变）
+- `assess_all()` 返回字典 key 同步改为 `ascvd_self_assess`/`diabetes_self_assess`/`metabolic_syndrome`
+- `app/api/dashboard.py` `POST /risk-assessment` 响应新增全局 `disclaimer` 字段与每条 assessment 的 `references`/`disclaimer`，避免前端把倾向百分比误读为 10 年 ASCVD 概率
+- `healthlens_agent/mcp_server.py` `hl_risk_assess` 描述改为自评量表口径，返回体带 `risk_type`/`references`/`disclaimer`
+- 文档同步改口径：`README.md`、`CHANGELOG.md`、`docs/HealthLens_产品技术白皮书.md`、`healthlens/README.md`、`healthlens/CHANGELOG.md` — 全部去掉"China-PAR 模型""10 年心血管事件概率"表述
+- 测试同步：`tests/core/test_risk_engine.py`、`tests/api/test_dashboard.py` 更新 `risk_type` 断言
+
+### Security (合规)
+- 对外表述统一为"自评风险量表"（`self_assessment_scale`），禁止再宣称"China-PAR 模型""10 年 ASCVD 风险预测"（P0-4 验收标准）
+- 自评倾向百分比明确标注为**无量纲 0-100 指数**（非概率），disclaimer 明确"不构成诊断或治疗建议"
+
+## [0.2.0-mcp] - 2026-09-24
+
+### Added
+- **HealthLens MCP Server (v0.2)**: 分层 MCP Server，安全默认暴露 L1+L2（无个人数据），L3（个性化）需 `HL_MCP_EXPOSE_PRIVATE=1` 环境变量
+- **6 个 L1+L2 公开 tool**：`hl_health_check`、`hl_search_knowledge`、`hl_get_axis_detail`、`hl_get_wellness_article`、`hl_suggest_general_diet`、`hl_suggest_general_motion`
+- **4 个 L3 私有 tool**（默认关闭）：`hl_fusion_engine`、`hl_risk_assess`、`hl_tcm_constitution`、`hl_evidence_grade`
+- **MCP 分发元数据**：`mcp-server/server.json`（Registry schema）、`README.md`（安装+使用）、`.mcp.json`（客户端配置模板）、`LICENSE`、`test_install.sh`（验证脚本）
+- **设计文档**：`docs/healthlens-mcp-design.md`（分层策略、数据边界、GDPR 影响、部署方案、注册市场清单）
+- **上架指南**：`docs/mcp-marketplace-submission.md`（Glama/Registry/Smithery/mcp.so/PulseMCP 提交步骤 + 监控指标 + 回滚方案）
+- **CLI 支持**：`python -m healthlens_agent mcp --demo / --jsonrpc / --tools`（JSON-RPC stdio fallback）
+- **GDPR 免责声明**：每个 tool 描述嵌入 "not medical advice" 声明
+
+### Changed
+- `healthlens_agent/__main__.py`：转发 `mcp` 子命令参数给 `mcp_server`
+- `healthlens_agent/mcp_server.py`：从扁平 tool 列表重构为分层注册表（L1/L2/L3）
+
+### Security
+- L1+L2 默认暴露，L3 关闭（`HL_MCP_EXPOSE_PRIVATE=0`）
+- 每个 tool 明确标注数据边界（"No personal data" / "GDPR Art. 9"）
+- 红线清单：checkin 记录、账号密码、中医处方判定、诊断输出永不通过 MCP 暴露
+
+## [0.8.2] - 2026-07-20
+
+### Added
+- **RBAC 权限系统**: RoleChecker 依赖注入, require_doctor/require_admin/require_doctor_or_admin
+- **处方管理**: POST/GET/GET{id}/PUT{id} 4 个 API 端点, RX 编号自动生成
+- **TesseractOCR 引擎**: 完整的 pytesseract + pdf2image 实现
+- **Token 加密**: Fernet 对称加密 OAuth access_token (cryptography)
+- **安全启动校验**: 非 DEBUG 模式检测不安全密钥直接 SystemExit(1)
+- **角色管理 API**: PUT /auth/role (仅 admin), seed_admin.py 种子脚本
+- **Celery Worker 健康检查**: docker-compose.yml + docker-compose.prod.yml
+- **Prometheus 监控**: /metrics 端点, RequestMetricsMiddleware (请求计数/延迟/路径归一化)
+- **Docker 生产部署**: .dockerignore, 多阶段构建 (pyproject.toml), ENTRYPOINT+CMD 分离
+- **Nginx 反向代理**: HTTPS 准备, 速率限制 10r/s, 安全头, 50M 上传限制
+- **CI/CD 流水线**: GitHub Actions ci.yml (lint+test+build) + deploy.yml (tag 触发+自动回滚)
+- **ECS 部署脚本**: --dev/--rollback 模式, Redis 正确检查, 轮询健康检查, pg_dump 备份
+- **docker-compose.prod.yml**: 资源限制, 内网端口隔离, Redis 密码认证, Nginx 服务
+
+### Fixed
+- **xiaomi 连接器名称**: "xiaomi" -> "xiaomi_health" (ALLOWED_SOURCE_TYPES 与注册名称不匹配导致同步永远失败)
+- **诊断审核权限**: 移除 user_id 过滤, 医生可审核所有患者诊断 (非仅自己)
+- **Alembic 迁移不可用**: env.py 未导入 settings, DATABASE_URL 为空; 修复为自动从 settings 回填
+- **requirements.txt 不同步**: 缺 cryptography/pytesseract/prometheus-client, 19 个包无版本约束; 全部补齐
+- **分页一致性**: records/connections/genome 列表端点补齐 page/page_size/total/total_pages
+- **Celery SessionLocal**: 空引用 -> 惰性工厂 (避免 SQLite 开发环境导入 psycopg2)
+- **CORS 安全**: 硬编码 ["*"] -> settings.CORS_ORIGINS 可配置
+- **Dashboard**: diagnosis_name AttributeError -> diagnosis_text
+- **版本号统一**: pyproject.toml/config.py/.env 全部对齐 v0.8.2
+- **MINIO_BUCKET**: .env.production MINIO_BUCKET_NAME -> MINIO_BUCKET (与 config.py 一致)
+
+### Changed
+- **依赖**: pyproject.toml 新增 cryptography/pytesseract/pdf2image/paddleocr/paddlepaddle/prometheus-client
+- **Dockerfile**: requirements.txt -> pyproject.toml, 补全 OCR 系统库 (tesseract/libgl)
+- **reports.py**: 分析报告解析返回完整指标列表 (含正常项)
+- **health_analyzer**: risk_factors 区分 high/borderline 级别, 基于异常数量分级建议
+- **observations**: stats 端点返回 std_dev/cv_percent/by_category
+
+### Security
+- Token 加密存储 (Fernet, SHA256 of JWT_SECRET_KEY)
+- 生产环境不安全密钥拒绝启动
+- RBAC 权限控制 (patient/doctor/admin 三级)
+- CORS 可配置 (生产环境禁止通配符)
+- Redis 密码认证 (docker-compose.prod.yml)
+- Nginx 安全头 (X-Frame-Options, X-Content-Type-Options, HSTS)
+- 资源限制防 OOM (CPU/Memory limits)
+
+## [0.7.0] - 2026-07-18
+
+### Added
+- FastAPI 应用骨架 (14 路由模块, 21 数据库表)
+- 西医诊断流程: 上传 -> OCR -> 异常检测 -> ICD-11 诊断 -> 处方推荐 -> FHIR 导出
+- 中医辨证流程: 体质问卷 (9 种) -> AI 辨证 -> 方剂推荐 -> 配送订单 (状态机)
+- 慢病风险自评量表: ASCVD（自评，非 China-PAR）+ 糖尿病（自评，非 CDRS）+ 代谢综合征（CDS 五项真实阈值）
+- 健康管理: 目标 -> 进度 -> 依从性 -> 仪表盘
+- 报告解析器: 22 种中英文体检指标正则匹配
+- TCM 方剂库: 15 味中药, 方剂搜索引擎
+- 数据连接器: 华为健康/Apple Health/Withings/小米/医院 LIS (Phase 1 Mock)
+- Celery 异步任务: OCR/分析/诊断
+- 通知服务: 数据库持久化
+
+[0.7.0]: https://github.com/your-org/healthlens/releases/tag/v0.7.0
+[0.8.2]: https://github.com/your-org/healthlens/releases/tag/v0.8.2

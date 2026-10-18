@@ -1,0 +1,95 @@
+{
+  "run_id": "run_20260804_173410",
+  "started_at": "2026-08-04T17:34:10.137205",
+  "finished_at": "2026-08-04T17:37:35.705401",
+  "duration_seconds": 205,
+  "verdict": "FAILED",
+  "failed_count": 2,
+  "failed_items": [
+    "E线(exit_1)",
+    "F线(exit_1)"
+  ],
+  "health_issues": [
+    "运维状态=down (端点 0/4 正常)",
+    "4 个端点异常",
+    "3 条未解决的严重告警: ['ops:endpoints_down', 'watchdog:critical', 'backup:failed']"
+  ],
+  "heal_summary": {
+    "started_at": "2026-08-04T17:34:10.138718",
+    "dirs_created": [
+      "reports/decisions",
+      "runs"
+    ],
+    "state_fixed": [
+      "run_history"
+    ],
+    "stuck_phases_reset": [],
+    "failed_phase_reset": [
+      "ops_health_f"
+    ],
+    "tasks_retried": [
+      "task_edu_001"
+    ],
+    "disk_ok": true,
+    "disk_free_gb": 649.97,
+    "total_actions": 5,
+    "finished_at": "2026-08-04T17:34:10.192779"
+  },
+  "pipeline_a": {
+    "ok": true,
+    "executed": 1,
+    "succeeded": 1,
+    "failures": []
+  },
+  "feedback_a": {
+    "ok": true,
+    "reason": "",
+    "detail": "",
+    "attempts": 1,
+    "name": "A.效果追踪反馈"
+  },
+  "feedback_bf": {
+    "A": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "A.效果追踪反馈"
+    },
+    "B": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "B.用户转化闭环"
+    },
+    "C": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "C.数据资产闭环"
+    },
+    "D": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "D.推广营销闭环"
+    },
+    "E": {
+      "ok": false,
+      "reason": "exit_1",
+      "detail": "[INFO] 阶段 finance_e 开始\n[INFO] asyncpg未安装，无法读取真实订单数据\n[ERROR] 阶段 finance_e 失败: 'weekly'\n",
+      "attempts": 3,
+      "name": "E.资金闭环"
+    },
+    "F": {
+      "ok": false,
+      "reason": "exit_1",
+      "detail": "[INFO] 阶段 ops_health_f 开始\n[ERROR] 运维检查判定 down: 端点异常×4; 服务器不可达\n[ERROR] 阶段 ops_health_f 失败: 运维检查未通过: down (端点 0/4 正常)\n[ERROR] F线运维检查未通过: 端点 0/4 正常, 总体 down\n",
+      "attempts": 3,
+      "name": "F.项目运维闭环"
+    }
+  }
+}

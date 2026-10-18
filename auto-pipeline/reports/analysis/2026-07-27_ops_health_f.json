@@ -1,0 +1,78 @@
+{
+  "report_id": "ops_f_20260727",
+  "generated_at": "2026-07-27T20:47:16.640092",
+  "overall_status": "needs_attention",
+  "endpoint_checks": [
+    {
+      "name": "API健康",
+      "url": "https://healthlens.cc/health",
+      "status": "error",
+      "http_code": 525
+    },
+    {
+      "name": "SEO内容",
+      "url": "https://healthlens.cc/llms.txt",
+      "status": "error",
+      "http_code": 525
+    },
+    {
+      "name": "Robots",
+      "url": "https://healthlens.cc/robots.txt",
+      "status": "ok",
+      "http_code": 200
+    },
+    {
+      "name": "Sitemap",
+      "url": "https://healthlens.cc/sitemap.xml",
+      "status": "error",
+      "http_code": 525
+    }
+  ],
+  "containers": [
+    {
+      "name": "healthlens-web",
+      "status": "Up 12 hours (healthy)"
+    },
+    {
+      "name": "healthlens-worker",
+      "status": "Up 12 hours (healthy)"
+    },
+    {
+      "name": "healthlens-db",
+      "status": "Up 35 hours (healthy)"
+    },
+    {
+      "name": "healthlens-redis",
+      "status": "Up 35 hours (healthy)"
+    },
+    {
+      "name": "healthlens-minio",
+      "status": "Up 35 hours (healthy)"
+    },
+    {
+      "name": "healthlens-nginx",
+      "status": "Up 34 hours"
+    }
+  ],
+  "security_issues": [],
+  "medical_terms": [
+    {
+      "term": "药物",
+      "file": "frontend/index.html"
+    }
+  ],
+  "actions_needed": [
+    {
+      "action": "修复端点: API健康 (525)"
+    },
+    {
+      "action": "修复端点: SEO内容 (525)"
+    },
+    {
+      "action": "修复端点: Sitemap (525)"
+    },
+    {
+      "action": "医疗用语: 替换'药物'"
+    }
+  ]
+}

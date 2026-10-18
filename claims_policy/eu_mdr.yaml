@@ -1,0 +1,58 @@
+# EU - 欧盟 MDR Rule 11
+# 判定逻辑：软件为个体患者追求医疗目的 → 几乎必然是 Class IIa 及以上
+#           需 Notified Body + ISO 13485 + 临床评价
+# 门槛最高，中间地带极小
+jurisdiction: eu
+display_name: 欧盟
+regime: MDR 2017/745 Rule 11 + AI Act (2028-08-02 高风险)
+wellness_boundary_strict: true
+
+# EU 是最严的：仅允许最基础的 wellness 输出
+allowed_fields:
+  - axis_scores
+  - axis_labels
+  - wellness_recommendations
+  - lifestyle_advice
+  - sleep_patterns
+  - fitness_signals
+
+# 严格屏蔽（Class IIa 医疗器械边界）
+blocked_fields:
+  - icd_code
+  - severity
+  - pgx_pathogenic_grading
+  - pgx_phenotype                # 药物代谢倾向也算医疗目的
+  - risk_probability
+  - diagnosis_status
+  - syndrome_patterns            # 证候模式可能被视为诊断
+  - tcm_constitution             # 中医体质被视为诊断性输出
+  - pathway_signals              # 通路信号过于医学化
+  - triage_recommendation
+
+feature_toggles:
+  diagnosis_endpoint: false
+  risk_assessment_endpoint: false
+  icd_mapping: false
+  pgx_pathogenic_grading: false
+  risk_scoring: false
+  triage_scoring: false
+  cds_hooks: false
+  fhir_export: false
+  clinical_record_writeback: false
+  tcm_diagnosis: false           # 中医诊断性输出禁用
+
+required_disclaimers:
+  general: "This product is intended for general wellness purposes only. It is not a medical device and should not be used for diagnosis, prevention, cure, or treatment of any disease. If you are experiencing health concerns, please consult a qualified healthcare professional registered in the European Union."
+
+banned_terms:
+  medical_claim_patterns:
+    - "diagnose"
+    - "treat"
+    - "prevent disease"
+    - "screen"
+    - "monitor condition"
+    - "medical device"
+    - "clinical"
+    - "pathogenic"
+    - "pharmacogenomic"
+    - "risk assessment for"

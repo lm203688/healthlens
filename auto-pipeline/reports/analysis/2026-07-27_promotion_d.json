@@ -1,0 +1,95 @@
+{
+  "report_id": "promotion_d_20260727",
+  "generated_at": "2026-07-27T20:47:11.810959",
+  "total_visits": 2030,
+  "total_signups": 90,
+  "total_cost": 200,
+  "overall_cac": 2.22,
+  "channel_roi": {
+    "SEO": {
+      "visits": 1200,
+      "signups": 45,
+      "cost": 0,
+      "signup_rate": 3.8,
+      "cac": 0.0,
+      "efficiency": "free_high",
+      "trend": "improving"
+    },
+    "social": {
+      "visits": 340,
+      "signups": 12,
+      "cost": 0,
+      "signup_rate": 3.5,
+      "cac": 0.0,
+      "efficiency": "free_high",
+      "trend": "improving"
+    },
+    "referral": {
+      "visits": 180,
+      "signups": 28,
+      "cost": 150,
+      "signup_rate": 15.6,
+      "cac": 5.36,
+      "efficiency": "paid_good",
+      "trend": "stable"
+    },
+    "wake_up": {
+      "visits": 90,
+      "signups": 0,
+      "cost": 50,
+      "signup_rate": 0.0,
+      "cac": Infinity,
+      "efficiency": "paid_poor",
+      "trend": "stable"
+    },
+    "brand": {
+      "visits": 220,
+      "signups": 5,
+      "cost": 0,
+      "signup_rate": 2.3,
+      "cac": 0.0,
+      "efficiency": "free_high",
+      "trend": "improving"
+    }
+  },
+  "actions": [
+    {
+      "channel": "SEO",
+      "action": "increase_effort",
+      "reason": "零成本高效(signup_rate 3.8%)",
+      "priority": "medium"
+    },
+    {
+      "channel": "social",
+      "action": "increase_effort",
+      "reason": "零成本高效(signup_rate 3.5%)",
+      "priority": "medium"
+    },
+    {
+      "channel": "referral",
+      "action": "maintain",
+      "reason": "付费效率可接受(CAC ¥5.36)",
+      "priority": "medium"
+    },
+    {
+      "channel": "wake_up",
+      "action": "reduce_budget",
+      "reason": "CAC过高(¥inf)",
+      "priority": "high"
+    },
+    {
+      "channel": "brand",
+      "action": "increase_effort",
+      "reason": "零成本高效(signup_rate 2.3%)",
+      "priority": "medium"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "reduce_budget",
+      "channel": "wake_up",
+      "reason": "CAC过高(¥inf)"
+    }
+  ]
+}

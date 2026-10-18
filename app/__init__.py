@@ -1,0 +1,414 @@
+import os
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
+
+from app.config import settings
+
+
+# 仓库根目录下的 A2A agent card 源文件。
+_AGENT_CARD_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "agent-card.json"
+)
+
+
+def _build_agent_card_response(method: str = "GET"):
+    """构建 /.well-known/agent-card.json 的响应。
+
+    A2A 协议规定 agent card 必须服务于该 well-known 路径，供外部 agent
+    在运行时自动发现 HealthLens 的能力与连接方式。运行时以 pyproject 为
+    单一真源注入版本，使卡片版本与运行时版本不可能漂移。
+
+    注意：卡片内 conformanceNote 如实声明本服务未实现 A2A 任务生命周期
+    （SendMessage/GetTask/CancelTask），实际可编程接口为 MCP JSON-RPC 2.0
+    与 REST——不在卡片中声称未实现的协议能力。
+    """
+    import json as _json
+
+    from fastapi.responses import JSONResponse
+    from starlette.responses import Response
+
+    if not os.path.isfile(_AGENT_CARD_PATH):
+        # fail-loud：卡片缺失时不静默返回空对象，让发现方明确知道不可用。
+        return JSONResponse(
+            status_code=404,
+            content={"error": "agent-card.json not found", "expected": _AGENT_CARD_PATH},
+        )
+
+    with open(_AGENT_CARD_PATH, encoding="utf-8") as f:
+        card = _json.load(f)
+
+    from app.core.version import __version__ as _live_version
+
+    card["version"] = _live_version
+
+    # 卡片可被缓存以减轻发现成本，但版本号变更需即时生效，故用较短 TTL。
+    headers = {
+        "Cache-Control": "public, max-age=300",
+        "Content-Type": "application/json; charset=utf-8",
+    }
+
+    # 一次序列化，GET/HEAD 共用同一 body 字节，保证二者 content-length
+    # 完全一致——否则内容寻址的缓存会把 HEAD 当成缓存旁路。
+    body = _json.dumps(card, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    headers["Content-Length"] = str(len(body))
+
+    if method == "HEAD":
+        return Response(status_code=200, content=b"", headers=headers)
+    return Response(status_code=200, content=body, headers=headers)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """应用生命周期管理"""
+    logger.info(f"{settings.APP_NAME} v{settings.APP_VERSION} starting...")
+
+    # 安全检查：关键项启动即拒，其余仅告警
+    critical_issues = settings.critical_security_issues()
+    for c in critical_issues:
+        logger.critical(f"[SECURITY][FATAL] {c}")
+    if critical_issues:
+        logger.critical("检测到启动即拒的关键安全问题，拒绝启动。请在 .env 中修复上述配置后重试。")
+        raise SystemExit(1)
+
+    security_warnings = settings.check_security()
+    for w in security_warnings:
+        logger.warning(f"[SECURITY] {w}")
+
+    # 初始化日志配置
+    from app.utils.logging_config import setup_logging
+    setup_logging()
+
+    yield
+    logger.info("Shutting down...")
+
+
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title=settings.APP_NAME,
+        version=settings.APP_VERSION,
+        docs_url="/docs" if settings.DEBUG else None,
+        redoc_url="/redoc" if settings.DEBUG else None,
+        lifespan=lifespan,
+    )
+
+    from slowapi import _rate_limit_exceeded_handler
+    from slowapi.errors import RateLimitExceeded
+
+    from app.api.auth import limiter
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.CORS_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # Prometheus metrics middleware
+    from app.utils.metrics import RequestMetricsMiddleware
+    app.add_middleware(RequestMetricsMiddleware)
+
+    # 请求 ID 追踪中间件
+    from app.utils.request_id import RequestIDMiddleware
+    app.add_middleware(RequestIDMiddleware)
+
+    # 健康信号拦截中间件（wellness 平台的安全护栏）
+    from app.middleware.emergency_interceptor import emergency_interceptor_middleware
+    app.middleware("http")(emergency_interceptor_middleware)
+
+    # 注册路由
+    from app.api.analytics import router as analytics_router
+    from app.api.a2a import router as a2a_router
+    from app.api.audit import router as audit_router
+    from app.api.auth import router as auth_router
+    from app.api.axes import router as axes_router
+    from app.api.causal import router as causal_router
+    from app.api.checkin import router as checkin_router
+    from app.api.connections import router as connections_router
+    from app.api.dashboard import router as dashboard_router
+    from app.api.device_metrics import router as device_metrics_router
+    from app.api.diagnosis import router as diagnosis_router
+    from app.api.edge_ticket import router as edge_ticket_router
+    from app.api.feedback import router as feedback_router
+    from app.api.freemium import router as freemium_router
+    from app.api.frequency import router as frequency_router
+    from app.api.fusion import router as fusion_router
+    from app.api.gdpr import router as gdpr_router
+    from app.api.genome import router as genome_router
+    from app.api.graphrag import router as graphrag_router
+    from app.api.national_standard import router as national_standard_router
+    from app.api.geo_infra import geo_router
+    from app.api.goals import router as goals_router
+    from app.api.growth import router as growth_router
+    from app.api.growth_enhanced import router as growth_enhanced_router
+    from app.api.health_tools import tools_public_router
+    from app.api.knowledge import router as knowledge_router
+    from app.api.longitudinal import router as longitudinal_router
+    from app.api.medication_adherence import router as adherence_router
+    from app.api.medications import router as medications_router
+    from app.api.notifications import router as notifications_router
+    from app.api.observations import router as observations_router
+    from app.api.payment import router as payment_router
+    from app.api.partner_api import router as partner_api_router
+    from app.api.partners import router as partners_router
+    from app.api.points import router as points_router
+    from app.api.profiles import router as profiles_router
+    from app.api.records import router as records_router
+    from app.api.repair import router as repair_router
+    from app.api.reports import router as reports_router
+    from app.api.seo import router as seo_router
+    from app.api.seo_public import (
+        en_health_router,
+        en_health_tools_router,
+        en_knowledge_router,
+        health_router,
+        health_tools_router,
+        seo_knowledge_router,
+    )
+    from app.api.share_public import router as share_public_router
+    from app.api.share_report import router as share_report_router
+    from app.api.tcm import router as tcm_router
+    from app.api.tiered_growth import router as tiered_growth_router
+    from app.api.v1.diagnosis_agent import router as diagnosis_agent_router
+
+    app.include_router(auth_router, prefix="/api/v1/auth", tags=["认证"])
+    app.include_router(records_router, prefix="/api/v1/records", tags=["数据接入"])
+    app.include_router(observations_router, prefix="/api/v1/observations", tags=["健康数据"])
+    app.include_router(diagnosis_router, prefix="/api/v1/diagnosis", tags=["西医诊断"])
+    app.include_router(medications_router, prefix="/api/v1/medications", tags=["西药"])
+    app.include_router(tcm_router, prefix="/api/v1/tcm", tags=["中医"])
+    app.include_router(connections_router, prefix="/api/v1/connections", tags=["数据连接"])
+    app.include_router(genome_router, prefix="/api/v1/genome", tags=["基因组"])
+    app.include_router(reports_router, prefix="/api/v1/reports", tags=["报告"])
+    app.include_router(profiles_router, prefix="/api/v1/profiles", tags=["健康档案"])
+    app.include_router(dashboard_router, prefix="/api/v1/dashboard", tags=["仪表盘"])
+    app.include_router(goals_router, prefix="/api/v1/goals", tags=["健康目标"])
+    app.include_router(notifications_router, prefix="/api/v1/notifications", tags=["通知中心"])
+    app.include_router(adherence_router, prefix="/api/v1/adherence", tags=["用药依从性"])
+    app.include_router(knowledge_router, prefix="/api/v1/knowledge", tags=["中医古籍知识"])
+    app.include_router(longitudinal_router, prefix="/api/v1/longitudinal", tags=["纵向追踪"])
+    app.include_router(axes_router, prefix="/api/v1/axes", tags=["八轴稳态"])
+    app.include_router(causal_router, prefix="/api/v1/causal", tags=["因果推演"])
+    app.include_router(repair_router, prefix="/api/v1/repair", tags=["细胞修复"])
+    app.include_router(fusion_router, prefix="/api/v1/fusion", tags=["融合诊断"])
+    app.include_router(diagnosis_agent_router, prefix="/api/v1/diagnosis", tags=["AI诊断Agent"])
+    app.include_router(frequency_router, prefix="/api/v1/frequency", tags=["频率疗法"])
+    app.include_router(feedback_router, prefix="/api/v1/feedback", tags=["用户反馈"])
+    app.include_router(checkin_router, prefix="/api/v1/checkin", tags=["自测闭环"])
+    app.include_router(audit_router, prefix="/api/v1/audit", tags=["运行时审计"])
+    # A2A v1.0.1 JSON-RPC 端点（§5 L0 协议对齐：SendMessage/ListTasks/GetTask/CancelTask）
+    app.include_router(a2a_router, tags=["A2A v1.0.1"])
+    app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["行为分析"])
+    app.include_router(growth_router, prefix="/api/v1/growth", tags=["推广系统"])
+    app.include_router(freemium_router, prefix="/api/v1/freemium", tags=["积分门禁"])
+    app.include_router(growth_enhanced_router, prefix="/api/v1/growth", tags=["推广系统"])
+    app.include_router(points_router, prefix="/api/v1/points", tags=["积分系统"])
+    # 知识图谱（GraphRAG S2-5）
+    app.include_router(graphrag_router, prefix="/api/v1/graphrag", tags=["知识图谱"])
+    # 号脉终端：脉象解读（agent 可调用的「号脉判断」入口）
+    from app.api.pulse import router as pulse_router
+
+    app.include_router(pulse_router, tags=["脉象解读"])
+    app.include_router(seo_router, prefix="/api/v1/seo", tags=["SEO管理"])
+    # SEO 公开页面
+    app.include_router(seo_knowledge_router, prefix="/knowledge", tags=["SEO公开"])
+    app.include_router(health_router, prefix="/health", tags=["SEO公开"])
+    app.include_router(health_tools_router, prefix="/health-tools", tags=["SEO公开"])
+    # 英文镜像路由：只为真实存在英文译本的页面返回 200（见 seo_public._en_payload）
+    app.include_router(en_knowledge_router, prefix="/en/knowledge", tags=["SEO公开EN"])
+    app.include_router(en_health_router, prefix="/en/health", tags=["SEO公开EN"])
+    app.include_router(en_health_tools_router, prefix="/en/health-tools", tags=["SEO公开EN"])
+    # 免费健康工具（SEO 引流核心）
+    app.include_router(tools_public_router, prefix="/health-tools", tags=["免费工具"])
+    # GEO 基础设施（llms.txt, ai.txt, robots.txt）
+    app.include_router(geo_router, tags=["GEO"])
+    # 分享报告（登录用户操作）
+    app.include_router(share_report_router, prefix="/api/v1/reports", tags=["分享报告"])
+    # 阶梯邀请 + 积分购买
+    app.include_router(tiered_growth_router, prefix="/api/v1/growth", tags=["阶梯邀请 & 积分购买"])
+    # 虎皮椒支付回调 + 状态查询
+    app.include_router(payment_router, prefix="/api/v1/payment", tags=["支付"])
+    # GDPR 合规（数据导出/删除/同意管理）
+    app.include_router(gdpr_router, prefix="/api/v1/gdpr", tags=["GDPR"])
+    # 国标合规闸门（GB/T 20001.10-2014 条款映射）
+    app.include_router(national_standard_router, prefix="/api/v1/national-standard", tags=["国标合规"])
+    # 边缘网关（家庭小盒子推上来的日粒度健康指标）
+    app.include_router(device_metrics_router, prefix="/api/v1", tags=["边缘网关"])
+    # 路由内部自带 /edge 前缀，这里补的 /api/v1 拼上去才是 /api/v1/edge/tickets
+    app.include_router(edge_ticket_router, prefix="/api/v1", tags=["边缘网关票据"])
+    # 公开分享页面（无需登录）
+    app.include_router(share_public_router, tags=["公开分享"])
+    # S3-2 Powered-by SDK：合作方管理（admin） + 合作方对外 API（API Key 认证）
+    app.include_router(partners_router, prefix="/api/v1/partners", tags=["合作方管理"])
+    app.include_router(partner_api_router, prefix="/api/v1/partner-api", tags=["合作方API"])
+
+    # ── v0.28.0 SVIEE（Self-Validating Integrative Evidence Engine）5 层跃迁 ──
+    # 报告《HealthLens_下一阶段愿景与跃迁方案_2026-10-15》交付。
+    # L1 统计层：DoWhy refutation + n-of-1 效应量 + 安全约束 bandit
+    # L2 表征层：时序确定性序列化（原创点） + 传感器基础模型 adapter
+    # L3 联邦层：Flower 单机多租户 + 贝叶斯层次聚合 + 目标试验仿真
+    # L4 评估层：XGrammar 强制解码 + Rubric 基准 + RAGAS/Biomni adapter + 协议对齐审计
+    # 全部采用 try/except 容错加载：单个模块缺失不阻断主服务启动，仅告警跳过，
+    # 与 MCP-HTTP / AGENT / EMERGENCY 三段保持一致的 fail-soft 策略。
+    try:
+        from app.api.evidence import router as evidence_router
+
+        app.include_router(evidence_router, prefix="/api/v1/evidence", tags=["证据层L1"])
+    except Exception as _ev_err:  # noqa: BLE001
+        logger.warning(f"[EVIDENCE-L1] 证据层路由未加载（能力不可用，已跳过）: {_ev_err}")
+
+    try:
+        from app.api.timeseries import router as timeseries_router
+
+        app.include_router(timeseries_router, prefix="/api/v1/timeseries", tags=["表征层L2"])
+    except Exception as _ts_err:  # noqa: BLE001
+        logger.warning(f"[TIMESERIES-L2] 表征层路由未加载（能力不可用，已跳过）: {_ts_err}")
+
+    try:
+        from app.api.federated import router as federated_router
+
+        app.include_router(federated_router, prefix="/api/v1/federated", tags=["联邦层L3"])
+    except Exception as _fd_err:  # noqa: BLE001
+        logger.warning(f"[FEDERATED-L3] 联邦层路由未加载（能力不可用，已跳过）: {_fd_err}")
+
+    try:
+        from app.api.evaluation import router as evaluation_router
+
+        app.include_router(evaluation_router, prefix="/api/v1/evaluation", tags=["评估层L4"])
+    except Exception as _evl_err:  # noqa: BLE001
+        logger.warning(f"[EVALUATION-L4] 评估层路由未加载（能力不可用，已跳过）: {_evl_err}")
+
+    # MCP over HTTP（海外 Agent 一行 URL 接入，无需 pip install）
+    try:
+        from app.api.mcp_http import router as mcp_http_router
+
+        app.include_router(mcp_http_router)
+    except Exception as _mcp_err:  # noqa: BLE001
+        logger.warning(f"[MCP-HTTP] MCP HTTP 路由未加载: {_mcp_err}")
+
+    # 智能体能力路由（GOAI 借鉴落地）
+    # 注意：app/api/agent.py 内已写死 "/api/v1/agent/..." 全路径，
+    # 故此处的 include_router 不能再传 prefix，否则会变成 /api/v1/api/v1/agent/...
+    try:
+        from app.api.agent import router as agent_router
+
+        app.include_router(agent_router)
+    except Exception as _agent_err:  # noqa: BLE001
+        logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
+
+    # 健康护栏预检端点（前端提交自由文本前调用，命中即渲染强提示）
+    try:
+        from app.api.emergency import router as emergency_router
+
+        app.include_router(emergency_router, prefix="/api/v1/emergency", tags=["健康护栏"])
+    except Exception as _emg_err:  # noqa: BLE001
+        logger.warning(f"[EMERGENCY] 健康护栏预检路由未加载: {_emg_err}")
+
+    # 静态前端文件服务 (frontend/) - 带缓存控制
+    import os
+
+    from fastapi.responses import FileResponse
+    from fastapi.staticfiles import StaticFiles
+    from starlette.middleware.base import BaseHTTPMiddleware
+
+    frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+    if os.path.isdir(frontend_dir):
+        # 挂载 assets 目录为静态资源
+        assets_dir = os.path.join(frontend_dir, "assets")
+        if os.path.isdir(assets_dir):
+            app.mount("/assets", StaticFiles(directory=assets_dir, html=False), name="frontend-assets")
+
+        # 根路径 "/" 返回 index.html (SPA fallback) - 带无缓存头
+        @app.get("/")
+        async def serve_frontend():
+            resp = FileResponse(os.path.join(frontend_dir, "index.html"))
+            resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            return resp
+
+    # 静态资源缓存控制中间件 - 防止浏览器缓存旧版本 JS/CSS
+    @app.middleware("http")
+    async def add_cache_control(request, call_next):
+        response = await call_next(request)
+        if request.url.path.startswith("/assets/") and request.url.path.endswith((".js", ".css")):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
+    # 健康检查端点（Docker HEALTHCHECK 使用）
+    @app.get("/health")
+    async def health_check():
+        return {"status": "ok", "version": settings.APP_VERSION}
+
+    # 运行时版本端点：单一真源 = pyproject.toml [project].version。
+    # 供 A2A agent-card 与外部 agent 发现实际运行版本；
+    # version_resolved=False 表示版本源解析失败（不静默伪造版本）。
+    @app.get("/api/v1/version", summary="运行时版本信息（单一真源：pyproject.toml）")
+    async def version_endpoint():
+        from app.core.version import version_info
+
+        return version_info()
+
+    # A2A Agent Card 发现端点（实现见模块级 _build_agent_card_response）。
+    @app.get(
+        "/.well-known/agent-card.json",
+        summary="A2A Agent Card（agent 发现端点）",
+        tags=["agent-discovery"],
+    )
+    async def agent_card():
+        return _build_agent_card_response()
+
+    # Starlette >=1.6 no longer auto-adds HEAD to GET routes, so HEAD must be
+    # declared explicitly — otherwise the discovery endpoint answers 405 and
+    # some agent registrars treat that as a broken card. HEAD is intentionally
+    # kept out of the OpenAPI schema: it carries no independent contract, just
+    # the same headers as GET with an empty body.
+    @app.api_route(
+        "/.well-known/agent-card.json",
+        methods=["HEAD"],
+        include_in_schema=False,
+    )
+    async def agent_card_head():
+        return _build_agent_card_response(method="HEAD")
+
+    @app.get("/metrics")
+    async def metrics():
+        from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+        from starlette.responses import Response
+        return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+    @app.exception_handler(Exception)
+    async def global_exception_handler(request, exc):
+        from loguru import logger
+        request_id = getattr(request.state, "request_id", "unknown")
+        logger.error(f"Unhandled exception | request_id={request_id} | path={request.url.path} | error={exc}")
+        from fastapi.responses import JSONResponse
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": "Internal server error",
+                "request_id": request_id,
+                "detail": str(exc) if settings.DEBUG else None,
+            },
+        )
+
+    return app
+
+# Lazy initialization: only create app when accessed, not on import
+# This allows alembic/env.py and other scripts to import submodules
+# without triggering the full FastAPI application setup
+app = None
+
+
+def get_app() -> FastAPI:
+    """Get or create the FastAPI application instance."""
+    global app
+    if app is None:
+        app = create_app()
+    return app

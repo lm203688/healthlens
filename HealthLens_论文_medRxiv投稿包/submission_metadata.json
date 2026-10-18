@@ -1,0 +1,25 @@
+{
+  "platform": "medRxiv (免费预印本, 秒发 DOI, Google Scholar 收录)",
+  "manuscript_file": "HealthLens_论文_整合医学稳态轴框架_全文.md",
+  "title": "HealthLens: An Integrated East-West Steady-State Axis Framework for Non-Pharmacological Cellular Repair Guidance",
+  "title_zh": "HealthLens：中西结合、古今结合的稳态轴框架——面向非药物细胞修复指导的理论体系",
+  "authors": [
+    {"name": "{{YOUR_NAME}}", "affiliation": "HealthLens", "email": "{{CORRESPONDING_EMAIL}}", "orcid": "{{ORCID_OPTIONAL}}"}
+  ],
+  "abstract_excerpt": "We propose a falsifiable, measurement-first framework that maps classical Chinese medicine constructs (qi-blood, zang-fu, yin-yang, zheng-xie) onto eight measurable steady-state biology axes (autophagy/AMPK-mTOR, mitochondrial biogenesis/PGC-1alpha-SIRT1, senescence clearance/senolytics, circadian CLOCK-BMAL1, neuroendocrine, inflammation, affect/HRV-EEG, epigenetic clock). A gene-pathway x classical-candidate intersection rule generates personalized, evidence-graded non-drug recommendations. A 24-case real-world evidence database (L1=7/L2=8/L3=9) anchors the framework to human trials (e.g., 4-week fasting LAMP2 up 4.2x; D+Q frailty 400m gait p=0.0001; early-TRE hepatic fat -23.7%). An in-silico computational validation of the fusion engine (22 synthetic profiles) demonstrates 100% reproducibility, 100% coverage of weak-node profiles (90% with L1-grade recommendations), 0 personalized output for control profiles, and 85% convergent validity against TCM domain expectations. The Sense-Infer-Intervene-Verify loop closes via wearable/CGM/BCI ingest. This positions traditional experience as falsifiable hypothesis rather than mechanism, preserving a publishable scientific base.",
+  "suggested_categories": {
+    "primary": "Health Sciences - Medicine (General/Internal)",
+    "secondary": ["Health Sciences - Nutrition", "Health Sciences - Public and Global Health"]
+  },
+  "license": "CC-BY (default on medRxiv)",
+  "preprint_note": "All references are DOIs verified resolvable as of 2026-08-16; textual-only sources flagged for full-text confirmation before formal journal submission.",
+  "submit_steps": [
+    "1. 注册 medRxiv 账号: https://www.medrxiv.org/account/register",
+    "2. 进入 'Submit a manuscript' -> 选 primary category 'Medicine (General/Internal)'",
+    "3. 上传 HealthLens_论文_整合医学稳态轴框架_全文.md (建议先转 PDF/Word)",
+    "4. 粘贴上面 title / authors / abstract",
+    "5. 勾选 'This is a preprint, not peer-reviewed' 与 CC-BY",
+    "6. 提交 -> 数分钟得 DOI, 可被 Google Scholar 引用",
+    "7. 拿到 DOI 后, 在论文与项目 README 标注 'Preprint: doi:XXXX' (不可称 '已发表/SCI')"
+  ]
+}

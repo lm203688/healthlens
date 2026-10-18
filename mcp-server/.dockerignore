@@ -1,0 +1,64 @@
+# MCP server image: keep it minimal (target < 400 MB, not the 2GB web image)
+
+# Web server & heavy assets — NOT needed by MCP server
+app/
+frontend/
+healthlens/
+alembic/
+alembic.ini
+scripts/
+tests/
+Dockerfile
+docker-compose.yml
+Dockerfile.*
+
+# Data files we do NOT want to bundle
+data/healthlens.db
+data/feedback_db.json
+data/seed_users.json
+data/healthlens_config.json
+data/*.sql
+data/*.md
+
+# Editor / VCS / cache
+.git/
+.gitignore
+.gitattributes
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+build/
+*.egg-info/
+
+# Dev / secrets / logs
+*.env
+.env.*
+*.log
+logs/
+.cache/
+.pytest_cache/
+.wb*
+.workbuddy/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Docs (except things Docker needs for metadata)
+docs/
+*.md
+CHANGELOG.md
+!LICENSE
+!README.md
+
+# Keep these in the final image
+!pyproject.toml
+!README.md
+!LICENSE

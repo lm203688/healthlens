@@ -1,0 +1,187 @@
+{
+  "date": "2026-08-03",
+  "generated_by": "HealthLens每周综合闭环",
+  "source_report": "intel-weekly-2026-08-03",
+  "total_topics": 6,
+  "topics": [
+    {
+      "id": "topic-001",
+      "title": "针灸抗炎机理可视化解读：中国科学家首次直播针灸全过程",
+      "category": "非药物治疗+脑科学交叉",
+      "source_url": "https://news.hubeidaily.net/pc/c_5762059.html",
+      "source_date": "2026-07-15",
+      "evaluation": "可生成内容",
+      "priority": "P0",
+      "target_audience": "对中医科学化感兴趣的用户、慢性炎症人群",
+      "content_type": "科普文章+信息图",
+      "seo_keywords": [
+        "针灸抗炎",
+        "电针足三里",
+        "中性粒细胞",
+        "神经免疫调控",
+        "非药物疗法"
+      ],
+      "key_points": [
+        "华中科技大学同济医院联合清华大学在Nature Biotechnology发表研究",
+        "首次在活体层面直播电针足三里抗炎全过程",
+        "使用RUSH3D-HR介观显微镜捕捉中性粒细胞群聚行为",
+        "电针刺激使炎症群聚事件减少超5倍",
+        "揭示针灸神经-免疫调控机制"
+      ],
+      "healthlens_integration": "纳入非药物疗法循证证据库，支持针灸为什么有效科普模块"
+    },
+    {
+      "id": "topic-002",
+      "title": "膳食指南2026版核心变化：从吃饱到吃对的个性化营养升级",
+      "category": "营养学",
+      "source_url": "http://jiankang.cctv.com/2026/07/29/ARTIEUiOyNVVpjLiJ6hhaBgD260728.shtml",
+      "source_date": "2026-07-29",
+      "evaluation": "可生成内容+可纳入产品",
+      "priority": "P0",
+      "target_audience": "注重饮食健康的用户、慢性代谢病人群",
+      "content_type": "深度解读+对比表格+个性化建议",
+      "seo_keywords": [
+        "膳食指南2026",
+        "中国居民膳食指南",
+        "超加工食品",
+        "全谷物",
+        "三减标准",
+        "食物多样化"
+      ],
+      "key_points": [
+        "2026版指南在2022版基础上完成六大核心优化",
+        "细化食物多样量化标准（每日≥12种、每周≥25种）",
+        "提高全谷物摄入优先级",
+        "升级三减标准",
+        "减少超加工食品摄入，其危害独立于热量摄入",
+        "优化动物性食物摄入结构"
+      ],
+      "healthlens_integration": "驱动营养标准引擎实时更新个性化膳食建议算法"
+    },
+    {
+      "id": "topic-003",
+      "title": "桔梗改善代谢综合征：从本草古籍到Cell顶刊的现代化转译",
+      "category": "营养替代/古籍+生命科学",
+      "source_url": "http://www.js.xinhuanet.com/20260704/7a1178395f2f4236a6142674a6ce0ea7/c.html",
+      "source_date": "2026-07-04",
+      "evaluation": "可生成内容+可纳入产品",
+      "priority": "P1",
+      "target_audience": "代谢综合征患者、药食同源爱好者、中医现代化关注者",
+      "content_type": "循证科普+古籍溯源+现代机制解读",
+      "seo_keywords": [
+        "桔梗",
+        "代谢综合征",
+        "药食同源",
+        "Cell Host Microbe",
+        "肥胖",
+        "胰岛素抵抗",
+        "中医现代化"
+      ],
+      "key_points": [
+        "南京中医药大学联合上海交大医学院在Cell Host Microbe发表原创成果",
+        "系统阐释桔梗改善肥胖、高血脂、胰岛素抵抗的完整分子机制",
+        "为中医药现代化和慢病早防早治提供全新科学依据",
+        "相关专利已启动转化"
+      ],
+      "healthlens_integration": "驱动食疗本草循证库更新"
+    },
+    {
+      "id": "topic-004",
+      "title": "体质辨识共病管理：中医现代化的战略新方向",
+      "category": "养生学",
+      "source_url": "https://tizhi.bucm.edu.cn/yjyxw/ad806a74e4784cb8a64b2f079de28f21.htm",
+      "source_date": "2026-07-27",
+      "evaluation": "可生成内容+可纳入产品",
+      "priority": "P1",
+      "target_audience": "多病共存的中老年用户、中医体质调理需求者",
+      "content_type": "战略解读+体质自测+共病管理指南",
+      "seo_keywords": [
+        "体质辨识",
+        "共病管理",
+        "中医体质",
+        "王琦院士",
+        "九种体质",
+        "慢病防控"
+      ],
+      "key_points": [
+        "王琦院士牵头体质辨识-共病整体调节的干预模式战略研究项目启动",
+        "推动共病防控从病本位向人本位战略转型",
+        "结合中医体质辨识实现共病整体调节",
+        "服务健康中国战略与老龄化应对需求"
+      ],
+      "healthlens_integration": "强化个性化养生推荐算法的共病管理能力"
+    },
+    {
+      "id": "topic-005",
+      "title": "AI Overviews时代：健康内容如何被AI搜索引擎引用",
+      "category": "推广技术+SEO/GEO",
+      "source_url": "https://spaceandstory.co/blog/google-algorithm-updates-2026",
+      "source_date": "2026-07-28",
+      "evaluation": "可生成内容",
+      "priority": "P1",
+      "target_audience": "健康内容创作者、SEO从业者、健康科技产品经理",
+      "content_type": "技术指南+实操方案+案例",
+      "seo_keywords": [
+        "AI Overviews",
+        "GEO",
+        "生成引擎优化",
+        "Google算法2026",
+        "AI搜索",
+        "结构化数据"
+      ],
+      "key_points": [
+        "2026年Google三次算法更新+FAQ富结果下线+AI答案纳入反垃圾",
+        "AI Overviews覆盖47%搜索，68%美国搜索零点击结束",
+        "AI Overview出现时自然排名第一点击率下降58%",
+        "GEO三大支柱：结构化知识标记、语义层深度优化、可信度工程",
+        "12周GEO优化后AI引用率提升280%的实战案例"
+      ],
+      "healthlens_integration": "指导HealthLens内容生产的GEO优化策略"
+    },
+    {
+      "id": "topic-006",
+      "title": "线粒体能量代谢新发现：STING定居线粒体重塑糖尿病心肌能量版图",
+      "category": "能量学+生命科学",
+      "source_url": "https://www.medsci.cn/article/show_article.do?id=2146942e4212",
+      "source_date": "2026-07-10",
+      "evaluation": "可生成内容",
+      "priority": "P2",
+      "target_audience": "糖尿病并发症关注者、代谢健康研究者",
+      "content_type": "前沿研究解读+机制图解",
+      "seo_keywords": [
+        "线粒体",
+        "STING",
+        "糖尿病心肌病",
+        "能量代谢",
+        "免疫代谢",
+        "生物能量学"
+      ],
+      "key_points": [
+        "哈尔滨医科大学张伟华教授团队发现STING从内质网转移至线粒体",
+        "直接干预心肌细胞能量生产流程",
+        "为糖尿病心肌病的能量代谢紊乱提供新机制解释",
+        "揭示免疫与能量代谢的交叉调控新通路"
+      ],
+      "healthlens_integration": "丰富生物能量科学知识板块"
+    }
+  ],
+  "content_production_schedule": {
+    "friday_date": "2026-08-07",
+    "total_articles": 6,
+    "p0_articles": 2,
+    "p1_articles": 3,
+    "p2_articles": 1,
+    "structured_data_types": [
+      "Article",
+      "FAQPage",
+      "MedicalWebPage",
+      "HowTo"
+    ]
+  },
+  "material_feasibility": {
+    "all_topics_have_sufficient_sources": true,
+    "total_source_urls": 6,
+    "additional_references_available": true,
+    "note": "所有选题均有权威来源支撑"
+  }
+}

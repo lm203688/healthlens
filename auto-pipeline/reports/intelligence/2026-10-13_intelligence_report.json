@@ -1,0 +1,721 @@
+{
+  "report_id": "intel_2026-10-13",
+  "generated_at": "2026-10-13T17:35:16.730701",
+  "sources_checked": 4,
+  "sources_failed": [],
+  "source_results": {
+    "GitHub": 6,
+    "arXiv": 15,
+    "PubMed": 5,
+    "Competitors": 2
+  },
+  "items": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "tech_trend",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 7624, Language: Python",
+      "market_signals": {
+        "github_stars": 7624,
+        "forks": 856,
+        "updated_at": "2026-10-13T09:17:32Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ]
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "tech_trend",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6326, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 6326,
+        "forks": 408,
+        "updated_at": "2026-10-13T07:35:46Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ]
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "tech_trend",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4933, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4933,
+        "forks": 332,
+        "updated_at": "2026-10-13T04:57:31Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ]
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "tech_trend",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2645, Language: Python",
+      "market_signals": {
+        "github_stars": 2645,
+        "forks": 508,
+        "updated_at": "2026-10-13T08:31:50Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ]
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "tech_trend",
+      "summary": "Turn scattered health data into answers you can trace. Self-hosted AI health data engine for lab reports, wearables and genetics, with a built-in MCP server. Run it with Docker and one LLM key, or kee",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1374, Language: Python",
+      "market_signals": {
+        "github_stars": 1374,
+        "forks": 241,
+        "updated_at": "2026-10-13T09:12:17Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "apple-health",
+        "digital-health",
+        "genetic-data",
+        "genomics"
+      ]
+    },
+    {
+      "id": "gh_1196502414",
+      "title": "OpenStrap/edge",
+      "category": "tech_trend",
+      "summary": "App which allows you to use your health devices beyond subscriptions. Supports Workout Tracking, Nutrition Tracking, Wellness Excercise, Sleep, Recovery, Strain, and Many more.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/OpenStrap/edge",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 699, Language: Dart",
+      "market_signals": {
+        "github_stars": 699,
+        "forks": 126,
+        "updated_at": "2026-10-13T06:06:56Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ble",
+        "bluetooth-low-energy",
+        "dart",
+        "flutter",
+        "health-tracking"
+      ]
+    },
+    {
+      "id": "arx_06894",
+      "title": "DyssomniaNN: Multi-Scale Spiking Neural Modeling of Human Sleep Disorders and Perceived Restedness",
+      "category": "academic",
+      "summary": "Clinical sleep medicine repeatedly documents profound divergences between objective sleep duration and subjective daytime impairment, notably exemplified by sleep state misperception in paradoxical in",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13918v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_09699",
+      "title": "Shared Canonical Component Removal Beyond Expert Views",
+      "category": "academic",
+      "summary": "In clinical practice, experts often begin by converting raw inputs into a set of expert features before making a decision. While black-box models trained on raw input can outperform models trained on ",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13819v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_37498",
+      "title": "EchoTab: Learning Measurement-Grounded Representations for Echocardiographic Diagnosis through Tabular Reconstruction",
+      "category": "academic",
+      "summary": "Diagnostic information in multi-view medical imaging studies, like echocardiography, is distributed across views, each capturing different aspects of cardiac structure and function. In clinical practi",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13599v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_71938",
+      "title": "PPG-Bench: A Unified Benchmark for PPG Foundation Models",
+      "category": "academic",
+      "summary": "Photoplethysmography (PPG) is increasingly recorded by wearable and clinical devices at enormous scale, and a growing number of PPG foundation models (FMs) have been developed to compute reusable repr",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13435v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_44669",
+      "title": "PlacePulse: Learning Transferable Place Representations from Structural Geographic Data",
+      "category": "academic",
+      "summary": "Geospatial machine learning often depends on task-specific feature engineering over large collections of sociodemographic, business, and environmental variables. Geospatial foundation models offer reu",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13390v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_10808",
+      "title": "Double-Take: Improving Capacity, Binding, and Selectivity In Long-Context Within Bidirectional Memory",
+      "category": "academic",
+      "summary": "Processing a long sequence does not guarantee that distant information remains usable. As context grows, a fixed-size memory must retain many associations, connect information across positions, and pr",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.13073v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-09",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-09"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_75080",
+      "title": "Unlocking the Regulatory Genome by ARGUS: An Evidence-Constrained Agentic Framework for Interpreting Single Nucleotide Variants",
+      "category": "academic",
+      "summary": "Over 90% of disease-associated variants from genome-wide association studies fall in noncoding regulatory regions, yet their functional interpretation remains a central open problem in genomic medicin",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.12281v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-08",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-08"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_94655",
+      "title": "Taxonomic Classification with Complete Tag Arrays",
+      "category": "academic",
+      "summary": "Taxonomic classifiers such as Kraken assign each $k$-mer of a reference database to the lowest common ancestor (LCA) of the genomes containing it, but this works less well as databases grow, because m",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.10500v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-07",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-07"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_95904",
+      "title": "Truecell reproduces R Seurat's single-cell analysis outputs natively in the Python ecosystem",
+      "category": "academic",
+      "summary": "Single-cell RNA-sequencing analyses predominantly use either Seurat (R) or Scanpy (Python), with the choice often driven by programming language preference. However, by default, these tools produce di",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.10482v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-07",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-07"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_56890",
+      "title": "HRPv2: an automated and enhanced method for full-length homology-based R-gene prediction",
+      "category": "academic",
+      "summary": "Motivation: Plant disease resistance genes, particularly those encoding NB-LRR proteins, are important targets for crop improvement. Proteome-based domain or motif searches can only identify NB-LRRs a",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.08376v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-06",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-06"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_07943",
+      "title": "Epigenetic state encodes locus-specific chromatin mechanics",
+      "category": "academic",
+      "summary": "Chromatin is repeatedly deformed in vivo during transcription, nuclear remodeling, and confined migration - yet how mechanical response varies from locus to locus, and how it relates to epigenetic sta",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2512.22820v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2025-12-28",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-12-28"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_76793",
+      "title": "Modulation of DNA rheology by a transcription factor that forms aging microgels",
+      "category": "academic",
+      "summary": "Proteins and nucleic acids form non-Newtonian liquids with complex rheological properties that contribute to their function in vivo. Here we investigate the rheology of the transcription factor NANOG,",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2512.02864v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-12-02",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-12-02"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_11294",
+      "title": "Effects of diode laser photobiomodulation on peri-implant inflammation and stability in orthodontic mini-implants: A randomized controlled trial",
+      "category": "academic",
+      "summary": "Peri-implant inflammation in orthodontic mini-implant may lead to patient discomfort and treatment failure. This study aims to evaluate the effects of diode laser application on the health of mini-imp",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2511.11128v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-11-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-11-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_32775",
+      "title": "ABConformer: Physics-inspired Sliding Attention for Antibody-Antigen Interface Prediction",
+      "category": "academic",
+      "summary": "Accurate prediction of antibody-antigen (Ab-Ag) interfaces is critical for vaccine design, immunodiagnostics, and therapeutic antibody development. However, achieving reliable predictions from sequenc",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2509.23254v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-09-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-09-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_47439",
+      "title": "AbRank: A Benchmark Dataset and Metric-Learning Framework for Antibody-Antigen Affinity Ranking",
+      "category": "academic",
+      "summary": "Accurate prediction of antibody-antigen (Ab-Ag) binding affinity is essential for therapeutic design and vaccine development, yet the performance of current models is limited by noisy experimental lab",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2506.17857v2",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-06-21",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-06-21"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "pm_42865256",
+      "title": "Increasing autophagy with fasting and diet: separating fact from fiction.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42865256/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42865256",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42865036",
+      "title": "Consistency of Serial Cerebrospinal Fluid α-Synuclein Seed Amplification Assay Results in the Parkinson's Precision Medicine Initiative.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 1",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42865036/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42865036",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 1"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42864939",
+      "title": "Network Pharmacology in Drug Discovery: Current Advances, Challenges, and Future Directions Toward Precision Medicine.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 1",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42864939/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42864939",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 1"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42864904",
+      "title": "The transformative power of artificial intelligence and machine learning in blood banking/transfusion medicine: A vein-to-vein approach from blood col",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 1",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42864904/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42864904",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 1"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42864845",
+      "title": "Gene-Guided Therapy in Type 2 Diabetes Mellitus: An Integrative Review of the Pharmacogenetics of Metformin and Sodium-Glucose Cotransporter-2 Inhibit",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Nov",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42864845/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42864845",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Nov"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "market",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "market",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    }
+  ],
+  "category_breakdown": {
+    "tech_trend": 6,
+    "academic": 20,
+    "market": 2
+  },
+  "total_items": 28,
+  "data_quality": "real_api"
+}

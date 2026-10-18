@@ -1,0 +1,470 @@
+{
+  "report_id": "intel_2026-08-27",
+  "generated_at": "2026-08-27T16:53:27.524706",
+  "sources_checked": 4,
+  "source_results": {
+    "GitHub": 6,
+    "arXiv": 5,
+    "PubMed": 5,
+    "Competitors": 2
+  },
+  "items": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "tech_trend",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6246, Language: Python",
+      "market_signals": {
+        "github_stars": 6246,
+        "forks": 668,
+        "updated_at": "2026-08-27T07:59:13Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ]
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "tech_trend",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 5652, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 5652,
+        "forks": 335,
+        "updated_at": "2026-08-27T06:36:17Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ]
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "tech_trend",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4802, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4802,
+        "forks": 321,
+        "updated_at": "2026-08-27T08:30:24Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ]
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "tech_trend",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2408, Language: Python",
+      "market_signals": {
+        "github_stars": 2408,
+        "forks": 454,
+        "updated_at": "2026-08-27T08:08:07Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ]
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "tech_trend",
+      "summary": "The AI-native health data engine — collect, standardize, and reason over labs, wearables & genomics.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1060, Language: Python",
+      "market_signals": {
+        "github_stars": 1060,
+        "forks": 197,
+        "updated_at": "2026-08-27T06:01:21Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "fhir",
+        "genomics",
+        "health",
+        "health-data"
+      ]
+    },
+    {
+      "id": "gh_44771262",
+      "title": "microsoft/HealthClinic.biz",
+      "category": "tech_trend",
+      "summary": "The samples contained in this repo are used to present an end-to-end demo scenario based on a fictitious B2B and multitenant system, named “HealthClinic.biz” that provides different websites, mobile a",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/microsoft/HealthClinic.biz",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 503, Language: JavaScript",
+      "market_signals": {
+        "github_stars": 503,
+        "forks": 288,
+        "updated_at": "2026-07-28T11:47:14Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": []
+    },
+    {
+      "id": "arx_79059",
+      "title": "Planetary Prediction Engine: Autonomous Geospatial Prediction via Intelligent Data Selection and Foundation Model Embeddings",
+      "category": "academic",
+      "summary": "Addressing critical global challenges, from food security and disaster risk to disease outbreaks and socio-economic vulnerability, demands high-fidelity geospatial modeling. However, building predicti",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.26088v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_75545",
+      "title": "CardioFusion-AI: Robust ECG--PPG Fusion for Multimodal Physiological Monitoring Under Signal Degradation",
+      "category": "academic",
+      "summary": "Wearable electrocardiogram (ECG) and photoplethysmogram (PPG) sensors are complementary but individually fragile: motion artifact, poor contact, and sensor dropout can degrade one or both signals. Fus",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.26000v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_58705",
+      "title": "FRAME: separating sampling variation from representational cause in medical imaging fairness",
+      "category": "academic",
+      "summary": "Subgroup performance differences are the standard evidence for fairness bias in medical imaging, and the usual response removes the demographic information that a model encodes. Here we introduce Fair",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.25981v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_52109",
+      "title": "Why ML-based cough models do not generalize: a systematic cross-dataset evaluation for tuberculosis screening",
+      "category": "academic",
+      "summary": "Cough acoustics are promising for non-invasive tuberculosis (TB) screening, yet whether machine learning (ML) models capture disease-related acoustics or artifacts of data collection remains unresolve",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.25846v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_03959",
+      "title": "Large Language Model Few-Shot Prompting with Dilemma Training Outperforms Human Surrogates in Predicting Patient Preferences",
+      "category": "academic",
+      "summary": "In serious illness, human surrogates often struggle to accurately predict patient preferences (68% accuracy), causing decision conflict. Personalized Patient Preference Predictor (P4) agents offer a p",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2608.25771v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-08-26",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-08-26"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "pm_42649103",
+      "title": "Multi-Dimensional Barriers for Work Productivity and Possible Solutions to Overcome Presenteeism in Young-Onset Diabetes: A Mixed-Methods Study.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42649103/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42649103",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42648907",
+      "title": "Proteomic landscape of pan-tissue neuroendocrine carcinomas defines subtype-specific functional architectures, biomarkers and therapeutic targets.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42648907/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42648907",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42648887",
+      "title": "Interaction of genetic susceptibility and sunlight exposure on primary open-angle glaucoma risk and progression.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42648887/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42648887",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42648725",
+      "title": "Beyond Virtual Glucose Monitoring: Interpreting a Complex Multicomponent Intervention.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42648725/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42648725",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42648678",
+      "title": "Cellulose- and lignin-based smart hydrogels for barrier-adaptive delivery of fragile biotherapeutics: Molecular design, activity preservation, and tra",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42648678/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42648678",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "market",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ]
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "market",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ]
+    }
+  ],
+  "category_breakdown": {
+    "tech_trend": 6,
+    "academic": 10,
+    "market": 2
+  },
+  "total_items": 18,
+  "data_quality": "real_api"
+}

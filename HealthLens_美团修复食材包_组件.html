@@ -1,0 +1,34 @@
+<!--
+  HealthLens · 修复食材包组件（美团联盟带货，药食同源）
+  用法：把下面 <section> 块注入 3 篇 GEO 长文（cell-repair-non-drug / autophagy-activation / mitochondrial-health）
+        的 <div class="disclaimer"> 之前（与"证据来源"块并列）。
+  占位：{{MEITUAN_PID}} 需替换为你注册美团联盟后生成的推广位 PID（个人手机号+实名即可注册，零成本）。
+  未填 PID 前链接不生效（仅展示卡片）；填入后即为可点击分佣链接。
+  红线：仅食养零售（买菜/闪购/外卖 食养品），绝不碰买药处方/医美/问诊。
+-->
+<section class="recovery-pack card">
+  <h2>修复食材包 · 药食同源（美团 30 分钟可达）</h2>
+  <p class="sub">下表食材对应本文机制轴（A 气化 / B 气血-线粒体 / D 阴阳-昼夜 / F 正邪-炎症 / G 神-情志）。
+     本页为养生科普，非处方；点击经美团联盟跳转购买，产生佣金以支持项目运营。</p>
+  <div class="pack-grid">
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E7%94%9F%E5%A7%9C" target="_blank" rel="nofollow noopener">生姜 · 温中散寒（A/B 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E7%99%BE%E5%90%88" target="_blank" rel="nofollow noopener">百合 · 润肺安神（G/F 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E7%BB%BF%E8%B1%86" target="_blank" rel="nofollow noopener">绿豆 · 清热解毒（F/D 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E5%86%B3%E6%98%8E%E5%AD%90" target="_blank" rel="nofollow noopener">决明子 · 清肝明目（F/D 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E5%9C%B0%E9%BB%84" target="_blank" rel="nofollow noopener">地黄 · 滋阴养血（B/H 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E8%8B%A5%E8%8E%B2" target="_blank" rel="nofollow noopener">莲子 · 清心安神（G/A 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E5%86%AC%E7%93%9C" target="_blank" rel="nofollow noopener">冬瓜 · 化痰湿（F/D 轴）</a>
+    <a class="pack-item" href="https://union.meituan.com/website/jump?platform=1&pid={{MEITUAN_PID}}&target=https://www.meituan.com/search/?query=%E9%9D%92%E8%92%BF" target="_blank" rel="nofollow noopener">青蒿 · 清热解暑（F 轴）</a>
+  </div>
+  <p class="disclaimer-inline">※ 链接为美团联盟推广（CPS 分佣 3–10%），购买产生佣金；PID 待补全。
+     本项目仅作食养零售导流，不构成诊疗建议，亦不销售药品。</p>
+</section>
+
+<style>
+  .recovery-pack { margin: 28px 0; }
+  .pack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; margin: 14px 0; }
+  .pack-item { display: block; padding: 12px 14px; border: 1px solid #e3e8ef; border-radius: 10px;
+    text-decoration: none; color: #1a2b4a; background: #f7fafc; font-size: 14px; transition: .15s; }
+  .pack-item:hover { border-color: #2b8a6b; background: #eef7f2; }
+  .disclaimer-inline { font-size: 12px; color: #8a94a6; margin-top: 8px; }
+</style>

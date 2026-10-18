@@ -1,0 +1,239 @@
+name: 自动化流水线（定时）
+
+# 解决的问题：
+#   auto-pipeline 此前跑在厉兴的 Windows 本机——电脑关机，整个项目的自动化就停了。
+#   这与「无人值守运营」的目标直接冲突。
+#   迁到 GitHub Actions 后：云端执行、不依赖任何本地设备、失败自动通知。
+#
+# 闭环设计（此前缺失的正是后三段）：
+#   执行 → 失败重试 → 自愈 → 产出内容 → 提交 → 自动触发部署 → 失败开 Issue
+#
+# ============================================================
+# 【2026-09-12 修复】线上 /app/ 连续 5 天打不开的根因就在本文件：
+#
+#  1) 本 workflow 从未构建 React SPA。frontend/dist 被 .gitignore 排除，
+#     CI 全新检出时既没有 frontend/dist 也没有 frontend/node_modules，
+#     于是 build_site.py 里那次 npm run build 必然 "vite: not found"。
+#  2) 三个步骤都写了 continue-on-error: true，而判断条件用的是
+#     steps.<id>.conclusion —— 加了 continue-on-error 之后 conclusion 恒为
+#     success（真实结果在 .outcome 里）。后果三连：
+#        · 「失败时尝试自愈」永远不触发（run.conclusion 永不为 failure）
+#        · 「部署到 Cloudflare Pages」在构建失败时照跑 → 把没有 app/ 的
+#          残缺产物持续覆盖到生产
+#        · 「汇总与告警」永远认为一切正常 → 5 天来一个 Issue 都没开
+#     这是「静默失败 + 残缺产物上线」的完整链条。
+#  3) 修复：显式安装 Node 依赖并构建 SPA；所有判断改用 .outcome；
+#     部署前加产物完整性硬校验（缺 app/index.html 直接拒绝部署）。
+# ============================================================
+
+on:
+  schedule:
+    # 【2026-09-15 降频】此前 */30，GitHub 实际限流到 2~3 小时一次，
+    # 名义频率与实际频率严重不符，白白排队 40+ 轮/天。
+    # 现显式对齐为每 2 小时一次，与实测有效频率一致，队列压力减半。
+    # 回滚：改回 '*/30 * * * *' 即可。
+    # [2026-09-16 08:54 Beijing] 重新激活 schedule
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: '只跑指定阶段（留空=全流程）'
+        required: false
+        type: string
+
+permissions:
+  contents: write            # 需要提交生成的内容
+  issues: write              # 失败时开告警 Issue
+
+concurrency:
+  group: pipeline            # 防止上一轮没跑完就叠加下一轮
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # 构建 SPA 需要 Node（wrangler 也依赖 npx）
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 安装依赖
+        run: pip install -q requests paramiko
+
+      - name: 执行流水线
+        id: run
+        continue-on-error: true      # 先记录结果，后面统一判定，保证告警一定发得出去
+        working-directory: auto-pipeline
+        run: |
+          if [ -n "${{ inputs.phase }}" ]; then
+            python scheduler.py "${{ inputs.phase }}"
+          else
+            python scheduler.py run-all
+          fi
+
+      # 注意：这里必须用 steps.run.outcome（真实结果）。continue-on-error 会把
+      # conclusion 变成 success，此前自愈永远不触发。
+      - name: 失败时尝试自愈并重跑一次
+        id: heal
+        if: steps.run.outcome == 'failure'
+        continue-on-error: true
+        working-directory: auto-pipeline
+        run: |
+          echo "::warning::流水线失败，触发自愈"
+          python scheduler.py heal
+          python scheduler.py run-all
+
+      # 【2026-09-12 新增】先构建 React SPA，产出 frontend/dist。
+      # 缺失时 build_site.py 也会自己兜底安装+构建，这里是显式且更快的一条路径。
+      - name: 构建 React SPA（/app/ 入口）
+        id: spabuild
+        continue-on-error: true
+        working-directory: frontend
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npm run build
+          test -f dist/index.html || { echo "::error::SPA 构建未产出 dist/index.html"; exit 1; }
+
+      - name: 构建静态产物
+        id: build
+        continue-on-error: true
+        run: python auto-pipeline/scripts/phase_6_deploy/build_site.py
+
+      # 【2026-09-12 新增 / 2026-09-15 修路径】部署前的最后一道硬闸：
+      # 缺 app/index.html 一律拒绝部署，防止残缺产物覆盖线上正常版本
+      # （Pages 会把未命中的 /app/ SPA 回退成 GEO 首页）。
+      #
+      # 【2026-09-15 修复 · 关键】本步骤必须校验「本次构建真正产出的目录」，
+      # 不能硬编码 auto-pipeline/dist。原因：流水线内部的 phase_6_deploy 已先
+      # 构建并占用 auto-pipeline/dist，随后本 workflow 显式再跑 build_site.py
+      # 时命中「输出目录非空」保护，自动改写到一次性目录 dist_build_<ts>。
+      # 旧写法校验的是流水线那个（不含 index.html 的）半成品目录，于是判定
+      # 「产物缺少站点首页 index.html」并拒绝部署——而真实产物是完整的。
+      # run 34941831023（2026-09-15 07:27）即因此卡死：dist_build_20260915_153159
+      # 里 index.html 149KB + app/ 3 文件齐全，校验却查了空目录。
+      - name: 解析本次构建的真实产物目录
+        id: resolve
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          # 优先级：build_site.py 写的指针文件 > 时间戳最新的一次性目录
+          OUT=""
+          if [ -f auto-pipeline/build_out.txt ]; then
+            OUT=$(cat auto-pipeline/build_out.txt)
+          fi
+          if [ -z "$OUT" ] || [ ! -f "$OUT/index.html" ]; then
+            OUT=$(ls -dt auto-pipeline/dist_build_* auto-pipeline/dist 2>/dev/null | head -1)
+          fi
+          echo "out=$OUT" >> "$GITHUB_OUTPUT"
+          test -n "$OUT" && test -d "$OUT" || { echo "::error::无法定位构建产物目录"; exit 1; }
+          echo "::notice::本次构建产物目录: $OUT"
+
+      - name: 产物完整性校验
+        id: verify
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success'
+        run: |
+          OUT="${{ steps.resolve.outputs.out }}"
+          test -f "$OUT/index.html" || { echo "::error::产物缺少站点首页 index.html ($OUT)"; exit 1; }
+          test -f "$OUT/app/index.html" || { echo "::error::产物缺少 SPA 入口 app/index.html，拒绝部署残缺产物"; exit 1; }
+          echo "产物校验通过：$OUT/index.html + $OUT/app/index.html 均在"
+
+      - name: 部署到 Cloudflare Pages
+        id: deploy
+        if: steps.build.outcome == 'success' && steps.resolve.outcome == 'success' && steps.verify.outcome == 'success'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          BUILD_DIR: ${{ steps.resolve.outputs.out }}
+        run: |
+          npx --yes wrangler pages deploy "$BUILD_DIR" --project-name=healthlens --branch=main
+
+
+      - name: 提交内容变更
+        if: steps.build.outcome == 'success'
+        run: |
+          git config user.name  "healthlens-bot"
+          git config user.email "bot@healthlens.cc"
+          git add -A auto-pipeline/content auto-pipeline/reports auto-pipeline/pipeline_state.json reports/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "无内容变更，跳过提交"
+          else
+            git commit -m "chore(pipeline): 自动内容更新 $(date -u +%Y-%m-%d)"
+            git push
+            echo "已提交，将自动触发 Pages 部署"
+          fi
+
+      - name: 汇总与告警
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          RUN_OUTCOME:    ${{ steps.run.outcome }}
+          HEAL_OUTCOME:   ${{ steps.heal.outcome }}
+          SPA_OUTCOME:    ${{ steps.spabuild.outcome }}
+          BUILD_OUTCOME:  ${{ steps.build.outcome }}
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+        with:
+          script: |
+            const run    = process.env.RUN_OUTCOME;
+            const heal   = process.env.HEAL_OUTCOME;
+            const spa    = process.env.SPA_OUTCOME;
+            const build  = process.env.BUILD_OUTCOME;
+            const resolve = process.env.RESOLVE_OUTCOME;
+            const verify = process.env.VERIFY_OUTCOME;
+            const deploy = process.env.DEPLOY_OUTCOME;
+            const healed = run === 'failure' && heal === 'success';
+            // 使用 outcome（真实结果）而非 conclusion —— 后者被 continue-on-error 掩盖
+            const broken = (run === 'failure' && heal !== 'success')
+                        || spa === 'failure'
+                        || build === 'failure'
+                        || resolve === 'failure'
+                        || verify === 'failure'
+                        || deploy === 'failure';
+
+            const TITLE = '⚠️ 自动化流水线执行失败';
+            const { data: open } = await github.rest.issues.listForRepo({
+              ...context.repo, state: 'open', labels: 'pipeline'
+            });
+            const exist = open.find(i => i.title === TITLE);
+            const link = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            if (broken) {
+              const body = [
+                `**时间**: ${new Date().toISOString()}`, '',
+                '| 阶段 | 结果 |', '|---|---|',
+                `| 流水线执行 | ${run} |`,
+                `| 自愈重跑 | ${heal || '未触发'} |`,
+                `| SPA 构建 | ${spa || '未触发'} |`,
+                `| 产物构建 | ${build} |`,
+                `| 产物目录解析 | ${resolve || '未触发'} |`,
+                `| 产物校验 | ${verify || '未触发'} |`,
+                `| 部署上线 | ${deploy || '未触发'} |`, '',
+                '自愈已尝试但未能恢复，需要人工介入。', '',
+                `[查看日志](${link})`
+              ].join('\n');
+              if (exist) {
+                await github.rest.issues.createComment({ ...context.repo, issue_number: exist.number, body });
+              } else {
+                await github.rest.issues.create({ ...context.repo, title: TITLE, body, labels: ['pipeline','P1'] });
+              }
+              core.setFailed('流水线失败且自愈未成功');
+            } else {
+              if (exist) {
+                await github.rest.issues.createComment({
+                  ...context.repo, issue_number: exist.number,
+                  body: `✅ 流水线已恢复正常 — ${new Date().toISOString()}`
+                });
+                await github.rest.issues.update({ ...context.repo, issue_number: exist.number, state: 'closed' });
+              }
+              core.info(healed ? '首次失败，自愈后成功' : '流水线执行成功');
+            }

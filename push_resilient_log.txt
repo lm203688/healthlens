@@ -1,0 +1,505 @@
+Total: modified=74 deleted=137 untracked=279 all=353
+Already pushed: 0
+[1/353] .aoci\governance\entries-3c914e879daf6d4554ec63dd688660f3f696a920e4066aa2a0d37a84413194c5.json
+[2/353] app\api\mcp_http.py
+[3/353] app\services\totp_service.py
+[4/353] app\services\frequency_prescription.py
+[5/353] healthlens_agent/tests/test_team.py
+[6/353] tests\core\test_pii_sanitizer.py
+[7/353] auto-pipeline\reports\analysis\2026-09-03_decision_report.json
+[8/353] tests\core\test_axis_scorers.py
+[9/353] frontend\src\components\TrendChart.jsx
+[10/353] auto-pipeline\reports\analysis\2026-08-31_analysis_report.json
+  [progress] 10 ok, 10 total
+[11/353] healthlens_agent\api\__pycache__\compliance_api.cpython-313.pyc
+[12/353] healthlens_agent/_loader.py
+[13/353] .aoci\transactions\history\entries-5cffc6d3737945c10e5e2fb27d81dd6b452784b24d085ef3f5394b75242d9b26.json
+[14/353] auto-pipeline\pipeline_state.json.bak
+[15/353] healthlens_agent/mcp_server.py
+[16/353] app\api\repair.py
+[17/353] auto-pipeline\reports\intelligence\2026-08-31_intelligence_report.json
+[18/353] HealthLens_论文_IMR投稿包\cover_letter.md
+[19/353] push_resilient_log.txt
+[20/353] auto-pipeline\alerts\2026-08-31_health_route_gap.json
+  [progress] 20 ok, 20 total
+[21/353] healthlens_agent\api\__init__.py
+[22/353] edge\healthgateway\spectrum.py
+[23/353] app\api\growth.py
+[24/353] HealthLens_论文_IMR投稿包\DOI_VERIFICATION_REPORT.md
+[25/353] HealthLens_SCI申请渠道与步骤.md
+[26/353] auto-pipeline\reports\analysis\2026-08-31_decision_report.json
+[27/353] .gitignore
+[28/353] alembic\versions\006_add_region_jurisdiction.py
+[29/353] scripts\check_axis_a.py
+[30/353] frontend\src\pages\Payment.jsx
+  [progress] 30 ok, 30 total
+[31/353] app\models\points.py
+[32/353] app\middleware\utm_tracker.py
+[33/353] auto-pipeline/reports/analysis/2026-09-16_finance_e.json
+[34/353] app\api\tiered_growth.py
+[35/353] auto-pipeline\reports\analysis\2026-09-03_analysis_report.json
+[36/353] scripts\run_redteam_ci.py
+[37/353] frontend\api-contract\openapi.json
+[38/353] app\lib\region_guard.py
+[39/353] .aoci\governance\entries-cebb4ddeb9d1881cf6cebb19067f653150aaacb5f34a06cade40301697d752c9.json
+[40/353] docs\mcp-marketplace-copies.md
+  [progress] 40 ok, 40 total
+[41/353] app/tasks/ocr_tasks.py
+[42/353] healthlens_agent/team.py
+[43/353] auto-pipeline\reports\analysis\2026-09-06_decision_report.json
+[44/353] tests/core/test_pgx_engine.py
+[45/353] app\api\device_metrics.py
+[46/353] healthlens_agent\llm.py
+[47/353] auto-pipeline\reports\analysis\2026-09-02_analysis_report.json
+[48/353] .aoci\governance\entries-3daba30c47524c99ff9a590689335e2c07fd9aec66cba09ab5b7b8698af7f75b.json
+[49/353] app\models\referral.py
+[50/353] app\services\referral_service.py
+  [progress] 50 ok, 50 total
+[51/353] claims_policy\au_tga.yaml
+[52/353] .aoci\transactions\history\entries-fdfbba600449fde377c18ecc58962003f8e77e0ff86265b996006b0b6cc22548.json
+[53/353] app\models\knowledge_graph.py
+[54/353] app\api\points.py
+[55/353] app\lib\pulse_engine.py
+[56/353] auto-pipeline\reports\analysis\2026-09-16_feedback_a.json
+[57/353] mcp-server\LICENSE
+[58/353] auto-pipeline/alerts/ACTIVE_ALERTS.md
+[59/353] app/main.py
+[60/353] frontend/src/pages/AxisProfile.jsx
+  [progress] 60 ok, 60 total
+[61/353] auto-pipeline/reports/analysis/2026-09-16_conversion_b.json
+[62/353] auto-pipeline\reports\analysis\2026-09-05_analysis_report.json
+[63/353] app\core\axis_scorers.py
+[64/353] app\api\gdpr.py
+[65/353] frontend\src\components\AxisRadar.jsx
+[66/353] healthlens/frontend/_worker.js
+[67/353] claims_policy\us_fda.yaml
+[68/353] auto-pipeline\reports\ops_brief_2026-09-02.md
+[69/353] app/database.py
+[70/353] scripts\check_tools_list.py
+  [progress] 70 ok, 70 total
+[71/353] app/models/user.py
+[72/353] .aoci\verify_history\20261007T013429Z.txt
+[73/353] data\classical_books.sql
+[74/353] auto-pipeline/reports/analysis/2026-09-16_data_asset_c.json
+[75/353] app/worker.py
+[76/353] auto-pipeline\reports\intelligence\2026-09-03_intelligence_report.json
+[77/353] edge\healthgateway\__init__.py
+[78/353] app/utils/pii_sanitizer.py
+[79/353] app/models/__init__.py
+[80/353] aoci.txt
+  [progress] 80 ok, 80 total
+[81/353] app/api/medication_adherence.py
+[82/353] auto-pipeline\reports\analysis\2026-09-01_test_report.json
+[83/353] auto-pipeline\reports\analysis\2026-09-06_development_report.json
+[84/353] .aoci\transactions\history\entries-04a9bbeb7116ac071b195aa135fe541aed279af846a191b96643d45aad9b16b2.json
+[85/353] claims_policy\uk_mhra.yaml
+[86/353] auto-pipeline\pipeline_state.json.bak_2026-09-18
+[87/353] docs/HealthLens_产品技术白皮书.md
+[88/353] tests\test_pulse_engine.py
+[89/353] healthlens_agent\api\pipeline_api.py
+[90/353] app\api\v1\__init__.py
+  [progress] 90 ok, 90 total
+[91/353] app\api\share_report.py
+[92/353] .aoci\.gitignore
+[93/353] healthlens_agent/safety.py
+[94/353] pyproject.toml
+[95/353] app/core/tcm_engine.py
+[96/353] .aoci\transactions\history\entries-6c3db85d6dcba3327ef4d531947fff42099d863f40b32dde01f50512615d1587.json
+[97/353] aoci.code.txt
+[98/353] edge\healthgateway\command_whitelist.py
+[99/353] auto-pipeline\runs\run_20260916_074713.json
+[100/353] .aoci\transactions\history\entries-964832d73e2d186982cf85cedfba7e005998d2d04d7678996d02a5ecf9b8f907.json
+  [progress] 100 ok, 100 total
+[101/353] HealthLens_论文_IMR投稿包\CoverLetter.docx
+[102/353] .gitattributes
+[103/353] auto-pipeline\reports\intelligence\2026-09-05_intelligence_report.json
+[104/353] app/services/email_service.py
+[105/353] auto-pipeline\reports\ops_briefing\2026-08-31_daily_brief.md
+[106/353] app\api\seo.py
+[107/353] app\services\freemium_service.py
+[108/353] app\tasks\engagement_tasks.py
+[109/353] app\services\creem_pay_service.py
+[110/353] .aoci\governance\entries-9cbbe68e97fb038bc95a34dd99a76634dc13f6d0e29eadd7092a48ff90bed704.json
+  [progress] 110 ok, 110 total
+[111/353] .aoci\governance\entries-66b5f60133879976aea4c874e4a95e9cd4ad4b0aba4e38ef8c0a5b54cfed1280.json
+[112/353] app\api\geo_infra.py
+[113/353] HealthLens_核心判断Agent规格_2026-08-13.md
+[114/353] .github/workflows/ci.yml
+  [FAIL] .github/workflows/ci.yml
+[115/353] auto-pipeline\reports\ops_brief_2026-09-01.md
+[116/353] edge\healthgateway\tests\test_spectrum.py
+[117/353] app\services\analytics_service.py
+[118/353] .aoci\governance\entries-32113af9fc14fc0719e992755db39fe550f81daab53e76ab002ea195dd5444d8.json
+[119/353] auto-pipeline/reports/analysis/2026-09-16_promotion_d.json
+[120/353] app/__init__.py
+  [progress] 119 ok, 119 total
+[121/353] data\pulse_signatures.json
+[122/353] app\models\analytics.py
+[123/353] docs\audit_archive_policy.md
+[124/353] mcp-server\test_install.sh
+[125/353] app\services\seo_factory.py
+[126/353] data\pathway_to_syndrome_map.json
+[127/353] app\api\frequency.py
+[128/353] auto-pipeline\reports\ops_brief_2026-09-05.md
+[129/353] app/api/dashboard.py
+[130/353] .workbuddy-ai\memory\2026-10-09.md
+  [progress] 129 ok, 129 total
+[131/353] LICENSE
+[132/353] app/api/goals.py
+[133/353] .aoci\transactions\history\entries-31a9ae081876529c94ef0ae9068d42818c12d6c5096f214d0a80d2fb511aac68.json
+[134/353] app\api\growth_enhanced.py
+[135/353] .aoci\transactions\history\entries-50f72c3369eb677d6dd702be83ed852876c590a9dc96d3e17eb04da4bbc107aa.json
+[136/353] auto-pipeline\reports\intelligence\2026-09-15_intelligence_report.json
+[137/353] app\tasks\acquisition_tasks.py
+[138/353] auto-pipeline\reports\intelligence\2026-09-04_intelligence_report.json
+[139/353] frontend\src\pages\Share.jsx
+[140/353] docs\PULSE_DEVICE.md
+  [progress] 139 ok, 139 total
+[141/353] app\services\tiered_referral_service.py
+[142/353] app/api/records.py
+[143/353] app\models\seo.py
+[144/353] .aoci\baseline.json.bak
+[145/353] healthlens_agent/flow.py
+[146/353] auto-pipeline\reports\intelligence\2026-09-01_intelligence_report.json
+[147/353] app\tasks\ops_tasks.py
+[148/353] frontend\src\pages\Upload.jsx
+[149/353] edge\healthgateway\signal_source.py
+[150/353] auto-pipeline\reports\analysis\2026-09-04_decision_report.json
+  [progress] 149 ok, 149 total
+[151/353] auto-pipeline\reports\ops_brief_2026-09-04.md
+[152/353] .aoci\governance\entries-0210a0a6ec219536dfad0c53c2839a86d0d885a3f63c2d21d8a36da04e38cee1.json
+[153/353] app/core/pgx_engine.py
+[154/353] .aoci\transactions\history\entries-5b1f7b13fb6cbea1af9f117def78813a6cea75fd124dac8cada67c198584f62f.json
+[155/353] app/tasks/__init__.py
+[156/353] app\models\share_report.py
+[157/353] auto-pipeline\reports\analysis\2026-09-01_decision_report.json
+[158/353] .aoci\governance\entries-8d415e45bd5949d9d2c8637939f649c2a954fe9a85972592ccca269c6076dbf6.json
+[159/353] edge\healthgateway\main.py
+[160/353] auto-pipeline\reports\analysis\2026-09-06_analysis_report.json
+  [progress] 159 ok, 159 total
+[161/353] mcp_servers\healthlens_domain_mcp.py
+[162/353] frontend/src/i18n/locales/en.json
+[163/353] app/api/genome.py
+[164/353] mcp-server\build_docker.sh
+[165/353] scripts\check_server_json.py
+[166/353] auto-pipeline\reports\deployed\2026-09-16_deployment_report.json
+[167/353] .aoci\ledger.jsonl
+[168/353] .aoci\verify_history\20261007T012959Z.txt
+[169/353] .aoci\governance\entries-a57b81588e1b6dd4b31422c2cfc0885606a14445256d123a73b9668c3c506371.json
+[170/353] app\lib\axis_config.py
+  [progress] 169 ok, 169 total
+[171/353] docs\mcp-marketplace-submission.md
+[172/353] app/api/observations.py
+[173/353] scripts\translate_geo_content.py
+[174/353] .dockerignore
+[175/353] tests/api/test_dashboard.py
+[176/353] frontend/src/i18n/locales/zh.json
+[177/353] auto-pipeline\alerts\2026-09-06_backend_origin_down.json
+[178/353] auto-pipeline\reports\intelligence\2026-09-06_intelligence_report.json
+[179/353] HealthLens_论文_IMR投稿包\Figure1_Ten_Axis_Framework.eps
+[180/353] auto-pipeline/reports/analysis/2026-09-16_ops_health_f.json
+  [progress] 179 ok, 179 total
+[181/353] .github\workflows\mcp-publish.yml
+[182/353] AGENTS.md
+[183/353] auto-pipeline\reports\ops_brief_2026-09-03.md
+[184/353] push_log.txt
+[185/353] auto-pipeline\reports\deployed\2026-09-04_deployment_report.json
+[186/353] mcp-server\server.json
+[187/353] app\api\v1\__pycache__\__init__.cpython-313.pyc
+[188/353] app\models\gdpr_consent.py
+[189/353] edge\var_test\metrics\2026-10-05.json
+[190/353] app\utils\geo_translator.py
+  [progress] 189 ok, 189 total
+[191/353] auto-pipeline\reports\analysis\2026-09-04_development_report.json
+[192/353] app\api\seo_public.py
+[193/353] edge\healthgateway\firmware\pulse_esp32.ino
+[194/353] app\api\freemium.py
+[195/353] app\api\share_public.py
+[196/353] claims_policy\eu_mdr.yaml
+[197/353] healthlens_agent\api\__pycache__\skills_api.cpython-313.pyc
+[198/353] app\api\v1\__pycache__\diagnosis_agent.cpython-313.pyc
+[199/353] healthlens_agent\api\report_generator.py
+[200/353] .aoci\transactions\history\entries-805c9e40d7eab090e367128a7e091d85dcd27405b75d60b68d13da38adafcbbb.json
+  [progress] 199 ok, 199 total
+[201/353] auto-pipeline\reports\analysis\2026-09-04_test_report.json
+[202/353] .github\workflows\mcp-test.yml
+[203/353] data\verify_dataset_repo.py
+[204/353] auto-pipeline\reports\analysis\2026-09-04_analysis_report.json
+[205/353] auto-pipeline/config.json
+[206/353] .aoci\transactions\history\entries-49d44f3a1d7b725a77a134c5cf9200051eda803c5160af16f6c613f3bc1bc4e8.json
+[207/353] app\services\diagnosis_agent.py
+[208/353] .github\workflows\docker-publish.yml
+[209/353] auto-pipeline\reports\analysis\2026-09-01_analysis_report.json
+[210/353] docs\healthlens-mcp-design.md
+  [progress] 209 ok, 209 total
+[211/353] healthlens_agent\api\compliance_api.py
+[212/353] .aoci\transactions\history\entries-fdf0f9f8ac0bf31f097d37ba7be59f89de846a16a61d7ec55d3696ca277f6ad5.json
+[213/353] .aoci\verify_history\20261007T012347Z.txt
+[214/353] auto-pipeline\reports\analysis\2026-09-06_test_report.json
+[215/353] .aoci\governance\entries-d942c0a17da2b56adba2e6439cc86d25a4020d9d0425e8186d9f9be6cf6920b2.json
+[216/353] scripts\translate_geo_pages.py
+[217/353] app/api/connections.py
+[218/353] tests\test_edge_gateway.py
+[219/353] data/case_evidence_db.json
+[220/353] frontend/src/App.jsx
+  [progress] 219 ok, 219 total
+[221/353] frontend/src/api/client.js
+[222/353] healthlens_agent\api\__pycache__\report_generator.cpython-313.pyc
+[223/353] data\DATASET_CARD.md
+[224/353] app\api\llms_en.txt
+[225/353] frontend\src\components\CheckinHeatmap.jsx
+[226/353] app\api\feedback.py
+[227/353] healthlens_agent\api\__pycache__\pipeline_api.cpython-313.pyc
+[228/353] app/core/ocr_engine.py
+[229/353] .aoci\governance\entries-9c3c38144a0c0025941a7bced009f2d1df4302f2e1ee2bfded4e4fccbc029a92.json
+[230/353] claims_policy\intended_use_matrix.yaml
+  [progress] 229 ok, 229 total
+[231/353] app\connectors\google_health.py
+[232/353] mcp-server\README.md
+[233/353] data\publish_dataset_repo.py
+[234/353] claims_policy\cn.yaml
+[235/353] data\publish_hf.py
+[236/353] .github\workflows\publish-dataset.yml
+[237/353] edge\var_test\state.json
+[238/353] frontend\src\pages\PulseDevice.jsx
+[239/353] .aoci\baseline.json
+[240/353] tests/test_connectors.py
+  [progress] 239 ok, 239 total
+[241/353] auto-pipeline\reports\health_route_reeval_2026-09-02.md
+[242/353] edge\healthgateway\pulse_source.py
+[243/353] auto-pipeline\reports\analysis\2026-09-01_development_report.json
+[244/353] app\api\fusion.py
+[245/353] PRINCIPLES.md
+[246/353] mcp-server\Dockerfile
+[247/353] .aoci\governance\entries-b56f72022f29a48c5a1eccf2eecaa91d12a26d606b273d8435a5b33b19833a3e.json
+[248/353] app\api\health_tools.py
+[249/353] .workbuddy-ai\memory\2026-10-08.md
+[250/353] auto-pipeline\reports\deployed\2026-09-01_deployment_report.json
+  [progress] 249 ok, 249 total
+[251/353] HealthLens_论文发表渠道_免费SCI.md
+[252/353] frontend\src\pages\Retention.jsx
+[253/353] app/config.py
+[254/353] knowledge\README.md
+[255/353] auto-pipeline\reports\deployed\2026-09-03_deployment_report.json
+[256/353] HealthLens_产品完整性评估与开源技术提升建议_2026-09-23.md
+[257/353] auto-pipeline\reports\analysis\2026-09-05_decision_report.json
+[258/353] app\connectors\pulse_gateway.py
+[259/353] app\lib\claims_engine.py
+[260/353] app/api/reports.py
+  [progress] 259 ok, 259 total
+[261/353] auto-pipeline\reports\intelligence\2026-10-09_intelligence_report.json
+[262/353] HealthLens_全面提升评估报告_2026-10-08.md
+[263/353] .aoci\governance\entries-34f1334bd327cb8392626092c0b901e1f7aef1a88dfbfa7cc7d7dc577496c3b6.json
+[264/353] knowledge\LICENSE
+[265/353] app\api\pulse.py
+[266/353] app\services\xunhu_pay_service.py
+[267/353] auto-pipeline\archive_W35-2026.json
+[268/353] mcp-server\.dockerignore
+[269/353] data\tcm_mkg\_sample_preview.json
+[270/353] auto-pipeline\reports\intelligence\2026-10-04_intelligence_report.json
+  [progress] 269 ok, 269 total
+[271/353] healthlens_agent\api\skills_api.py
+[272/353] tests/core/test_risk_engine.py
+[273/353] docs\MCP_上线操作步骤_你来做.md
+[274/353] .aoci\verify_history\20261007T013705Z.txt
+[275/353] scripts\generate_multilingual_sitemap.py
+[276/353] .aoci\transactions\history\entries-10473d1ae32a49d6d8d2a25e048820f43526bcf6c5b83fbeacbace2cf0d99351.json
+[277/353] auto-pipeline\reports\analysis\2026-09-02_test_report.json
+[278/353] app\api\edge_ticket.py
+[279/353] .aoci\governance\entries-22eaffb5d369f0a35777a4bdefa1400e91022ed7dfbe4d5151ced822576d3b71.json
+[280/353] auto-pipeline\reports\intelligence\2026-09-02_intelligence_report.json
+  [progress] 279 ok, 279 total
+[281/353] CHANGELOG.md
+[282/353] alembic\versions\005_add_gdpr_consent.py
+[283/353] README.md
+[284/353] app\middleware\__init__.py
+  [FAIL] app\middleware\__init__.py
+[285/353] auto-pipeline\reports\health_route_rootcause_2026-09-01.md
+[286/353] .aoci\transactions\history\entries-74d430268f342b0322a4ccace9d3168b9975d7e7cdd7a1e32b46838238436df0.json
+[287/353] .aoci\governance\entries-9c7fac6cda9a8f6724fe6828f85e3f14505310d47d6211faf55d05b90609ff85.json
+[288/353] aoci.meta.txt
+[289/353] auto-pipeline\reports\health_route_fix_plan_a_2026-09-01.md
+  [FAIL] auto-pipeline\reports\health_route_fix_plan_a_2026-09-01.md
+[290/353] HealthLens_论文_IMR投稿包\manuscript_IMR.docx
+  [progress] 287 ok, 287 total
+[291/353] auto-pipeline\reports\deployed\2026-09-06_deployment_report.json
+[292/353] app/connectors/withings.py
+[293/353] app\api\v1\diagnosis_agent.py
+[294/353] auto-pipeline\archive_W30-2026.json
+[295/353] auto-pipeline/heal_history.json
+[296/353] app\models\tiered_referral.py
+[297/353] HealthLens_竞赛对标评估与提升建议.md
+[298/353] auto-pipeline\reports\analysis\2026-09-02_decision_report.json
+[299/353] .aoci\governance\entries-5646a463b75d611d06e3036ecf39fd820a5ee1fac1a59ae81a8c5885e4183dab.json
+[300/353] auto-pipeline/pipeline_state.json
+  [progress] 297 ok, 297 total
+[301/353] edge\healthgateway\server.py
+[302/353] app\services\share_report_service.py
+[303/353] HealthLens_论文_IMR投稿包\SUBMISSION_STEPS.md
+[304/353] auto-pipeline\reports\analysis\2026-09-16_test_report.json
+[305/353] .aoci\config.json
+[306/353] app/utils/security.py
+[307/353] app\api\payment.py
+[308/353] edge\healthgateway\aggregate.py
+[309/353] app/services/ocr_service.py
+[310/353] .aoci\config.local.json
+  [progress] 307 ok, 307 total
+[311/353] knowledge\MANIFEST.json
+[312/353] app/services/runtime_audit.py
+  [FAIL] app/services/runtime_audit.py
+[313/353] .aoci\transactions\history\entries-0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f.json
+  [FAIL] .aoci\transactions\history\entries-0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f.json
+[314/353] auto-pipeline\reports\analysis\2026-09-05_test_report.json
+[315/353] .aoci\transactions\history\entries-b226f27bd3a654d1cfa1871e60aba0e9199768d6e87dd20c8ae4d116c2c61fdf.json
+[316/353] .aoci\verify_history\20261007T132840Z.txt
+  [FAIL] .aoci\verify_history\20261007T132840Z.txt
+[317/353] HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+  [FAIL] HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+[318/353] scripts\check_search.py
+[319/353] config\axes\axes.yaml
+[320/353] app/connectors/__init__.py
+  [progress] 313 ok, 313 total
+[321/353] HealthLens_论文_IMR投稿包\Figure1_Ten_Axis_Framework.png
+[322/353] app\models\sleep.py
+[323/353] auto-pipeline\reports\ops_brief_2026-09-06.md
+  [FAIL] auto-pipeline\reports\ops_brief_2026-09-06.md
+[324/353] app/api/diagnosis.py
+[325/353] app\services\points_service.py
+[326/353] HealthLens_论文_整合医学稳态轴框架_全文.md
+[327/353] app\connectors\edge_gateway.py
+  [FAIL] app\connectors\edge_gateway.py
+[328/353] .aoci\verify_history\20261007T013117Z.txt
+  [FAIL] .aoci\verify_history\20261007T013117Z.txt
+[329/353] auto-pipeline\reports\deployed\2026-09-02_deployment_report.json
+[330/353] docs\PULSE_HARDWARE_STEPBYSTEP.md
+  [progress] 320 ok, 320 total
+[331/353] healthlens_agent/__main__.py
+[332/353] auto-pipeline\reports\analysis\2026-09-02_development_report.json
+  [FAIL] auto-pipeline\reports\analysis\2026-09-02_development_report.json
+[333/353] knowledge\__init__.py
+[334/353] edge\healthgateway\reporter.py
+[335/353] HealthLens_整合医学理论体系_架构v1.md
+[336/353] auto-pipeline\reports\analysis\2026-09-03_test_report.json
+[337/353] .aoci\transactions\history\entries-4196d1a68bb5608fb4676cad55a062908923dc20b38b3506bdfa44dc58d62cab.json
+[338/353] mcp-server\.mcp.json
+  [FAIL] mcp-server\.mcp.json
+[339/353] auto-pipeline/alerts/alert_state.json
+  [FAIL] auto-pipeline/alerts/alert_state.json
+[340/353] data/feedback_db.json
+  [FAIL] data/feedback_db.json
+[341/353] auto-pipeline\build_out.txt
+[342/353] auto-pipeline\reports\analysis\2026-09-03_development_report.json
+[343/353] app/lib/fusion_engine.py
+[344/353] auto-pipeline\reports\analysis\2026-09-05_development_report.json
+[345/353] knowledge\loader.py
+  [FAIL] knowledge\loader.py
+[346/353] docs\EDGE_GATEWAY.md
+[347/353] healthlens_agent/__init__.py
+[348/353] app\api\analytics.py
+[349/353] app\services\bio_database.py
+[350/353] app\services\agnes_ai.py
+  [progress] 335 ok, 335 total
+[351/353] app/core/risk_engine.py
+[352/353] tests\test_edge_ticket.py
+[353/353] auto-pipeline\reports\deployed\2026-09-05_deployment_report.json
+
+=== Done: 338 pushed, 15 failed, 338 total ===
+[resume] 279 files already pushed
+Total: modified=74 deleted=137 untracked=279 all=353
+Already pushed: 279
+[4/353] HealthLens_竞赛对标评估与提升建议.md
+[7/353] config\axes\axes.yaml
+[14/353] app\services\bio_database.py
+  [FAIL] app\services\bio_database.py
+[15/353] auto-pipeline\reports\analysis\2026-09-02_decision_report.json
+[23/353] app/core/risk_engine.py
+  [FAIL] app/core/risk_engine.py
+[28/353] alembic\versions\005_add_gdpr_consent.py
+  [FAIL] alembic\versions\005_add_gdpr_consent.py
+[34/353] .aoci\transactions\history\entries-b226f27bd3a654d1cfa1871e60aba0e9199768d6e87dd20c8ae4d116c2c61fdf.json
+[44/353] scripts\check_search.py
+[46/353] aoci.meta.txt
+[50/353] healthlens_agent/__init__.py
+  [FAIL] healthlens_agent/__init__.py
+[54/353] .github/workflows/ci.yml
+  [FAIL] .github/workflows/ci.yml
+[62/353] app\connectors\edge_gateway.py
+[65/353] app\models\sleep.py
+[70/353] healthlens_agent/__main__.py
+  [FAIL] healthlens_agent/__main__.py
+[74/353] auto-pipeline\reports\analysis\2026-09-02_development_report.json
+  [FAIL] auto-pipeline\reports\analysis\2026-09-02_development_report.json
+[81/353] docs\EDGE_GATEWAY.md
+[84/353] edge\healthgateway\server.py
+[88/353] app\middleware\__init__.py
+  [FAIL] app\middleware\__init__.py
+[102/353] CHANGELOG.md
+[110/353] HealthLens_整合医学理论体系_架构v1.md
+  [progress] 12 ok, 291 total
+[111/353] HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+  [FAIL] HealthLens_可扩展性与扩展方向报告_2026-10-09.md
+[116/353] auto-pipeline\reports\analysis\2026-09-03_test_report.json
+  [FAIL] auto-pipeline\reports\analysis\2026-09-03_test_report.json
+[117/353] app/connectors/withings.py
+[118/353] app\services\share_report_service.py
+[125/353] HealthLens_论文_整合医学稳态轴框架_全文.md
+  [FAIL] HealthLens_论文_整合医学稳态轴框架_全文.md
+[126/353] .aoci\verify_history\20261007T132840Z.txt
+[128/353] auto-pipeline\archive_W30-2026.json
+  [FAIL] auto-pipeline\archive_W30-2026.json
+[130/353] auto-pipeline\reports\analysis\2026-09-16_test_report.json
+  [progress] 16 ok, 295 total
+[138/353] .aoci\config.json
+[145/353] HealthLens_论文_IMR投稿包\SUBMISSION_STEPS.md
+[148/353] auto-pipeline\reports\analysis\2026-09-05_test_report.json
+[152/353] edge\healthgateway\reporter.py
+[162/353] knowledge\MANIFEST.json
+[163/353] .aoci\verify_history\20261007T013117Z.txt
+[170/353] knowledge\__init__.py
+  [progress] 23 ok, 302 total
+[171/353] .aoci\transactions\history\entries-4196d1a68bb5608fb4676cad55a062908923dc20b38b3506bdfa44dc58d62cab.json
+[175/353] edge\healthgateway\aggregate.py
+[178/353] app\services\points_service.py
+[182/353] auto-pipeline\reports\health_route_fix_plan_a_2026-09-01.md
+[184/353] app/connectors/__init__.py
+  [FAIL] app/connectors/__init__.py
+[193/353] .aoci\config.local.json
+[195/353] app/utils/security.py
+[200/353] app\api\analytics.py
+  [progress] 30 ok, 309 total
+[202/353] data/feedback_db.json
+[207/353] auto-pipeline\reports\deployed\2026-09-06_deployment_report.json
+[211/353] auto-pipeline\reports\analysis\2026-09-03_development_report.json
+[212/353] .aoci\governance\entries-9c7fac6cda9a8f6724fe6828f85e3f14505310d47d6211faf55d05b90609ff85.json
+[220/353] auto-pipeline\reports\health_route_rootcause_2026-09-01.md
+  [progress] 35 ok, 314 total
+[222/353] app/services/runtime_audit.py
+[226/353] knowledge\loader.py
+[245/353] docs\PULSE_HARDWARE_STEPBYSTEP.md
+[246/353] app/api/diagnosis.py
+[249/353] app/lib/fusion_engine.py
+[253/353] app/services/ocr_service.py
+[266/353] .aoci\transactions\history\entries-74d430268f342b0322a4ccace9d3168b9975d7e7cdd7a1e32b46838238436df0.json
+[273/353] README.md
+  [FAIL] README.md
+[276/353] auto-pipeline/alerts/alert_state.json
+[278/353] auto-pipeline/pipeline_state.json
+[287/353] app\services\agnes_ai.py
+[288/353] auto-pipeline\reports\deployed\2026-09-05_deployment_report.json
+[291/353] .aoci\transactions\history\entries-0f57a4f93859e8cb27cf52ceb2b5f68a0291ea0ee4ed3a6a174b25ed19ef8c4f.json
+[299/353] app\api\payment.py
+[302/353] auto-pipeline\reports\deployed\2026-09-02_deployment_report.json
+[308/353] .aoci\governance\entries-5646a463b75d611d06e3036ecf39fd820a5ee1fac1a59ae81a8c5885e4183dab.json
+[309/353] HealthLens_论文_IMR投稿包\Figure1_Ten_Axis_Framework.png
+[314/353] HealthLens_论文_IMR投稿包\manuscript_IMR.docx
+[318/353] mcp-server\.mcp.json
+[322/353] auto-pipeline\reports\ops_brief_2026-09-06.md
+[326/353] app\api\v1\diagnosis_agent.py
+[335/353] auto-pipeline\build_out.txt
+[343/353] app\models\tiered_referral.py
+[346/353] tests\test_edge_ticket.py
+[349/353] auto-pipeline/heal_history.json
+[350/353] auto-pipeline\reports\analysis\2026-09-05_development_report.json
+  [progress] 60 ok, 339 total
+
+=== Done: 60 pushed, 14 failed, 339 total ===

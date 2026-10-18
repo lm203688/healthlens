@@ -1,0 +1,73 @@
+{
+  "report_id": "deploy_2026-09-16",
+  "generated_at": "2026-09-16T07:52:52.062663",
+  "channel": "cloudflare_pages",
+  "summary": {
+    "total_items": 2,
+    "deployed": 2,
+    "failed": 0,
+    "new_urls": [
+      {
+        "loc": "https://healthlens.cc/knowledge/国内竞品健康管理app功能对比分析-guide",
+        "lastmod": "2026-09-16",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      },
+      {
+        "loc": "https://healthlens.cc/knowledge/pemf频率疗法在家用设备中的应用增长-guide",
+        "lastmod": "2026-09-16",
+        "changefreq": "weekly",
+        "priority": "0.8"
+      }
+    ]
+  },
+  "indexnow": {
+    "sent": false,
+    "reason": "未配置 indexnow_key 或没有新增 URL"
+  },
+  "seo_summary": {
+    "new_pages": 2,
+    "expected_impact": "预计 1-2 周内开始获得搜索引擎流量",
+    "target_keywords": 0,
+    "recommendation": "持续监控 Google Search Console 和百度统计数据"
+  },
+  "deployments": [
+    {
+      "task_id": "task_edu_006",
+      "file": "content/generated/国内竞品健康管理app功能对比分析-guide.html",
+      "status": "deployed",
+      "slug": "国内竞品健康管理app功能对比分析-guide",
+      "remote_path": "/knowledge/国内竞品健康管理app功能对比分析-guide.html",
+      "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+      "note": "",
+      "live_check": {
+        "slug": "国内竞品健康管理app功能对比分析-guide",
+        "http_code": 0,
+        "bytes": 102,
+        "status": "network_error",
+        "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 15-22: ordinal not in range(128)"
+      }
+    },
+    {
+      "task_id": "task_edu_007",
+      "file": "content/generated/pemf频率疗法在家用设备中的应用增长-guide.html",
+      "status": "deployed",
+      "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+      "remote_path": "/knowledge/pemf频率疗法在家用设备中的应用增长-guide.html",
+      "preview": "✨ Deployment complete! Take a peek over at https://3a12096c.healthlens-a3w.pages.dev",
+      "note": "",
+      "live_check": {
+        "slug": "pemf频率疗法在家用设备中的应用增长-guide",
+        "http_code": 0,
+        "bytes": 102,
+        "status": "network_error",
+        "note": "网络错误: UnicodeEncodeError: 'ascii' codec can't encode characters in position 19-33: ordinal not in range(128)"
+      }
+    }
+  ],
+  "next_steps": [
+    "监控搜索引擎索引状态",
+    "跟踪新页面的流量表现",
+    "根据效果优化内容策略"
+  ]
+}

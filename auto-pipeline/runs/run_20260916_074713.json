@@ -1,0 +1,81 @@
+{
+  "run_id": "run_20260916_074635",
+  "started_at": "2026-09-16T07:46:35.849391",
+  "finished_at": "2026-09-16T07:47:13.473176",
+  "duration_seconds": 37,
+  "verdict": "SUCCESS",
+  "failed_count": 0,
+  "failed_items": [],
+  "health_issues": [],
+  "heal_summary": {
+    "started_at": "2026-09-16T07:46:35.851702",
+    "dirs_created": [],
+    "state_fixed": [
+      "run_history"
+    ],
+    "stuck_phases_reset": [],
+    "failed_phase_reset": [],
+    "tasks_retried": [],
+    "disk_ok": true,
+    "disk_free_gb": 70.73,
+    "total_actions": 1,
+    "finished_at": "2026-09-16T07:46:35.867076"
+  },
+  "pipeline_a": {
+    "ok": true,
+    "executed": 0,
+    "succeeded": 0,
+    "failures": []
+  },
+  "feedback_a": {
+    "ok": true,
+    "reason": "",
+    "detail": "",
+    "attempts": 1,
+    "name": "A.效果追踪反馈"
+  },
+  "feedback_bf": {
+    "A": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "A.效果追踪反馈"
+    },
+    "B": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "B.用户转化闭环"
+    },
+    "C": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "C.数据资产闭环"
+    },
+    "D": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "D.推广营销闭环"
+    },
+    "E": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "E.资金闭环"
+    },
+    "F": {
+      "ok": true,
+      "reason": "",
+      "detail": "",
+      "attempts": 1,
+      "name": "F.项目运维闭环"
+    }
+  }
+}

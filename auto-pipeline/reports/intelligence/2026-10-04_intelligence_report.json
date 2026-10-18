@@ -1,0 +1,721 @@
+{
+  "report_id": "intel_2026-10-04",
+  "generated_at": "2026-10-04T00:10:25.193370",
+  "sources_checked": 4,
+  "sources_failed": [],
+  "source_results": {
+    "GitHub": 6,
+    "arXiv": 15,
+    "PubMed": 5,
+    "Competitors": 2
+  },
+  "items": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "tech_trend",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 7138, Language: Python",
+      "market_signals": {
+        "github_stars": 7138,
+        "forks": 775,
+        "updated_at": "2026-10-03T16:10:01Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ]
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "tech_trend",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6179, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 6179,
+        "forks": 393,
+        "updated_at": "2026-10-03T15:25:27Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ]
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "tech_trend",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4909, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4909,
+        "forks": 332,
+        "updated_at": "2026-10-03T14:51:53Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ]
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "tech_trend",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2600, Language: Python",
+      "market_signals": {
+        "github_stars": 2600,
+        "forks": 500,
+        "updated_at": "2026-10-03T16:02:42Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ]
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "tech_trend",
+      "summary": "Self-hosted health data engine: lab reports, wearables and genetic files in one record, and an agent that cites its sources.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1352, Language: Python",
+      "market_signals": {
+        "github_stars": 1352,
+        "forks": 237,
+        "updated_at": "2026-10-03T15:48:43Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "apple-health",
+        "digital-health",
+        "ehr",
+        "fhir"
+      ]
+    },
+    {
+      "id": "gh_1196502414",
+      "title": "OpenStrap/edge",
+      "category": "tech_trend",
+      "summary": "App which allows you to use your health devices beyond subscriptions. Supports Workout Tracking, Nutrition Tracking, Wellness Excercise, Sleep, Recovery, Strain, and Many more.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/OpenStrap/edge",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 648, Language: Dart",
+      "market_signals": {
+        "github_stars": 648,
+        "forks": 116,
+        "updated_at": "2026-10-03T13:16:53Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ble",
+        "bluetooth-low-energy",
+        "dart",
+        "flutter",
+        "health-tracking"
+      ]
+    },
+    {
+      "id": "arx_12525",
+      "title": "Counterfactual Auditing of Bias in Open-Source Large Language Models for Clinical Triage",
+      "category": "academic",
+      "summary": "Emergency department (ED) triage is a high-stakes prioritization task in which demographic, socioeconomic, and system-context information may improperly influence acuity assignment. Although open-sour",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.01963v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-10-01",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-01"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_78128",
+      "title": "Beyond Decodability: Do Acoustic Factors Drive Predictions in Speech-Based Alzheimer's Assessment?",
+      "category": "academic",
+      "summary": "Speech-based Alzheimer's disease (AD) assessments increasingly rely on pretrained self-supervised learning (SSL) models that learn acoustic representations directly from raw audio, exposing the model ",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.01846v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-01",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-01"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_42861",
+      "title": "Generalized Engression Models",
+      "category": "academic",
+      "summary": "We consider estimating the conditional distribution of a multivariate outcome given covariates when its coordinates may be continuous, binary, categorical, ordinal or rankings, and are conditionally d",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.01823v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-01",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-01"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_87410",
+      "title": "PhaseAT: Fourier Phase Adversarial Training for Medical Image Domain Generalization",
+      "category": "academic",
+      "summary": "Reliable clinical deployment of deep medical image models is hindered by distribution shifts across scanners, sites, and acquisition protocols. Existing domain generalization (DG) methods often focus ",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.01807v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-10-01",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-01"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_03955",
+      "title": "Anomaly Detection and Localization for the Pantograph-Catenary System",
+      "category": "academic",
+      "summary": "Monitoring the Pantograph-Catenary System (PCS) provides insight into the health conditions of the pantograph and the railway infrastructure. Recent industrial solutions trace the pantograph's contact",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2610.01721v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-10-01",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-10-01"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_60585",
+      "title": "Fragment Path Complex Networks for Viral Genome Classification",
+      "category": "academic",
+      "summary": "Accurate classification of viral families is essential to understanding genomic diversity, but rapid evolution and heterogeneous genome structure complicate reliable assignment. Newly discovered virus",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.38651v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-29",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-29"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_16961",
+      "title": "GenoMorph: Pathway-Grounded Genomic Disease Reasoning via Adaptive Latent Computation",
+      "category": "academic",
+      "summary": "Large language models (LLMs) have demonstrated strong capabilities in biological reasoning; however, genomic disease inference remains largely dependent on memorized gene-disease associations rather t",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.34079v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-09-28",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-28"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_30460",
+      "title": "CipherGenome: Homomorphic Inference for Genomic Mixture-of-Experts",
+      "category": "academic",
+      "summary": "Genome foundation models are growing into sparse mixture-of-experts (MoE) networks whose expert weights no longer fit on the machines that hold the sequences, yet sending a private genome to rented ac",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.35883v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-09-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_03295",
+      "title": "GenomeOcean Anywhere: Private WebGPU Inference for Genome MoEs",
+      "category": "academic",
+      "summary": "Genome foundation models are most useful where sequences are generated, yet the largest models need datacenter accelerators and a place to send private DNA. We ask whether a 15-billion-parameter genom",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.35882v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_44859",
+      "title": "GenoTrace: Inheritable Watermarks for Genome Foundation Model Distillation",
+      "category": "academic",
+      "summary": "Can a genome model retain a detectable record of the synthetic sequences used to train it? We study watermark inheritance through distillation with GenoTrace, a codon-aware extension of green-list wat",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.35881v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_26587",
+      "title": "Epigenetic state encodes locus-specific chromatin mechanics",
+      "category": "academic",
+      "summary": "Chromatin is repeatedly deformed in vivo during transcription, nuclear remodeling, and confined migration - yet how mechanical response varies from locus to locus, and how it relates to epigenetic sta",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2512.22820v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2025-12-28",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-12-28"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_24311",
+      "title": "Modulation of DNA rheology by a transcription factor that forms aging microgels",
+      "category": "academic",
+      "summary": "Proteins and nucleic acids form non-Newtonian liquids with complex rheological properties that contribute to their function in vivo. Here we investigate the rheology of the transcription factor NANOG,",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2512.02864v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-12-02",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-12-02"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_27228",
+      "title": "Effects of diode laser photobiomodulation on peri-implant inflammation and stability in orthodontic mini-implants: A randomized controlled trial",
+      "category": "academic",
+      "summary": "Peri-implant inflammation in orthodontic mini-implant may lead to patient discomfort and treatment failure. This study aims to evaluate the effects of diode laser application on the health of mini-imp",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2511.11128v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-11-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-11-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_37448",
+      "title": "ABConformer: Physics-inspired Sliding Attention for Antibody-Antigen Interface Prediction",
+      "category": "academic",
+      "summary": "Accurate prediction of antibody-antigen (Ab-Ag) interfaces is critical for vaccine design, immunodiagnostics, and therapeutic antibody development. However, achieving reliable predictions from sequenc",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2509.23254v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-09-27",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-09-27"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_74916",
+      "title": "AbRank: A Benchmark Dataset and Metric-Learning Framework for Antibody-Antigen Affinity Ranking",
+      "category": "academic",
+      "summary": "Accurate prediction of antibody-antigen (Ab-Ag) binding affinity is essential for therapeutic design and vaccine development, yet the performance of current models is limited by noisy experimental lab",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2506.17857v2",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2025-06-21",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2025-06-21"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "pm_42827457",
+      "title": "Lipid signature in X-ALD: a comparison between phenotypes.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42827457/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42827457",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42827437",
+      "title": "Robust forecasting of sedentary bouts in chronic pelvic pain disorders for on-device learning and real-time deployment.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42827437/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42827437",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42827421",
+      "title": "Digital health literacy and sports participation among college students: the role of cognitive flexibility and physical activity self-efficacy.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42827421/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42827421",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42827203",
+      "title": "Cellular senescence: six decades of discovery and reinvention.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42827203/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42827203",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42827144",
+      "title": "A myeloid-dormant metabolic transcriptome identifies a poor-prognosis subgroup in hyperdiploid multiple myeloma with targetable vulnerabilities.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 1",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42827144/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42827144",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 1"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "market",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "market",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    }
+  ],
+  "category_breakdown": {
+    "tech_trend": 6,
+    "academic": 20,
+    "market": 2
+  },
+  "total_items": 28,
+  "data_quality": "real_api"
+}

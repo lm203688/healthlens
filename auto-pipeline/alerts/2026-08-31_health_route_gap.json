@@ -1,0 +1,37 @@
+{
+  "level": "HIGH",
+  "opened": "2026-08-31T03:04:24",
+  "updated": "2026-09-02T03:10:00",
+  "scope": "healthlens.cc /health route",
+  "title": "站点级后端中断 — api.healthlens.cc 边缘对所有路径 404，整条 /api 通道失效（原 /health 缺口已升级）",
+  "root_cause": "worker 已正确代理裸 /health → api.healthlens.cc/health（resolveOverride 源站 150.158.119.19）。但 api.healthlens.cc 的 Cloudflare 边缘规则（WAF/Firewall 或 Origin Rule）仅放行 /api/** 到源站，对 /health、/metrics 等其它路径在边缘直接返回 404（空 body, Server: cloudflare）。证据：(1) ECS 直连 127.0.0.1:8000/health → 200 {\"status\":\"ok\",\"version\":\"0.18.1\"}（后端健康、Host 无关）；(2) ECS 上 --resolve api.healthlens.cc:443:150.158.119.19 模拟 worker 路径，/health 与 /api 均 200（nginx location / 全量反代到 127.0.0.1:8000，无路径限制）；(3) 沙箱直连 api.healthlens.cc 任意路径（含 /api）均 404，而经 worker resolveOverride 时 /api→200、/health→404 —— 证明是 Cloudflare 边缘按路径放行 /api 的拦截，非 worker/nginx/后端问题。",
+  "verified_ok": [
+    "FastAPI 主应用 @app.get('/health') 返回 {\"status\":\"ok\",\"version\":...}，无鉴权、无 Host 限制",
+    "ECS nginx api.healthlens.cc.conf: location / 全量 proxy_pass http://127.0.0.1:8000，Host=$host",
+    "worker /health 分支已部署（auto-pipeline/dist/_worker.js L174），source 与 deploy_out 两份已同步"
+  ],
+  "impact": "【已升级为站点级】api.healthlens.cc 边缘对所有入站路径返回 404；Worker 经 resolveOverride 的子请求也走同一 zone 边缘被 404，故整条 /api 通道失效：套餐接口退回静态兜底(source:edge-fallback)、其余 /api 接口返回 404 空体。线上所有依赖后端的动态功能（套餐/支付/账户/报告）当前拿不到真实数据。后端进程本身健康（SSH 直连 127.0.0.1:8000/health=200 早前已验证），问题在 Cloudflare 边缘到源站这一段。修复 = 方案 A（放宽 api.healthlens.cc zone 边缘规则放行后端路径）。",
+  "fix_required_user_action": {
+    "where": "Cloudflare 控制台 → 站点 api.healthlens.cc（账户 8162aa3b…）→ Security / WAF / Firewall Rules（或 Origin Rules）",
+    "what": "找到『仅放行 /api/**、其余 404』的规则，增加例外放行路径 /health 与 /metrics（或改为允许子路径 /api、/health、/metrics）。保存后边缘即生效，无需重新部署。",
+    "why_self_not_done": "部署用 CF 令牌为 Pages-only（无 Zone/Firewall 写权），且属账户级变更，需用户手动确认执行。"
+  },
+  "alternative_fix_no_cloudflare": "后端增加无鉴权路由 @app.get('/api/v1/health') 返回健康态 → worker 将 /health 代理到 api.healthlens.cc/api/v1/health（命中已放行的 /api/**），即可绕开边缘拦截；但需改后端代码并重启 ECS 上后端服务（生产变更，需用户批准）。",
+  "reevaluation_2026-09-02": {
+    "by": "automation-1788102264547 每日闭环（内容级复核，遵循 2026-09-01 教训：不只看状态码）",
+    "evidence": [
+      "healthlens.cc/api/v1/growth/points/packages → 200，真实 DB 数据（入门套餐/基础套餐/Pro，价格 9.9/39.9…）经 worker 代理返回",
+      "api.healthlens.cc/api/v1/growth/points/packages → 200，逐字节相同的真实数据（直连子域）⇒ 后端端到端可达",
+      "healthlens.cc/health → 200 {\"status\":\"ok\",\"version\":\"0.18.1\"}（真实后端健康态，非降级桩）",
+      "/api/v1/health、/api/openapi.json、/api/docs、/api/v1/growth/points/balance → 404 body={\"detail\":\"Not Found\"}=FastAPI 路由级 404，证明请求已抵达后端（非边缘拦截）",
+      "SSH localhost:8000/health → {\"status\":\"ok\",\"version\":\"0.18.1\"}（后端进程健康）"
+    ],
+    "conclusion": "2026-09-01『站点级边缘 404 / 整条 /api 通道失效』结论现已不成立。后端端到端可达，/api 通道返回真实数据（用户大概率已执行 方案 A 放宽边缘规则）。其余 404 为后端不存在的路由（正常），非边缘拦截。",
+    "action_needed": "边缘问题无需再处理。可选：若需独立健康端点，后端可加 /api/v1/health 路由（healthlens.cc/health 已能透出真实后端状态）。告警可关闭。"
+  },
+  "status": "resolved_reevaluated_2026-09-02",
+  "user_decision": "2026-09-01 用户选定 方案 A（放宽 api.healthlens.cc 边缘规则）。执行清单见 auto-pipeline/reports/health_route_fix_plan_a_2026-09-01.md。",
+  "ai_side_ready": true,
+  "ai_side_ready_note": "worker /health 代理规则已部署且线上生效（实测返回 CF 404 = 规则已触发代理，非 SPA 壳）；三处 worker 源（源文件/deploy_out/dist）均已含规则，小时级部署不会回退。用户改完边缘规则即生效，无需重部署。",
+  "escalated_sitewide_2026-09-01": "原以为仅 /health 被边缘拦截；本次实测复核发现 api.healthlens.cc zone 边缘对 ALL 路径返回 404。证据：(1) proxy() 仅在 fetch 抛错时返 502，而 /api/openapi.json 等返 404 空体→子请求抵达边缘被 404、源站未收到；(2) 访客直连 api.healthlens.cc 任意路径均 404。故整条 /api 通道失效（套餐=静态兜底，其余=404）。早期 live-check 仅看状态码掩盖了故障。修复仍 = 方案 A（放宽该 zone 边缘规则），且修复后整后端恢复而不仅是 /health。执行清单见 auto-pipeline/reports/health_route_fix_plan_a_2026-09-01.md（已升级版）。"
+}

@@ -1,0 +1,85 @@
+{
+  "report_id": "decision_2026-08-31",
+  "generated_at": "2026-08-31T03:01:59.685597",
+  "summary": {
+    "new_approved": 0,
+    "total_approved": 11,
+    "watch_count": 27,
+    "rejected_count": 1,
+    "tasks_created": 0
+  },
+  "high_priority_tasks": [],
+  "all_tasks": [],
+  "decisions": [
+    {
+      "item_id": "pm_42668978",
+      "title": "Analysis of Generative Artificial Intelligence Governance in Publicly Available Documentation of Global and Saudi Universities Offering Health Informa",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42668925",
+      "title": "Clinical Efficacy and Patient Adherence Hurdles of Remote Patient Monitoring (RPM) Frameworks in Managing Hypertension and Type 2 Diabetes: A Scoping ",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42668923",
+      "title": "Healthcare professionals' intention to adopt a smart diabetic foot screening system: A UTAUT-informed mixed-methods study.",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42668898",
+      "title": "Systematic Analysis of Plasma-Derived Extracellular Vesicle-Enriched Samples in Age-Related Macular Degeneration Reveals Oxidative Stress Linked to Al",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "pm_42668811",
+      "title": "Short-term BMI changes associated with self-selected weight-control dietary patterns among Chinese office-based adults using a digital health platform",
+      "score": 69.7,
+      "decision": "watch",
+      "rationale": "评分 69.7 介于观察区间"
+    },
+    {
+      "item_id": "arx_32172",
+      "title": "Learning a Continuous Sepsis Severity Score Without Hour-by-Hour Supervision: A Two-Site Retrospective Study",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_04713",
+      "title": "QuantumBoostNet: A Hybrid Classical-Quantum Architecture for Enhanced Accuracy in Cardiac Ultrasound View Identification",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_53765",
+      "title": "A Point-of-Prescription Safety-Check System for Adverse Drug Reactions in Rural Bangladeshi Hospitals: A Feasibility Study",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_36215",
+      "title": "Graph-Based Pseudo-multimodal Contrastive Learning for 12-Lead ECG Representations",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    },
+    {
+      "item_id": "arx_77070",
+      "title": "Dose-PlanNet: Physics Based Radiotherapy Dose Prediction with Deep Learning",
+      "score": 58.4,
+      "decision": "watch",
+      "rationale": "评分 58.4 介于观察区间"
+    }
+  ]
+}

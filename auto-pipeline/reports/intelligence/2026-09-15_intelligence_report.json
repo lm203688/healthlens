@@ -1,0 +1,481 @@
+{
+  "report_id": "intel_2026-09-15",
+  "generated_at": "2026-09-15T18:11:59.318453",
+  "sources_checked": 4,
+  "sources_failed": [],
+  "source_results": {
+    "GitHub": 6,
+    "arXiv": 5,
+    "PubMed": 5,
+    "Competitors": 2
+  },
+  "items": [
+    {
+      "id": "gh_1189384516",
+      "title": "repowise-dev/repowise",
+      "category": "tech_trend",
+      "summary": "Codebase intelligence for AI and humans: code health scores, auto-generated docs, git analytics, dead code detection, and architectural decisions via MCP.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/repowise-dev/repowise",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 6554, Language: Python",
+      "market_signals": {
+        "github_stars": 6554,
+        "forks": 694,
+        "updated_at": "2026-09-15T10:07:56Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "code-complexity",
+        "code-health",
+        "code-intelligence",
+        "code-quality"
+      ]
+    },
+    {
+      "id": "gh_1006104934",
+      "title": "CodeWithCJ/SparkyFitness",
+      "category": "tech_trend",
+      "summary": "SparkyFitness: Built for Families. Powered by AI. Track food, fitness, water, and health — together.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/CodeWithCJ/SparkyFitness",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 5934, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 5934,
+        "forks": 366,
+        "updated_at": "2026-09-15T10:11:17Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "artificial-intelligence",
+        "fitness",
+        "fitness-app",
+        "fitness-tracker"
+      ]
+    },
+    {
+      "id": "gh_1052828228",
+      "title": "qixing-jk/all-api-hub",
+      "category": "tech_trend",
+      "summary": "All-in-one New-API/Sub2API account hub: balance/usage dashboard, auto check-in, one-click keys, price comparison, health checks, plus advanced channel management | 一站式 New-API/Sub2API 等中转站账号管理：余额/用量看板",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/qixing-jk/all-api-hub",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 4863, Language: TypeScript",
+      "market_signals": {
+        "github_stars": 4863,
+        "forks": 326,
+        "updated_at": "2026-09-15T09:42:24Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai",
+        "cc-switch",
+        "chatgpt",
+        "chatgpt-api",
+        "cherrystudio"
+      ]
+    },
+    {
+      "id": "gh_1086572146",
+      "title": "the-momentum/open-wearables",
+      "category": "tech_trend",
+      "summary": "Self-hosted platform to unify wearable health data through one AI-ready API.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/the-momentum/open-wearables",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 2506, Language: Python",
+      "market_signals": {
+        "github_stars": 2506,
+        "forks": 488,
+        "updated_at": "2026-09-15T09:08:18Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "apple-health",
+        "apple-watch",
+        "fastapi",
+        "fitness",
+        "fitness-analysis"
+      ]
+    },
+    {
+      "id": "gh_1106398326",
+      "title": "thetahealth/mirobody",
+      "category": "tech_trend",
+      "summary": "The AI-native health data engine — collect, translate, and reason over labs, wearables & genomics.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/thetahealth/mirobody",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 1310, Language: Python",
+      "market_signals": {
+        "github_stars": 1310,
+        "forks": 229,
+        "updated_at": "2026-09-15T09:06:20Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ai-agents",
+        "apple-health",
+        "digital-health",
+        "ehr",
+        "fhir"
+      ]
+    },
+    {
+      "id": "gh_1196502414",
+      "title": "OpenStrap/edge",
+      "category": "tech_trend",
+      "summary": "App which allows you to use your health devices beyond subscriptions. Supports Workout Tracking, Nutrition Tracking, Wellness Excercise, Sleep, Recovery, Strain, and Many more.",
+      "sources": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com/OpenStrap/edge",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "Stars: 578, Language: Dart",
+      "market_signals": {
+        "github_stars": 578,
+        "forks": 98,
+        "updated_at": "2026-09-15T06:32:26Z"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "ble",
+        "bluetooth-low-energy",
+        "dart",
+        "flutter",
+        "health-tracking"
+      ]
+    },
+    {
+      "id": "arx_16206",
+      "title": "LLM-Based Schema-Aware Split Learning for Privacy-Preserving Mental Distress Prediction Across Heterogeneous Surveys",
+      "category": "academic",
+      "summary": "Rising societal and lifestyle complexity has been linked to a growing prevalence of mental distress worldwide. Educational institutions, workplaces, clinics, etc. collect large volumes of mental healt",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.15871v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_03545",
+      "title": "K-Bench: a clinically calibrated benchmark for evaluating large language models in high-risk mental health conversations",
+      "category": "academic",
+      "summary": "% !TEX root = ../main.tex People increasingly use large language models (LLMs) for mental health support, yet their safety in evolving, high-risk conversations remains poorly characterised. We develop",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.15855v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "发表日期: 2026-09-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_94217",
+      "title": "Transfer Learning for Socioeconomic Estimation in Forced-Displacement Settings",
+      "category": "academic",
+      "summary": "Progress in inclusive household surveys has strengthened socioeconomic evidence for forcibly displaced populations, providing indispensable benchmarks on living conditions and welfare. However, these ",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.15773v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_28588",
+      "title": "A Language-Guided Multimodal Foundation Model for Zero-Shot and Multi-Task Brain Signal Analysis",
+      "category": "academic",
+      "summary": "Brain signal analysis is essential for both neuroscience research and clinical diagnostics, yet current approaches face critical limitations. End-to-end models require task-specific retraining and exh",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.15740v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "arx_69634",
+      "title": "Knowledge-Enriched Structured EHR Features for 30-Day Hospital Readmission Prediction on MIMIC-IV",
+      "category": "academic",
+      "summary": "Recent approaches to 30-day hospital readmission prediction rely on pre-trained language models applied to discharge summaries. Although these methods achieve strong performance, they depend on the av",
+      "sources": [
+        {
+          "name": "arXiv",
+          "url": "http://arxiv.org/abs/2609.15713v1",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "medium",
+      "actionable_insight": "发表日期: 2026-09-14",
+      "market_signals": {
+        "source": "arXiv",
+        "date": "2026-09-14"
+      },
+      "technical_feasibility": 0.75,
+      "tags": [
+        "arxiv",
+        "research"
+      ]
+    },
+    {
+      "id": "pm_42740782",
+      "title": "Association between obstructive sleep apnea symptom subtypes and mental health.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42740782/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42740782",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42740484",
+      "title": "Polygenic Risk Scores: Towards Clinical Application.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Oct 3",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42740484/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42740484",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Oct 3"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42740405",
+      "title": "Replication of sensory anhedonia as a predictor of escitalopram response: evidence from the NeuroPharm study.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Sep 1",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42740405/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42740405",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Sep 1"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42740013",
+      "title": "Mobile Health (mHealth) Apps in Sport Training: A Scoping Review.",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Aug 2",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42740013/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42740013",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Aug 2"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "pm_42739867",
+      "title": "Artificial Intelligence and Machine Learning in Rheumatology and Systemic Inflammatory Diseases: From Pattern Recognition to Signal Analysis and Clini",
+      "category": "academic",
+      "summary": "Source: PubMed, Published: 2026 Sep 4",
+      "sources": [
+        {
+          "name": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42739867/",
+          "relevance": 0.85
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "PubMed ID: 42739867",
+      "market_signals": {
+        "source": "PubMed",
+        "date": "2026 Sep 4"
+      },
+      "technical_feasibility": 0.7,
+      "tags": [
+        "pubmed",
+        "clinical"
+      ]
+    },
+    {
+      "id": "comp_001",
+      "title": "国内竞品健康管理App功能对比分析",
+      "category": "market",
+      "summary": "主流健康管理App正在向AI化和个性化方向演进，但普遍缺乏基因层面的深度归因。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "基因归因+量化修复是差异化核心竞争力",
+      "market_signals": {
+        "dau_growth": "稳定",
+        "付费率": "3-8%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    },
+    {
+      "id": "comp_002",
+      "title": "PEMF频率疗法在家用设备中的应用增长",
+      "category": "market",
+      "summary": "脉冲电磁场(PEMF)疗法的家用设备市场快速增长，从运动恢复延伸到睡眠和抗衰老领域。",
+      "sources": [
+        {
+          "name": "竞品分析",
+          "url": "",
+          "relevance": 0.8
+        }
+      ],
+      "relevance_to_healthlens": "high",
+      "actionable_insight": "可探索频率干预模块与现有方案的融合",
+      "market_signals": {
+        "market_size": "12亿美元",
+        "cagr": "8.5%"
+      },
+      "technical_feasibility": 0.8,
+      "tags": [
+        "竞品分析",
+        "市场格局"
+      ],
+      "is_static": true,
+      "source_type": "static_baseline"
+    }
+  ],
+  "category_breakdown": {
+    "tech_trend": 6,
+    "academic": 10,
+    "market": 2
+  },
+  "total_items": 18,
+  "data_quality": "real_api"
+}

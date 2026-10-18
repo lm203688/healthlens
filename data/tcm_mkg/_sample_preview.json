@@ -1,0 +1,227 @@
+{
+  "dataset": "TCM-MKG Structured Corpus (HealthLens curated)",
+  "total_entities": 6207,
+  "origin_repo": "https://github.com/ZENGJingqi/GraphAI-for-TCM",
+  "zenodo_doi": "10.5281/zenodo.13763953",
+  "license": "MIT (repo code/data, Copyright (c) 2024 Zeng Jingqi)",
+  "downstream_standards": [
+    "ICD-11",
+    "UMLS",
+    "MeSH",
+    "DOID"
+  ],
+  "sample_entities": [
+    {
+      "type": "herb_piece",
+      "id": "CHP00001",
+      "name": "阿尔泰多榔菊",
+      "synonyms": [
+        "多榔菊"
+      ],
+      "pinyin": "a er tai duo lang ju",
+      "english": "Doronicum altaicum",
+      "sources": [
+        "Viridiplantae"
+      ],
+      "medicinal_properties": [
+        {
+          "CHP_ID": "CHP00001",
+          "Medicinal_properties": "Sweet medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "13",
+          "y_rank": "19"
+        },
+        {
+          "CHP_ID": "CHP00001",
+          "Medicinal_properties": "Bitter medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "10",
+          "y_rank": "13"
+        },
+        {
+          "CHP_ID": "CHP00001",
+          "Medicinal_properties": "Lung meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "5",
+          "y_rank": "8"
+        },
+        {
+          "CHP_ID": "CHP00001",
+          "Medicinal_properties": "Warm therapeutic",
+          "Class": "Therapeutic nature",
+          "x_rank": "18",
+          "y_rank": "6"
+        }
+      ],
+      "evidence_level": "high",
+      "provenance": "TCM-MKG v3"
+    },
+    {
+      "type": "herb_piece",
+      "id": "CHP00002",
+      "name": "阿氏蒿",
+      "synonyms": [],
+      "pinyin": "a shi hao",
+      "english": "Artemisia adamsii",
+      "sources": [
+        "Viridiplantae"
+      ],
+      "medicinal_properties": [
+        {
+          "CHP_ID": "CHP00002",
+          "Medicinal_properties": "Bitter medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "10",
+          "y_rank": "13"
+        },
+        {
+          "CHP_ID": "CHP00002",
+          "Medicinal_properties": "Stomach meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "8",
+          "y_rank": "3"
+        },
+        {
+          "CHP_ID": "CHP00002",
+          "Medicinal_properties": "Lung meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "5",
+          "y_rank": "8"
+        },
+        {
+          "CHP_ID": "CHP00002",
+          "Medicinal_properties": "Cold therapeutic",
+          "Class": "Therapeutic nature",
+          "x_rank": "6",
+          "y_rank": "17"
+        }
+      ],
+      "evidence_level": "high",
+      "provenance": "TCM-MKG v3"
+    },
+    {
+      "type": "herb_piece",
+      "id": "CHP00003",
+      "name": "阿魏",
+      "synonyms": [
+        "臭阿魏|阿魏根|新疆阿魏"
+      ],
+      "pinyin": "a wei",
+      "english": "Asafoetida",
+      "sources": [
+        "Viridiplantae"
+      ],
+      "medicinal_properties": [
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Pungent medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "14",
+          "y_rank": "4"
+        },
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Bitter medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "10",
+          "y_rank": "13"
+        },
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Stomach meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "8",
+          "y_rank": "3"
+        },
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Spleen meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "19",
+          "y_rank": "5"
+        },
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Liver meridian",
+          "Class": "Meridian tropism",
+          "x_rank": "12",
+          "y_rank": "7"
+        },
+        {
+          "CHP_ID": "CHP00003",
+          "Medicinal_properties": "Warm therapeutic",
+          "Class": "Therapeutic nature",
+          "x_rank": "18",
+          "y_rank": "6"
+        }
+      ],
+      "evidence_level": "high",
+      "provenance": "TCM-MKG v3"
+    },
+    {
+      "type": "herb_piece",
+      "id": "CHP00004",
+      "name": "阿育魏实",
+      "synonyms": [],
+      "pinyin": "a yu wei shi",
+      "english": "Ajowan",
+      "sources": [
+        "Viridiplantae"
+      ],
+      "medicinal_properties": [
+        {
+          "CHP_ID": "CHP00004",
+          "Medicinal_properties": "Pungent medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "14",
+          "y_rank": "4"
+        },
+        {
+          "CHP_ID": "CHP00004",
+          "Medicinal_properties": "Bitter medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "10",
+          "y_rank": "13"
+        },
+        {
+          "CHP_ID": "CHP00004",
+          "Medicinal_properties": "Warm therapeutic",
+          "Class": "Therapeutic nature",
+          "x_rank": "18",
+          "y_rank": "6"
+        }
+      ],
+      "evidence_level": "high",
+      "provenance": "TCM-MKG v3"
+    },
+    {
+      "type": "herb_piece",
+      "id": "CHP00005",
+      "name": "埃蕾",
+      "synonyms": [],
+      "pinyin": "ai lei",
+      "english": "Centaurium pulchellum",
+      "sources": [
+        "Viridiplantae"
+      ],
+      "medicinal_properties": [
+        {
+          "CHP_ID": "CHP00005",
+          "Medicinal_properties": "Bitter medicinal",
+          "Class": "Medicinal flavor",
+          "x_rank": "10",
+          "y_rank": "13"
+        },
+        {
+          "CHP_ID": "CHP00005",
+          "Medicinal_properties": "Cold therapeutic",
+          "Class": "Therapeutic nature",
+          "x_rank": "6",
+          "y_rank": "17"
+        }
+      ],
+      "evidence_level": "high",
+      "provenance": "TCM-MKG v3"
+    }
+  ]
+}

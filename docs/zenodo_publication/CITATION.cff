@@ -1,0 +1,75 @@
+# CITATION.cff — HealthLens Zenodo Citation Metadata
+
+# 版本 v0.1.0-draft · 2026-10-16
+# 参见：docs/zenodo_publication/README.md、COMMUNITY_USE_POLICY.md
+# 引用规范：https://citation-file-format.github.io/
+
+cff-version: "1.5.0"
+title: "HealthLens Integrated Steady-State Axis Framework: Evidence Database, Cross-Modal Mapping, and n-of-1 Bayesian Aggregation"
+message: "If you use this dataset, please cite it as follows."
+
+authors:
+  - family-names: "HealthLens Research Team"
+    affiliation: "HealthLens (open-source project)"
+    orcid: "" # Fill at upload time
+    role: "creators"
+
+title-short: "HealthLens Steady-State Axis Framework Dataset"
+version: "v0.1.0"
+doi: "10.5281/zenodo.<DATASET_ID_PLACEHOLDER>"
+date-released: "2026-10-16"
+url: "https://doi.org/10.5281/zenodo.<DATASET_ID_PLACEHOLDER>"
+
+repository-code: "https://github.com/HealthLens/healthlens"
+repository-topic: "integrative-medicine"
+
+type: dataset
+license: "CC-BY-4.0"
+license-url: "https://creativecommons.org/licenses/by/4.0/legalcode"
+
+keywords:
+  - "integrative medicine"
+  - "traditional Chinese medicine"
+  - "n-of-1 trial"
+  - "crossover study"
+  - "bayesian hierarchical model"
+  - "federated aggregation"
+  - "structural causal model"
+  - "pharmacogenomics"
+  - "evidence verification"
+  - "data residency"
+  - "GB/T 20348"
+  - "SPIRIT-AI"
+  - "CONSORT-AI"
+  - "phenoage"
+
+description: >-
+  Evidence database, cross-modal terminology mapping, and rubric benchmark
+  for the HealthLens eight-axis integrated steady-state framework (A-H).
+  Includes 120-case evidence database with per-entry DOI verification status
+  (honestly reported: 14 verified / 120 total; 91 entries are synthetic
+  validation fixtures), four-way terminology mapping (GB/T 20348-2026 <->
+  eight axes <-> Western pathways <-> classical texts), classical Chinese
+  medicine text fragments with axis annotations (613 entries), and a rubric
+  benchmark for LLM-judge alignment (60 entries). All bibliographic fields
+  have been audited via three independent fail-loud defenses. Wellness
+  research dataset only - not for clinical decision-making.
+
+contacts:
+  - name: "HealthLens Research Team"
+    email: "contact@healthlens.example"
+
+related-works:
+  - title: "HealthLens Preprint"
+    type: "dataset"
+    identifier: "https://osf.io/<PREREG_PLACEHOLDER>"
+
+preferred-citation:
+  type: "dataset"
+  title: "HealthLens Integrated Steady-State Axis Framework: Evidence Database, Cross-Modal Mapping, and n-of-1 Bayesian Aggregation"
+  authors:
+    - family-names: "HealthLens Research Team"
+  year: 2026
+  version: "v0.1.0"
+  doi: "10.5281/zenodo.<DATASET_ID_PLACEHOLDER>"
+  url: "https://doi.org/10.5281/zenodo.<DATASET_ID_PLACEHOLDER>"

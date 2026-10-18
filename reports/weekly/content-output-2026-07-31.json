@@ -1,0 +1,83 @@
+{
+  "date": "2026-07-31",
+  "total_pages": 14,
+  "education_pages": 4,
+  "seo_knowledge_pages": 10,
+  "topics": [
+    "肠道菌群第二基因组（教育主题）",
+    "酸枣仁安神助眠",
+    "黄芪补气固表",
+    "陈皮理气化痰",
+    "菊花清肝明目",
+    "当归补血活血",
+    "龙眼肉养心安神",
+    "黑芝麻补肝肾",
+    "薏苡仁健脾渗湿",
+    "百合润肺清心",
+    "核桃补肾健脑"
+  ],
+  "education_content": {
+    "theme": "肠道菌群第二基因组",
+    "layers": [
+      "认知层",
+      "理解层",
+      "信任层",
+      "行动层"
+    ],
+    "slugs": [
+      "cognition-gut-microbiome-value",
+      "understanding-gut-tcm-spleen",
+      "trust-microbiome-verification",
+      "action-gut-7day-challenge"
+    ]
+  },
+  "seo_keywords": [
+    "肠道菌群",
+    "第二基因组",
+    "药食同源",
+    "酸枣仁",
+    "黄芪",
+    "陈皮",
+    "菊花",
+    "当归",
+    "龙眼肉",
+    "黑芝麻",
+    "薏苡仁",
+    "百合",
+    "核桃",
+    "睡眠修复",
+    "免疫调节",
+    "清肝明目",
+    "补血活血",
+    "安神助眠",
+    "健脾渗湿",
+    "补肾健脑",
+    "日常修复",
+    "GABA",
+    "omega-3"
+  ],
+  "structured_data_types": [
+    "Article",
+    "FAQPage",
+    "MedicalWebPage",
+    "HowTo"
+  ],
+  "compliance": {
+    "forbidden_terms_checked": true,
+    "no_medical_language": true,
+    "uses_health_management_language": true
+  },
+  "next_week_suggestions": [
+    "睡眠修复科学主题（四级认知阶梯教育内容）",
+    "九种体质操作指南（教育内容+SEO页面组合）",
+    "基因健康数据深度解读系列",
+    "慢性炎症与衰老的抗炎食疗知识页面",
+    "基于体质评估结果的个性化内容推荐系统",
+    "提交sitemap至Google Search Console加速healthlens.cc收录",
+    "为已发布页面添加内部交叉链接，提升页面权重"
+  ],
+  "seo_status": {
+    "site_indexed": false,
+    "note": "site:healthlens.cc 搜索暂无收录结果，需提交sitemap并加强内容建设"
+  }
+}

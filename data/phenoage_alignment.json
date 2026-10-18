@@ -1,0 +1,1820 @@
+{
+  "summary": {
+    "n_profiles": 200,
+    "n_computable": 200,
+    "pearson_r": 0.806,
+    "spearman_rho": 0.812,
+    "mean_pa_delta": 6.13,
+    "mean_hl_delta": 9.44,
+    "pa_accel_gt3": 135,
+    "hl_accel_gt3": 177,
+    "both_accel": 133,
+    "shared_inputs": [
+      "glucose",
+      "crp"
+    ],
+    "disclaimer": "合成画像装置验证：同一潜变量驱动两套不同标志物集/公式/噪声；共享原始输入仅 glucose 与 CRP；真实队列校准（如 NHANES）为后续工作"
+  },
+  "rows": [
+    {
+      "pid": "SYN-000",
+      "age": 59,
+      "z": -1.2608,
+      "pa_phenoage": 57.6,
+      "pa_delta": -1.4,
+      "hl_bio_age": 63.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-001",
+      "age": 35,
+      "z": -0.5418,
+      "pa_phenoage": 38.9,
+      "pa_delta": 3.9,
+      "hl_bio_age": 40.5,
+      "hl_delta": 5.5
+    },
+    {
+      "pid": "SYN-002",
+      "age": 47,
+      "z": -2.0364,
+      "pa_phenoage": 37.7,
+      "pa_delta": -9.3,
+      "hl_bio_age": 51.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-003",
+      "age": 53,
+      "z": 2.1269,
+      "pa_phenoage": 68.4,
+      "pa_delta": 15.4,
+      "hl_bio_age": 65.5,
+      "hl_delta": 12.5
+    },
+    {
+      "pid": "SYN-004",
+      "age": 29,
+      "z": 0.312,
+      "pa_phenoage": 31.1,
+      "pa_delta": 2.1,
+      "hl_bio_age": 35.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-005",
+      "age": 45,
+      "z": 0.3363,
+      "pa_phenoage": 53.8,
+      "pa_delta": 8.8,
+      "hl_bio_age": 53.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-006",
+      "age": 73,
+      "z": 0.7598,
+      "pa_phenoage": 86.0,
+      "pa_delta": 13.0,
+      "hl_bio_age": 88.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-007",
+      "age": 73,
+      "z": -0.0663,
+      "pa_phenoage": 84.6,
+      "pa_delta": 11.6,
+      "hl_bio_age": 89.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-008",
+      "age": 59,
+      "z": -0.048,
+      "pa_phenoage": 63.8,
+      "pa_delta": 4.8,
+      "hl_bio_age": 66.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-009",
+      "age": 63,
+      "z": 0.8578,
+      "pa_phenoage": 71.4,
+      "pa_delta": 8.4,
+      "hl_bio_age": 79.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-010",
+      "age": 52,
+      "z": 0.6977,
+      "pa_phenoage": 64.5,
+      "pa_delta": 12.5,
+      "hl_bio_age": 63.5,
+      "hl_delta": 11.5
+    },
+    {
+      "pid": "SYN-011",
+      "age": 65,
+      "z": -0.5639,
+      "pa_phenoage": 68.4,
+      "pa_delta": 3.4,
+      "hl_bio_age": 72.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-012",
+      "age": 56,
+      "z": -0.0732,
+      "pa_phenoage": 65.5,
+      "pa_delta": 9.5,
+      "hl_bio_age": 64.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-013",
+      "age": 57,
+      "z": 0.2975,
+      "pa_phenoage": 66.3,
+      "pa_delta": 9.3,
+      "hl_bio_age": 69.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-014",
+      "age": 64,
+      "z": -1.0491,
+      "pa_phenoage": 70.2,
+      "pa_delta": 6.2,
+      "hl_bio_age": 71.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-015",
+      "age": 47,
+      "z": 0.5483,
+      "pa_phenoage": 61.1,
+      "pa_delta": 14.1,
+      "hl_bio_age": 53.5,
+      "hl_delta": 6.5
+    },
+    {
+      "pid": "SYN-016",
+      "age": 75,
+      "z": 1.3255,
+      "pa_phenoage": 89.1,
+      "pa_delta": 14.1,
+      "hl_bio_age": 96.5,
+      "hl_delta": 21.5
+    },
+    {
+      "pid": "SYN-017",
+      "age": 57,
+      "z": -1.1814,
+      "pa_phenoage": 53.1,
+      "pa_delta": -3.9,
+      "hl_bio_age": 64.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-018",
+      "age": 69,
+      "z": 0.4584,
+      "pa_phenoage": 84.5,
+      "pa_delta": 15.5,
+      "hl_bio_age": 84.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-019",
+      "age": 48,
+      "z": -0.0826,
+      "pa_phenoage": 55.0,
+      "pa_delta": 7.0,
+      "hl_bio_age": 54.5,
+      "hl_delta": 6.5
+    },
+    {
+      "pid": "SYN-020",
+      "age": 70,
+      "z": -0.3223,
+      "pa_phenoage": 83.5,
+      "pa_delta": 13.5,
+      "hl_bio_age": 82.5,
+      "hl_delta": 12.5
+    },
+    {
+      "pid": "SYN-021",
+      "age": 76,
+      "z": 2.5712,
+      "pa_phenoage": 98.3,
+      "pa_delta": 22.3,
+      "hl_bio_age": 95.5,
+      "hl_delta": 19.5
+    },
+    {
+      "pid": "SYN-022",
+      "age": 78,
+      "z": -2.3052,
+      "pa_phenoage": 78.1,
+      "pa_delta": 0.1,
+      "hl_bio_age": 84.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-023",
+      "age": 26,
+      "z": 0.972,
+      "pa_phenoage": 33.5,
+      "pa_delta": 7.5,
+      "hl_bio_age": 35.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-024",
+      "age": 48,
+      "z": -0.8904,
+      "pa_phenoage": 48.0,
+      "pa_delta": 0.0,
+      "hl_bio_age": 52.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-025",
+      "age": 48,
+      "z": -1.1115,
+      "pa_phenoage": 44.0,
+      "pa_delta": -4.0,
+      "hl_bio_age": 52.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-026",
+      "age": 32,
+      "z": -1.4045,
+      "pa_phenoage": 22.6,
+      "pa_delta": -9.4,
+      "hl_bio_age": 34.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-027",
+      "age": 61,
+      "z": -0.5592,
+      "pa_phenoage": 60.5,
+      "pa_delta": -0.5,
+      "hl_bio_age": 69.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-028",
+      "age": 36,
+      "z": 0.463,
+      "pa_phenoage": 44.6,
+      "pa_delta": 8.6,
+      "hl_bio_age": 43.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-029",
+      "age": 36,
+      "z": 0.7715,
+      "pa_phenoage": 46.8,
+      "pa_delta": 10.8,
+      "hl_bio_age": 47.5,
+      "hl_delta": 11.5
+    },
+    {
+      "pid": "SYN-030",
+      "age": 46,
+      "z": -0.83,
+      "pa_phenoage": 45.2,
+      "pa_delta": -0.8,
+      "hl_bio_age": 47.5,
+      "hl_delta": 1.5
+    },
+    {
+      "pid": "SYN-031",
+      "age": 23,
+      "z": -0.101,
+      "pa_phenoage": 26.6,
+      "pa_delta": 3.6,
+      "hl_bio_age": 30.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-032",
+      "age": 29,
+      "z": 1.5774,
+      "pa_phenoage": 48.2,
+      "pa_delta": 19.2,
+      "hl_bio_age": 41.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-033",
+      "age": 32,
+      "z": -1.0854,
+      "pa_phenoage": 33.7,
+      "pa_delta": 1.7,
+      "hl_bio_age": 36.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-034",
+      "age": 72,
+      "z": 0.3399,
+      "pa_phenoage": 85.9,
+      "pa_delta": 13.9,
+      "hl_bio_age": 84.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-035",
+      "age": 20,
+      "z": 0.5592,
+      "pa_phenoage": 28.8,
+      "pa_delta": 8.8,
+      "hl_bio_age": 25.5,
+      "hl_delta": 5.5
+    },
+    {
+      "pid": "SYN-036",
+      "age": 32,
+      "z": 1.2503,
+      "pa_phenoage": 43.0,
+      "pa_delta": 11.0,
+      "hl_bio_age": 45.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-037",
+      "age": 75,
+      "z": 0.2379,
+      "pa_phenoage": 89.3,
+      "pa_delta": 14.3,
+      "hl_bio_age": 90.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-038",
+      "age": 37,
+      "z": 1.7671,
+      "pa_phenoage": 52.0,
+      "pa_delta": 15.0,
+      "hl_bio_age": 49.5,
+      "hl_delta": 12.5
+    },
+    {
+      "pid": "SYN-039",
+      "age": 51,
+      "z": 1.2259,
+      "pa_phenoage": 56.2,
+      "pa_delta": 5.2,
+      "hl_bio_age": 64.5,
+      "hl_delta": 13.5
+    },
+    {
+      "pid": "SYN-040",
+      "age": 59,
+      "z": 0.537,
+      "pa_phenoage": 70.2,
+      "pa_delta": 11.2,
+      "hl_bio_age": 72.5,
+      "hl_delta": 13.5
+    },
+    {
+      "pid": "SYN-041",
+      "age": 58,
+      "z": -1.4933,
+      "pa_phenoage": 58.1,
+      "pa_delta": 0.1,
+      "hl_bio_age": 64.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-042",
+      "age": 43,
+      "z": 0.6124,
+      "pa_phenoage": 54.8,
+      "pa_delta": 11.8,
+      "hl_bio_age": 51.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-043",
+      "age": 67,
+      "z": -0.0094,
+      "pa_phenoage": 78.1,
+      "pa_delta": 11.1,
+      "hl_bio_age": 78.5,
+      "hl_delta": 11.5
+    },
+    {
+      "pid": "SYN-044",
+      "age": 57,
+      "z": -0.7378,
+      "pa_phenoage": 59.6,
+      "pa_delta": 2.6,
+      "hl_bio_age": 64.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-045",
+      "age": 72,
+      "z": 0.7755,
+      "pa_phenoage": 87.2,
+      "pa_delta": 15.2,
+      "hl_bio_age": 91.0,
+      "hl_delta": 19.0
+    },
+    {
+      "pid": "SYN-046",
+      "age": 77,
+      "z": 1.0266,
+      "pa_phenoage": 98.2,
+      "pa_delta": 21.2,
+      "hl_bio_age": 94.5,
+      "hl_delta": 17.5
+    },
+    {
+      "pid": "SYN-047",
+      "age": 27,
+      "z": 0.8712,
+      "pa_phenoage": 28.9,
+      "pa_delta": 1.9,
+      "hl_bio_age": 31.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-048",
+      "age": 42,
+      "z": 1.3767,
+      "pa_phenoage": 50.5,
+      "pa_delta": 8.5,
+      "hl_bio_age": 53.0,
+      "hl_delta": 11.0
+    },
+    {
+      "pid": "SYN-049",
+      "age": 49,
+      "z": -0.1495,
+      "pa_phenoage": 53.5,
+      "pa_delta": 4.5,
+      "hl_bio_age": 56.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-050",
+      "age": 65,
+      "z": 1.1752,
+      "pa_phenoage": 76.9,
+      "pa_delta": 11.9,
+      "hl_bio_age": 76.0,
+      "hl_delta": 11.0
+    },
+    {
+      "pid": "SYN-051",
+      "age": 63,
+      "z": 2.0662,
+      "pa_phenoage": 83.3,
+      "pa_delta": 20.3,
+      "hl_bio_age": 76.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-052",
+      "age": 62,
+      "z": 1.3926,
+      "pa_phenoage": 78.1,
+      "pa_delta": 16.1,
+      "hl_bio_age": 78.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-053",
+      "age": 50,
+      "z": 0.6997,
+      "pa_phenoage": 61.6,
+      "pa_delta": 11.6,
+      "hl_bio_age": 58.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-054",
+      "age": 72,
+      "z": -0.6938,
+      "pa_phenoage": 75.2,
+      "pa_delta": 3.2,
+      "hl_bio_age": 85.5,
+      "hl_delta": 13.5
+    },
+    {
+      "pid": "SYN-055",
+      "age": 76,
+      "z": 2.033,
+      "pa_phenoage": 90.6,
+      "pa_delta": 14.6,
+      "hl_bio_age": 95.0,
+      "hl_delta": 19.0
+    },
+    {
+      "pid": "SYN-056",
+      "age": 26,
+      "z": -2.085,
+      "pa_phenoage": 17.7,
+      "pa_delta": -8.3,
+      "hl_bio_age": 26.0,
+      "hl_delta": 0.0
+    },
+    {
+      "pid": "SYN-057",
+      "age": 75,
+      "z": 1.0796,
+      "pa_phenoage": 92.4,
+      "pa_delta": 17.4,
+      "hl_bio_age": 90.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-058",
+      "age": 40,
+      "z": -0.8292,
+      "pa_phenoage": 42.7,
+      "pa_delta": 2.7,
+      "hl_bio_age": 47.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-059",
+      "age": 62,
+      "z": -1.6888,
+      "pa_phenoage": 62.7,
+      "pa_delta": 0.7,
+      "hl_bio_age": 69.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-060",
+      "age": 48,
+      "z": 0.2392,
+      "pa_phenoage": 58.2,
+      "pa_delta": 10.2,
+      "hl_bio_age": 57.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-061",
+      "age": 58,
+      "z": -0.6456,
+      "pa_phenoage": 56.5,
+      "pa_delta": -1.5,
+      "hl_bio_age": 64.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-062",
+      "age": 68,
+      "z": 1.1862,
+      "pa_phenoage": 83.5,
+      "pa_delta": 15.5,
+      "hl_bio_age": 85.0,
+      "hl_delta": 17.0
+    },
+    {
+      "pid": "SYN-063",
+      "age": 41,
+      "z": 1.2042,
+      "pa_phenoage": 46.9,
+      "pa_delta": 5.9,
+      "hl_bio_age": 52.0,
+      "hl_delta": 11.0
+    },
+    {
+      "pid": "SYN-064",
+      "age": 21,
+      "z": -0.0895,
+      "pa_phenoage": 19.8,
+      "pa_delta": -1.2,
+      "hl_bio_age": 23.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-065",
+      "age": 51,
+      "z": 0.7039,
+      "pa_phenoage": 58.8,
+      "pa_delta": 7.8,
+      "hl_bio_age": 62.0,
+      "hl_delta": 11.0
+    },
+    {
+      "pid": "SYN-066",
+      "age": 68,
+      "z": 2.228,
+      "pa_phenoage": 80.8,
+      "pa_delta": 12.8,
+      "hl_bio_age": 86.0,
+      "hl_delta": 18.0
+    },
+    {
+      "pid": "SYN-067",
+      "age": 76,
+      "z": -2.3428,
+      "pa_phenoage": 70.3,
+      "pa_delta": -5.7,
+      "hl_bio_age": 78.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-068",
+      "age": 26,
+      "z": -0.7891,
+      "pa_phenoage": 24.2,
+      "pa_delta": -1.8,
+      "hl_bio_age": 29.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-069",
+      "age": 65,
+      "z": -0.066,
+      "pa_phenoage": 70.7,
+      "pa_delta": 5.7,
+      "hl_bio_age": 73.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-070",
+      "age": 28,
+      "z": -1.2434,
+      "pa_phenoage": 25.8,
+      "pa_delta": -2.2,
+      "hl_bio_age": 34.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-071",
+      "age": 25,
+      "z": 1.2452,
+      "pa_phenoage": 35.0,
+      "pa_delta": 10.0,
+      "hl_bio_age": 33.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-072",
+      "age": 70,
+      "z": -1.2187,
+      "pa_phenoage": 68.4,
+      "pa_delta": -1.6,
+      "hl_bio_age": 76.5,
+      "hl_delta": 6.5
+    },
+    {
+      "pid": "SYN-073",
+      "age": 80,
+      "z": -1.1449,
+      "pa_phenoage": 81.3,
+      "pa_delta": 1.3,
+      "hl_bio_age": 95.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-074",
+      "age": 25,
+      "z": -1.0574,
+      "pa_phenoage": 16.5,
+      "pa_delta": -8.5,
+      "hl_bio_age": 27.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-075",
+      "age": 80,
+      "z": 1.1332,
+      "pa_phenoage": 96.1,
+      "pa_delta": 16.1,
+      "hl_bio_age": 101.0,
+      "hl_delta": 21.0
+    },
+    {
+      "pid": "SYN-076",
+      "age": 50,
+      "z": 1.3265,
+      "pa_phenoage": 60.6,
+      "pa_delta": 10.6,
+      "hl_bio_age": 66.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-077",
+      "age": 24,
+      "z": 1.5745,
+      "pa_phenoage": 35.8,
+      "pa_delta": 11.8,
+      "hl_bio_age": 37.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-078",
+      "age": 50,
+      "z": -1.0829,
+      "pa_phenoage": 53.2,
+      "pa_delta": 3.2,
+      "hl_bio_age": 53.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-079",
+      "age": 40,
+      "z": -0.873,
+      "pa_phenoage": 36.4,
+      "pa_delta": -3.6,
+      "hl_bio_age": 42.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-080",
+      "age": 36,
+      "z": -1.4782,
+      "pa_phenoage": 33.0,
+      "pa_delta": -3.0,
+      "hl_bio_age": 39.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-081",
+      "age": 25,
+      "z": 0.24,
+      "pa_phenoage": 24.5,
+      "pa_delta": -0.5,
+      "hl_bio_age": 29.0,
+      "hl_delta": 4.0
+    },
+    {
+      "pid": "SYN-082",
+      "age": 32,
+      "z": 0.5997,
+      "pa_phenoage": 38.0,
+      "pa_delta": 6.0,
+      "hl_bio_age": 39.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-083",
+      "age": 79,
+      "z": -0.1031,
+      "pa_phenoage": 84.6,
+      "pa_delta": 5.6,
+      "hl_bio_age": 93.5,
+      "hl_delta": 14.5
+    },
+    {
+      "pid": "SYN-084",
+      "age": 44,
+      "z": 2.267,
+      "pa_phenoage": 60.1,
+      "pa_delta": 16.1,
+      "hl_bio_age": 56.5,
+      "hl_delta": 12.5
+    },
+    {
+      "pid": "SYN-085",
+      "age": 33,
+      "z": 0.0272,
+      "pa_phenoage": 42.3,
+      "pa_delta": 9.3,
+      "hl_bio_age": 41.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-086",
+      "age": 23,
+      "z": -0.7848,
+      "pa_phenoage": 21.5,
+      "pa_delta": -1.5,
+      "hl_bio_age": 23.0,
+      "hl_delta": 0.0
+    },
+    {
+      "pid": "SYN-087",
+      "age": 31,
+      "z": 0.5743,
+      "pa_phenoage": 38.0,
+      "pa_delta": 7.0,
+      "hl_bio_age": 42.5,
+      "hl_delta": 11.5
+    },
+    {
+      "pid": "SYN-088",
+      "age": 66,
+      "z": -0.7416,
+      "pa_phenoage": 71.8,
+      "pa_delta": 5.8,
+      "hl_bio_age": 74.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-089",
+      "age": 72,
+      "z": 1.4185,
+      "pa_phenoage": 90.3,
+      "pa_delta": 18.3,
+      "hl_bio_age": 93.0,
+      "hl_delta": 21.0
+    },
+    {
+      "pid": "SYN-090",
+      "age": 45,
+      "z": 0.6911,
+      "pa_phenoage": 48.1,
+      "pa_delta": 3.1,
+      "hl_bio_age": 51.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-091",
+      "age": 28,
+      "z": 1.4574,
+      "pa_phenoage": 40.6,
+      "pa_delta": 12.6,
+      "hl_bio_age": 38.5,
+      "hl_delta": 10.5
+    },
+    {
+      "pid": "SYN-092",
+      "age": 51,
+      "z": 1.4162,
+      "pa_phenoage": 60.8,
+      "pa_delta": 9.8,
+      "hl_bio_age": 64.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-093",
+      "age": 46,
+      "z": -1.1967,
+      "pa_phenoage": 43.7,
+      "pa_delta": -2.3,
+      "hl_bio_age": 52.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-094",
+      "age": 45,
+      "z": -0.7429,
+      "pa_phenoage": 44.3,
+      "pa_delta": -0.7,
+      "hl_bio_age": 48.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-095",
+      "age": 68,
+      "z": 0.8348,
+      "pa_phenoage": 78.7,
+      "pa_delta": 10.7,
+      "hl_bio_age": 83.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-096",
+      "age": 57,
+      "z": -2.8085,
+      "pa_phenoage": 48.7,
+      "pa_delta": -8.3,
+      "hl_bio_age": 60.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-097",
+      "age": 28,
+      "z": 0.7737,
+      "pa_phenoage": 39.3,
+      "pa_delta": 11.3,
+      "hl_bio_age": 38.0,
+      "hl_delta": 10.0
+    },
+    {
+      "pid": "SYN-098",
+      "age": 38,
+      "z": -1.4797,
+      "pa_phenoage": 33.7,
+      "pa_delta": -4.3,
+      "hl_bio_age": 40.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-099",
+      "age": 71,
+      "z": 1.085,
+      "pa_phenoage": 89.5,
+      "pa_delta": 18.5,
+      "hl_bio_age": 88.0,
+      "hl_delta": 17.0
+    },
+    {
+      "pid": "SYN-100",
+      "age": 37,
+      "z": -0.1875,
+      "pa_phenoage": 37.1,
+      "pa_delta": 0.1,
+      "hl_bio_age": 44.5,
+      "hl_delta": 7.5
+    },
+    {
+      "pid": "SYN-101",
+      "age": 40,
+      "z": -0.8145,
+      "pa_phenoage": 34.5,
+      "pa_delta": -5.5,
+      "hl_bio_age": 41.5,
+      "hl_delta": 1.5
+    },
+    {
+      "pid": "SYN-102",
+      "age": 59,
+      "z": 0.662,
+      "pa_phenoage": 70.2,
+      "pa_delta": 11.2,
+      "hl_bio_age": 77.5,
+      "hl_delta": 18.5
+    },
+    {
+      "pid": "SYN-103",
+      "age": 37,
+      "z": 0.9199,
+      "pa_phenoage": 41.2,
+      "pa_delta": 4.2,
+      "hl_bio_age": 43.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-104",
+      "age": 59,
+      "z": 0.3527,
+      "pa_phenoage": 67.3,
+      "pa_delta": 8.3,
+      "hl_bio_age": 73.0,
+      "hl_delta": 14.0
+    },
+    {
+      "pid": "SYN-105",
+      "age": 29,
+      "z": -0.4366,
+      "pa_phenoage": 31.1,
+      "pa_delta": 2.1,
+      "hl_bio_age": 32.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-106",
+      "age": 49,
+      "z": -0.8988,
+      "pa_phenoage": 55.5,
+      "pa_delta": 6.5,
+      "hl_bio_age": 55.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-107",
+      "age": 21,
+      "z": -0.2445,
+      "pa_phenoage": 20.1,
+      "pa_delta": -0.9,
+      "hl_bio_age": 25.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-108",
+      "age": 76,
+      "z": 0.9331,
+      "pa_phenoage": 88.2,
+      "pa_delta": 12.2,
+      "hl_bio_age": 91.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-109",
+      "age": 49,
+      "z": 0.0945,
+      "pa_phenoage": 53.6,
+      "pa_delta": 4.6,
+      "hl_bio_age": 56.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-110",
+      "age": 80,
+      "z": -0.1337,
+      "pa_phenoage": 94.1,
+      "pa_delta": 14.1,
+      "hl_bio_age": 89.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-111",
+      "age": 27,
+      "z": 0.1477,
+      "pa_phenoage": 27.6,
+      "pa_delta": 0.6,
+      "hl_bio_age": 30.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-112",
+      "age": 63,
+      "z": 0.2743,
+      "pa_phenoage": 74.1,
+      "pa_delta": 11.1,
+      "hl_bio_age": 75.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-113",
+      "age": 58,
+      "z": 0.3349,
+      "pa_phenoage": 63.2,
+      "pa_delta": 5.2,
+      "hl_bio_age": 71.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-114",
+      "age": 70,
+      "z": -1.2411,
+      "pa_phenoage": 71.6,
+      "pa_delta": 1.6,
+      "hl_bio_age": 78.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-115",
+      "age": 66,
+      "z": 0.215,
+      "pa_phenoage": 72.1,
+      "pa_delta": 6.1,
+      "hl_bio_age": 81.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-116",
+      "age": 72,
+      "z": 1.3181,
+      "pa_phenoage": 88.6,
+      "pa_delta": 16.6,
+      "hl_bio_age": 88.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-117",
+      "age": 71,
+      "z": -1.5645,
+      "pa_phenoage": 71.9,
+      "pa_delta": 0.9,
+      "hl_bio_age": 75.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-118",
+      "age": 74,
+      "z": -0.0567,
+      "pa_phenoage": 83.0,
+      "pa_delta": 9.0,
+      "hl_bio_age": 87.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-119",
+      "age": 60,
+      "z": 0.7892,
+      "pa_phenoage": 74.9,
+      "pa_delta": 14.9,
+      "hl_bio_age": 73.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-120",
+      "age": 20,
+      "z": -0.6582,
+      "pa_phenoage": 18.6,
+      "pa_delta": -1.4,
+      "hl_bio_age": 22.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-121",
+      "age": 37,
+      "z": 2.1405,
+      "pa_phenoage": 52.7,
+      "pa_delta": 15.7,
+      "hl_bio_age": 49.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-122",
+      "age": 68,
+      "z": -0.9103,
+      "pa_phenoage": 69.2,
+      "pa_delta": 1.2,
+      "hl_bio_age": 75.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-123",
+      "age": 45,
+      "z": 1.5306,
+      "pa_phenoage": 57.9,
+      "pa_delta": 12.9,
+      "hl_bio_age": 58.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-124",
+      "age": 39,
+      "z": 1.5973,
+      "pa_phenoage": 54.0,
+      "pa_delta": 15.0,
+      "hl_bio_age": 52.5,
+      "hl_delta": 13.5
+    },
+    {
+      "pid": "SYN-125",
+      "age": 73,
+      "z": 1.7843,
+      "pa_phenoage": 92.3,
+      "pa_delta": 19.3,
+      "hl_bio_age": 92.5,
+      "hl_delta": 19.5
+    },
+    {
+      "pid": "SYN-126",
+      "age": 59,
+      "z": -0.4813,
+      "pa_phenoage": 57.6,
+      "pa_delta": -1.4,
+      "hl_bio_age": 71.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-127",
+      "age": 32,
+      "z": 0.5659,
+      "pa_phenoage": 38.9,
+      "pa_delta": 6.9,
+      "hl_bio_age": 42.0,
+      "hl_delta": 10.0
+    },
+    {
+      "pid": "SYN-128",
+      "age": 51,
+      "z": -1.1966,
+      "pa_phenoage": 50.3,
+      "pa_delta": -0.7,
+      "hl_bio_age": 53.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-129",
+      "age": 37,
+      "z": 0.4703,
+      "pa_phenoage": 45.7,
+      "pa_delta": 8.7,
+      "hl_bio_age": 49.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-130",
+      "age": 21,
+      "z": 0.0815,
+      "pa_phenoage": 22.9,
+      "pa_delta": 1.9,
+      "hl_bio_age": 28.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-131",
+      "age": 70,
+      "z": -1.7561,
+      "pa_phenoage": 70.9,
+      "pa_delta": 0.9,
+      "hl_bio_age": 74.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-132",
+      "age": 67,
+      "z": -0.2699,
+      "pa_phenoage": 73.3,
+      "pa_delta": 6.3,
+      "hl_bio_age": 75.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-133",
+      "age": 67,
+      "z": -0.8711,
+      "pa_phenoage": 68.1,
+      "pa_delta": 1.1,
+      "hl_bio_age": 78.0,
+      "hl_delta": 11.0
+    },
+    {
+      "pid": "SYN-134",
+      "age": 66,
+      "z": -0.4598,
+      "pa_phenoage": 70.9,
+      "pa_delta": 4.9,
+      "hl_bio_age": 75.0,
+      "hl_delta": 9.0
+    },
+    {
+      "pid": "SYN-135",
+      "age": 67,
+      "z": 0.273,
+      "pa_phenoage": 83.6,
+      "pa_delta": 16.6,
+      "hl_bio_age": 84.0,
+      "hl_delta": 17.0
+    },
+    {
+      "pid": "SYN-136",
+      "age": 21,
+      "z": 0.119,
+      "pa_phenoage": 27.3,
+      "pa_delta": 6.3,
+      "hl_bio_age": 24.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-137",
+      "age": 63,
+      "z": 1.9522,
+      "pa_phenoage": 79.6,
+      "pa_delta": 16.6,
+      "hl_bio_age": 80.5,
+      "hl_delta": 17.5
+    },
+    {
+      "pid": "SYN-138",
+      "age": 43,
+      "z": 0.7237,
+      "pa_phenoage": 51.8,
+      "pa_delta": 8.8,
+      "hl_bio_age": 52.0,
+      "hl_delta": 9.0
+    },
+    {
+      "pid": "SYN-139",
+      "age": 57,
+      "z": 0.5306,
+      "pa_phenoage": 65.9,
+      "pa_delta": 8.9,
+      "hl_bio_age": 71.5,
+      "hl_delta": 14.5
+    },
+    {
+      "pid": "SYN-140",
+      "age": 38,
+      "z": 0.7895,
+      "pa_phenoage": 42.6,
+      "pa_delta": 4.6,
+      "hl_bio_age": 44.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-141",
+      "age": 39,
+      "z": 0.4124,
+      "pa_phenoage": 45.5,
+      "pa_delta": 6.5,
+      "hl_bio_age": 44.5,
+      "hl_delta": 5.5
+    },
+    {
+      "pid": "SYN-142",
+      "age": 44,
+      "z": 0.1272,
+      "pa_phenoage": 50.6,
+      "pa_delta": 6.6,
+      "hl_bio_age": 52.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-143",
+      "age": 49,
+      "z": -1.7396,
+      "pa_phenoage": 44.3,
+      "pa_delta": -4.7,
+      "hl_bio_age": 50.5,
+      "hl_delta": 1.5
+    },
+    {
+      "pid": "SYN-144",
+      "age": 45,
+      "z": -1.6048,
+      "pa_phenoage": 40.4,
+      "pa_delta": -4.6,
+      "hl_bio_age": 49.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-145",
+      "age": 47,
+      "z": 2.2532,
+      "pa_phenoage": 62.5,
+      "pa_delta": 15.5,
+      "hl_bio_age": 61.0,
+      "hl_delta": 14.0
+    },
+    {
+      "pid": "SYN-146",
+      "age": 21,
+      "z": -0.1315,
+      "pa_phenoage": 20.1,
+      "pa_delta": -0.9,
+      "hl_bio_age": 27.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-147",
+      "age": 27,
+      "z": -0.2483,
+      "pa_phenoage": 26.7,
+      "pa_delta": -0.3,
+      "hl_bio_age": 30.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-148",
+      "age": 70,
+      "z": 1.5159,
+      "pa_phenoage": 87.4,
+      "pa_delta": 17.4,
+      "hl_bio_age": 88.5,
+      "hl_delta": 18.5
+    },
+    {
+      "pid": "SYN-149",
+      "age": 24,
+      "z": 0.2945,
+      "pa_phenoage": 28.6,
+      "pa_delta": 4.6,
+      "hl_bio_age": 31.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-150",
+      "age": 78,
+      "z": -0.2051,
+      "pa_phenoage": 87.4,
+      "pa_delta": 9.4,
+      "hl_bio_age": 87.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-151",
+      "age": 46,
+      "z": 1.0669,
+      "pa_phenoage": 53.8,
+      "pa_delta": 7.8,
+      "hl_bio_age": 60.5,
+      "hl_delta": 14.5
+    },
+    {
+      "pid": "SYN-152",
+      "age": 74,
+      "z": 0.0838,
+      "pa_phenoage": 81.0,
+      "pa_delta": 7.0,
+      "hl_bio_age": 90.5,
+      "hl_delta": 16.5
+    },
+    {
+      "pid": "SYN-153",
+      "age": 60,
+      "z": -0.6258,
+      "pa_phenoage": 62.5,
+      "pa_delta": 2.5,
+      "hl_bio_age": 66.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-154",
+      "age": 67,
+      "z": -0.0508,
+      "pa_phenoage": 76.2,
+      "pa_delta": 9.2,
+      "hl_bio_age": 80.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-155",
+      "age": 64,
+      "z": 0.801,
+      "pa_phenoage": 77.7,
+      "pa_delta": 13.7,
+      "hl_bio_age": 74.5,
+      "hl_delta": 10.5
+    },
+    {
+      "pid": "SYN-156",
+      "age": 73,
+      "z": 1.1713,
+      "pa_phenoage": 84.1,
+      "pa_delta": 11.1,
+      "hl_bio_age": 88.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-157",
+      "age": 25,
+      "z": -0.2496,
+      "pa_phenoage": 29.7,
+      "pa_delta": 4.7,
+      "hl_bio_age": 32.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-158",
+      "age": 64,
+      "z": -1.516,
+      "pa_phenoage": 64.7,
+      "pa_delta": 0.7,
+      "hl_bio_age": 67.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-159",
+      "age": 29,
+      "z": 0.3441,
+      "pa_phenoage": 33.1,
+      "pa_delta": 4.1,
+      "hl_bio_age": 36.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-160",
+      "age": 32,
+      "z": 0.7467,
+      "pa_phenoage": 41.9,
+      "pa_delta": 9.9,
+      "hl_bio_age": 41.0,
+      "hl_delta": 9.0
+    },
+    {
+      "pid": "SYN-161",
+      "age": 21,
+      "z": 0.2017,
+      "pa_phenoage": 19.0,
+      "pa_delta": -2.0,
+      "hl_bio_age": 25.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-162",
+      "age": 55,
+      "z": 0.0843,
+      "pa_phenoage": 59.6,
+      "pa_delta": 4.6,
+      "hl_bio_age": 66.5,
+      "hl_delta": 11.5
+    },
+    {
+      "pid": "SYN-163",
+      "age": 36,
+      "z": -1.458,
+      "pa_phenoage": 33.2,
+      "pa_delta": -2.8,
+      "hl_bio_age": 39.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-164",
+      "age": 43,
+      "z": -0.2133,
+      "pa_phenoage": 44.7,
+      "pa_delta": 1.7,
+      "hl_bio_age": 51.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-165",
+      "age": 54,
+      "z": -0.5402,
+      "pa_phenoage": 57.2,
+      "pa_delta": 3.2,
+      "hl_bio_age": 64.5,
+      "hl_delta": 10.5
+    },
+    {
+      "pid": "SYN-166",
+      "age": 74,
+      "z": -0.5462,
+      "pa_phenoage": 84.3,
+      "pa_delta": 10.3,
+      "hl_bio_age": 91.0,
+      "hl_delta": 17.0
+    },
+    {
+      "pid": "SYN-167",
+      "age": 38,
+      "z": -0.3462,
+      "pa_phenoage": 40.5,
+      "pa_delta": 2.5,
+      "hl_bio_age": 41.0,
+      "hl_delta": 3.0
+    },
+    {
+      "pid": "SYN-168",
+      "age": 72,
+      "z": -1.3424,
+      "pa_phenoage": 70.5,
+      "pa_delta": -1.5,
+      "hl_bio_age": 75.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-169",
+      "age": 59,
+      "z": 1.1505,
+      "pa_phenoage": 67.8,
+      "pa_delta": 8.8,
+      "hl_bio_age": 74.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-170",
+      "age": 39,
+      "z": 0.7303,
+      "pa_phenoage": 47.2,
+      "pa_delta": 8.2,
+      "hl_bio_age": 48.0,
+      "hl_delta": 9.0
+    },
+    {
+      "pid": "SYN-171",
+      "age": 78,
+      "z": -0.0965,
+      "pa_phenoage": 82.0,
+      "pa_delta": 4.0,
+      "hl_bio_age": 94.0,
+      "hl_delta": 16.0
+    },
+    {
+      "pid": "SYN-172",
+      "age": 29,
+      "z": -0.5037,
+      "pa_phenoage": 33.0,
+      "pa_delta": 4.0,
+      "hl_bio_age": 32.5,
+      "hl_delta": 3.5
+    },
+    {
+      "pid": "SYN-173",
+      "age": 51,
+      "z": 0.7274,
+      "pa_phenoage": 65.4,
+      "pa_delta": 14.4,
+      "hl_bio_age": 64.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-174",
+      "age": 28,
+      "z": 0.8097,
+      "pa_phenoage": 35.7,
+      "pa_delta": 7.7,
+      "hl_bio_age": 37.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-175",
+      "age": 65,
+      "z": 1.0047,
+      "pa_phenoage": 69.7,
+      "pa_delta": 4.7,
+      "hl_bio_age": 78.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-176",
+      "age": 74,
+      "z": 0.5677,
+      "pa_phenoage": 85.2,
+      "pa_delta": 11.2,
+      "hl_bio_age": 88.0,
+      "hl_delta": 14.0
+    },
+    {
+      "pid": "SYN-177",
+      "age": 20,
+      "z": -0.4354,
+      "pa_phenoage": 11.2,
+      "pa_delta": -8.8,
+      "hl_bio_age": 21.5,
+      "hl_delta": 1.5
+    },
+    {
+      "pid": "SYN-178",
+      "age": 24,
+      "z": -0.1387,
+      "pa_phenoage": 24.8,
+      "pa_delta": 0.8,
+      "hl_bio_age": 33.0,
+      "hl_delta": 9.0
+    },
+    {
+      "pid": "SYN-179",
+      "age": 66,
+      "z": 0.9698,
+      "pa_phenoage": 78.1,
+      "pa_delta": 12.1,
+      "hl_bio_age": 81.0,
+      "hl_delta": 15.0
+    },
+    {
+      "pid": "SYN-180",
+      "age": 22,
+      "z": 1.3556,
+      "pa_phenoage": 29.5,
+      "pa_delta": 7.5,
+      "hl_bio_age": 29.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-181",
+      "age": 78,
+      "z": -0.701,
+      "pa_phenoage": 82.8,
+      "pa_delta": 4.8,
+      "hl_bio_age": 87.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-182",
+      "age": 80,
+      "z": -1.1284,
+      "pa_phenoage": 82.0,
+      "pa_delta": 2.0,
+      "hl_bio_age": 88.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-183",
+      "age": 24,
+      "z": -1.3907,
+      "pa_phenoage": 15.6,
+      "pa_delta": -8.4,
+      "hl_bio_age": 25.5,
+      "hl_delta": 1.5
+    },
+    {
+      "pid": "SYN-184",
+      "age": 49,
+      "z": -0.7706,
+      "pa_phenoage": 54.0,
+      "pa_delta": 5.0,
+      "hl_bio_age": 56.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-185",
+      "age": 71,
+      "z": -0.0919,
+      "pa_phenoage": 80.1,
+      "pa_delta": 9.1,
+      "hl_bio_age": 83.5,
+      "hl_delta": 12.5
+    },
+    {
+      "pid": "SYN-186",
+      "age": 48,
+      "z": 0.515,
+      "pa_phenoage": 56.3,
+      "pa_delta": 8.3,
+      "hl_bio_age": 57.5,
+      "hl_delta": 9.5
+    },
+    {
+      "pid": "SYN-187",
+      "age": 42,
+      "z": -1.1862,
+      "pa_phenoage": 37.8,
+      "pa_delta": -4.2,
+      "hl_bio_age": 44.0,
+      "hl_delta": 2.0
+    },
+    {
+      "pid": "SYN-188",
+      "age": 47,
+      "z": -0.6761,
+      "pa_phenoage": 46.2,
+      "pa_delta": -0.8,
+      "hl_bio_age": 54.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-189",
+      "age": 42,
+      "z": 0.4768,
+      "pa_phenoage": 47.5,
+      "pa_delta": 5.5,
+      "hl_bio_age": 49.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-190",
+      "age": 24,
+      "z": 0.4855,
+      "pa_phenoage": 28.0,
+      "pa_delta": 4.0,
+      "hl_bio_age": 28.5,
+      "hl_delta": 4.5
+    },
+    {
+      "pid": "SYN-191",
+      "age": 71,
+      "z": -0.3746,
+      "pa_phenoage": 77.8,
+      "pa_delta": 6.8,
+      "hl_bio_age": 84.0,
+      "hl_delta": 13.0
+    },
+    {
+      "pid": "SYN-192",
+      "age": 56,
+      "z": 0.0223,
+      "pa_phenoage": 62.3,
+      "pa_delta": 6.3,
+      "hl_bio_age": 64.0,
+      "hl_delta": 8.0
+    },
+    {
+      "pid": "SYN-193",
+      "age": 36,
+      "z": 0.0279,
+      "pa_phenoage": 36.4,
+      "pa_delta": 0.4,
+      "hl_bio_age": 42.0,
+      "hl_delta": 6.0
+    },
+    {
+      "pid": "SYN-194",
+      "age": 46,
+      "z": -0.6058,
+      "pa_phenoage": 49.5,
+      "pa_delta": 3.5,
+      "hl_bio_age": 53.0,
+      "hl_delta": 7.0
+    },
+    {
+      "pid": "SYN-195",
+      "age": 62,
+      "z": 0.0333,
+      "pa_phenoage": 65.9,
+      "pa_delta": 3.9,
+      "hl_bio_age": 70.5,
+      "hl_delta": 8.5
+    },
+    {
+      "pid": "SYN-196",
+      "age": 56,
+      "z": 1.0157,
+      "pa_phenoage": 62.5,
+      "pa_delta": 6.5,
+      "hl_bio_age": 69.5,
+      "hl_delta": 13.5
+    },
+    {
+      "pid": "SYN-197",
+      "age": 70,
+      "z": -1.2479,
+      "pa_phenoage": 74.8,
+      "pa_delta": 4.8,
+      "hl_bio_age": 80.5,
+      "hl_delta": 10.5
+    },
+    {
+      "pid": "SYN-198",
+      "age": 76,
+      "z": -0.196,
+      "pa_phenoage": 81.6,
+      "pa_delta": 5.6,
+      "hl_bio_age": 88.0,
+      "hl_delta": 12.0
+    },
+    {
+      "pid": "SYN-199",
+      "age": 72,
+      "z": 1.2774,
+      "pa_phenoage": 86.5,
+      "pa_delta": 14.5,
+      "hl_bio_age": 88.5,
+      "hl_delta": 16.5
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "app": {
+    "name": "HealthLens",
+    "version": "0.8.2",
+    "description": "整合医学稳态轴健康管理平台"
+  },
+  "axes": {
+    "A": {"name": "气化-自噬", "aliases": ["autophagy", "气"], "threshold": 0.5, "risk_threshold": 0.3},
+    "B": {"name": "气血-线粒体", "aliases": ["mitochondrial", "气血", "ATP"], "threshold": 0.5, "risk_threshold": 0.3},
+    "C": {"name": "络脉-清瘀", "aliases": ["senolytics", "circulation", "血瘀"], "threshold": 0.5, "risk_threshold": 0.3},
+    "D": {"name": "阴阳-昼夜", "aliases": ["circadian", "Bmal1", "昼夜", "睡眠"], "threshold": 0.5, "risk_threshold": 0.3},
+    "E": {"name": "脏腑-神经内分泌", "aliases": ["HPA", "神经内分泌", "脏腑"], "threshold": 0.5, "risk_threshold": 0.3},
+    "F": {"name": "正邪-炎症", "aliases": ["inflammation", "TNF", "IL", "NF_kB", "炎症"], "threshold": 0.5, "risk_threshold": 0.3},
+    "G": {"name": "神-情志", "aliases": ["mood", "serotonin", "情志", "神经递质"], "threshold": 0.5, "risk_threshold": 0.3},
+    "H": {"name": "先天-肾精", "aliases": ["epigenetic_clock", "hematopoiesis", "肾精", "干细胞", "sPL"], "threshold": 0.5, "risk_threshold": 0.3}
+  },
+  "fusion": {
+    "score_formula": "gene_score * 0.6 + axis_weight * 0.3 + symptom_weight * 0.1",
+    "recommendation_limit": 8,
+    "evidence_weight": {"L1": 1.0, "L2": 0.7, "L3": 0.4}
+  },
+  "risk": {
+    "diabetes_threshold": 5.7,
+    "cardiovascular_threshold": 10,
+    "liver_disease_threshold": 1.0
+  },
+  "safety": {
+    "red_flag_patterns": [
+      "胸痛", "呼吸困难", "卒中", "中风", "半身不遂", "口眼歪斜",
+      "大出血", "呕血", "咯血", "意识丧失", "昏迷", "自杀", "自残",
+      "抽搐", "惊厥", "持续高热", "癫痫", "急性腹痛"
+    ],
+    "medical_terminology_blocked": [
+      "药量", "mg", "剂量", "处方", "用药方案", "治疗方案",
+      "副作用", "不良反应", "禁忌症", "停药", "换药"
+    ],
+    "axis_axis_violations": ["A|自噬过度抑制", "F|抗炎药物"]
+  },
+  "llm": {
+    "enabled": true,
+    "ollama_model": "qwen3.8",
+    "ollama_url": "http://127.0.0.1:11434",
+    "remote_url": "http://150.158.119.19:8420/v1",
+    "remote_model": "deepseek-chat",
+    "enhance_prescription": true,
+    "timeout_seconds": 30
+  },
+  "skills": {
+    "auto_discover": true,
+    "user_skills_dir": "skills/user-skills"
+  },
+  "mcp": {
+    "enabled": true,
+    "transport": "stdio"
+  },
+  "rate_limit": {
+    "auth": "10/minute",
+    "api": "30/minute"
+  },
+  "audit": {
+    "enabled": true,
+    "sensitive_fields": ["name", "id_card", "phone", "email", "address"],
+    "log_tool_calls": true,
+    "max_events": 1000
+  }
+}

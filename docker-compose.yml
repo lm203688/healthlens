@@ -1,0 +1,174 @@
+services:
+  # ----------------------------------------------------------
+  # FastAPI 应用服务
+  # ----------------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+      # config/ 是可读配置（federated_defaults / national_standards / serializer_schema / axes），
+      # 运行时只读，用 :ro 防容器写坏。pyproject.toml 与 agent-card.json 由 Dockerfile COPY 进镜像层。
+      - ./config:/app/config:ro
+      # logs/ 挂宿主机：容器重建/替换后日志仍在（否则 /app/logs/ 是镜像层内路径，recreate 就丢）。
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Celery Worker (异步 OCR/分析/诊断任务)
+  # ----------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-worker
+    restart: unless-stopped
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=2
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+      # 与 web 一致：config/ 只读挂载。
+      - ./config:/app/config:ro
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "celery", "-A", "app.worker.celery_app", "inspect", "ping"]
+      interval: 60s
+      timeout: 15s
+      start_period: 30s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # PostgreSQL + TimescaleDB
+  # ----------------------------------------------------------
+  db:
+    image: timescale/timescaledb:latest-pg16
+    container_name: healthlens-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-healthlens}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-healthlens_dev}
+      POSTGRES_DB: ${DB_NAME:-healthlens}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-healthlens} -d ${DB_NAME:-healthlens}"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Redis (缓存 + Celery broker)
+  # ----------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: healthlens-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    # .env 里 REDIS_URL / CELERY_BROKER_URL 都带 :password@，Redis 必须 --requirepass 让 AUTH 生效；
+    # 否则 Celery worker 报 "AUTH <password> called without any password configured"（3 周 unhealthy 的根因）。
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass "${REDIS_PASSWORD:-Hlens2024SecureRedis}"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      # 密码在 healthcheck 里也传一次（redis-cli 不读 REDIS_PASSWORD env）
+      test: ["CMD-SHELL", "redis-cli -a '${REDIS_PASSWORD:-Hlens2024SecureRedis}' --no-auth-warning ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # MinIO (对象存储 - 用于 FHIR 文档、影像等)
+  # ----------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: healthlens-minio
+    restart: unless-stopped
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
+    volumes:
+      - miniodata:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - healthlens-net
+
+  # ----------------------------------------------------------
+  # Database Init (one-shot: migration + seed)
+  # Usage: docker compose --profile init up init-db
+  # ----------------------------------------------------------
+  init-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthlens-init-db
+    restart: "no"
+    profiles:
+      - init
+    entrypoint: ""
+    command: >
+      sh -c "alembic upgrade head && python scripts/seed_admin.py && echo '=== Init complete ==='"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - healthlens-net
+
+volumes:
+  pgdata:
+    driver: local
+  redisdata:
+    driver: local
+  miniodata:
+    driver: local
+
+networks:
+  healthlens-net:
+    driver: bridge

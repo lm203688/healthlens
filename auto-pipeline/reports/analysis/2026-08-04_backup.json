@@ -1,0 +1,14 @@
+{
+  "backup_id": "bk_20260804_173336",
+  "started_at": "2026-08-04T17:33:36.326596",
+  "file": "backups\\healthlens_20260804_173336.sql.gz",
+  "steps": {
+    "dump": {
+      "ok": false,
+      "error": "ssh: SSH pg_dump 失败 (exit 255): root@150.158.119.19: Permission denied (publickey,password).\r\n | local_docker: 本机无容器 healthlens-db: 命令不存在: [WinError 2] 系统找不到指定的文件。"
+    }
+  },
+  "mode": "auto",
+  "status": "failed",
+  "finished_at": "2026-08-04T17:33:36.681264"
+}

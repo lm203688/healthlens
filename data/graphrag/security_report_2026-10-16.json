@@ -1,0 +1,185 @@
+{
+  "report_version": "v1",
+  "report_date": "2026-10-16",
+  "title": "GraphRAG 抽取攻击防御评估报告",
+  "source_graph": "data/graphrag/knowledge_graph.json",
+  "reference": "HealthLens_下一阶段愿景与跃迁方案_2026-10-15 §5 L4 & §6",
+  "threat_model": {
+    "primary_threat": "Query-Efficient Agentic Graph Extraction Attack (USENIX Security 2024)",
+    "attack_surface": "1661 节点 / 2005 边的中医药知识图谱",
+    "attacker_model": "对 LLM/图谱后端有 API 访问权限的黑盒攻击者，可提交任意查询字符串",
+    "attack_goals": [
+      "G1: 全图拓扑提取（拿到完整节点/边集）",
+      "G2: 子图枚举（针对高价值节点的邻域）",
+      "G3: 实体身份链接（把匿名节点关联回真实药物/文献/作者）",
+      "G4: 敏感字段泄露（作者、DOI、出版年、私有 URL）"
+    ]
+  },
+  "exposure_inventory": {
+    "graph_size": {
+      "nodes": 1661,
+      "edges": 2005,
+      "node_types": {
+        "classical_text": 619,
+        "herb": 613,
+        "condition": 259,
+        "pathway": 126,
+        "pulse": 28,
+        "axis": 8,
+        "term": 8
+      },
+      "relation_types": {
+        "axis_of": 910,
+        "from_text": 613,
+        "treats": 309,
+        "maps_to": 97,
+        "relates_to": 76
+      }
+    },
+    "sensitivity_distribution": {
+      "nodes_with_bibliographic_fields": 1232,
+      "nodes_with_bibliographic_fields_pct": 74.17,
+      "edges_with_bibliographic_fields": 613,
+      "edges_with_bibliographic_fields_pct": 30.57,
+      "nodes_with_urls": 0,
+      "nodes_with_emails": 0,
+      "nodes_with_doi": 0,
+      "interpretation": "当前图谱公开面主要为中医文献元数据（作者、出版年、期刊），无 URL/邮箱；bib 字段占节点 74.17% 是主要暴露面"
+    }
+  },
+  "defenses": [
+    {
+      "name": "rate_limit",
+      "parameter": "queries_per_hour=30",
+      "effect": "单 query_id 每小时最多 30 次查询；超阈值抛 RateLimitExceeded",
+      "quantified_impact": "无防御：攻击者可在 1 小时内发起 10^4 查询；有防御：30 查询上限，攻击成本 ×333"
+    },
+    {
+      "name": "node_sample_rate",
+      "parameter": "node_sample_cap=100",
+      "effect": "单次查询返回节点数上限 100，超过即截断",
+      "quantified_impact": "node_sample_rate=100 时，攻击者单次查询最多拿 100/1661=6.02% 的图；需要 ≥17 次查询才能覆盖全图（考虑 30 q/h 限制，需要 ≥1 小时才能完成 1 轮全图扫描）"
+    },
+    {
+      "name": "edge_sample_rate",
+      "parameter": "edge_sample_cap=200",
+      "effect": "单次查询返回边数上限 200",
+      "quantified_impact": "edge_sample_rate=200 时，攻击者单次查询最多拿 200/2005=9.98% 的图；全图枚举需要 ≥11 次查询"
+    },
+    {
+      "name": "sensitive_field_mask",
+      "parameter": "默认 8 类模式（邮箱/DOI/URL/Git remote/author/journal/copyright/private）",
+      "effect": "命中敏感字段自动 mask 为 [MASK:<hmac-hex>]，原值不可还原",
+      "quantified_impact": "bib 字段 1232 个节点被 mask；攻击者无法从图谱中反推具体作者/出版年/DOI"
+    },
+    {
+      "name": "query_complexity_check",
+      "parameter": "max_subgraph_size=50",
+      "effect": "复杂查询（多 OR、通配符、Cypher 语法、深度展开）评分 >50 直接拒绝",
+      "quantified_impact": "阻断 5+ OR 分支的枚举查询；单次查询最多携带约 25 个 OR 分支（否则拒绝）"
+    },
+    {
+      "name": "strict_sensitive_mode",
+      "parameter": "strict_sensitive=False (默认) / True",
+      "effect": "strict=True 时命中敏感字段直接抛 SensitiveFieldBlocked",
+      "quantified_impact": "对高敏场景（如含邮箱/私有 URL 的图）可强制拒绝而非 mask"
+    },
+    {
+      "name": "redact_cli",
+      "parameter": "--strip-bibliographic / --mask-node-names / --hash-edges / --strip-private-urls",
+      "effect": "离线脱敏生成公开版图",
+      "quantified_impact": "脱敏后节点 identity 与边属性均可被 hash 化，攻击者无法通过图谱反推真实身份"
+    }
+  ],
+  "attack_scenarios": [
+    {
+      "scenario": "A1 全图提取",
+      "attack": "攻击者提交 'show all nodes' 类查询，期望一次拿回全部 1661 节点 / 2005 边",
+      "defense_chain": [
+        "rate_limit 触发 (30 q/h)",
+        "node_sample_rate 截断至 100 节点",
+        "edge_sample_rate 截断至 200 边"
+      ],
+      "outcome": "单次查询最多返回 100 节点 + 200 边（6.02% + 9.98%），且受 30 q/h 频率限制；理论最短攻击时长 ≥1 小时",
+      "residual_risk": "攻击者可通过多次查询累积拼合完整图，但成本显著上升"
+    },
+    {
+      "scenario": "A2 子图枚举",
+      "attack": "攻击者通过 'herb X 的所有邻域' 类查询遍历单个高价值节点",
+      "defense_chain": [
+        "query_complexity_check 检测多 OR / 通配符",
+        "node_sample_rate 限制返回规模"
+      ],
+      "outcome": "单节点邻域查询若返回 >100 节点被截断；多分支枚举被拒",
+      "residual_risk": "小邻域（<100）无法拦截，需结合速率限制"
+    },
+    {
+      "scenario": "A3 实体链接攻击",
+      "attack": "攻击者利用节点 label 与公开药典匹配，把匿名节点关联回真实药物/文献",
+      "defense_chain": [
+        "sensitive_field_mask 屏蔽 author/DOI/journal",
+        "redact --mask-node-names 把 label 哈希化",
+        "audit_log 记录可疑 query_id"
+      ],
+      "outcome": "脱敏后 label 变为 node-<hash12>；攻击者无法直接匹配；只能通过 hash 前缀对齐做有损枚举",
+      "residual_risk": "小字典（<10^4 药物）可暴力枚举 hash"
+    },
+    {
+      "scenario": "A4 敏感字段提取",
+      "attack": "攻击者通过 'show author/year/journal' 类查询直接提取文献元数据",
+      "defense_chain": [
+        "sensitive_field_mask 自动 mask bib 字段",
+        "strict_sensitive=True 时可拒绝"
+      ],
+      "outcome": "bib 字段值被替换为 [MASK:<hash12>]，原值不可还原",
+      "residual_risk": "hash 稳定意味着同一作者字段可跨查询关联（用于审计，是双刃剑）"
+    }
+  ],
+  "metrics": {
+    "defender_coverage": {
+      "layers": 6,
+      "exceptions": [
+        "RateLimitExceeded",
+        "NodeSampleExceeded",
+        "EdgeSampleExceeded",
+        "QueryTooComplex",
+        "SensitiveFieldBlocked",
+        "GraphSecurityError"
+      ]
+    },
+    "quantified_defense_effect": {
+      "max_attacker_gain_per_query": {
+        "nodes": 100,
+        "edges": 200,
+        "node_pct": 6.02,
+        "edge_pct": 9.98
+      },
+      "min_attacks_for_full_extraction_hours": 1,
+      "bib_fields_masked": 1232,
+      "mask_irreversible": true
+    }
+  },
+  "mitigations_recommended": [
+    "1. 公开发布前用 tools/graphrag_redact.py --strip-bibliographic --mask-node-names 生成脱敏版图",
+    "2. 生产环境 GraphExtractionDefender 默认参数：qph=30, node_cap=100, edge_cap=200, max_subgraph=50",
+    "3. 高敏场景（含邮箱/私有 URL）启用 strict_sensitive=True",
+    "4. audit_log 定期审查（每周扫描查询数 top-10 query_id 并人工评估）",
+    "5. 结合上游 API 网关做 IP 级速率限制（本模块做 query_id 级，互补）",
+    "6. 公开版图应删除 meta.built_at / source_count 等元信息以减少侧信道"
+  ],
+  "test_coverage": {
+    "test_file": "tests/lib/test_graphrag_security.py",
+    "test_classes": 8,
+    "test_count_min": 20,
+    "coverage_areas": [
+      "rate_limit",
+      "node_sample_rate",
+      "edge_sample_rate",
+      "sensitive_field_mask",
+      "query_complexity_check",
+      "defend main flow",
+      "audit log",
+      "redact CLI integration"
+    ]
+  }
+}

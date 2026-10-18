@@ -1,0 +1,89 @@
+{
+  "report_id": "promotion_d_20260804",
+  "generated_at": "2026-08-04T17:34:10.861817",
+  "total_visits": 2380,
+  "total_signups": 105,
+  "total_cost": 200,
+  "overall_cac": 1.9,
+  "channel_roi": {
+    "SEO": {
+      "visits": 1500,
+      "signups": 56,
+      "cost": 30,
+      "signup_rate": 3.7,
+      "cac": 0.54,
+      "efficiency": "paid_good",
+      "trend": "improving"
+    },
+    "social": {
+      "visits": 420,
+      "signups": 15,
+      "cost": 20,
+      "signup_rate": 3.6,
+      "cac": 1.33,
+      "efficiency": "paid_good",
+      "trend": "stable"
+    },
+    "referral": {
+      "visits": 180,
+      "signups": 28,
+      "cost": 150,
+      "signup_rate": 15.6,
+      "cac": 5.36,
+      "efficiency": "paid_good",
+      "trend": "stable"
+    },
+    "wake_up": {
+      "visits": 0,
+      "signups": 0,
+      "cost": 0,
+      "signup_rate": 0,
+      "cac": 0,
+      "efficiency": "discontinued",
+      "trend": "discontinued",
+      "note": "零转化，CAC无穷大"
+    },
+    "brand": {
+      "visits": 280,
+      "signups": 6,
+      "cost": 0,
+      "signup_rate": 2.1,
+      "cac": 0.0,
+      "efficiency": "free_high",
+      "trend": "improving"
+    }
+  },
+  "actions": [
+    {
+      "channel": "SEO",
+      "action": "maintain",
+      "reason": "付费效率可接受(CAC ¥0.54)",
+      "priority": "medium"
+    },
+    {
+      "channel": "social",
+      "action": "maintain",
+      "reason": "付费效率可接受(CAC ¥1.33)",
+      "priority": "medium"
+    },
+    {
+      "channel": "referral",
+      "action": "maintain",
+      "reason": "付费效率可接受(CAC ¥5.36)",
+      "priority": "medium"
+    },
+    {
+      "channel": "wake_up",
+      "action": "discontinued",
+      "reason": "零转化，CAC无穷大",
+      "priority": "low"
+    },
+    {
+      "channel": "brand",
+      "action": "increase_effort",
+      "reason": "零成本高效(signup_rate 2.1%)",
+      "priority": "medium"
+    }
+  ],
+  "recommendations": []
+}

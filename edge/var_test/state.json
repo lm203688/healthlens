@@ -1,0 +1,27 @@
+{
+  "data_dir": "var_test",
+  "sources": {},
+  "last_report": {},
+  "gateway_id": "hlgw-local",
+  "user_ref": "hltest-pulse-8831",
+  "last_collect": {
+    "day": "2026-10-05",
+    "frames": 2,
+    "pulse_features": {
+      "hl.pulse.rate_bpm": 351.05,
+      "hl.pulse.h1": 0.667,
+      "hl.pulse.h3_h1": 0.337,
+      "hl.pulse.h5_h1": 0.2655,
+      "hl.pulse.dicrotic_present": 1.0,
+      "hl.pulse.ascending_slope": 1.0,
+      "hl.pulse.rhythm_regularity": 0.0,
+      "hl.pulse.perfusion_index": 0.667,
+      "hl.pulse.sampling_hz": 256.0,
+      "hl.pulse.quality": 1.0
+    },
+    "saved_at": "2026-10-05T13:35:05.664717+00:00",
+    "sources": {
+      "pulse": true
+    }
+  }
+}
