@@ -1,0 +1,366 @@
+[
+  {
+    "id": "DECIDE-AI#D1",
+    "text": "DECIDE-AI D1: Study design and eligibility criteria",
+    "status": "S",
+    "evidence": "unverified entries normalized to L3, 91 synthetic-validation entries separated into a distinct S class outside L1–L3) anchors the",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D2",
+    "text": "DECIDE-AI D2: Outcome definitions and measurement",
+    "status": "S",
+    "evidence": "tent-validity proxy, not a psychometric convergent-validity estimate).  **Conclusion**: ISSBF provides a computable, verifiable, n",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D3",
+    "text": "DECIDE-AI D3: Reference standard / truth label",
+    "status": "S",
+    "evidence": "stratified case evidence base (verified crossref entries at L1–L2, classical-text entries at L3, and synthetic-validation entrie",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D4",
+    "text": "DECIDE-AI D4: Sample size / number of cases",
+    "status": "S",
+    "evidence": "); (3) a stratified case evidence base (n=120 total: 15 human-trial or classical entries with L1–L3 grades, 14 unverified ent",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D5",
+    "text": "DECIDE-AI D5: Sample selection / data availability",
+    "status": "S",
+    "evidence": "unverified entries normalized to L3, 91 synthetic-validation entries separated into a distinct S class outside L1–L3) anchors the",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D6",
+    "text": "DECIDE-AI D6: Analysis method (statistical approach)",
+    "status": "S",
+    "evidence": "ational Reliability (Input-Perturbation Bootstrap)  Because the scorers are fixed-threshold deterministic functions, their stabil",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D7",
+    "text": "DECIDE-AI D7: Handling missing data",
+    "status": "S",
+    "evidence": "a secondary anchor). G is reported as `unmeasured` rather than duplicating E when no sleep signal is present. Their ICC values ar",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D8",
+    "text": "DECIDE-AI D8: Handling confounders",
+    "status": "S",
+    "evidence": "'s 76% synthetic share *auditable*, not hidden.  **Cited (L1–L3) subset = 15 entries** (7 verified + 8 classical). Representat",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D9",
+    "text": "DECIDE-AI D9: Bias assessment",
+    "status": "S",
+    "evidence": "concordance with a traditional-medicine keyword dictionary encoded by the authors (an exploratory content-validity proxy, not a",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D10",
+    "text": "DECIDE-AI D10: Generalizability",
+    "status": "S",
+    "evidence": "tion. The framework as a whole requires prospective validation.  **Keywords**: integrative medicine; homeostasis; autophagy; mitoch",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D11",
+    "text": "DECIDE-AI D11: Ethical considerations",
+    "status": "S",
+    "evidence": "ist self-audit (DECIDE-AI + TRIPOD-AI + SPIRIT-AI).** `tools/checklist_audit.py` scans the paper and canonical codebase artefacts",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D12",
+    "text": "DECIDE-AI D12: Registration / pre-registration",
+    "status": "P",
+    "evidence": "I#D12** — DECIDE-AI D12: Registration / pre-registration   - _Evidence_ [codebase/tooling]: `I#D12** — DECIDE-AI D12: Registration / pre",
+    "location": "codebase/tooling"
+  },
+  {
+    "id": "DECIDE-AI#D13",
+    "text": "DECIDE-AI D13: Conflict of interest",
+    "status": "S",
+    "evidence": "mercial, or not-for-profit sectors.  ## Conflicts of Interest  The author declares no conflicts of interest.  ## Data Availability  The case",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D14",
+    "text": "DECIDE-AI D14: Funding disclosure",
+    "status": "S",
+    "evidence": "review board approval was required.  ## Funding  This research did not receive any specific grant from funding agencies in the",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D15",
+    "text": "DECIDE-AI D15: Ethics statement",
+    "status": "S",
+    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D16",
+    "text": "DECIDE-AI D16: Data sharing plan",
+    "status": "P",
+    "evidence": "rification results are available at the Zenodo DOI cited in the Data Availability Statement (see data_availability_statement.md).\"",
+    "location": "codebase/tooling"
+  },
+  {
+    "id": "DECIDE-AI#D17",
+    "text": "DECIDE-AI D17: Code availability",
+    "status": "S",
+    "evidence": "dation.py) are available at the project GitHub repository. The supplementary data (HealthLens_computational_validation_supplem",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D18",
+    "text": "DECIDE-AI D18: AI-assistance disclosure",
+    "status": "S",
+    "evidence": "aft, writing -- review and editing.  ## AI-Assistance Disclosure  AI language models were used to assist with manuscript editing and literature",
+    "location": "paper.md"
+  },
+  {
+    "id": "DECIDE-AI#D19",
+    "text": "DECIDE-AI D19: Author contributions",
+    "status": "S",
+    "evidence": "deterministic and fully auditable.  ## Author Contributions  Li Xing: conceptualization, methodology, software (computational validation),",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T1",
+    "text": "TRIPOD-AI T1: Rationale for the model",
+    "status": "S",
+    "evidence": "ion; closed-loop validation  ---  ## 1. Introduction  Global aging has made healthspan extension a central medical goal. Modern agin",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T2",
+    "text": "TRIPOD-AI T2: Eligibility criteria for model development",
+    "status": "S",
+    "evidence": "2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critique that earlier \"cross-instrument co",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T3",
+    "text": "TRIPOD-AI T3: Eligibility criteria for validation",
+    "status": "S",
+    "evidence": "l-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, Independent Research Projec",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T4",
+    "text": "TRIPOD-AI T4: Predictors / features",
+    "status": "S",
+    "evidence": "ed mechanism must map to a quantifiable biomarker (genetic, protein, metabolic, or wearable). - **A3 Personalized weighting**: Re",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T5",
+    "text": "TRIPOD-AI T5: Outcome definition",
+    "status": "S",
+    "evidence": "d — ICC(2,1) after Shrout & Fleiss with Fisher-Z 95% confidence intervals, and linear-weighted Cohen's κ over five score bands —",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T6",
+    "text": "TRIPOD-AI T6: Missing data handling",
+    "status": "S",
+    "evidence": "a secondary anchor). G is reported as `unmeasured` rather than duplicating E when no sleep signal is present. Their ICC values ar",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T7",
+    "text": "TRIPOD-AI T7: Sample size",
+    "status": "S",
+    "evidence": "); (3) a stratified case evidence base (n=120 total: 15 human-trial or classical entries with L1–L3 grades, 14 unverified ent",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T8",
+    "text": "TRIPOD-AI T8: Data quality measures",
+    "status": "P",
+    "evidence": "ublic_release.py with three independent fail-loud defenses against upstream bibliographic leakage.\",   \"reproducibility\": \"All re",
+    "location": "codebase/tooling"
+  },
+  {
+    "id": "TRIPOD-AI#T9",
+    "text": "TRIPOD-AI T9: Statistical analysis plan",
+    "status": "S",
+    "evidence": "ational Reliability (Input-Perturbation Bootstrap)  Because the scorers are fixed-threshold deterministic functions, their stabil",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T10",
+    "text": "TRIPOD-AI T10: Model development process",
+    "status": "S",
+    "evidence": "vention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, I",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T11",
+    "text": "TRIPOD-AI T11: Model specification",
+    "status": "S",
+    "evidence": "axioms constrain the framework; (2) an eight-axis mapping (A–H) is constructed (A: gasification/autophagy, B: qi-blood/mitochondr",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T12",
+    "text": "TRIPOD-AI T12: Model selection",
+    "status": "S",
+    "evidence": "release | Reserved; not implemented in v0.30.0 | | **J: Regenerative medicine** | kidney-essence / prenatal qi | iPSC reprog",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T13",
+    "text": "TRIPOD-AI T13: Model performance / discrimination",
+    "status": "S",
+    "evidence": "ol profiles, and 88% domain-expectation concordance with a traditional-medicine keyword dictionary encoded by the authors (an explo",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T14",
+    "text": "TRIPOD-AI T14: Model calibration",
+    "status": "P",
+    "evidence": "escription\": \"计算生物年龄偏移（bioage_delta），对标 PhenoAge 时钟（Liu 2018, DOI 10.1371/journal.pmed.1002760），SI 单位。需登录。\",       \"tags\": [\"agi",
+    "location": "codebase/tooling"
+  },
+  {
+    "id": "TRIPOD-AI#T15",
+    "text": "TRIPOD-AI T15: Overfitting assessment",
+    "status": "S",
+    "evidence": "tion (22 synthetic profiles) quantifies reproducibility, specificity, and coverage.  **Results**: The framework anchors each axis to mo",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T16",
+    "text": "TRIPOD-AI T16: Internal validation",
+    "status": "S",
+    "evidence": "es.  ### 6.1 Computational Reliability (Input-Perturbation Bootstrap)  Because the scorers are fixed-threshold deterministic functions, th",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T17",
+    "text": "TRIPOD-AI T17: External validation",
+    "status": "S",
+    "evidence": "ve as `case_evidence_db.json`.  ### 6.2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critiqu",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T18",
+    "text": "TRIPOD-AI T18: Comparison with previous models",
+    "status": "S",
+    "evidence": "napshot frozen to `validation_snapshots/BASELINE.json`. Any future script or case-library change triggers automatic CI baseline",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T19",
+    "text": "TRIPOD-AI T19: Impact of missing data",
+    "status": "S",
+    "evidence": "3) [9]; early TRE优于late TRE for insulin sensitivity [8] | | **E: Zang-fu-Neuroendocrine** | zang-fu / kidney life-gate | HPA axis,",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T20",
+    "text": "TRIPOD-AI T20: Handling confounders",
+    "status": "S",
+    "evidence": "2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critique that earlier \"cross-instru",
+    "location": "paper.md"
+  },
+  {
+    "id": "TRIPOD-AI#T21",
+    "text": "TRIPOD-AI T21: Ethical / ethical implications",
+    "status": "S",
+    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S1",
+    "text": "SPIRIT-AI S1: Description of intervention",
+    "status": "S",
+    "evidence": "ework for Non-Pharmacological Longevity Intervention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**:",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S2",
+    "text": "SPIRIT-AI S2: Randomisation / allocation",
+    "status": "S",
+    "evidence": "unverified entries normalized to L3, 91 synthetic-validation entries separated into a distinct S class outside L1–L3) anchors the",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S3",
+    "text": "SPIRIT-AI S3: Blinding",
+    "status": "S",
+    "evidence": "y comparable** to each other.  - **(iv) Author-constructed battery.** The 18 profiles were built by the authors to span the input space an",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S4",
+    "text": "SPIRIT-AI S4: Data collection methods",
+    "status": "S",
+    "evidence": "anchors the framework empirically; (4) wearable/CGM/BCI data interfaces drive the loop; (5) an in-silico computational validati",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S5",
+    "text": "SPIRIT-AI S5: Interventions planned",
+    "status": "S",
+    "evidence": "able). - **A3 Personalized weighting**: Recommendation strength is determined by the intersection of classical candidate and individua",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S6",
+    "text": "SPIRIT-AI S6: Outcome measures",
+    "status": "S",
+    "evidence": "s constrain the framework; (2) an eight-axis mapping (A–H) is constructed (A: gasification/autophagy, B: qi-blood/mitochondr",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S7",
+    "text": "SPIRIT-AI S7: Analysis plan",
+    "status": "S",
+    "evidence": "ational Reliability (Input-Perturbation Bootstrap)  Because the scorers are fixed-threshold deterministic functions, their stabil",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S8",
+    "text": "SPIRIT-AI S8: Sample size and frequency",
+    "status": "S",
+    "evidence": "); (3) a stratified case evidence base (n=120 total: 15 human-trial or classical entries with L1–L3 grades, 14 unverified ent",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S9",
+    "text": "SPIRIT-AI S9: Data monitoring",
+    "status": "S",
+    "evidence": "ance, evidence level, contraindication, monitoring metric, actionable prescription). 5. Safety gate: contraindication auto-exclusi",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S10",
+    "text": "SPIRIT-AI S10: Adverse events",
+    "status": "S",
+    "evidence": "a secondary anchor). G is reported as `unmeasured` rather than duplicating E when no sleep signal is present. Their ICC values ar",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S11",
+    "text": "SPIRIT-AI S11: Ethical considerations",
+    "status": "S",
+    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "location": "paper.md"
+  },
+  {
+    "id": "SPIRIT-AI#S12",
+    "text": "SPIRIT-AI S12: Adaptations and modifications",
+    "status": "S",
+    "evidence": "ist self-audit (DECIDE-AI + TRIPOD-AI + SPIRIT-AI).** `tools/checklist_audit.py` scans the paper and canonical codebase artefacts",
+    "location": "paper.md"
+  }
+]

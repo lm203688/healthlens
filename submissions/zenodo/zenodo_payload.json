@@ -1,0 +1,345 @@
+{
+  "metadata": {
+    "title": "HealthLens: Integrated Steady-State Axis Framework — Dataset, Evidence Library & Validation Artefacts",
+    "subtitle": "Deterministic, jurisdiction-aware wellness fusion engine; eight-axis scoring, evidence database, cross-instrument convergent validity, multi-seed reproducibility and adversarial robustness",
+    "publication_date": "2026-10-18",
+    "resource_type": {
+      "type": "DATASET",
+      "subtype": "DB"
+    },
+    "creators": [
+      {
+        "name": "HealthLens Research Team",
+        "affiliation": "HealthLens (open-source project)"
+      }
+    ],
+    "description": "Dataset archive for the HealthLens integrated steady-state axis framework (A–H). Contains:\n\n(1) Evidence database (120 entries): 29 with verified Crossref DOIs, 91 synthetic validation fixtures — evidence coverage 24.2% honestly reported.\n\n(2) Four-way terminology mapping (GB/T 20348-2026 <-> eight axes <-> biological pathways <-> classical Chinese-medicine text fragments, 613 fragments).\n\n(3) Cross-instrument convergent validity bridge — SF-36 PCS/MCS, PHQ-9, PROMIS Sleep T-scores vs the eight HealthLens axes, n=200 latent-shared synthetic profiles, seed 20261018.\n\n(4) Multi-seed reproducibility — 50 seeds x 50 profiles = 2500 scoring calls; deterministic double-run verified at 0 diff.\n\n(5) Adversarial robustness battery — 300 pathological profiles across 7 categories; 0 crashes, 0 out-of-range, 0 NaN/inf.\n\n(6) Reliability bootstrap — 18 profiles x 1000 perturbations, ICC(2,1) and weighted kappa for all eight axes.\n\n(7) PhenoAge alignment benchmark (Liu 2018) — r=0.806, MAE 5.2y, RMSE 7.1y on 200 synthetic profiles with honest device-level calibration caveat.\n\n(8) DECIDE-AI + TRIPOD-AI + SPIRIT-AI checklist self-audit — 52 items, 47 satisfied + 5 partial = 95.2% compliance score.\n\n(9) Prospective cohort protocol, IRB submission package, ethics review statement, data governance, informed consent, participant questionnaire, data dictionary, analysis plan and OSF pre-print draft (SPIRIT-AI aligned).\n\nAll artefacts are deterministic from frozen seeds; the reproducibility tooling is included in the repository. HealthLens is a wellness framework, not a medical device.",
+    "subjects": [
+      {
+        "source": "inspire",
+        "term": "Health Science"
+      },
+      {
+        "source": "inspire",
+        "term": "Traditional Chinese Medicine"
+      },
+      {
+        "source": "inspire",
+        "term": "Bioinformatics"
+      },
+      {
+        "source": "inspire",
+        "term": "Public Health"
+      },
+      {
+        "source": "inspire",
+        "term": "Computational Biology"
+      },
+      {
+        "source": "other",
+        "term": "Wellness informatics"
+      },
+      {
+        "source": "other",
+        "term": "GB/T 20348-2026"
+      }
+    ],
+    "keywords": [
+      "integrative medicine",
+      "traditional chinese medicine",
+      "computational wellness",
+      "eight-axis framework",
+      "convergent validity",
+      "reproducibility",
+      "adversarial robustness",
+      "jurisdiction-aware compliance",
+      "GB/T 20348",
+      "cross-instrument validation",
+      "deterministic engine",
+      "synthetic validation",
+      "PhenoAge",
+      "wellness"
+    ],
+    "contributors": [
+      {
+        "name": "HealthLens Contributors",
+        "type": "Group"
+      }
+    ],
+    "related_identifiers": [
+      {
+        "scheme": "doi",
+        "identifier": "10.48550/arXiv.XXXXXX",
+        "relation": "isPreprintOf",
+        "resource_type": "publication"
+      },
+      {
+        "scheme": "url",
+        "identifier": "https://github.com/lm203688/healthlens",
+        "relation": "isSupplementTo",
+        "resource_type": "software"
+      },
+      {
+        "scheme": "url",
+        "identifier": "https://healthlens.cc",
+        "relation": "isDocumentedBy",
+        "resource_type": "website"
+      }
+    ],
+    "rights_list": [
+      {
+        "license": {
+          "id": "cc-by-4.0",
+          "name": "Creative Commons Attribution 4.0 International",
+          "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+        },
+        "rights": "Open access under CC-BY-4.0; code under MIT."
+      }
+    ],
+    "pids": {
+      "zenodo": {
+        "recognition": {
+          "doi": "10.5281"
+        }
+      },
+      "doi": {
+        "suffix": ""
+      }
+    },
+    "version": "v0.30.0",
+    "version_number": 1,
+    "notes": [
+      "This is a device-level validation archive. All quantitative figures are from deterministic synthetic runs unless otherwise marked. Real prospective cohort data (D5) will be appended as a v0.31.0 release upon IRB approval and study completion.",
+      "HealthLens is a wellness framework, not a medical device. No diagnostic, therapeutic, or predictive medical claims are made by any artefact in this archive."
+    ],
+    "access_right": "open",
+    "communities": []
+  },
+  "_payload_generated_at": "2026-10-18T16:37:35Z",
+  "_attached_files_count": 44,
+  "_missing_files": [
+    "config/axis_thresholds.yaml"
+  ],
+  "attached_files": [
+    {
+      "path": "HealthLens_论文_英文版_全文.md",
+      "size_bytes": 38062,
+      "sha256": "f2e86442057f9f259735e230c6130df26f64b689cf5e5e021f63c58613c70af2"
+    },
+    {
+      "path": "submissions/medrxiv/submission_manifest.json",
+      "size_bytes": 6168,
+      "sha256": "1c057f213a18e74cd4a75f020ce1799c67c2380bb0bbebd10b231a45c323afa1"
+    },
+    {
+      "path": "submissions/medrxiv/cover_letter_to_medrxiv.md",
+      "size_bytes": 5002,
+      "sha256": "048361284090a739ace5460d24c025a9c0d2b91f2f8e4d71cfc4a3ee82e71b91"
+    },
+    {
+      "path": "submissions/medrxiv/data_availability_statement.md",
+      "size_bytes": 4553,
+      "sha256": "e977ac582bcf90c812a1a85c3b39817fa5fb2dad1f6848db50d5977e8313f4af"
+    },
+    {
+      "path": "submissions/medrxiv/reviewer_guidance.md",
+      "size_bytes": 3949,
+      "sha256": "f5d4da3be6210cbf894950cf7185172c089caf3e4b7392bb69ba298d0cd0ebde"
+    },
+    {
+      "path": "docs/zenodo_publication/README.md",
+      "size_bytes": 5417,
+      "sha256": "3df6c3d69a72000dcb03d6fa3b87f9ac3ce713eacab26137d3dd387beccf0e81"
+    },
+    {
+      "path": "docs/zenodo_publication/CITATION.cff",
+      "size_bytes": 2703,
+      "sha256": "d9a09b6710cc2fffa05f931492d19e6f95631abb1bebfe5881abcde743807ff4"
+    },
+    {
+      "path": "docs/zenodo_publication/COMMUNITY_USE_POLICY.md",
+      "size_bytes": 4702,
+      "sha256": "c31484d78f43edc5c612a14db770dc8926adac4a7711b9626c110d7c86a0a064"
+    },
+    {
+      "path": "docs/zenodo_publication/dataset_manifest.json",
+      "size_bytes": 9620,
+      "sha256": "894f24c139534cde131231db1f65b37e4eadd58545753b89254207012eba7d37"
+    },
+    {
+      "path": "docs/zenodo_publication/graphrag_publication_checklist.md",
+      "size_bytes": 4513,
+      "sha256": "5daeb1e9add31eb3d1b629d4c26245823a6adcd9acb5d5e19b0e6aba6579b1f5"
+    },
+    {
+      "path": "submissions/zenodo/deposit_manifest.json",
+      "size_bytes": 4927,
+      "sha256": "f4001d10fbb2a55b3309a358945e448a5e3f8443ce26720b766a493651e46ba4"
+    },
+    {
+      "path": "data/case_evidence_db.json",
+      "size_bytes": 138170,
+      "sha256": "89df6656ea8b081e4267876dbf7919425656c790443e608d8a6e6ec24e9bb4a5"
+    },
+    {
+      "path": "engine_reliability_metrics.json",
+      "size_bytes": 3371,
+      "sha256": "5fb55bf42a47586c6574e2ad7c02f1e4ebe1b718881b7ccb8fc3dd8aa19b7eb9"
+    },
+    {
+      "path": "data/instrument_convergent_validity.json",
+      "size_bytes": 133804,
+      "sha256": "97459ae8190202cbf80b4932b691836f2d512b0e91e52223f8b343fa57f2fc39"
+    },
+    {
+      "path": "data/instrument_cv_heatmap.svg",
+      "size_bytes": 9288,
+      "sha256": "c0a5d93027c2954eb2795381b4563e7c372dc3db0a0fc59459cc498608a81891"
+    },
+    {
+      "path": "data/INSTRUMENT_CV_REPORT.md",
+      "size_bytes": 7384,
+      "sha256": "42957156f0727c92d654a2e1c4729548a7e966fc961c154bcb90695c03a3be6b"
+    },
+    {
+      "path": "data/reproducibility_seeds.json",
+      "size_bytes": 14599,
+      "sha256": "3916f1ae05ef20089185b18a5f65a54c2b30d89e87d626a403ca4439b69e56d8"
+    },
+    {
+      "path": "data/adversarial_battery.json",
+      "size_bytes": 1333,
+      "sha256": "6bb41c06778a2a5a7dcd6a91e797f3391a4df9fb544179fd5937f917191f801b"
+    },
+    {
+      "path": "data/reproducibility_heatmap.svg",
+      "size_bytes": 3398,
+      "sha256": "6c8fa5d0eea9df371955243caedcfa1398dfbedb9b6eedae21d86e867b38b25d"
+    },
+    {
+      "path": "data/REPRODUCIBILITY_AND_ADVERSARIAL_REPORT.md",
+      "size_bytes": 2583,
+      "sha256": "38695e48ae2529e527ba1373a352459fdbf3efa4fc762359d2baeaadc5f461ae"
+    },
+    {
+      "path": "data/phenoage_alignment.json",
+      "size_bytes": 34975,
+      "sha256": "a944beb7b220decf7f3d95cbd4e81a00bec67b05ac6008d76e96d68c73dd02bb"
+    },
+    {
+      "path": "data/PHENOAGE_ALIGNMENT_REPORT.md",
+      "size_bytes": 1629,
+      "sha256": "09b260866dfe7c30247f22ff9dcccb75b2a4ef2472920edcabc2f4d9d008a046"
+    },
+    {
+      "path": "data/checklist_compliance.json",
+      "size_bytes": 15317,
+      "sha256": "86022a2ef31d0d2adc15b66e09cf76d1d9fed7af52f3b328f38e3d024d91f155"
+    },
+    {
+      "path": "data/CHECKLIST_COMPLIANCE_REPORT.md",
+      "size_bytes": 13697,
+      "sha256": "601e3f70d9a5e39afed19b77a9690c8908b1f685e51f59e50254bc0b87421f98"
+    },
+    {
+      "path": "docs/reporting_standards/equator_submission_letter.md",
+      "size_bytes": 9318,
+      "sha256": "a974991c69786ceb31199cf1b82ace94767bff3b7180f7149339b0e0e1bab0d0"
+    },
+    {
+      "path": "docs/reporting_standards/ieee_cbbmi_submission_letter.md",
+      "size_bytes": 12613,
+      "sha256": "b389efadeb5c0153a9f478345bf033220aea736805ac7a3c1b4524bcc891c486"
+    },
+    {
+      "path": "docs/reporting_standards/w3c_aawg_comment.md",
+      "size_bytes": 11452,
+      "sha256": "a24367f8e34597973a976e66c8a31595a2231853b72c07605467f907ef402d3e"
+    },
+    {
+      "path": "docs/reporting_standards/community_feedback_survey.md",
+      "size_bytes": 11017,
+      "sha256": "162210d40c320dc9fcbe230d4410738f6ec7b8dcdc0dc88c4391022e68a0ee33"
+    },
+    {
+      "path": "docs/reporting_standards/digital_twin_standard_draft_v0.2.md",
+      "size_bytes": 53255,
+      "sha256": "5a63421c764386f890b9e8b47703eb506f477726681a8bdb10e1dc75837f0f3c"
+    },
+    {
+      "path": "docs/prospective_cohort/study_protocol.md",
+      "size_bytes": 8707,
+      "sha256": "ace3a090fac73194c1798508b93925cfa24a298263cf6640ff389bf07c716a18"
+    },
+    {
+      "path": "docs/prospective_cohort/recruitment_questionnaire.md",
+      "size_bytes": 5212,
+      "sha256": "7a1f53ba8531a3577af3181243c0be6f617c4fa7b211d06d0a26d9165c01030d"
+    },
+    {
+      "path": "docs/prospective_cohort/informed_consent.md",
+      "size_bytes": 7438,
+      "sha256": "5cd14ca56aa96e6b7b69176f0b541647de309b4b51ab7d53086f5cddf17ac97f"
+    },
+    {
+      "path": "docs/prospective_cohort/data_dictionary.md",
+      "size_bytes": 6947,
+      "sha256": "2d618d443bee5b92c60cc5ae1ae0565a3211935bbd59efe8574ebd7d647c7b08"
+    },
+    {
+      "path": "docs/prospective_cohort/analysis_plan.md",
+      "size_bytes": 7010,
+      "sha256": "1333c53075180098f86e4a6dd051d7e588283bc5da0d992dcc363c0baaca9c65"
+    },
+    {
+      "path": "docs/prospective_cohort/osf_preprint_draft.md",
+      "size_bytes": 6080,
+      "sha256": "cc81687b5de9d73e2901d1214e9e504ea73f5842cff6ff826e546bf30b03c409"
+    },
+    {
+      "path": "docs/prospective_cohort/irb_submission_package.md",
+      "size_bytes": 10070,
+      "sha256": "b554cbe768b0bf1fd4b526f7060e30ce2052dec2ab64f4620fb2169c8495c90a"
+    },
+    {
+      "path": "docs/prospective_cohort/ethics_review_statement.md",
+      "size_bytes": 9105,
+      "sha256": "ed581084b8d86cc2d06590edf9a2e3284c252cf827fcaec7c2e3f4703d4ba758"
+    },
+    {
+      "path": "docs/prospective_cohort/data_governance.md",
+      "size_bytes": 15731,
+      "sha256": "92d3491bce396cf61dbeaf6966fe498bfcd26c40aeea0652d85b553ebebdee98"
+    },
+    {
+      "path": "config/national_standards.json",
+      "size_bytes": 1950,
+      "sha256": "874ff22b125b0733f5262d17b957c0c3e4f7d03249ea21f9c506f266da54defd"
+    },
+    {
+      "path": "agent-card.json",
+      "size_bytes": 9176,
+      "sha256": "78468f729f0d9ad02a014e3207b08d0061e225258b4ff087a52d1e7e3904ce83"
+    },
+    {
+      "path": "pyproject.toml",
+      "size_bytes": 4771,
+      "sha256": "5f954c65efc45635d5c36709608f1148bac0e4fdb9a8b18745440c5de3176b48"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 16253,
+      "sha256": "c81cb0e41311d36ca52e2ade783bafbee8b47da3ed6e8837a8a8e279db500dd6"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size_bytes": 65772,
+      "sha256": "edb749696bee95b16dc6bfaec4e15bb1d894daff59f2d652b31ff235061c06fb"
+    },
+    {
+      "path": "LICENSE",
+      "size_bytes": 1075,
+      "sha256": "2ac4c4cd45787ac67a946768bff13a0123d94a3a366586f6169e118291eff279"
+    }
+  ]
+}

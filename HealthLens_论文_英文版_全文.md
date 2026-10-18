@@ -241,6 +241,22 @@ We constructed 300 pathological profiles across seven categories designed to str
 
 `tools/reproducibility_adversarial.py` produces `data/reproducibility_seeds.json`, `data/adversarial_battery.json`, `data/reproducibility_heatmap.svg`, and `data/REPRODUCIBILITY_AND_ADVERSARIAL_REPORT.md`.
 
+### 6.5 Checklist Self-Audit and Causal End-to-End Pipeline
+
+To address the D4 (checklist compliance) and D1 (causal inference reproducibility) gaps without human experts, we built two additional self-audit artefacts.
+
+**Checklist self-audit (DECIDE-AI + TRIPOD-AI + SPIRIT-AI).** `tools/checklist_audit.py` scans the paper and canonical codebase artefacts for evidence of each of the 19 + 21 + 12 = 52 checklist items, and classifies each item as Satisfied (evidence in paper), Partial (evidence in codebase but not surfaced in paper), or Missing. The current run reports **47 Satisfied / 5 Partial / 0 Missing, compliance score 95.2%** (S=1, P=0.5, M=0). The five Partial items are surfaced in `data/CHECKLIST_COMPLIANCE_REPORT.md` so authors can decide which to promote into the manuscript before submission. The tool is deterministic and can be re-run in CI (see `tools/sync_test_count.py` sibling gate pattern).
+
+**Causal end-to-end pipeline.** `tools/causal_end_to_end.py` runs a fully specified synthetic DAG (HRV -> sleep efficiency, HRV -> sleep regularity, both -> stress_index) with 400 simulated individuals, estimates the ATT via paired bootstrap (n_boot = 10,000, seed 20261018), reports the 95% CI and VanderWeele & Ding E-value, and refutes the estimate with three standard refuters (placebo permutation, random common cause, data subset). The pipeline is deterministic under a fixed seed — same input produces identical ATT across runs. Current run: **ATT = -0.251 (95% CI [-0.312, -0.191]), E-value 1.89**. Sign is wellness-positive (stress reduced). The deliverable is not the specific numbers — which come from a synthetic DAG and are not clinically meaningful — but the end-to-end reproducibility of the pipeline from SCM definition -> ATT + CI -> E-value -> refutation, which addresses D1's core concern that causal claims cannot be reproduced from the manuscript alone.
+
+**Model card and system card.** Following Mitchell et al. (2019), `docs/model_card.md` documents the eight-axis engine in isolation (intended use, inputs/outputs, quantitative performance, bias/harm, evaluation data, roadmap). `docs/system_card.md` documents the full delivered system (engine + API + SDK + edge gateway + A2A + MCP + partner tier + deployment topology + security controls + operational telemetry + ISO/IEC 5259 alignment). Both are companion to the manuscript and referenced in the Data Availability statement.
+
+**Explicit scope limits**:
+
+- (i) **Self-audit is not peer review.** The checklist tool catches omissions but cannot judge semantic adequacy. A strict reviewer may still find Section 5 or 6 under-specified relative to what DECIDE-AI Section 12 ("study registration") demands.
+- (ii) **Causal pipeline on synthetic DAG is not a clinical trial.** The ATT, CI, E-value and refutation numbers all come from the noise parameters in `tools/causal_end_to_end.py`. They demonstrate that the pipeline is runnable and reproducible; they do not demonstrate that any real-world lifestyle lever has a causal effect.
+- (iii) **Model card bias section is aspirational.** Cross-population discrimination testing was not performed because the evaluation data is synthetic. This is called out explicitly in the card and in Section 6.2.
+
 ---
 
 ## 7. Closed-Loop Verification (SIIV)
