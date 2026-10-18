@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "n_profiles": 300,
+    "kind_counts": {
+      "all_extreme_outliers": 35,
+      "clamped_boundaries": 59,
+      "contradictory_bp_hrv": 44,
+      "missing_critical": 45,
+      "impossible_combinations": 42,
+      "extreme_high_bio": 34,
+      "extreme_low_bio": 41
+    },
+    "crashes": 0,
+    "unbounded_outputs": 0
+  },
+  "per_axis": {
+    "A": {
+      "mean": 51.8,
+      "sd": 39.319,
+      "min": 0.0,
+      "max": 90.4,
+      "n": 300
+    },
+    "B": {
+      "mean": 62.336,
+      "sd": 37.866,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "C": {
+      "mean": 53.317,
+      "sd": 35.928,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "D": {
+      "mean": 66.196,
+      "sd": 31.634,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "E": {
+      "mean": 59.334,
+      "sd": 44.028,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "F": {
+      "mean": 37.794,
+      "sd": 46.498,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "G": {
+      "mean": 58.113,
+      "sd": 31.303,
+      "min": 0.0,
+      "max": 100.0,
+      "n": 300
+    },
+    "H": {
+      "mean": 33.985,
+      "sd": 35.755,
+      "min": 0.0,
+      "max": 73.3,
+      "n": 300
+    }
+  }
+}

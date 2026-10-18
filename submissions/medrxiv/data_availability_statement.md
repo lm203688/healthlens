@@ -80,7 +80,7 @@ All code, configuration, and data are available in the public GitHub
 repository. Reproduction commands:
 
 ```bash
-# Full test suite (1781 tests as of v0.31.0)
+# Full test suite (1826 tests as of v0.31.0)
 python -m pytest tests/
 
 # Compute validation results

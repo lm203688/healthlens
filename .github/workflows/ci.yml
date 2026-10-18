@@ -109,6 +109,32 @@ jobs:
 
           echo "测试全部通过（$PASSED passed / 0 failed）"
 
+      - name: Test-count manifest drift gate
+        # 【2026-10-18 消除 A5' 复发根因】submissions/medrxiv 的 manifest、
+        # cover_letter、data_availability_statement、reviewer_guidance 四份文件
+        # 都硬编码了 "N automated tests pass"。此前每次测试集变动都需要手工同步
+        # （10-17 S7、10-18 A5' 就是同一个坑三次复发）。
+        #
+        # 现在：先扫描四份文件的 N 值，若不一致即硬失败；若一致但与本次 pytest
+        # 实际 passed 数不同，也硬失败——开发者必须显式跑
+        # `python tools/sync_test_count.py --apply --pytest-out pytest.out` 重新
+        # 落盘并 commit，才能进主分支。
+        if: always()
+        run: |
+          python tools/sync_test_count.py --check
+          ACTUAL=$(grep -oE '[0-9]+ passed' pytest.out | tail -1 | grep -oE '^[0-9]+' || echo 0)
+          MANIFEST=$(python tools/sync_test_count.py --print || echo "")
+          if [ -z "$ACTUAL" ] || [ "$ACTUAL" = "0" ]; then
+            echo "::error::无法从 pytest.out 解析 passed 数"
+            exit 1
+          fi
+          if [ "$ACTUAL" != "$MANIFEST" ]; then
+            echo "::error::submission manifest 声明 ${MANIFEST}，但本次 pytest 实际通过 ${ACTUAL}"
+            echo "::error::运行 \`python tools/sync_test_count.py --apply --pytest-out pytest.out\` 并 commit"
+            exit 1
+          fi
+          echo "manifest 与 pytest 一致：${ACTUAL} passed"
+
       - name: Type check (mypy)
         # 【2026-10-08 P0-26】mypy 也升级为硬门禁；--ignore-missing-imports
         # 保留以兼容第三方无类型包，但本项目内错误必须清零。
