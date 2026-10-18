@@ -23,7 +23,7 @@ The manuscript addresses a longstanding structural gap in integrative-medicine r
 
 We propose the **Integrated Steady-State Biology Framework (ISSBF)**, which axiomatically maps six classical constructs onto ten measurable steady-state biology axes, fuses classical candidates with individual genetic-weakness pathways, and drives continuous verification through a Sense-Infer-Intervene-Verify (SIIV) closed loop with defined hardware data interfaces.
 
-The framework is anchored on a curated real-world case library (n = 29; L1 = 8, L2 = 9, L3 = 12) that includes several recent high-impact human trials:
+The framework is anchored on a stratified case evidence base (n = 120) whose entries are disclosed by verification status: 7 Crossref-verified human-trial or classical-experience entries, 8 traditional-text entries, 14 unverified_no_publication entries (unpublished, not citable as evidence grades), and 91 synthetic_validation entries used only as fusion-logic test fixtures (recorded as S class, not L1–L3). Several of the Crossref-verified entries are recent high-impact human trials:
 
 - **Bou Malhab et al., Clin Nutr ESPEN 2025** — 4-week fasting raised LAMP2 4.2-fold
 - **Kirkland et al., Nature Medicine 2026 (AFFIRM)** — dasatinib plus quercetin improved gait speed in a 240-person Phase II RCT
@@ -31,7 +31,7 @@ The framework is anchored on a curated real-world case library (n = 29; L1 = 8, 
 - **Oh et al., Journal of Hepatology 2025** — 16:8 time-restricted eating reduced hepatic fat 25.8% in a 333-person RCT
 - **Brandhorst et al., Nature Communications 2024** — fasting-mimicking diet reduced biological age by 2.5 years
 
-We further demonstrate that the fusion logic is computable and auditable through in-silico validation on 22 synthetic profiles (100% dual-run reproducibility, 100% weakness-profile coverage, 90% at L1 grade, 85% convergent validity with domain expectations, zero personalized recommendations for control profiles).
+We further demonstrate that the fusion logic is computable and auditable through in-silico validation on 22 synthetic profiles (100% dual-run reproducibility, 100% weakness-profile coverage, 75% L1-grade coverage after normalization of the evidence gate, 88% domain-expectation concordance under an author-encoded keyword dictionary used only as an exploratory content-validity proxy, zero personalized recommendations for control profiles). All 1,754 automated tests pass in the repository.
 
 ## Fit with *Integrative Medicine Research*
 

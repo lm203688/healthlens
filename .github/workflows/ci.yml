@@ -34,9 +34,21 @@ jobs:
         # 已通过在 pyproject.toml 显式声明包发现规则修复（同时让 Dockerfile 的
         # `pip install .` 也不再踩同一个坑）。先升级 pip/setuptools 保证 PEP 621
         # 与 [build-system] requires 被正确解析。
+        #
+        # 【2026-10-17 D2 依赖锁定】所有测试依赖走 constraints.txt + hash，
+        # 保证 Zenodo DOI 与论文"reproduce from source"承诺可兑现。若 hash 不符
+        # 直接 exit 1——把"三个月后装出的是另一个系统"从可能性变成不可能。
         run: |
           pip install --upgrade pip "setuptools>=70" wheel
-          pip install -e ".[dev]"
+          pip install -e ".[dev]" -c constraints.txt --require-hashes
+
+      - name: Constraints integrity gate
+        # 【D2 门禁】确保 requirements.txt 与 constraints.txt 无冲突、无遗漏。
+        # --dry-run 只在虚拟环境中解析，不落盘；hash 校验失败即失败。
+        run: |
+          pip install --dry-run --report /tmp/constraints_report.json \
+            --require-hashes -c constraints.txt -r requirements.txt > /dev/null
+          echo "constraints.txt + requirements.txt resolve OK with hashes"
 
       - name: Version sync gate
         # 防止 agent-card.json version 与 pyproject.toml 漂移（历史上复发 3 次：
@@ -135,6 +147,60 @@ jobs:
           tags: healthlens:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # --------------------------------------------------------------------------
+  # 【2026-10-17 D1 / 2026-10-18 补齐】重型库 CI 真实执行：
+  #   dowhy / causalinference / scipy（science）+ flwr（federated）
+  # --------------------------------------------------------------------------
+  # 背景（10-16 全面评估报告 §8.3 技术债 #2 + §5.2）：
+  #   app/lib/dowhy_adapter.py 的严格模式分支（`dowhy_mode="dowhy"`）此前
+  #   被 `pragma: no cover` 或 monkeypatch 跳过，CI 从不装 dowhy，真实分支
+  #   从未执行过。历史 dowhy 死代码 bug 正是产于此——纯 Python 回退掩盖了
+  #   真实分支的语法/行为错误，"装有 dowhy"路径与生产实际路径长期分叉。
+  #   本 job 装 .[science] extra 后跑 dowhy 严格模式测试，任何分支回归即失败。
+  #
+  #   2026-10-18 补齐（D1 验收 flwr 部分）：加装 .[federated]（flwr），
+  #   并跑 tests/test_heavy_lib_ci.py——flwr fabric 严格模式分支同样
+  #   不再被 pragma: no cover 掩盖。
+  #
+  # 与主 lint-and-test 分开的理由：dowhy 依赖 pandas/scipy/scikit-learn，
+  # flwr 依赖 grpcio；单轮安装 40–60s；主 job 走精简依赖秒级启动，
+  # 本 job 独立跑避免拖累。
+  # --------------------------------------------------------------------------
+  heavy-lib-test:
+    name: Heavy Library Test (dowhy / flwr / science)
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install with science + federated extras
+        run: |
+          pip install --upgrade pip "setuptools>=70" wheel
+          pip install -e ".[dev,science,federated]"
+          python -c "import dowhy; print('dowhy', dowhy.__version__)"
+          python -c "import flwr; print('flwr', flwr.__version__)"
+
+      - name: Run dowhy strict mode tests
+        run: |
+          pytest tests/lib/test_dowhy_adapter.py -v --tb=short \
+            -k "strict_mode_has_engine_fields or forces_dowhy" \
+            2>&1 | tee dowhy.out
+          grep -E "passed|failed|error" dowhy.out | tail -5
+
+      - name: Run heavy library real-execution tests (flwr / optional engines)
+        # flwr 已真实安装：test_flower_adapter_loads / test_flower_fabric_strict_mode_smoke
+        # 不再 skip；未装的可选引擎（pymc/xgrammar/ragas/biomni）按设计诚实跳过。
+        run: |
+          pytest tests/test_heavy_lib_ci.py -v --tb=short 2>&1 | tee heavy.out
+          grep -E "passed|failed|error|skipped" heavy.out | tail -5
 
   # --------------------------------------------------------------------------
   # Agent 能力库测试：不依赖 FastAPI，精简环境即可验证 GOAI 借鉴落地的代码

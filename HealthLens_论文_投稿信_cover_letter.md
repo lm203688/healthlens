@@ -14,7 +14,7 @@ JIM explicitly welcomes papers on methodology at the intersection of traditional
 
 **What is new**
 
-(1) A computable mapping from classical texts to eight quantifiable axes; (2) an intersection-based personalisation rule that forbids single-SNP decisions; (3) a 29-case real-world evidence base (L1=8 / L2=9 / L3=12) anchoring the framework to published human trials including the 2026 AFFIRM Phase II senolytics RCT; (4) an in-silico computational validation of the fusion engine (22 synthetic profiles) demonstrating 100% reproducibility, 100% coverage of weak-node profiles, 0 personalised output for control profiles, and 85% convergent validity against TCM domain expectations.
+(1) A computable mapping from classical texts to eight quantifiable axes; (2) an intersection-based personalisation rule that forbids single-SNP decisions; (3) a stratified case evidence base (n=120) discloses every entry by verification status — 7 Crossref-verified human-trial or classical-experience entries (including the 2026 AFFIRM Phase II senolytics RCT), 8 traditional-text entries, 14 unverified_no_publication entries, and 91 synthetic_validation entries held at a separate S weight and excluded from L1–L3 grades; (4) an in-silico computational validation of the fusion engine (22 synthetic profiles) demonstrating 100% reproducibility, 100% coverage of weak-node profiles, 75% L1-grade coverage under the evidence gate, 88% domain-expectation concordance with an author-encoded TCM keyword dictionary used only as an exploratory content-validity proxy, and 0 personalised output for control profiles.
 
 **Declarations**
 

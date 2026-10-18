@@ -38,11 +38,11 @@ TRACKS = [
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-006.wav",
      "description": "帮助在疲惫时提神、理清思绪", "duration": 15},
     {"id": "FQ-007", "title": "净化", "subtitle": "741Hz · 纯频率", "frequency": 741, "beatFreq": None,
-     "category": "healing", "bodyParts": ["肝脏", "消化系统"], "symptoms": ["沉闷", "消化不良", "毒素积累"],
+     "category": "restore", "bodyParts": ["腹部"], "symptoms": ["沉闷", "消化弱", "沉重感"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-007.wav",
      "description": "温和舒缓的频率，帮助放松与呼吸", "duration": 20},
     {"id": "FQ-009", "title": "愈合", "subtitle": "285Hz · 纯频率", "frequency": 285, "beatFreq": None,
-     "category": "healing", "bodyParts": ["全身", "伤口"], "symptoms": ["疼痛", "炎症", "术后调养"],
+     "category": "restore", "bodyParts": ["全身"], "symptoms": ["不适", "紧绷", "恢复期"],
      "audioSrc": "https://freq-audio-1341839497.cos.ap-shanghai.myqcloud.com/audio/FQ-009.wav",
      "description": "舒缓频率，帮助在不适时放松", "duration": 20},
     {"id": "FQ-010", "title": "入定", "subtitle": "963Hz · Gamma波", "frequency": 963, "beatFreq": 40,
@@ -74,11 +74,11 @@ TRACKS = [
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-016.wav",
      "description": "帮助进入专注放松的心流状态", "duration": 15},
     {"id": "FQ-017", "title": "修复", "subtitle": "285Hz · Theta波 · 舒缓", "frequency": 285, "beatFreq": 6,
-     "category": "healing", "bodyParts": ["全身"], "symptoms": ["慢性疼痛", "术后调养", "免疫力低"],
+     "category": "restore", "bodyParts": ["全身"], "symptoms": ["持续不适", "恢复期", "状态不佳"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-017.wav",
      "description": "舒缓频率，帮助放松与恢复", "duration": 25},
     {"id": "FQ-018", "title": "再生", "subtitle": "396Hz · Alpha波 · 深层放松", "frequency": 396, "beatFreq": 10,
-     "category": "healing", "bodyParts": ["肌肉", "关节"], "symptoms": ["肌肉紧张", "关节不适", "慢性疲劳"],
+     "category": "restore", "bodyParts": ["肌肉", "关节"], "symptoms": ["肌肉紧绷", "关节紧绷", "持续疲劳"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-018.wav",
      "description": "释放深层紧张，帮助身体放松", "duration": 20},
     {"id": "FQ-019", "title": "释怀", "subtitle": "417Hz · Alpha波 · 情绪转化", "frequency": 417, "beatFreq": 8,
@@ -98,15 +98,15 @@ TRACKS = [
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-022.wav",
      "description": "突破思维的天花板，看到更大的世界", "duration": 20},
     {"id": "FQ-023", "title": "大地", "subtitle": "126.22Hz · 太阳频率", "frequency": 126.22, "beatFreq": None,
-     "category": "healing", "bodyParts": ["全身", "消化系统"], "symptoms": ["体力不足", "消化弱", "缺乏活力"],
+     "category": "restore", "bodyParts": ["全身", "腹部"], "symptoms": ["体力不足", "消化弱", "缺乏活力"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-023.wav",
      "description": "太阳的频率，温暖而有力，重新充电", "duration": 25},
     {"id": "FQ-025", "title": "舒缓", "subtitle": "174Hz · Alpha波 · 舒缓", "frequency": 174, "beatFreq": 10,
-     "category": "healing", "bodyParts": ["疼痛部位", "全身"], "symptoms": ["头痛", "身体疼痛", "经痛"],
+     "category": "restore", "bodyParts": ["全身"], "symptoms": ["头部紧绷", "身体紧绷", "身体不适"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-025.wav",
      "description": "舒缓频率，温和地安抚不适", "duration": 20},
     {"id": "FQ-026", "title": "化解", "subtitle": "285Hz · Delta波 · 深层舒缓", "frequency": 285, "beatFreq": 3,
-     "category": "healing", "bodyParts": ["全身", "内脏"], "symptoms": ["深度放松", "内脏舒缓", "身心平衡"],
+     "category": "restore", "bodyParts": ["全身", "躯干"], "symptoms": ["深度放松", "躯干放松", "身心平衡"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-026.wav",
      "description": "舒缓频率，在睡眠中帮助放松", "duration": 25},
     {"id": "FQ-027", "title": "安心", "subtitle": "396Hz · Theta波 · 恐惧释放", "frequency": 396, "beatFreq": 5,
@@ -118,11 +118,11 @@ TRACKS = [
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-028.wav",
      "description": "自然舒缓的平和，清醒而安宁", "duration": 15},
     {"id": "FQ-029", "title": "守护", "subtitle": "528Hz · Beta波 15Hz · 舒缓", "frequency": 528, "beatFreq": 15,
-     "category": "healing", "bodyParts": ["免疫系统", "全身"], "symptoms": ["免疫力低", "易感冒", "调养期"],
+     "category": "restore", "bodyParts": ["全身"], "symptoms": ["状态不佳", "换季不适", "恢复期"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-029.wav",
      "description": "温暖舒缓的频率，帮助放松、恢复舒适感", "duration": 20},
     {"id": "FQ-030", "title": "活力", "subtitle": "741Hz · Beta波 18Hz · 舒缓", "frequency": 741, "beatFreq": 18,
-     "category": "healing", "bodyParts": ["肝脏", "淋巴系统"], "symptoms": ["身体沉重", "毒素积累", "代谢慢"],
+     "category": "restore", "bodyParts": ["躯干"], "symptoms": ["身体沉重", "沉重感", "缺乏活力"],
      "audioSrc": "http://150.158.119.19/freq-audio/FQ-030.wav",
      "description": "舒缓频率，帮助在身体沉重时放松", "duration": 15},
 ]
@@ -201,9 +201,12 @@ SYMPTOM_FREQ_MAP = {
     "脑雾": ["FQ-006", "FQ-015", "FQ-021"],
     "注意力不集中": ["FQ-006", "FQ-015"],
     "压力大": ["FQ-002", "FQ-028", "FQ-019"],
-    "免疫力低": ["FQ-029", "FQ-023", "FQ-017"],
+    "状态不佳": ["FQ-029", "FQ-023", "FQ-017"],
     "情绪波动": ["FQ-019", "FQ-027", "FQ-020"],
-    "消化不良": ["FQ-007", "FQ-023"],
+    "消化弱": ["FQ-007", "FQ-023"],
+    "不适": ["FQ-009", "FQ-025", "FQ-017"],
+    "紧绷": ["FQ-009", "FQ-025", "FQ-018"],
+    "恢复期": ["FQ-009", "FQ-017", "FQ-029"],
     "紧张": ["FQ-002", "FQ-028", "FQ-018"],
 }
 
@@ -374,7 +377,7 @@ class FrequencyPrescriptionEngine:
         plan: dict[str, Any] = {}
 
         # 早晨：能量/专注
-        morning_tracks = [t for t in tracks if t["category"] in ("focus", "healing", "spirit")]
+        morning_tracks = [t for t in tracks if t["category"] in ("focus", "restore", "spirit")]
         if has_qi_deficiency:
             morning_tracks = [t for t in tracks if t["track_id"] in ("FQ-023", "FQ-029", "FQ-015")] or morning_tracks
         if morning_tracks:
@@ -398,7 +401,7 @@ class FrequencyPrescriptionEngine:
             }
 
         # 晚间：修复/睡眠
-        evening_tracks = [t for t in tracks if t["category"] in ("sleep", "healing", "spirit")]
+        evening_tracks = [t for t in tracks if t["category"] in ("sleep", "restore", "spirit")]
         if has_sleep_issue:
             evening_tracks = [t for t in tracks if t["category"] == "sleep"] or evening_tracks
         if has_yin_deficiency:

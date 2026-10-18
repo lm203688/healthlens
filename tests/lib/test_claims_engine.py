@@ -159,6 +159,82 @@ def test_frequency_track_new_wording_not_blocked_in_cn():
     assert r is not None
 
 
+# ===========================================================================
+# R3' 全曲库疾病暗示词门禁（2026-10-18，SCI 报告 §N7 全面化）
+# ===========================================================================
+# 目的：10-16 报告 N7 指出"免责声明已加但曲目数据仍残留疾病暗示"。
+# 10-13 S3-4 修复后仅门禁了 FQ-026 单一曲目，但 FQ-007/009/017/018/023/025/
+# 029/030 仍有"慢性病/术后/免疫/内脏/消化系统/肝脏/淋巴/炎症/毒素/伤口/经痛"
+# 等残留。本测试对**全曲库**做门禁，防止未来任何曲目回归疾病暗示。
+# 词汇表来源：10-13 S3-4 声明列举的删除词 + 10-16 报告 N7 残留样本。
+
+_FREQUENCY_FORBIDDEN_TERMS = {
+    # 慢性/长期疾病暗示
+    "慢性", "慢性疼痛", "慢性疲劳", "慢性疼痛",
+    # 术后/伤口
+    "术后", "术后调养", "伤口",
+    # 免疫/易感
+    "免疫", "免疫力低", "易感冒",
+    # 器官/系统级暗示（曲目不应指向具体器官系统）
+    "肝脏", "消化系统", "免疫系统", "淋巴系统", "内脏",
+    # 病理过程
+    "炎症", "毒素", "毒素积累", "代谢慢",
+    # 具体病症
+    "经痛", "消化不良",
+    # 伪科学机制宣称
+    "DNA修复", "Nrf2", "清除毒素", "组织修复", "能量场", "自愈",
+    # 已删除的旧残留词（防止回退）
+    "慢性病辅助", "内脏调理", "深层修复",
+}
+
+
+def test_all_frequency_tracks_free_of_disease_hints():
+    """全曲库 TRACKS + SYMPTOM_FREQ_MAP + SYNDROME_FREQ_MAP 的 symptoms 字段
+    不得包含任何疾病暗示词。"""
+    from app.services.frequency_prescription import (
+        TRACKS,
+        SYMPTOM_FREQ_MAP,
+        SYNDROME_FREQ_MAP,
+    )
+
+    # 1) 每条曲目的 symptoms 字段
+    offenders = []
+    for t in TRACKS:
+        for s in t.get("symptoms", []):
+            for term in _FREQUENCY_FORBIDDEN_TERMS:
+                if term in s:
+                    offenders.append((t["id"], s, term))
+                    break
+    # 2) SYMPTOM_FREQ_MAP 的 key 本身不得是疾病暗示词
+    for key in SYMPTOM_FREQ_MAP:
+        for term in _FREQUENCY_FORBIDDEN_TERMS:
+            if term in key:
+                offenders.append((f"SYMPTOM_FREQ_MAP key", key, term))
+                break
+    # 3) SYNDROME_FREQ_MAP 的 rationale 不得含机制/疗效宣称
+    for syndrome, cfg in SYNDROME_FREQ_MAP.items():
+        rationale = cfg.get("rationale", "")
+        for term in _FREQUENCY_FORBIDDEN_TERMS:
+            if term in rationale:
+                offenders.append((f"SYNDROME_FREQ_MAP[{syndrome}].rationale",
+                                  rationale[:60], term))
+                break
+    assert not offenders, (
+        f"曲库残留疾病暗示词 {len(offenders)} 处:\n"
+        + "\n".join(f"  - {i}: field={f!r}, term={t!r}" for i, f, t in offenders[:20])
+    )
+
+
+def test_frequency_track_categories_are_neutral():
+    """曲目 category 字段不应使用暗示疗效的类别名（healing/cure/repair）。"""
+    from app.services.frequency_prescription import TRACKS
+
+    forbidden_categories = {"healing", "cure", "repair", "treatment", "therapy"}
+    bad = [(t["id"], t["category"]) for t in TRACKS
+           if t.get("category", "").lower() in forbidden_categories]
+    assert not bad, f"曲目含疗效暗示类别名: {bad}"
+
+
 def test_all_frequency_tracks_have_no_legacy_disease_terms():
     """全库扫描：所有频率疗法曲目均不含旧残留疾病暗示词。"""
     from app.services.frequency_prescription import TRACKS
