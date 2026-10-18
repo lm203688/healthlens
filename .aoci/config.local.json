@@ -1,0 +1,15 @@
+{
+  "ai": {
+    "enabled": true,
+    "provider": "openai-compatible",
+    "base_url": "http://127.0.0.1:11434/v1",
+    "model": "ornith-1.5:35b",
+    "api_key_env": "",
+    "timeout_seconds": 0,
+    "max_concurrency": 0,
+    "max_input_tokens": 0,
+    "token_accounting": "auto",
+    "prompt_snapshot": "redacted"
+  },
+  "version": 2
+}

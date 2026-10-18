@@ -1,0 +1,34 @@
+{
+  "version": 4,
+  "batch_key": "49d44f3a1d7b725a77a134c5cf9200051eda803c5160af16f6c613f3bc1bc4e8",
+  "pre_index_sha256": "fd41730a77f9e06a1f586368ee23928c8ff63b90299770dc39a9e0edffa5fb45",
+  "post_index_sha256": "5851e9b6085d386b3e0aee5e1ff6f141c294aaf66e4533d91b04abb52a2ff793",
+  "baseline_pre_state": "present",
+  "baseline_pre_sha256": "46c183c19ad70aa088a434c5e91a50119385f38ffd196807d123bb9155f4d2e5",
+  "assets": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "pre_sha256": "12cbc237b863041b3ab7b6c6330091964cb014a20e624ec1f88de6056aed56c2",
+      "post_sha256": "b7af277d30e185653c8673e2754d48a3882dfad9f3013b3312118487f5dfeff0",
+      "preimage": "I0FPQ0ktQ09ERS1WT0xVTUU6IDEK"
+    }
+  ],
+  "guards": [
+    {
+      "volume_id": "code",
+      "path": "aoci.code.txt",
+      "sha256": "12cbc237b863041b3ab7b6c6330091964cb014a20e624ec1f88de6056aed56c2"
+    },
+    {
+      "volume_id": "meta",
+      "path": "aoci.meta.txt",
+      "sha256": "ebafbe54981dfb23686171bb5253ded8c2bbf9c697b73a1b1af9283d686a5cc4"
+    },
+    {
+      "volume_id": "root",
+      "path": "aoci.txt",
+      "sha256": "6edb677c25397187949c9840b989e4aeaee2ba0d522376bde5a59e8d1a66887e"
+    }
+  ]
+}

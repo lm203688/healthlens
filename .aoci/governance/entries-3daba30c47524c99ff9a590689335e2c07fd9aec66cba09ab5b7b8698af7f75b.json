@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "receipt_id": "3daba30c47524c99ff9a590689335e2c07fd9aec66cba09ab5b7b8698af7f75b",
+  "kind": "entries",
+  "transaction_id": "b226f27bd3a654d1cfa1871e60aba0e9199768d6e87dd20c8ae4d116c2c61fdf",
+  "pre_index_sha256": "a584cd0202be1a3800f15ef8e0f33e8665fa9c487886bdf288a8b967f88c5f8a",
+  "post_index_sha256": "2a7f81c30aaf5df24fd62e5e7f02829f3fc95d88ebdf56aedebf42bd65c3bf8a",
+  "paths": [
+    "aoci.code.txt"
+  ],
+  "completed_at": "2026-10-07T01:29:38.7853445Z"
+}

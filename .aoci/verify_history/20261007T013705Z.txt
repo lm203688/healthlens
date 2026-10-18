@@ -1,0 +1,4 @@
+AOCI Verify: Volumes v1 candidate structure is valid
+root_sha256: 6edb677c25397187949c9840b989e4aeaee2ba0d522376bde5a59e8d1a66887e
+meta_sha256: ebafbe54981dfb23686171bb5253ded8c2bbf9c697b73a1b1af9283d686a5cc4
+composite_identity: 3b58e682a3a18f43b7343a53692f2c481930f40946649bca73de388423c86f40
