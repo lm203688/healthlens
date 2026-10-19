@@ -4,7 +4,7 @@
 
 **单位**：HealthLens 独立研究项目，杭州
 
-**通讯作者**：厉兴，email: corresponding@healthlens.cc，ORCID: 0009-0004-2152-7669
+**通讯作者**：厉兴，email: 463102527@qq.com，ORCID: 0009-0004-2152-7669
 
 **稿件类型**：假说 / 理论框架
 

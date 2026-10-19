@@ -15,12 +15,12 @@ IMR **强制要求所有作者 ORCID iD**。
 
 1. 打开 https://orcid.org
 2. 点击 "Sign in / Create account" → "Create account"
-3. 用真实姓名 + 邮箱注册（用你通讯作者邮箱 `corresponding@healthlens.cc`）
+3. 用真实姓名 + 邮箱注册（用你通讯作者邮箱 `463102527@qq.com`）
 4. 注册完成会得到 16 位 ORCID，格式 `0000-0002-XXXX-XXXX`
 5. 在 ORCID 页面填上：
    - 英文名：Li Xing
    - 单位：HealthLens, Hangzhou, China
-   - 邮箱：corresponding@healthlens.cc
+   - 邮箱：463102527@qq.com
    - 研究领域标签：Integrative Medicine, Systems Biology, Aging, TCM
 
 ### 0.2 填充稿件占位符
@@ -110,7 +110,7 @@ IMR 明确要求非母语作者"须经英语母语人士或专业英语编辑服
 2. 右侧点击 "New here? Create an Account"
 3. 填写：
    - First name / Last name：真实姓名
-   - Email：通讯作者邮箱（`corresponding@healthlens.cc`）
+   - Email：通讯作者邮箱（`463102527@qq.com`）
    - Password：8 位以上强密码
    - User type：**Author**
    - Institution：HealthLens

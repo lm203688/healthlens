@@ -30,5 +30,5 @@ Sincerely,
 
 Li Xing (厉兴)
 HealthLens, Independent Research Project, Hangzhou, China
-Corresponding author email: corresponding@healthlens.cc
+Corresponding author email: 463102527@qq.com
 ORCID: 0009-0004-2152-7669

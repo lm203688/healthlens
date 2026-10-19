@@ -59,7 +59,7 @@ ____________________________
 **Li Xing** (Corresponding Author)
 HealthLens, Independent Research Project
 Hangzhou, Zhejiang, China
-E-mail: corresponding@healthlens.cc
+E-mail: 463102527@qq.com
 ORCID: 0009-0004-2152-7669
 
 ---

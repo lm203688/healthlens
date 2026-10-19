@@ -4,7 +4,7 @@
 
 **Affiliation**: HealthLens, Independent Research Project, Hangzhou, China
 
-**Corresponding author**: Li Xing, email: corresponding@healthlens.cc, ORCID: 0009-0004-2152-7669
+**Corresponding author**: Li Xing, email: 463102527@qq.com, ORCID: 0009-0004-2152-7669
 
 **Manuscript type**: Hypothesis / Theoretical Framework
 
