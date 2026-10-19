@@ -6,7 +6,14 @@ Please find enclosed our manuscript entitled:
 
 **"An Integrated Steady-State Biology Framework for Non-Pharmacological Longevity Intervention: From Classical-Text × Genome Fusion to Closed-Loop Validation"**
 
-submitted for your consideration as a **Hypothesis / Theoretical Framework** article.
+submitted for your consideration as a **Review Article** (narrative review integrating classical and modern evidence into a theoretical framework).
+
+**Manuscript positioning**
+
+We submit this as a Review Article rather than an Original Article because no new human-subjects research was conducted — all human evidence is drawn from published trials. This positioning means two validation items are deferred to future work and named explicitly rather than silently omitted:
+
+1. **Independent expert Delphi CVI (v2).** A 5–8 TCM clinician Delphi panel with S-CVI/Ave ≥ 0.78 remains to be run; no expert pool was available for this submission. As an AI-only substitute we report Literature Triangulation CVI (L-CVI) at the construct level, and disclose that L-CVI does *not* substitute for expert Delphi.
+2. **Prospective cohort (v2).** Fusion-judgement efficacy versus experience baselines requires an independent prospective study. The full protocol (SPIRIT-AI), informed-consent template, and analysis plan are drafted under `docs/prospective_cohort/` in the public GitHub repository and are ready for OSF pre-registration and IRB submission once a sponsoring institution is secured.
 
 **Why this manuscript fits JIM's scope**
 

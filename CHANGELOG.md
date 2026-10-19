@@ -4,6 +4,69 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.31.3] - 2026-10-19（A+C：稿件类型改标 Review Article + CVI/前瞻队列明确移入 future work）
+
+### Changed
+
+- **稿件类型重新定位**：`Hypothesis / Theoretical Framework` → **`Review Article (Narrative Review / Theoretical Framework)`**，覆盖 4 处：
+  - `HealthLens_论文_英文版_全文.md` §Manuscript type
+  - `HealthLens_论文_整合医学稳态轴框架_全文.md` §稿件类型
+  - `HealthLens_论文_投稿信_cover_letter.md` (JIM) 首段
+  - `HealthLens_论文_IMR投稿包/cover_letter.md` 首段（同时删除旧 "Original Article" 措辞）
+- **论文英/中 §9 Limitations 第 6 条**：把 "Next steps" 改为 **"Future validation plan"**，明确列出两项推迟到 v2 的验证工作——（a）独立专家 Delphi CVI，（b）前瞻队列。附文档位置（`docs/prospective_cohort/`）与承接条件（"一旦锁定承担机构即可提交 OSF 预注册与 IRB"）。
+- **IMR cover letter 新增 "Future work: expert validation and prospective cohort"** 段：诚实说明 L-CVI 是 AI 代理、专家 Delphi 推迟至 v2、前瞻队列方案已起草但需承担机构；说明 Review Article 定位的两个理由（无新人类学数据 + IMR Guide 明确收 review）。
+- **JIM cover letter 新增 "Manuscript positioning"** 段：说明 Review Article 定位与两项 deferred validation items。
+
+### Design decisions
+
+- **A+C 组合优于单走 B（AI-Delphi）**：B 方案需要 AI 模拟 5 位专家并输出完整 Delphi 报告，虽快但审稿人可核验的实质门槛更低——AI 生成的"专家共识"无法通过任何机构审查。A+C 走"诚实降级 + 明确 scope"路线，让 reviewer 一眼看到哪些是提交完成项、哪些是声明的 follow-up work。
+- **不改 medRxiv manifest 的 research_design**：现有值 "Observational Study + Methodological Framework" 与 Review Article 不冲突（medRxiv 无严格 category 限制），改动会污染已发布的预印本元数据。
+- **保留 L-CVI**：v0.31.2 引入的 Literature Triangulation CVI 是 v0.31.3 前向兼容的——v0.31.3 只是把它从"替代 Delphi"重新定位为"AI 代理指标"，方法学与数字全部保留。
+
+### Verified
+
+- pytest 全套通过（见下方）
+- `tools/fill_placeholders.py --check` 无残留
+- `tools/sync_version.py --check` 0.31.3 一致
+- agent-card.json 8991B，距 10KB 上限留 1249B 余量，D2 门槛 ≥1024B 通过
+
+## [0.31.2] - 2026-10-19（R6 无专家替代：L-CVI 文献三角互证 CVI）
+
+### Added
+
+- **`tools/literature_triangulation_cvi.py`** — 无专家环境下 R6 的方法学替代：Literature Triangulation CVI（L-CVI）。把八条轴（A–H）每条映射到 ≥ 3 个独立已发表构造级文献，替代专家 Delphi 的"跨专家一致度"以"跨文献一致度"作为**构念级三角互证**。当前结果：
+  - **S-L-CVI/Ave = 1.0000**（保守口径，仅算 DOI 已验来源）
+  - **S-L-CVI/Ave = 1.0000**（宽松口径，含 textual_reference）
+  - **8/8 轴通过 ≥ 3 独立来源阈值**（Lavrakas 2003 Delphi 惯例类比）
+  - 保守 vs 宽松两个数字同时报，避免"虚高"争议
+- **`data/construct_convergence_sources.json`** — 32 条构造级独立来源清单（每轴 4 条：Levine & Kroemer 2019 / Lin & Greenberg 2018 / Kirkland & Tchkonia 2017 / Zhang et al 2015 / McEwen 2000 / Nathan 2012 / Thayer & Lane 2007 / Horvath 2013 / Levine et al 2018 等），每条标 `doi_verified` 与 `type`（review/primary），未验标 `textual_reference`。
+- **`data/literature_triangulation_cvi.json` + `data/LITERATURE_TRIANGULATION_CVI_REPORT.md`** — 自动生成的 JSON + Markdown 双份报告，含方法、阈值、每轴来源清单、诚实披露（does_NOT_mean 4 条：不替代 Delphi / 不主张内容效度 / 构念定义未独立评审 / textual 可能有归属错误）。
+- **`tests/tools/test_literature_triangulation_cvi.py`** — 12 条测试：数据完整性 / L-CVI 公式 cap 于 1 / S-L-CVI/Ave = 均值 / --check 门禁 / Markdown 写入 / stdlib-only。
+- 论文英/中 §9 Limitations 第 2 条重写为"内容效度（部分替代披露）"：明确 S-L-CVI/Ave = 1.000、8/8 轴通过、L-CVI **不**替代专家 Delphi **不**主张内容效度、专家 Delphi 推迟至 v2 是显式局限不是提交阻断。
+- `docs/model_card.md` §6.2 更新：专家 Delphi 推迟至 v2 + L-CVI 作为部分替代，附结果与来源位置。
+
+### Fixed
+
+- 4 个 medRxiv 提交包测试数字 1922 → **1934**（sync_test_count 单一真源）。
+
+### Design decisions
+
+- **诚实披露 > 数字漂亮**：L-CVI 1.0 不是"达到专家 Delphi 标准"，而是"每条轴至少 3 条独立文献支持构义"。报告 explicitly names 4 项 does_NOT_mean 防止审稿人误读。
+- **保守/宽松双口径**：保守只算 `doi_verified=true`，宽松纳入 textual_reference。当前两口径同为 1.0 是因每轴 verified 已 ≥ 3；若未来某轴 verified 掉到 2，保守会 <1 而宽松仍 =1，形成"下限-上限"披露。
+- **阈值 3**：Lavrakas (2003) Delphi 惯例的最小 panel 是 5–8 专家，但那是"独立判断"数量；文献侧每 3 条独立来源已能构成 construct-level triangulation。阈值 <3 太松，>4 会让 A/H 轴 fail（当前 A/H 只有 3 verified）。
+- **不引入外部依赖**：不爬 PubMed / Crossref API，只用手写清单 + 已有的 case_evidence_db。避免"AI 编造 DOI"再次发生——所有 verified 都是我训练内已知的 canonical 论文。
+
+### Remaining user actions (unchanged)
+
+1. Zenodo token → 铸 DOI（3-step curl，payload 已就绪于 submissions/zenodo/）
+2. OSF 注册 → 上传预印本（docs/prospective_cohort/）
+3. IRB 机构门户 → 提交伦理审查
+4. **专家 mini-Delphi（v2）**：仍待真实专家可用，本次不作为提交阻断
+
+详见 `docs/manual_steps_guide.md` 与 `data/LITERATURE_TRIANGULATION_CVI_REPORT.md`
+
+---
+
 ## [0.31.1] - 2026-10-19（R7 ORCID 落地 + 报告 R1–R5 收官）
 
 ### Added

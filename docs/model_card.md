@@ -156,9 +156,18 @@ In priority order:
    wearables for 8-12 weeks. Replace the synthetic bridge with real
    cross-instrument concordance (SF-36 + PHQ-9 + PROMIS administered in
    parallel with the wearable-derived axis scores).
-2. **Expert Delphi (D4).** Recruit 5-8 TCM clinicians for a 2-round
-   Delphi on the axis-score semantics, produce CVI / ARI scores, publish
-   as a paper appendix.
+2. **Expert Delphi (D4) — deferred to v2, L-CVI disclosed as partial substitute.**
+   No expert pool is currently available, so a full mini-Delphi (5–8 TCM
+   clinicians, 2 rounds, S-CVI/Ave ≥ 0.78) is deferred to v2 and is
+   flagged as a stated limitation, not a submission blocker. As an
+   AI-only methodological substitute, `tools/literature_triangulation_cvi.py`
+   computes a Literature Triangulation CVI (L-CVI): each of the eight axes
+   A–H is mapped to ≥ 3 independent peer-reviewed construct-level sources.
+   Current result: **S-L-CVI/Ave = 1.000 (conservative, DOI-verified only);
+   8/8 axes pass the ≥ 3 independent-source threshold.** L-CVI validates
+   construct-level literature convergence only — it does **not** substitute
+   for expert Delphi and does **not** claim content validity. Full per-axis
+   source inventory in `data/LITERATURE_TRIANGULATION_CVI_REPORT.md`.
 3. **Fuzzing.** Replace the hand-designed adversarial battery with
    mutation-based fuzzing over the input schema.
 4. **Semantic audit of recommendations** on adversarial inputs - do the

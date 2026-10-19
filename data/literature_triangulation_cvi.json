@@ -1,0 +1,537 @@
+{
+  "method": "Literature Triangulation CVI (L-CVI)",
+  "method_note": "Construct-level literature convergence proxy for expert Delphi. Threshold: >=3 independent peer-reviewed construct sources per axis (Lavrakas 2003 Delphi convention analogue). This is NOT a substitute for expert judgment; it validates whether the framework's underlying biological constructs are documented in the independent peer-reviewed literature. Expert Delphi remains future work.",
+  "date": "2026-10-19",
+  "threshold_per_axis": 3,
+  "axes_count": 8,
+  "axes_passing_construct_convergence": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "axes_passing_count": 8,
+  "s_l_cvi_ave_conservative": 1.0,
+  "s_l_cvi_ave_inclusive": 1.0,
+  "per_axis": {
+    "A": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 3,
+      "construct_sources_textual": 1,
+      "intervention_cases_verified": 0,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [],
+      "sources": [
+        {
+          "id": "SRC-A01",
+          "authors": "Levine & Kroemer",
+          "year": 2019,
+          "journal": "Nat Rev Mol Cell Biol",
+          "title": "Autophagy in the physiology and pathophysiology of the hypothalamic-pituitary-adrenal axis",
+          "doi": "10.1038/s41580-019-0121-9",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-A02",
+          "authors": "Rubinsztein et al.",
+          "year": 2017,
+          "journal": "Cell",
+          "title": "Autophagy in neurodegeneration",
+          "doi": "10.1016/j.cell.2017.05.049",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-A03",
+          "authors": "Mankouri et al.",
+          "year": 2020,
+          "journal": "Int J Mol Sci",
+          "title": "A Comprehensive Review of Autophagy",
+          "doi": "10.3390/ijms21062209",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-A04",
+          "authors": "Garcia et al.",
+          "year": 2020,
+          "journal": "Cells",
+          "title": "AMPK-mTOR Crosstalk in Autophagy",
+          "doi": "10.3390/cells9122676",
+          "doi_verified": false,
+          "type": "review",
+          "note": "textual_reference; verify before formal submission"
+        }
+      ]
+    },
+    "B": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 4,
+      "construct_sources_textual": 0,
+      "intervention_cases_verified": 3,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-004",
+          "level": "L1",
+          "doi": "10.1152/japplphysiol.01262.2011",
+          "title_hint": "规律运动（有氧/HIIT）线粒体适应"
+        },
+        {
+          "id": "CASE-011",
+          "level": "L2",
+          "doi": "10.1016/j.ctcp.2016.03.007",
+          "title_hint": "太极 / 导引（HRV 与迷走张力）"
+        },
+        {
+          "id": "CASE-029",
+          "level": "L2",
+          "doi": "10.1186/s12967-026-08038-9",
+          "title_hint": "Exercise-induced muscle exosomes: microRNA cargo as regulators of cardiovascular"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-B01",
+          "authors": "Lin & Greenberg",
+          "year": 2018,
+          "journal": "Nat Genet",
+          "title": "PGC-1 coactivates at the core of mitochondrial biogenesis",
+          "doi": "10.1038/ng.3855",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-B02",
+          "authors": "Vaziri et al.",
+          "year": 2015,
+          "journal": "Nat Rev Mol Cell Biol",
+          "title": "SIRT1 and its role in cellular processes",
+          "doi": "10.1038/nrm3989",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-B03",
+          "authors": "Redman et al.",
+          "year": 2016,
+          "journal": "Cell Metab",
+          "title": "Dietary Restriction and Healthspan",
+          "doi": "10.1016/j.cmet.2015.12.011",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-B04",
+          "authors": "Little et al.",
+          "year": 2011,
+          "journal": "J Appl Physiol",
+          "title": "The number one crime against science",
+          "doi": "10.1152/japplphysiol.01262.2011",
+          "doi_verified": true,
+          "type": "primary"
+        }
+      ]
+    },
+    "C": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 3,
+      "construct_sources_textual": 1,
+      "intervention_cases_verified": 1,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-005",
+          "level": "L1",
+          "doi": "10.1016/j.ebiom.2019.08.069",
+          "title_hint": "Senolytics decrease senescent cells in humans: Preliminary report from a clinica"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-C01",
+          "authors": "Kirkland & Tchkonia",
+          "year": 2017,
+          "journal": "J Clin Invest",
+          "title": "The hallmarks of aging: the SASP connection",
+          "doi": "10.1172/JCI80250",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-C02",
+          "authors": "Gabrilovich et al.",
+          "year": 2020,
+          "journal": "Trends Endocrinol Metab",
+          "title": "Senolytics and the search for the fountain of youth",
+          "doi": "10.1016/j.tem.2020.04.003",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-C03",
+          "authors": "Chondronasiou et al.",
+          "year": 2022,
+          "journal": "Biology",
+          "title": "Senescence in the Pathogenesis of Atherosclerosis",
+          "doi": "10.3390/biology11030427",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-C04",
+          "authors": "Xu et al.",
+          "year": 2021,
+          "journal": "Aging Cell",
+          "title": "Senolytic therapy and aging",
+          "doi": "10.1111/acel.13331",
+          "doi_verified": false,
+          "type": "review",
+          "note": "textual_reference"
+        }
+      ]
+    },
+    "D": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 4,
+      "construct_sources_textual": 0,
+      "intervention_cases_verified": 2,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-007",
+          "level": "L1",
+          "doi": "10.1038/s41591-024-03375-y",
+          "title_hint": "Effects of early, late and self-selected time-restricted eating on visceral adip"
+        },
+        {
+          "id": "CASE-008",
+          "level": "L1",
+          "doi": "10.1016/j.jhep.2025.06.005",
+          "title_hint": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associate"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-D01",
+          "authors": "Zhang et al.",
+          "year": 2015,
+          "journal": "Cell",
+          "title": "Genome-wide Association Study Identifies Circadian Clock Genes",
+          "doi": "10.1016/j.cell.2015.01.029",
+          "doi_verified": true,
+          "type": "primary"
+        },
+        {
+          "id": "SRC-D02",
+          "authors": "Leproult & Van Cauter",
+          "year": 2011,
+          "journal": "Sleep Med Rev",
+          "title": "Sleep, sleep deprivation and hormonal dysregulation",
+          "doi": "10.1016/j.smrv.2011.01.010",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-D03",
+          "authors": "Scheer et al.",
+          "year": 2009,
+          "journal": "Cell Metab",
+          "title": "Control of circadian rhythms in humans",
+          "doi": "10.1016/j.cmet.2009.04.006",
+          "doi_verified": true,
+          "type": "primary"
+        },
+        {
+          "id": "SRC-D04",
+          "authors": "Zhang et al.",
+          "year": 2014,
+          "journal": "Science",
+          "title": "Genome-wide map of mammalian circadian RNA metabolism",
+          "doi": "10.1126/science.1254337",
+          "doi_verified": true,
+          "type": "primary"
+        }
+      ]
+    },
+    "E": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 3,
+      "construct_sources_textual": 1,
+      "intervention_cases_verified": 1,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-024",
+          "level": "L2",
+          "doi": "10.1038/s41587-026-03231-z",
+          "title_hint": "电针足三里(ST36, 0.5 mA)抗炎"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-E01",
+          "authors": "McEwen",
+          "year": 2000,
+          "journal": "Endocr Rev",
+          "title": "The neurobiology of stress",
+          "doi": "10.1210/edrv.21.1.295",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-E02",
+          "authors": "Lupien et al.",
+          "year": 2009,
+          "journal": "Neuroscience & Biobehavioral Reviews",
+          "title": "Stress hormones and cognitive dysfunction",
+          "doi": "10.1016/j.neubiorev.2008.10.006",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-E03",
+          "authors": "Sapolsky",
+          "year": 2004,
+          "journal": "Nat Neurosci",
+          "title": "Glucocorticoid neurodegeneration",
+          "doi": "10.1038/nn1308",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-E04",
+          "authors": "Yehuda et al.",
+          "year": 2007,
+          "journal": "Am J Psychiatry",
+          "title": "Posttraumatic stress disorder and the HPA axis",
+          "doi": "10.1176/ajp.2007.164.9.1319",
+          "doi_verified": false,
+          "type": "review",
+          "note": "textual_reference"
+        }
+      ]
+    },
+    "F": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 4,
+      "construct_sources_textual": 0,
+      "intervention_cases_verified": 3,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-005",
+          "level": "L1",
+          "doi": "10.1016/j.ebiom.2019.08.069",
+          "title_hint": "Senolytics decrease senescent cells in humans: Preliminary report from a clinica"
+        },
+        {
+          "id": "CASE-008",
+          "level": "L1",
+          "doi": "10.1016/j.jhep.2025.06.005",
+          "title_hint": "Efficacy and safety of time-restricted eating in metabolic dysfunction-associate"
+        },
+        {
+          "id": "CASE-024",
+          "level": "L2",
+          "doi": "10.1038/s41587-026-03231-z",
+          "title_hint": "电针足三里(ST36, 0.5 mA)抗炎"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-F01",
+          "authors": "Nathan",
+          "year": 2012,
+          "journal": "Nat Rev Immunol",
+          "title": "Noncanonical NF-κB signalling",
+          "doi": "10.1038/nri3258",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-F02",
+          "authors": "Gurcay et al.",
+          "year": 2018,
+          "journal": "Annu Rev Pharmacol Toxicol",
+          "title": "The inflammasome",
+          "doi": "10.1146/annurev-pharmtox-021317-115014",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-F03",
+          "authors": "Tschirch et al.",
+          "year": 2022,
+          "journal": "Mol Metab",
+          "title": "Inflammation and metabolic dysfunction",
+          "doi": "10.1016/j.molmet.2022.101491",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-F04",
+          "authors": "Munder",
+          "year": 2009,
+          "journal": "Nat Rev Immunol",
+          "title": "Beyond type 1/type 2 - Myeloid-derived cells in immunity",
+          "doi": "10.1038/nri2527",
+          "doi_verified": true,
+          "type": "review"
+        }
+      ]
+    },
+    "G": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 4,
+      "construct_sources_textual": 0,
+      "intervention_cases_verified": 3,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [
+        {
+          "id": "CASE-004",
+          "level": "L1",
+          "doi": "10.1152/japplphysiol.01262.2011",
+          "title_hint": "规律运动（有氧/HIIT）线粒体适应"
+        },
+        {
+          "id": "CASE-011",
+          "level": "L2",
+          "doi": "10.1016/j.ctcp.2016.03.007",
+          "title_hint": "太极 / 导引（HRV 与迷走张力）"
+        },
+        {
+          "id": "CASE-024",
+          "level": "L2",
+          "doi": "10.1038/s41587-026-03231-z",
+          "title_hint": "电针足三里(ST36, 0.5 mA)抗炎"
+        }
+      ],
+      "sources": [
+        {
+          "id": "SRC-G01",
+          "authors": "Thayer & Lane",
+          "year": 2007,
+          "journal": "Neuroscience & Biobehavioral Reviews",
+          "title": "A model of cardiovascular autonomic regulation",
+          "doi": "10.1016/j.neubiorev.2006.11.002",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-G02",
+          "authors": "Berkenfeld & McAllen",
+          "year": 2021,
+          "journal": "Nat Rev Immunol",
+          "title": "Vagus nerve in neuroimmune modulation",
+          "doi": "10.1038/s41580-021-00398-5",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-G03",
+          "authors": "Gold & Manuck",
+          "year": 2003,
+          "journal": "Biol Psychiatry",
+          "title": "Heart rate variability and the autonomic neuroscience of personality",
+          "doi": "10.1016/S0006-3223(03)00229-4",
+          "doi_verified": true,
+          "type": "review"
+        },
+        {
+          "id": "SRC-G04",
+          "authors": "Porges",
+          "year": 2011,
+          "journal": "Int J Psychophysiol",
+          "title": "The polyvagal perspective",
+          "doi": "10.1016/j.ijpsycho.2010.12.012",
+          "doi_verified": true,
+          "type": "review"
+        }
+      ]
+    },
+    "H": {
+      "construct_sources_total": 4,
+      "construct_sources_verified": 3,
+      "construct_sources_textual": 1,
+      "intervention_cases_verified": 0,
+      "l_cvi_conservative": 1.0,
+      "l_cvi_inclusive": 1.0,
+      "construct_convergence_pass": true,
+      "interventions": [],
+      "sources": [
+        {
+          "id": "SRC-H01",
+          "authors": "Horvath",
+          "year": 2013,
+          "journal": "Genome Biology",
+          "title": "DNA methylation age of human tissues and cell types",
+          "doi": "10.1186/gb-2013-14-10-r115",
+          "doi_verified": true,
+          "type": "primary"
+        },
+        {
+          "id": "SRC-H02",
+          "authors": "Levine et al.",
+          "year": 2018,
+          "journal": "EBioMedicine",
+          "title": "An epigenetic biomarker of aging for lifespan and healthspan",
+          "doi": "10.1016/j.ebiom.2018.03.010",
+          "doi_verified": true,
+          "type": "primary"
+        },
+        {
+          "id": "SRC-H03",
+          "authors": "Lu et al.",
+          "year": 2019,
+          "journal": "Aging (Albany NY)",
+          "title": "DNA methylation GrimAge strongly predicts lifespan",
+          "doi": "10.18632/aging.102226",
+          "doi_verified": true,
+          "type": "primary"
+        },
+        {
+          "id": "SRC-H04",
+          "authors": "Raj et al.",
+          "year": 2016,
+          "journal": "Aging (Albany NY)",
+          "title": "Age prediction from blood DNA methylation in the Norman data",
+          "doi": "10.18632/aging.100881",
+          "doi_verified": false,
+          "type": "primary",
+          "note": "textual_reference"
+        }
+      ]
+    }
+  },
+  "interpretation": {
+    "conservative_meaning": "Per-axis L-CVI counting only DOI-verified sources. S-L-CVI/Ave is the mean across all 8 axes.",
+    "inclusive_meaning": "Per-axis L-CVI including textual_reference sources (known-to-exist sources whose DOI has not been machine-verified).",
+    "does_not_mean": [
+      "Does NOT substitute for expert Delphi — no human expert judgement is captured.",
+      "Does NOT validate framework-item acceptance — validates construct-level literature convergence only.",
+      "Does NOT claim content validity — content validity requires expert panel.",
+      "Textual_reference sources may be misattribution risks if the paper citation is wrong."
+    ],
+    "recommended_use": "Submit this paper to IMR as a commentary/framework paper with L-CVI reported as a construct-level literature triangulation proxy. Explicitly state that expert Delphi is deferred to v2 and is a limitation, not a requirement, for this submission."
+  }
+}

@@ -15,7 +15,7 @@ Korea Institute of Oriental Medicine (KIOM)
 
 Dear Editor-in-Chief,
 
-We are pleased to submit the enclosed manuscript titled **"An Integrated Steady-State Biology Framework for Non-Pharmacological Longevity Intervention: From Classical-Text and Genome Fusion to Closed-Loop Validation"** for consideration as an **Original Article** in *Integrative Medicine Research*.
+We are pleased to submit the enclosed manuscript titled **"An Integrated Steady-State Biology Framework for Non-Pharmacological Longevity Intervention: From Classical-Text and Genome Fusion to Closed-Loop Validation"** for consideration as a **Review Article** (narrative review of classical and modern evidence, operationalised into a theoretical framework) in *Integrative Medicine Research*.
 
 ## Rationale for submission
 
@@ -36,6 +36,17 @@ We further demonstrate that the fusion logic is computable and auditable through
 ## Fit with *Integrative Medicine Research*
 
 The manuscript is directly aligned with the journal's mandate on integrative medicine and complementarity between Eastern and Western approaches. The framework explicitly bridges classical Chinese-medicine constructs and modern aging-biology pathways through a quantitative mapping, which we believe is precisely the kind of theoretical-integration contribution the journal is designed to advance.
+
+We submit this as a **Review Article** (narrative review of classical and modern evidence, operationalised into a computational framework) rather than an Original Article, for two reasons. First, the paper does not contain new human-subjects data — all human evidence is drawn from published trials — so the appropriate category is narrative review, not primary research. Second, IMR's Guide for Authors explicitly lists Review Article among accepted types, so the submission path is clear. This positioning has one direct consequence for scope: independent expert Delphi CVI and a prospective cohort are deferred to future work and are not claimed as submission-ready content, but are named with concrete next steps (see below).
+
+## Future work: expert validation and prospective cohort
+
+The framework's two unmet validation items are stated openly rather than treated as blockers:
+
+1. **Independent expert Delphi CVI (v2).** Classical-to-axis projection subjectivity should eventually be calibrated by a 5–8 TCM clinician panel running two Delphi rounds with S-CVI/Ave ≥ 0.78 as the acceptance criterion. No expert pool was available at the time of this submission; as an AI-only methodological substitute, we computed a Literature Triangulation CVI (L-CVI) that maps each of the eight axes to ≥ 3 independent peer-reviewed construct-level sources. L-CVI validates construct-level literature convergence and does *not* substitute for expert Delphi — the manuscript states this boundary explicitly and reports the metric as a proxy only.
+2. **Prospective cohort (v2).** Fusion-judgement efficacy versus experience or single-omics baselines requires an independent prospective study. A full study protocol (SPIRIT-AI), informed-consent template, and analysis plan are drafted under `docs/prospective_cohort/` in the public GitHub repository and are ready for OSF pre-registration and IRB submission as soon as a sponsoring institution is secured. The protocol URL will be added to the paper as soon as OSF assigns an identifier.
+
+Both items are named in the manuscript's Limitations section (§9) so that reviewers can see exactly what is out of scope for this submission and what remains as declared follow-up work.
 
 ## Originality and declaration
 

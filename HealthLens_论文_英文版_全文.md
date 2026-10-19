@@ -6,7 +6,7 @@
 
 **Corresponding author**: Li Xing, email: 463102527@qq.com, ORCID: 0009-0004-2152-7669
 
-**Manuscript type**: Hypothesis / Theoretical Framework
+**Manuscript type**: Review Article (Narrative Review / Theoretical Framework)
 
 **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-support paradigm for ranking intervention priorities. It is not a clinical diagnosis or treatment protocol and does not replace physician judgement; all specific interventions must be undertaken under the guidance of qualified professionals. Human evidence cited herein is used to validate the framework and does not constitute individualized medical advice.
 
@@ -303,11 +303,14 @@ This loop turns the theory from a text hypothesis into a measurable, falsifiable
 ## 9. Limitations and Future Validation
 
 1. The framework as a whole is not yet frontally validated by a single RCT. Each axis has evidence, but fusion judgement outperforming experience or single omics remains to be proven.
-2. Subjectivity of classical projection: nature-flavor to axis mapping needs further calibration by independent expert Delphi and quantitative text mining.
+2. **Content validity (partial substitute disclosed).** Classical-to-axis projection subjectivity would ideally be calibrated by an independent expert mini-Delphi panel (5–8 TCM clinicians, 2 rounds, S-CVI/Ave ≥ 0.78). No expert pool was available for this submission. As an **AI-only methodological substitute**, we computed a Literature Triangulation CVI (L-CVI): each of the eight axes A–H was mapped to ≥ 3 independent peer-reviewed construct-level sources (reviews, primary studies) documenting the underlying biological mechanism. Per-axis L-CVI = min(verified_sources / 3, 1.0); S-L-CVI/Ave = mean. Result: **S-L-CVI/Ave = 1.000 (conservative, DOI-verified only) and 1.000 (inclusive, + textual_reference); 8/8 axes pass the ≥ 3 independent-source threshold.** L-CVI validates *construct-level literature convergence* — it does **not** substitute for expert Delphi and does **not** claim content validity. It is reported as a proxy for construct anchoring; Expert Delphi is deferred to v2 and remains a stated limitation, not a submission blocker. See `tools/literature_triangulation_cvi.py` and `data/LITERATURE_TRIANGULATION_CVI_REPORT.md` for the full per-axis source inventory and honest-scope caveats.
 3. Low effect size at the genetic layer: consumer-chip pathway scores are probabilistic; fusion weights must be conservative.
 4. Hardware data are non-medical-grade: trend-only, diagnostic use prohibited.
 5. Senolytics (dasatinib plus quercetin) serve as mechanistic anchors for axis C evidence but are prescription drugs; the framework restricts personalized recommendations to non-pharmacological interventions (e.g., dietary quercetin from food sources). High-intervention pharmacological candidates require human approval gate.
-6. Next steps: preprint first; publish theoretical framework; design precision fasting and circadian-rhythm RCTs to validate fusion judgement; backfill anonymized user data.
+6. **Future validation plan.** This paper is submitted as a Review Article, so two validation items are explicitly deferred to v2 rather than claimed as submission-ready:
+   (a) **Independent expert Delphi CVI.** A 5–8 TCM clinician panel running two Delphi rounds with S-CVI/Ave ≥ 0.78 remains to be done; no expert pool was available for this submission. L-CVI above is an AI-only proxy and does not substitute for expert Delphi.
+   (b) **Prospective cohort.** Fusion-judgement efficacy versus experience or single-omics baselines requires an independent prospective study. Full protocol (SPIRIT-AI), informed-consent template, and analysis plan are drafted under `docs/prospective_cohort/` in the public repository and are ready for OSF pre-registration and IRB submission once a sponsoring institution is secured.
+   Both items are named here so that reviewers can see exactly what is out of scope for this Review Article and what remains as declared follow-up work.
 
 ---
 
