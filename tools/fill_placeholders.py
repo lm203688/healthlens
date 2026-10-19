@@ -81,7 +81,12 @@ class ReplacementReport:
 
 
 def orcid_valid(value: str) -> bool:
-    """Sanity-check ORCID format: 16 chars, 15 digits + 1 check char, dashes optional."""
+    """Sanity-check ORCID format: 16 content chars (15 digits + 1 check char), dashes optional.
+
+    Real ORCID pattern: XXXX-XXXX-XXXX-XXXC where C ∈ [0-9X]. Total 16 chars without dashes,
+    19 chars with 3 dashes. Prefix is issued as 0000-/0001-/0002-/0003-/0009- by ORCID so we
+    do NOT restrict the first two digits.
+    """
     if not value:
         return False
     if len(value) not in (16, 19):  # with/without dashes
@@ -89,7 +94,8 @@ def orcid_valid(value: str) -> bool:
     if len(value) == 19 and value.count("-") != 3:
         return False
     # Loose structural check (not full Luhn mod 11 validation, but catches typos).
-    return bool(re.fullmatch(r"[0-9]{4}(-[0-9]{4}){3}-[0-9X]", value))
+    pattern = r"[0-9]{4}(?:-[0-9]{4}){2}-[0-9]{3}[0-9X]|[0-9]{15}[0-9X]"
+    return bool(re.fullmatch(pattern, value))
 
 
 def load_file(path: Path) -> str:

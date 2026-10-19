@@ -60,13 +60,13 @@ ____________________________
 HealthLens, Independent Research Project
 Hangzhou, Zhejiang, China
 E-mail: corresponding@healthlens.cc
-ORCID: {{YOUR_ORCID_ID}}
+ORCID: 0009-0004-2152-7669
 
 ---
 
 ## Cover-letter pre-submission checklist
 
-- [ ] Replace `{{YOUR_ORCID_ID}}` with your real ORCID iD
+- [ ] Replace `0009-0004-2152-7669` with your real ORCID iD
 - [ ] Insert today's date
 - [ ] If you have multiple authors, add their name and affiliation block
 - [ ] Confirm all statements are accurate for your actual situation

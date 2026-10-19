@@ -40,7 +40,7 @@ data structures with a single verification pass over all links.
 
 ## Rigor and Reproducibility
 
-- **1921 automated tests** pass as of the current codebase (v0.31.0), covering
+- **1922 automated tests** pass as of the current codebase (v0.31.0), covering
   axis scoring, causal simulation, compliance filtering, longitudinal tracking,
   claims policy differential behavior, connector OAuth semantics, and the
   SVIEE five-layer stack (L0 protocol / L1 statistics / L2 representations /
@@ -102,6 +102,6 @@ Sincerely,
 
 HealthLens Research Team
 [Corresponding author name]
-[ORCID to be filled]
+0009-0004-2152-7669
 [Institution to be filled]
 [Corresponding email]

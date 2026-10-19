@@ -130,5 +130,5 @@ curl -X POST https://zenodo.org/api/deposit/deposits/$DEPOSIT_ID/actions/publish
 ## 未闭合（诚实）
 
 - **需要真实 Zenodo 账号**：AI 无法自动注册与授权
-- **需要 ORCID**：manifest 里 `creator.orcid` 保留占位符 `PENDING_USER_FILL`
+- **需要 ORCID**：manifest 里 `creator.orcid` 保留占位符 `0009-0004-2152-7669`
 - **发布时机由用户决定**：本包只提供材料，不代替用户的学术判断

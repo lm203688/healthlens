@@ -48,7 +48,7 @@ pointers to the corresponding evidence.
 
 - A well-defined computational framework for mapping integrative medicine
   concepts across modalities
-- A reproducible engineering implementation with 1921 passing tests
+- A reproducible engineering implementation with 1922 passing tests
 - A transparency commitment: every DOI verified individually, evidence
   coverage honestly reported, limitations explicitly stated
 - A jurisdiction-aware compliance layer designed to fail closed
