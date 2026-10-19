@@ -235,7 +235,7 @@ C:\Users\xing\Desktop\healthlens\docs\prospective_cohort\informed_consent.md
 
 | # | 项目 | 状态 | 完成时间 | 产出（ORCID / DOI / URL / 编号） |
 |---|---|---|---|---|
-| 1 | ORCID | ☐ | | |
+| 1 | ORCID | ✅ | 2026-10-19 | `0009-0004-2152-7669`（已通过 orcid.org API 校验，填至 6 个提交文件 + 2 个论文 byline + 2 个 cover letter） |
 | 2 | Zenodo DOI | ☐ | | |
 | 3 | OSF 预注册 | ☐ | | |
 | 4 | IRB 受理编号 | ☐ | | |

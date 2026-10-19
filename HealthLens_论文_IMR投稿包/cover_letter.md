@@ -66,7 +66,7 @@ ORCID: 0009-0004-2152-7669
 
 ## Cover-letter pre-submission checklist
 
-- [ ] Replace `0009-0004-2152-7669` with your real ORCID iD
+- [x] ORCID iD confirmed: `0009-0004-2152-7669` (verified via https://orcid.org/api/v3/public/record/0009-0004-2152-7669)
 - [ ] Insert today's date
 - [ ] If you have multiple authors, add their name and affiliation block
 - [ ] Confirm all statements are accurate for your actual situation

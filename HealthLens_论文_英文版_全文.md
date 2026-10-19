@@ -1,10 +1,10 @@
 # An Integrated Steady-State Biology Framework for Non-Pharmacological Longevity Intervention: From Classical-Text and Genome Fusion to Closed-Loop Validation
 
-**Authors**: Li Xing
+**Authors**: Li Xing (ORCID: 0009-0004-2152-7669)
 
 **Affiliation**: HealthLens, Independent Research Project, Hangzhou, China
 
-**Corresponding author**: Li Xing, email: corresponding@healthlens.cc
+**Corresponding author**: Li Xing, email: corresponding@healthlens.cc, ORCID: 0009-0004-2152-7669
 
 **Manuscript type**: Hypothesis / Theoretical Framework
 

@@ -1,10 +1,10 @@
 # 整合医学稳态生物学框架：从古籍–基因融合到闭环验证的非用药长寿干预理论体系
 
-**作者**：厉兴
+**作者**：厉兴（ORCID: 0009-0004-2152-7669）
 
 **单位**：HealthLens 独立研究项目，杭州
 
-**通讯作者**：厉兴，email: corresponding@healthlens.cc
+**通讯作者**：厉兴，email: corresponding@healthlens.cc，ORCID: 0009-0004-2152-7669
 
 **稿件类型**：假说 / 理论框架
 

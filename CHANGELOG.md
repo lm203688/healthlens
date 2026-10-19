@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.31.1] - 2026-10-19（R7 ORCID 落地 + 报告 R1–R5 收官）
+
+### Added
+
+- `tools/fill_placeholders.py --orcid` **填入真实 ORCID `0009-0004-2152-7669`**（覆盖 5 个提交文件，共 6 处占位符：`{{YOUR_ORCID_ID}}`×2 / `[ORCID to be filled]` / `PENDING_USER_FILL`×2 / `{{ORCID_OPTIONAL}}`）。ORCID 通过 `https://orcid.org/api/v3/public/record/0009-0004-2152-7669` 校验 HTTP 200。
+- 中英论文首页 byline 加 ORCID：`HealthLens_论文_英文版_全文.md`、`HealthLens_论文_整合医学稳态轴框架_全文.md`、JIM `cover_letter.md`、IMR `cover_letter.md`。
+- `tests/tools/test_fill_placeholders.py` 重写为 tmp_path 沙箱模式（12 条测试），避免真实仓库文件被测试污染。
+- 报告 **R1 Figure 1 十轴→八轴**（IMR 包新增 SVG，旧 eps/png 标 DEPRECATED）、**R2 因果 E2E 三方一致**（tracked artifact 默认参数 400/10000 重跑，论文 §6.5 补 refuter 未过披露）、**R3 model_card/cover letter 引用错误**（"29 verified"→真实分层；AFFIRM 幻觉引用→Farr 2024 真文献）、**R4 WORD_COUNT 自动化**（`--auto-word-count` 从 docx 提字数；SUBMISSION_STEPS.md 移出扫描范围）、**R5 freeze note SHA**（7b75e9a→a9d916a）。
+
+### Fixed
+
+- `tools/fill_placeholders.py` **ORCID 正则 bug**：旧 pattern `[0-9]{4}(-[0-9]{4}){3}-[0-9X]` 要求末尾只有 1 位，与真实 ORCID `XXXX-XXXX-XXXX-XXXC`（15 数字+1 校验位）不符，导致 0009- 新号段 ORCID 通过 API 校验后仍被误判格式错误。修复后接受 19 位带横线 + 16 位无横线两种合法形式。
+- `test_fill_placeholders.py::test_auto_word_count_handles_cjk` docx 生成器笔误：`</w>p>` → `</w:p>`（XML 未闭合）。
+- 4 个 medRxiv 提交包测试数字 1840 → **1922**。
+
+### Changed
+
+- `submissions/zenodo/README_zenodo_upload.md`：ORCID 占位符替换后同步"orcid 已填"状态。
+- IMR `cover_letter.md` 提交前 checklist：ORCID 项由 `[ ] Replace 0009-0004-2152-7669` 改为 `[x] ORCID iD confirmed`（避免误导用户再替换已填好的值）。
+
+### 验证
+
+```
+pytest:  1922 passed / 8 skipped / 0 failed (2m34s)
+sync_test_count.py --check: OK, all files report 1922
+fill_placeholders.py --check: OK, no placeholders remain
+ORCID API: https://orcid.org/api/v3/public/record/0009-0004-2152-7669 → HTTP 200
+```
+
+### 剩余用户操作（AI 硬阻塞）
+
+1. Zenodo token + 3-step curl 铸 DOI（详见 `docs/manual_steps_guide.md` 步骤 2）
+2. OSF 注册 + 提交预印本（步骤 3）
+3. IRB 机构门户提交（步骤 4，路径 A/B/C 可选）
+
+---
+
 ## [0.31.0] - 2026-10-17
 
 ### Added（P0 打地基 + P1 口径修复）
