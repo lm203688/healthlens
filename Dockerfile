@@ -59,11 +59,15 @@ COPY skills/ ./skills/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
 
-# 以下三项不在 bind mount 列表内——只能靠镜像层 COPY：
+# 以下四项不在 bind mount 列表内——只能靠镜像层 COPY：
 #   - config/           运行时读取（federated_defaults / national_standards / serializer_schema / axes）
+#   - claims_policy/    claims_engine.load_policy() 读的策略文件；R3（2026-10-20）修补——
+#                       此前漏 COPY，生产 load_policy 一直走 empty-allow strict fallback，
+#                       实际 banned_terms=0，fail-closed 完全不成立。
 #   - agent-card.json   /.well-known/agent-card.json 端点直接读该文件
 # pyproject.toml 已在上面 COPY。
 COPY config/ ./config/
+COPY claims_policy/ ./claims_policy/
 COPY agent-card.json ./agent-card.json
 
 # Create required directories and fix ownership
