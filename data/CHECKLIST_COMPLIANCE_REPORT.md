@@ -6,10 +6,10 @@ SPIRIT-AI item. `S` = evidence in paper, `P` = evidence in codebase
 but not in paper text, `M` = not found. Run manually before every
 submission; the tool exits non-zero if any item is `M`.
 
-**Overall**: 48 Satisfied · 4 Partial · 0 Missing  (out of 52)
-**Compliance score (S=1, P=0.5, M=0)**: 96.2%
+**Overall**: 49 Satisfied · 3 Partial · 0 Missing  (out of 52)
+**Compliance score (S=1, P=0.5, M=0)**: 97.1%
 
-## DECIDE-AI  (17S / 2P / 0M)
+## DECIDE-AI  (18S / 1P / 0M)
 
 - ✅ **DECIDE-AI#D1** — DECIDE-AI D1: Study design and eligibility criteria
   - _Evidence_ [paper.md]: `unverified entries normalized to L3, 91 synthetic-validation entries separated into a distinct S class outside L1–L3) anchors the`
@@ -33,14 +33,14 @@ submission; the tool exits non-zero if any item is `M`.
   - _Evidence_ [paper.md]: `tion. The framework as a whole requires prospective validation.  **Keywords**: integrative medicine; homeostasis; autophagy; mitoch`
 - ✅ **DECIDE-AI#D11** — DECIDE-AI D11: Ethical considerations
   - _Evidence_ [paper.md]: `ist self-audit (DECIDE-AI + TRIPOD-AI + SPIRIT-AI).** `tools/checklist_audit.py` scans the paper and canonical codebase artefacts`
-- 🟡 **DECIDE-AI#D12** — DECIDE-AI D12: Registration / pre-registration
-  - _Evidence_ [codebase/tooling]: `I#D12** — DECIDE-AI D12: Registration / pre-registration   - _Evidence_ [codebase/tooling]: `I#D12** — DECIDE-AI D12: Registration / pre`
+- ✅ **DECIDE-AI#D12** — DECIDE-AI D12: Registration / pre-registration
+  - _Evidence_ [paper.md]: `the public repository and are ready for OSF pre-registration and IRB submission once a sponsoring institution is secured.`
 - ✅ **DECIDE-AI#D13** — DECIDE-AI D13: Conflict of interest
   - _Evidence_ [paper.md]: `mercial, or not-for-profit sectors.  ## Conflicts of Interest  The author declares no conflicts of interest.  ## Data Availability  The case`
 - ✅ **DECIDE-AI#D14** — DECIDE-AI D14: Funding disclosure
   - _Evidence_ [paper.md]: `review board approval was required.  ## Funding  This research did not receive any specific grant from funding agencies in the`
 - ✅ **DECIDE-AI#D15** — DECIDE-AI D15: Ethics statement
-  - _Evidence_ [paper.md]: `: Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
+  - _Evidence_ [paper.md]: `tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
 - 🟡 **DECIDE-AI#D16** — DECIDE-AI D16: Data sharing plan
   - _Evidence_ [codebase/tooling]: `rification results are available at the Zenodo DOI cited in the Data Availability Statement (see data_availability_statement.md)."`
 - ✅ **DECIDE-AI#D17** — DECIDE-AI D17: Code availability
@@ -56,7 +56,7 @@ submission; the tool exits non-zero if any item is `M`.
 - ✅ **TRIPOD-AI#T2** — TRIPOD-AI T2: Eligibility criteria for model development
   - _Evidence_ [paper.md]: `2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critique that earlier "cross-instrument co`
 - ✅ **TRIPOD-AI#T3** — TRIPOD-AI T3: Eligibility criteria for validation
-  - _Evidence_ [paper.md]: `l-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, Independent Research Projec`
+  - _Evidence_ [paper.md]: `l-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing (ORCID: 0009-0004-2152-7669)  **Affiliation**: HealthLens`
 - ✅ **TRIPOD-AI#T4** — TRIPOD-AI T4: Predictors / features
   - _Evidence_ [paper.md]: `ed mechanism must map to a quantifiable biomarker (genetic, protein, metabolic, or wearable). - **A3 Personalized weighting**: Re`
 - ✅ **TRIPOD-AI#T5** — TRIPOD-AI T5: Outcome definition
@@ -70,7 +70,7 @@ submission; the tool exits non-zero if any item is `M`.
 - ✅ **TRIPOD-AI#T9** — TRIPOD-AI T9: Statistical analysis plan
   - _Evidence_ [paper.md]: `ational Reliability (Input-Perturbation Bootstrap)  Because the scorers are fixed-threshold deterministic functions, their stabil`
 - ✅ **TRIPOD-AI#T10** — TRIPOD-AI T10: Model development process
-  - _Evidence_ [paper.md]: `vention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, I`
+  - _Evidence_ [paper.md]: `vention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing (ORCID: 0009-0004-2152-7669)  *`
 - ✅ **TRIPOD-AI#T11** — TRIPOD-AI T11: Model specification
   - _Evidence_ [paper.md]: `axioms constrain the framework; (2) an eight-axis mapping (A–H) is constructed (A: gasification/autophagy, B: qi-blood/mitochondr`
 - ✅ **TRIPOD-AI#T12** — TRIPOD-AI T12: Model selection
@@ -92,7 +92,7 @@ submission; the tool exits non-zero if any item is `M`.
 - ✅ **TRIPOD-AI#T20** — TRIPOD-AI T20: Handling confounders
   - _Evidence_ [paper.md]: `2 Cross-instrument Convergent Validity (Latent-shared Synthetic Bridge)  To address the S3 critique that earlier "cross-instru`
 - ✅ **TRIPOD-AI#T21** — TRIPOD-AI T21: Ethical / ethical implications
-  - _Evidence_ [paper.md]: `: Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
+  - _Evidence_ [paper.md]: `tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
 ## SPIRIT-AI  (12S / 0P / 0M)
 
 - ✅ **SPIRIT-AI#S1** — SPIRIT-AI S1: Description of intervention
@@ -116,7 +116,7 @@ submission; the tool exits non-zero if any item is `M`.
 - ✅ **SPIRIT-AI#S10** — SPIRIT-AI S10: Adverse events
   - _Evidence_ [paper.md]: `a secondary anchor). G is reported as `unmeasured` rather than duplicating E when no sleep signal is present. Their ICC values ar`
 - ✅ **SPIRIT-AI#S11** — SPIRIT-AI S11: Ethical considerations
-  - _Evidence_ [paper.md]: `: Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
+  - _Evidence_ [paper.md]: `tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor`
 - ✅ **SPIRIT-AI#S12** — SPIRIT-AI S12: Adaptations and modifications
   - _Evidence_ [paper.md]: `ist self-audit (DECIDE-AI + TRIPOD-AI + SPIRIT-AI).** `tools/checklist_audit.py` scans the paper and canonical codebase artefacts`
 
