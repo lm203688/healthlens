@@ -3,7 +3,7 @@
   "description": "HealthLens 整合医学健康推演 Agent：八轴稳态框架（A–H）+ 六公理内核，融合生物标志物、中医古籍与可穿戴数据。健康参考工具，非医疗器械。",
   "url": "https://healthlens.cc/api/v1",
   "protocolVersion": "1.0.1",
-  "version": "0.33.0",
+  "version": "0.33.1",
   "provider": {
     "organization": "HealthLens",
     "url": "https://github.com/lm203688/healthlens"
