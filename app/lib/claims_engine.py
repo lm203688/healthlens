@@ -444,11 +444,15 @@ def filter_output(
     if banned_terms.get("medical_claim_patterns"):
         text_dump = str(filtered_payload)
         violations = _scan_terms(text_dump, banned_terms, jurisdiction)
-        # 严重违规 → 拦截整个输出
-        if len(violations) >= 3 and policy.get("wellness_boundary_strict", True):
+        # R3（2026-10-20）：strict 法域阈值从 3 降到 1——任一硬宣称词命中即 fail-closed。
+        # 原阈值 3 是"启发式"设计（认为 3 个以上命中才可能是医疗宣称），实测对频率疗法
+        # 数据 fail-closed 完全不成立（"改善疾病""辅助治疗"等硬宣称只 1 hit 就漏过）。
+        # 配合 claims_policy/*.yaml 里"复合短语"（避免单字误伤）使用。
+        strict_threshold = policy.get("fail_closed_threshold", 1)
+        if len(violations) >= strict_threshold and policy.get("wellness_boundary_strict", True):
             raise ClaimsPolicyError(
                 f"Output blocked by strict claims policy ({len(violations)} violations): "
-                f"{violations[:3]}"
+                f"{violations[:5]}"
             )
 
     # 4. 附加免责声明
