@@ -18,6 +18,7 @@ from app.models.tcm_formula import (
     TcmDeliveryOrder,
 )
 from app.api.deps import get_current_user, require_doctor_or_admin
+from app.lib.claims_guard import apply_claims
 
 router = APIRouter(tags=["tcm"])
 
@@ -101,10 +102,14 @@ async def submit_constitution(
     # 调用体质辨识服务
     analysis = await analyze_constitution(db, current_user.id, body.questionnaire_data)
 
-    return {
-        "success": True,
-        "data": analysis,
-    }
+    return apply_claims(
+        {
+            "success": True,
+            "data": analysis,
+        },
+        current_user,
+        "/api/v1/tcm/constitution",
+    )
 
 
 @router.get("/constitution", response_model=dict)
@@ -240,20 +245,24 @@ async def upload_tongue_image(
     db.add(tongue_image)
     await db.commit()
 
-    return {
-        "success": True,
-        "data": {
-            "id": tongue_id,
-            "filename": file.filename,
-            "status": "analyzed",
-            "tongue_color": analysis_result.tongue_color,
-            "tongue_shape": analysis_result.tongue_shape,
-            "coating_color": analysis_result.coating_color,
-            "coating_quality": analysis_result.coating_quality,
-            "syndrome_hint": analysis_result.syndrome_hint,
-            "confidence": analysis_result.confidence,
+    return apply_claims(
+        {
+            "success": True,
+            "data": {
+                "id": tongue_id,
+                "filename": file.filename,
+                "status": "analyzed",
+                "tongue_color": analysis_result.tongue_color,
+                "tongue_shape": analysis_result.tongue_shape,
+                "coating_color": analysis_result.coating_color,
+                "coating_quality": analysis_result.coating_quality,
+                "syndrome_hint": analysis_result.syndrome_hint,
+                "confidence": analysis_result.confidence,
+            },
         },
-    }
+        current_user,
+        "/api/v1/tcm/tongue/upload",
+    )
 
 
 @router.get("/tongue", response_model=dict)
@@ -404,17 +413,21 @@ async def trigger_tcm_diagnosis(
     await db.commit()
     await db.refresh(syndrome_record)
 
-    return {
-        "success": True,
-        "data": {
-            "id": str(syndrome_record.id),
-            "syndrome_code": syndrome_record.syndrome_code,
-            "syndrome_name": syndrome_record.syndrome_name,
-            "principle": syndrome_record.principle,
-            "confidence": float(syndrome_record.confidence) if syndrome_record.confidence else None,
-            "status": syndrome_record.status,
+    return apply_claims(
+        {
+            "success": True,
+            "data": {
+                "id": str(syndrome_record.id),
+                "syndrome_code": syndrome_record.syndrome_code,
+                "syndrome_name": syndrome_record.syndrome_name,
+                "principle": syndrome_record.principle,
+                "confidence": float(syndrome_record.confidence) if syndrome_record.confidence else None,
+                "status": syndrome_record.status,
+            },
         },
-    }
+        current_user,
+        "/api/v1/tcm/diagnose",
+    )
 
 
 @router.get("/diagnose/results", response_model=dict)
@@ -456,16 +469,20 @@ async def list_tcm_diagnoses(
             "formula_recommendations": await _get_formula_recs(d.id, db),
         })
 
-    return {
-        "success": True,
-        "data": data,
-        "meta": {
-            "page": page,
-            "page_size": page_size,
-            "total": total,
-            "total_pages": (total + page_size - 1) // page_size,
+    return apply_claims(
+        {
+            "success": True,
+            "data": data,
+            "meta": {
+                "page": page,
+                "page_size": page_size,
+                "total": total,
+                "total_pages": (total + page_size - 1) // page_size,
+            },
         },
-    }
+        current_user,
+        "/api/v1/tcm/diagnose/results",
+    )
 
 
 async def _get_formula_recs(syndrome_id: str, db: AsyncSession) -> list[dict]:
