@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.33.1] - 2026-10-20（R4 补：agent 端点接入 claims_guard）
+
+### Changed
+
+- **`app/api/agent.py` 2 个 POST 端点接入 `apply_claims`**：
+  - `POST /api/v1/agent/fusion` — 融合安全管线，`user_input` 经 LLM 处理后可能产出任何文本
+  - `POST /api/v1/agent/team` — 四角色 Agent 团队（Planner/Executor/Critic/Referee），LLM 生成决策
+  - 二者均为公开端点（无 `Depends(get_current_user)`），统一走 `jurisdiction="cn"` 首发市场策略——LLM 生成内容风险面最大，不能留缺口。
+
+### Verified
+
+- pytest 全量 **1939 passed / 8 skipped / 0 failed**（173.78s）。
+- agent 相关 `tests/agent/` + `tests/core/test_fusion_*.py` + `tests/test_agent_card.py` **67/67 通过**。
+
+### Note
+
+- 至此所有面向用户的 wellness/LLM 生成端点已覆盖 claims_guard：`frequency.py`（5）+ `knowledge.py`（5）+ `tcm.py`（4 AI 生成）+ `agent.py`（2 LLM 团队）= **16 端点**。剩余未包裹的端点返回结构化数值评分（`axes.py`）或用户自己提交的 profile 数据（`genome.py`），非 AI 生成文本，风险面为零。
+
 ## [0.33.0] - 2026-10-20（R4：claims_guard 通用库 + 覆盖 knowledge/tcm 端点 + 清理死文件）
 
 ### Added
