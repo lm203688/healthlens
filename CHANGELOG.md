@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.33.0] - 2026-10-20（R4：claims_guard 通用库 + 覆盖 knowledge/tcm 端点 + 清理死文件）
+
+### Added
+
+- **`app/lib/claims_guard.py` 通用 claims 出口包裹库**：把 `frequency.py` 里内联的 `_apply_claims` 抽象为可复用库函数 `apply_claims(payload, user, endpoint, *, jurisdiction=None, status_code=403)`。设计要点：
+  - 独立于 `claims_engine.py`（后者保持"纯策略 + 纯扫描"、不引入 FastAPI 依赖）；本库作为 API 层薄薄一层的 adapter。
+  - `user=None` 时支持显式 `jurisdiction="cn"` 或默认回退 "cn"（首发市场）——覆盖公开端点（books catalog / food-therapy search 无登录上下文）。
+  - fail-closed 语义与 frequency.py 一致：任一 `banned_term` 命中即 403 + 结构化 detail + 审计日志，不降级放行。
+
+### Changed
+
+- **`app/api/knowledge.py` 全部 5 个端点接入 `apply_claims`**：
+  - `/food-therapy/recommend` (POST) — user 上下文
+  - `/non-pharma/recommend` (POST) — user 上下文
+  - `/wellness-plan` (GET) — user 上下文
+  - `/books` (GET) — 公开端点，`jurisdiction="cn"`
+  - `/food-therapy/search` (GET) — 公开端点，`jurisdiction="cn"`
+  - 食疗方/非药物治疗/综合调理方案的 `indications` `method` `description` 字段全部经 claims 过滤，命中硬宣称 403。
+- **`app/api/tcm.py` 4 个 AI 生成文本的高风险端点接入 `apply_claims`**：
+  - `POST /constitution` — 体质辨识结果（`principle`/`keywords` 是 AI 生成文本）
+  - `POST /tongue/upload` — 舌象分析（`syndrome_hint` 是 AI 生成文本）
+  - `POST /diagnose` — 辨证分析（`syndrome_name`/`principle` 是 AI 生成文本）
+  - `GET /diagnose/results` — 辨证历史列表（含方剂推荐）
+  - 其他 profile/list 端点（constitution get/update、tongue list/detail）不重复包裹——它们返回的是存档数据而非新的 AI 生成内容，风险面已在 submit/diagnose 处被拦截。
+
+### Removed
+
+- **删除死文件 `claims_policy/intended_use_matrix.yaml`**：grep 全代码库（`app/` `tests/` `scripts/` `config/` `healthlens_agent/`）**零业务代码引用**，只有 `.aoci/transactions/history/` 和 `.workbuddy/cache/` 的历史审计日志引用。此文件从设计阶段就未被 `claims_engine.load_policy` 加载——是"预留扩展点"的空壳。删除后镜像体积少一个死文件，减少"看起来有用其实是死代码"的困惑。
+
+### Verified
+
+- pytest 全量 **1939 passed / 8 skipped / 0 failed**（186.65s）。
+- 针对改动的 `tests/api/test_knowledge.py` + `tests/api/test_tcm_*.py` **17/17 通过**——端点包裹未破坏原有行为（wellness 内容在 CN 全 PASS）。
+- `tests/lib/test_claims_engine.py` + `tests/test_paper_claims_match_data.py` **33/33 通过**——策略层契约未变。
+
+### Design decisions
+
+- **出口包裹而非全局中间件**（延续 v0.32.0 决策）：全局中间件拦截会让 269 个路由强制走 claims_engine（性能 + 依赖）；只在产生 wellness 内容的端点出口局部包裹。
+- **公共端点默认 CN 法域**：books/search 无登录上下文，按首发市场 CN 策略过滤——这是最严格默认，避免法域绕过。若未来加入 EU/US 前端分流，前端在 URL 里带 `?jurisdiction=eu`，本库已支持。
+- **tcm.py 只包 AI 生成端点**：档案型端点（`GET /constitution`、`GET /tongue/{id}`）返回的是之前 submit/diagnose 已过滤过的存档数据，重复过滤浪费 CPU 且可能误伤（历史存档里的文本可能被新策略命中）。当前策略：只过滤"当前 AI 新生成"的内容。
+- **claims_guard.py 独立于 claims_engine.py**：`claims_engine.py` 保持"纯 Python 策略引擎"（可 CLI 用、可单元测试、可嵌入非 FastAPI 项目）；`claims_guard.py` 是 FastAPI adapter 层。避免"改一处策略 → 影响所有端点 → 测试面爆炸"的耦合。
+
+
 ## [0.32.0] - 2026-10-20（R3：claims_engine fail-closed 真正落地 + 频率端点接入）
 
 ### Fixed
