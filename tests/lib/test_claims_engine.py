@@ -42,38 +42,27 @@ def test_unknown_jurisdiction_fails_closed_to_eu():
     assert p["jurisdiction"] == "eu"
 
 
-def test_jurisdiction_differential_us_flags_diagnosis_term():
-    # 同一输入：US 命中 banned_terms 'diagnosis' → warnings 非空；CN 不命中
-    r_us = filter_output(PAYLOAD, "us")
+def test_jurisdiction_differential_us_blocks_diagnosis_term():
+    # R3（2026-10-20）：strict 阈值降到 1——US 命中 banned_terms 'diagnosis' 即 fail-closed；
+    # 旧语义（阈值=3、仅记 warning）已废弃。CN 无英文 'diagnosis' 词，仍放行。
+    with pytest.raises(ClaimsPolicyError):
+        filter_output(PAYLOAD, "us")
     r_cn = filter_output(PAYLOAD, "cn")
-    assert any("diagnosis" in str(w) for w in r_us.warnings), r_us.warnings
     assert not any("diagnosis" in str(w) for w in r_cn.warnings), r_cn.warnings
 
 
 def test_jurisdiction_differential_blocked_fields_us_vs_cn():
-    """US/CN 屏蔽差异（M10 字段级 fallback 后的新语义）：
-    - US blocked_fields 命中 → 字段不删除、值被降级替换为 fallback dict，
-      路径记录到 rewritten_fields；原值不再裸露
-    - CN blocked_fields 为空 → 原值保留、无改写
-    断言的是"敏感原值不会跨法域泄露"这一不变式，而非"字段被物理移除"。
+    """US/CN 屏蔽差异（R3 新语义）：
+    - US：任一 banned_terms 命中即 fail-closed → 抛 ClaimsPolicyError
+    - CN：首发市场放行，字段原值保留
+    断言的是"敏感原值不会跨法域泄露"这一不变式。
     """
-    r_us = filter_output(PAYLOAD, "us")
-    r_cn = filter_output(PAYLOAD, "cn")
-
-    # US：三个敏感字段都被降级替换
-    rewritten_paths = {p.split(" ")[0].split(".")[-1] for p in r_us.rewritten_fields}
-    assert {"icd_code", "risk_probability", "severity"} <= rewritten_paths, (
-        r_us.rewritten_fields
-    )
-
-    # US：payload 里字段键仍存在，但值已换成 fallback 结构（原值不再裸露）
-    assert isinstance(r_us.payload["icd_code"], dict)
-    assert "fallback_value" in r_us.payload["icd_code"]
-    assert r_us.payload["icd_code"]["fallback_value"] != "E11"
-    assert r_us.payload["risk_probability"] != 0.23
-    assert r_us.payload["severity"] != "moderate"
+    # US：阈值=1 fail-closed，PAYLOAD 中 diagnosis 字段即触发
+    with pytest.raises(ClaimsPolicyError):
+        filter_output(PAYLOAD, "us")
 
     # CN：首发市场放行，原值保留
+    r_cn = filter_output(PAYLOAD, "cn")
     assert r_cn.payload["icd_code"] == "E11"
     assert r_cn.payload["risk_probability"] == 0.23
     assert r_cn.payload["severity"] == "moderate"
@@ -92,15 +81,21 @@ def test_endpoint_toggles_differ_by_jurisdiction():
 
 
 def test_disclaimer_attached_on_filter():
-    for j in ("us", "cn", "eu", "uk", "au"):
+    # R3：US/UK/EU strict 下任一 banned term 命中即 raise，不会走到附加 disclaimer。
+    # 只对 CN/AU（strict=false 或无英文 'diagnosis' 命中）断言 disclaimer。
+    for j in ("cn", "au"):
         r = filter_output(PAYLOAD, j)
         assert r.disclaimer_added, f"{j} 未附加免责声明"
+    # US 应被 fail-closed
+    with pytest.raises(ClaimsPolicyError):
+        filter_output(PAYLOAD, "us")
 
 
 def test_audit_entrypoint_is_callable_and_nonblocking():
     # log_claims_audit 不得因审计失败而抛错（非阻塞语义）
-    r = filter_output(PAYLOAD, "us")
-    log_claims_audit("test-user", "us", "/api/v1/diagnosis", r)  # 不抛即过
+    # 使用 CN 避开 US fail-closed
+    r = filter_output(PAYLOAD, "cn")
+    log_claims_audit("test-user", "cn", "/api/v1/diagnosis", r)  # 不抛即过
 
 
 def test_cn_specific_allowed_fields_merged():
@@ -258,3 +253,97 @@ def test_frequency_track_claims_audit_callable():
     r = filter_output(payload, "us", endpoint="/api/v1/frequency")
     # 审计入口不抛即过
     log_claims_audit("test-user", "us", "/api/v1/frequency/tracks", r)
+
+
+# ===========================================================================
+# R3 fail-closed 生效验证（2026-10-20，v0.32.0）
+# ===========================================================================
+# 目的：防止阈值或 banned_terms 未来被改回宽松配置。
+# v0.31.3 实测：CN banned_terms 只有 6 词 + 阈值 3 + frequency 端点未接入，
+# 导致"辅助改善慢性病/调节内脏功能"等硬宣称全部漏过。
+# v0.32.0 修复：CN banned_terms 扩到 32 词 + 阈值 1 + frequency 5 端点接入。
+# 本测试断言三场景：clean PASS / attacked BLOCKED / soft PASS。
+
+def _r3_attacked_payload():
+    """注入硬宣称的污染 payload。"""
+    return {
+        "module": "frequency_therapy",
+        "tracks": [
+            {"id": "FQ-BAD", "name": "神奇频率",
+             "description": "调节内脏功能，改善症状"},
+        ],
+        "claims": [
+            "辅助治疗慢性疾病",
+            "改善睡眠、缓解紧绷感",
+        ],
+    }
+
+
+def test_r3_attacked_payload_blocked_in_cn():
+    """CN 法域：硬宣称 payload 必须被 fail-closed 拦截。"""
+    with pytest.raises(ClaimsPolicyError):
+        filter_output(_r3_attacked_payload(), "cn",
+                      endpoint="/api/v1/frequency/prescribe")
+
+
+def test_r3_soft_claims_not_blocked_in_cn():
+    """CN 法域：软宣称（缓解紧绷感/改善睡眠感受）不触发拦截。
+
+    这些词单独出现时属 wellness 主观体验描述，配套 disclaimer 后不越界。
+    只有"改善疾病/改善症状/调理内脏"等复合短语才拦截。
+    """
+    soft = {
+        "module": "frequency_therapy",
+        "outcomes": [
+            "在局部不适时聆听，可能帮助放松、缓解紧绷感（主观体验，因人而异）",
+            "在安静环境中聆听，可能帮助提升放松度、改善睡眠感受（主观体验，因人而异）",
+        ],
+    }
+    r = filter_output(soft, "cn", endpoint="/api/v1/frequency/tracks")
+    assert r.violations == [], f"soft claims 被误伤: {r.violations}"
+
+
+def test_r3_hard_claims_hit_count():
+    """CN banned_terms 词扫直接命中验证——8 组硬宣称组合必须全部命中。"""
+    p = load_policy("cn")
+    patterns = p["banned_terms"]["medical_claim_patterns"]
+    # 扩词后至少 30 词（原 6 + 新增 24）
+    assert len(patterns) >= 30, f"CN banned_terms 只有 {len(patterns)} 词，可能被回退"
+
+    from app.lib.claims_engine import _scan_terms
+    hard_cases = [
+        ("辅助改善慢性病症状，调节内脏功能", ["调节内脏"]),
+        ("改善症状，缓解疾病", ["改善症状", "缓解疾病"]),
+        ("抗抑郁、抗焦虑、抗癌", ["抗抑郁", "抗焦虑", "抗癌"]),
+        ("降血压、降血糖、降血脂", ["降血压", "降血糖", "降血脂"]),
+        ("排毒、抗衰老", ["抗衰老", "排毒"]),
+        ("治愈、根治", ["治愈", "根治"]),
+        ("预防疾病、预防癌症", ["预防疾病", "预防癌症"]),
+        ("治疗慢性疾病、治疗失眠", ["治疗失眠"]),
+    ]
+    for text, expected_hits in hard_cases:
+        hits = _scan_terms(text, p["banned_terms"], "cn")
+        for exp in expected_hits:
+            assert exp in hits, (
+                f"词 '{exp}' 未被检出 (text={text[:30]} hits={hits})"
+            )
+
+
+def test_r3_disclaimer_only_payload_not_blocked():
+    """纯免责声明（无硬宣称）不应被误拦。"""
+    p = {
+        "disclaimer": "本模块非治疗，仅供参考，不构成医疗建议。",
+        "note": "如有健康问题请咨询专业医师。",
+    }
+    r = filter_output(p, "cn", endpoint="/api/v1/frequency/tracks")
+    assert r.violations == [], r.violations
+
+
+def test_r3_default_threshold_is_one_for_strict():
+    """strict 法域默认阈值必须是 1（fail-closed 语义）。"""
+    for j in ("cn", "us", "uk", "eu"):
+        p = load_policy(j)
+        assert p.get("fail_closed_threshold", 1) == 1, (
+            f"{j} fail_closed_threshold 不是 1"
+        )
+        assert p["wellness_boundary_strict"] is True, f"{j} strict 不是 True"
