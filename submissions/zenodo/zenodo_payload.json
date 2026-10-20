@@ -2,15 +2,15 @@
   "metadata": {
     "title": "HealthLens: Integrated Steady-State Axis Framework — Dataset, Evidence Library & Validation Artefacts",
     "subtitle": "Deterministic, jurisdiction-aware wellness fusion engine; eight-axis scoring, evidence database, cross-instrument convergent validity, multi-seed reproducibility and adversarial robustness",
-    "publication_date": "2026-10-18",
-    "resource_type": {
-      "type": "DATASET",
-      "subtype": "DB"
-    },
+    "publication_date": "2026-10-20",
+    "resource_type": "dataset",
     "creators": [
       {
-        "name": "HealthLens Research Team",
-        "affiliation": "HealthLens (open-source project)"
+        "name": "Li, Xing",
+        "given_name": "Xing",
+        "family_name": "Li",
+        "affiliation": "HealthLens Open-Source Project",
+        "orcid": "0009-0004-2152-7669"
       }
     ],
     "description": "Dataset archive for the HealthLens integrated steady-state axis framework (A–H). Contains:\n\n(1) Evidence database (120 entries): 29 with verified Crossref DOIs, 91 synthetic validation fixtures — evidence coverage 24.2% honestly reported.\n\n(2) Four-way terminology mapping (GB/T 20348-2026 <-> eight axes <-> biological pathways <-> classical Chinese-medicine text fragments, 613 fragments).\n\n(3) Cross-instrument convergent validity bridge — SF-36 PCS/MCS, PHQ-9, PROMIS Sleep T-scores vs the eight HealthLens axes, n=200 latent-shared synthetic profiles, seed 20261018.\n\n(4) Multi-seed reproducibility — 50 seeds x 50 profiles = 2500 scoring calls; deterministic double-run verified at 0 diff.\n\n(5) Adversarial robustness battery — 300 pathological profiles across 7 categories; 0 crashes, 0 out-of-range, 0 NaN/inf.\n\n(6) Reliability bootstrap — 18 profiles x 1000 perturbations, ICC(2,1) and weighted kappa for all eight axes.\n\n(7) PhenoAge alignment benchmark (Liu 2018) — r=0.806, MAE 5.2y, RMSE 7.1y on 200 synthetic profiles with honest device-level calibration caveat.\n\n(8) DECIDE-AI + TRIPOD-AI + SPIRIT-AI checklist self-audit — 52 items, 47 satisfied + 5 partial = 95.2% compliance score.\n\n(9) Prospective cohort protocol, IRB submission package, ethics review statement, data governance, informed consent, participant questionnaire, data dictionary, analysis plan and OSF pre-print draft (SPIRIT-AI aligned).\n\nAll artefacts are deterministic from frozen seeds; the reproducibility tooling is included in the repository. HealthLens is a wellness framework, not a medical device.",
@@ -62,89 +62,56 @@
     ],
     "contributors": [
       {
-        "name": "HealthLens Contributors",
-        "type": "Group"
+        "name": "HealthLens Research Team",
+        "type": "Other",
+        "affiliation": "HealthLens Open-Source Project"
       }
     ],
     "related_identifiers": [
-      {
-        "scheme": "doi",
-        "identifier": "10.48550/arXiv.XXXXXX",
-        "relation": "isPreprintOf",
-        "resource_type": "publication"
-      },
       {
         "scheme": "url",
         "identifier": "https://github.com/lm203688/healthlens",
         "relation": "isSupplementTo",
         "resource_type": "software"
-      },
-      {
-        "scheme": "url",
-        "identifier": "https://healthlens.cc",
-        "relation": "isDocumentedBy",
-        "resource_type": "website"
       }
     ],
-    "rights_list": [
-      {
-        "license": {
-          "id": "cc-by-4.0",
-          "name": "Creative Commons Attribution 4.0 International",
-          "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
-        },
-        "rights": "Open access under CC-BY-4.0; code under MIT."
-      }
-    ],
-    "pids": {
-      "zenodo": {
-        "recognition": {
-          "doi": "10.5281"
-        }
-      },
-      "doi": {
-        "suffix": ""
-      }
-    },
-    "version": "v0.30.0",
-    "version_number": 1,
+    "version": "v0.31.3",
     "notes": [
       "This is a device-level validation archive. All quantitative figures are from deterministic synthetic runs unless otherwise marked. Real prospective cohort data (D5) will be appended as a v0.31.0 release upon IRB approval and study completion.",
       "HealthLens is a wellness framework, not a medical device. No diagnostic, therapeutic, or predictive medical claims are made by any artefact in this archive."
     ],
     "access_right": "open",
-    "communities": []
+    "license": "cc-by-4.0",
+    "prereserve_doi": true
   },
-  "_payload_generated_at": "2026-10-18T16:37:35Z",
+  "_payload_generated_at": "2026-10-20T02:01:27Z",
   "_attached_files_count": 44,
-  "_missing_files": [
-    "config/axis_thresholds.yaml"
-  ],
+  "_missing_files": [],
   "attached_files": [
     {
       "path": "HealthLens_论文_英文版_全文.md",
-      "size_bytes": 38062,
-      "sha256": "f2e86442057f9f259735e230c6130df26f64b689cf5e5e021f63c58613c70af2"
+      "size_bytes": 45811,
+      "sha256": "47a132fadf8b7cfb2ee06d081a1e24acc95a8b9a8c4c6e351776327a4b66b2b2"
     },
     {
       "path": "submissions/medrxiv/submission_manifest.json",
-      "size_bytes": 6168,
-      "sha256": "1c057f213a18e74cd4a75f020ce1799c67c2380bb0bbebd10b231a45c323afa1"
+      "size_bytes": 6170,
+      "sha256": "8cef7b00598b55dd42ba83d631d66afcdc344a397ecb36112d6464b4180aa2f1"
     },
     {
       "path": "submissions/medrxiv/cover_letter_to_medrxiv.md",
-      "size_bytes": 5002,
-      "sha256": "048361284090a739ace5460d24c025a9c0d2b91f2f8e4d71cfc4a3ee82e71b91"
+      "size_bytes": 5001,
+      "sha256": "2786508b670e6810c0cc1d259e3f31254c27a60ed1925eb8c0e5436e074f8e64"
     },
     {
       "path": "submissions/medrxiv/data_availability_statement.md",
       "size_bytes": 4553,
-      "sha256": "e977ac582bcf90c812a1a85c3b39817fa5fb2dad1f6848db50d5977e8313f4af"
+      "sha256": "417115c129f0125c750f9a81ef7b01ba03f69479374ebc02013613a3edd1eb57"
     },
     {
       "path": "submissions/medrxiv/reviewer_guidance.md",
       "size_bytes": 3949,
-      "sha256": "f5d4da3be6210cbf894950cf7185172c089caf3e4b7392bb69ba298d0cd0ebde"
+      "sha256": "a674c5d55d9683e29bbaf72de1289e2368e11f732bd87d927e0ca02a4907b9bb"
     },
     {
       "path": "docs/zenodo_publication/README.md",
@@ -173,8 +140,8 @@
     },
     {
       "path": "submissions/zenodo/deposit_manifest.json",
-      "size_bytes": 4927,
-      "sha256": "f4001d10fbb2a55b3309a358945e448a5e3f8443ce26720b766a493651e46ba4"
+      "size_bytes": 5046,
+      "sha256": "7613ea0d539f61f2228237a0cf8b28682fd8031fbb1d2345ae0381c1e43441f1"
     },
     {
       "path": "data/case_evidence_db.json",
@@ -233,13 +200,13 @@
     },
     {
       "path": "data/checklist_compliance.json",
-      "size_bytes": 15317,
-      "sha256": "86022a2ef31d0d2adc15b66e09cf76d1d9fed7af52f3b328f38e3d024d91f155"
+      "size_bytes": 14949,
+      "sha256": "783aa55af756b50dfa93bc6894bd3ce3b3792acf0989f849c46eb147d219231e"
     },
     {
       "path": "data/CHECKLIST_COMPLIANCE_REPORT.md",
-      "size_bytes": 13697,
-      "sha256": "601e3f70d9a5e39afed19b77a9690c8908b1f685e51f59e50254bc0b87421f98"
+      "size_bytes": 13545,
+      "sha256": "3a7c4743a9fc7d01594aca5448be60e8b74be7b2090c100955c9c1beabc0c55d"
     },
     {
       "path": "docs/reporting_standards/equator_submission_letter.md",
@@ -318,13 +285,13 @@
     },
     {
       "path": "agent-card.json",
-      "size_bytes": 9176,
-      "sha256": "78468f729f0d9ad02a014e3207b08d0061e225258b4ff087a52d1e7e3904ce83"
+      "size_bytes": 8991,
+      "sha256": "b3fd170a82c9c168fc0ffdb701e8b18988354a9ba0e83fbbb72c46b50e402fdf"
     },
     {
       "path": "pyproject.toml",
       "size_bytes": 4771,
-      "sha256": "5f954c65efc45635d5c36709608f1148bac0e4fdb9a8b18745440c5de3176b48"
+      "sha256": "37edafc6276ace3c421356082efb5a4910021f42a37ff61d5219d0833aa32c35"
     },
     {
       "path": "README.md",
@@ -333,8 +300,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "size_bytes": 65772,
-      "sha256": "edb749696bee95b16dc6bfaec4e15bb1d894daff59f2d652b31ff235061c06fb"
+      "size_bytes": 74398,
+      "sha256": "04f86d95675921e08ed0e2c4ba8b1d5debd4231dadf8c48dfde2f18e4c7f2aed"
     },
     {
       "path": "LICENSE",
