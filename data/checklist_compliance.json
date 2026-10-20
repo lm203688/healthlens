@@ -79,9 +79,9 @@
   {
     "id": "DECIDE-AI#D12",
     "text": "DECIDE-AI D12: Registration / pre-registration",
-    "status": "P",
-    "evidence": "I#D12** — DECIDE-AI D12: Registration / pre-registration   - _Evidence_ [codebase/tooling]: `I#D12** — DECIDE-AI D12: Registration / pre",
-    "location": "codebase/tooling"
+    "status": "S",
+    "evidence": "the public repository and are ready for OSF pre-registration and IRB submission once a sponsoring institution is secured.",
+    "location": "paper.md"
   },
   {
     "id": "DECIDE-AI#D13",
@@ -101,7 +101,7 @@
     "id": "DECIDE-AI#D15",
     "text": "DECIDE-AI D15: Ethics statement",
     "status": "S",
-    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "evidence": "tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
     "location": "paper.md"
   },
   {
@@ -150,7 +150,7 @@
     "id": "TRIPOD-AI#T3",
     "text": "TRIPOD-AI T3: Eligibility criteria for validation",
     "status": "S",
-    "evidence": "l-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, Independent Research Projec",
+    "evidence": "l-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing (ORCID: 0009-0004-2152-7669)  **Affiliation**: HealthLens",
     "location": "paper.md"
   },
   {
@@ -199,7 +199,7 @@
     "id": "TRIPOD-AI#T10",
     "text": "TRIPOD-AI T10: Model development process",
     "status": "S",
-    "evidence": "vention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing  **Affiliation**: HealthLens, I",
+    "evidence": "vention: From Classical-Text and Genome Fusion to Closed-Loop Validation  **Authors**: Li Xing (ORCID: 0009-0004-2152-7669)  *",
     "location": "paper.md"
   },
   {
@@ -276,7 +276,7 @@
     "id": "TRIPOD-AI#T21",
     "text": "TRIPOD-AI T21: Ethical / ethical implications",
     "status": "S",
-    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "evidence": "tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
     "location": "paper.md"
   },
   {
@@ -353,7 +353,7 @@
     "id": "SPIRIT-AI#S11",
     "text": "SPIRIT-AI S11: Ethical considerations",
     "status": "S",
-    "evidence": ": Hypothesis / Theoretical Framework  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
+    "evidence": "tive Review / Theoretical Framework)  **Non-medical disclaimer**: This paper proposes a theoretical framework and a decision-suppor",
     "location": "paper.md"
   },
   {
