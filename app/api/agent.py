@@ -18,6 +18,8 @@ from pydantic import BaseModel
 from healthlens_agent.pipeline import PipelineResult, run_pipeline, UserProfile
 from healthlens_agent.team import team_run
 
+from app.lib.claims_guard import apply_claims
+
 router = APIRouter(prefix="/api/v1/agent", tags=["智能体"])
 
 
@@ -43,10 +45,10 @@ def agent_fusion(req: FusionIn) -> Dict:
     res: PipelineResult = run_pipeline(
         user_input=req.user_input, profile=profile, audit_log_path=req.audit_log_path,
     )
-    return res.to_dict()
+    return apply_claims(res.to_dict(), None, "/api/v1/agent/fusion", jurisdiction="cn")
 
 
 @router.post("/team")
 def agent_team(req: ProfileIn) -> Dict:
     """运行四角色 Agent 团队，返回计划 / 执行 / 审查 / 裁判决策。"""
-    return team_run(req.user_input)
+    return apply_claims(team_run(req.user_input), None, "/api/v1/agent/team", jurisdiction="cn")
