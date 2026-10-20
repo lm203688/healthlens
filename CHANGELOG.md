@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.32.0] - 2026-10-20（R3：claims_engine fail-closed 真正落地 + 频率端点接入）
+
+### Fixed
+
+- **R3 fail-closed 实测不成立 → 真修**：v0.31.3 实测发现 `claims_engine.filter_output` 对频率疗法 payload 完全放行——"辅助改善慢性病/调节内脏功能"硬宣称 0 命中、"改善睡眠/缓解紧绷感"软宣称也 0 命中。三个独立根因：
+  - **策略层**：CN `banned_terms.medical_claim_patterns` 只有 6 个硬医疗词（诊断结果/确诊/治疗方案/临床指南推荐/循证医学证据表明/医学上已确认），对 wellness 边界核心风险词全部漏过。
+  - **阈值层**：`claims_engine.py:448` 触发阈值 `len(violations) >= 3`，即便命中 1 个硬宣称也不 raise。
+  - **接入层**：`app/api/frequency.py` 完全没调用 `claims_engine.filter_output`——任何 payload 直穿。
+- **CN banned_terms 扩到 32 词**：加 24 个明确医疗宣称复合短语（治愈/根治/治疗疾病/治疗慢性病/治疗失眠/治疗焦虑/治疗抑郁/预防疾病/预防癌症/预防心脏病/抗抑郁/抗焦虑/抗癌/抗衰老/降血压/降血糖/降血脂/排毒/辅助治疗/改善疾病/改善症状/缓解疾病/缓解症状/调理内脏/调理身体/调节内脏）——**聚焦"动词+疾病/症状/器官"复合短语**，避免"改善/缓解/放松"单字在 wellness 语境下误伤（如"改善睡眠感受""缓解紧绷感"仍放行）。
+- **US/UK/EU banned_terms 同步扩**：各加 ~13 个英文对应词（treat disease/cure/prevent cancer/prevent heart disease/treat depression/treat anxiety/treat insomnia/reduce blood pressure/lower blood sugar/lower cholesterol/anti-inflammatory/detox/manage chronic disease/improve disease/improve symptoms 等）。
+- **阈值 3 → 1（可配置）**：`claims_engine.py` 引入 `fail_closed_threshold` 策略字段（默认 1）——任一硬宣称命中即 fail-closed。策略可覆盖。
+- **`app/api/frequency.py` 5 个端点全部接入 `filter_output`**：`/tracks`、`/prescription` (POST)、`/prescription/{id}` (GET)、`/prescriptions` (GET)、`/prescription/from-diagnosis-agent` 出口全部经 `_apply_claims` 包裹，任一命中返回 403 + 审计日志。
+- **`tests/lib/test_claims_engine.py` 3 处测试按新契约更新**：`test_jurisdiction_differential_us_flags_diagnosis_term` → `test_jurisdiction_differential_us_blocks_diagnosis_term`（`pytest.raises(ClaimsPolicyError)`）；`test_jurisdiction_differential_blocked_fields_us_vs_cn`、`test_disclaimer_attached_on_filter`、`test_audit_entrypoint_is_callable_and_nonblocking` 同步改。
+
+### Design decisions
+
+- **复合短语 > 单字**：`"改善"` 单独出现时可能是"改善睡眠感受"（wellness 合法）也可能是"改善症状"（医疗宣称）；只在"改善+疾病/症状"时才拦截，最大限度避免误伤。
+- **阈值 1 而非"分层"**：不搞 tiered policy（hard/broad 分级），因为 CN 32 词全部是明确医疗宣称，无歧义。若未来发现"单字误伤"，直接删词比分层简单。
+- **frequency.py 出口包裹而非中间件**：FastAPI middleware 全局拦截会让所有端点强制走 claims_engine（性能 + 依赖），且很多端点没有 payload 概念。选择在出口局部包裹，让每个端点自己决定"要不要走 claims 过滤"。当前只有 frequency 接入，未来其他端点按需接入。
+- **不改现有 wellness payload**：`_r3_verify.py` 实测确认当前真实曲库数据（FQ-002/006/025 等）在 CN/EU/US 三法域下都 PASS；不删任何字段、不改任何曲目文案。fail-closed 是**防线**，不是**清洗**。
+
+### Verified
+
+- pytest 全量 **1934 passed / 8 skipped / 0 failed**（191s）。
+- R3 三场景验证脚本 `_r3_verify.py`：
+  - 场景 A（真实频率疗法数据）：CN/EU/US 全 PASS ✅
+  - 场景 B（注入硬宣称"辅助治疗/改善症状/调节内脏"）：CN BLOCKED ✅（EU/US PASS 因 payload 是中文，属设计正确）
+  - 场景 C（软宣称"缓解紧绷感/改善睡眠"）：CN/EU/US 全 PASS ✅（不误伤）
+- 8 组硬宣称组合直接词扫全部命中；反例"本模块非治疗，仅供参考" 0 hits。
+- 未破坏现有 claims 测试：28/28 通过。
+
+### Remaining
+
+- 其他 wellness 端点（如 tcm_diagnosis、pgx_diagnosis、fusion_agent 等）未接入 `filter_output`——本次只接 frequency 是因为 R3 报告点名频率疗法。全局接入需另起任务。
+- AU policy `wellness_boundary_strict: false`（相对宽松），阈值检查不触发，行为不变。
+
 ## [0.31.3] - 2026-10-19（A+C：稿件类型改标 Review Article + CVI/前瞻队列明确移入 future work）
 
 ### Changed
