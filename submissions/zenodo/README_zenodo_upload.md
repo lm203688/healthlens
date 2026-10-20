@@ -7,8 +7,12 @@
 ## Zenodo 上传前置
 
 1. 注册 Zenodo 账号（GitHub OAuth 即可）：https://zenodo.org/
-2. 获取 API Token：https://zenodo.org/settings/user-tokens
-   （推荐创建专用 token，权限最小化）
+2. 获取 API Token（**直达 URL**）：
+   https://zenodo.org/account/settings/applications/tokens/new/
+   - 或走 UI：登录 → 右上角头像 → Applications → Personal access tokens → New token
+   - Scope 勾选 `deposit:write` + `deposit:actions`
+   - Token 只显示一次，务必立刻复制；建议存到 `.workbuddy/cache/zenodo_token.txt`
+   （`/settings/user-tokens` 与 `/settings/tokens` 均已 404）
 3. 确认发布许可：**CC BY 4.0**（本项目默认）
 
 ## 上传清单（manifest.json）
