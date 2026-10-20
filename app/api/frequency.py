@@ -2,6 +2,9 @@
 
 S3-4（2026-10-13）合规降级：本端点仅提供放松 / 睡眠音频推荐，not_clinical，
 不进入八轴机制链、不宣称任何疗效。字段名（prescription 等）保留以兼容前端。
+
+R3（2026-10-20）fail-closed 落地：所有 GET/POST 出口都过 claims_engine.filter_output，
+任一 banned_terms 命中即返回 403，不再依赖 disclaimer 或人肉守。
 """
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -9,6 +12,7 @@ from loguru import logger
 
 from app.models.user import User
 from app.api.deps import get_current_user
+from app.lib.claims_engine import filter_output, ClaimsPolicyError, get_user_jurisdiction
 from app.services.frequency_prescription import (
     FrequencyPrescriptionEngine,
     get_prescription,
@@ -17,6 +21,24 @@ from app.services.frequency_prescription import (
 )
 
 router = APIRouter(tags=["放松音频"])
+
+
+def _apply_claims(payload: dict, user: User, endpoint: str) -> dict:
+    """按用户法域过滤输出，fail-closed：任一 banned_term 命中即 403。"""
+    try:
+        result = filter_output(payload, get_user_jurisdiction(user), endpoint=endpoint)
+        if result.violations or result.removed_fields:
+            logger.warning(
+                f"[Claims] frequency endpoint={endpoint} user={user.id} "
+                f"violations={len(result.violations)} removed={len(result.removed_fields)}"
+            )
+        return result.payload
+    except ClaimsPolicyError as e:
+        logger.warning(f"[Claims] BLOCKED endpoint={endpoint} user={user.id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Claims policy violation: {str(e)}",
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -64,11 +86,12 @@ async def list_tracks(
             "bodyParts": t["bodyParts"],
         })
 
-    return {
+    response = {
         "success": True,
         "count": len(tracks),
         "tracks": tracks,
     }
+    return _apply_claims(response, current_user, "/api/v1/frequency/tracks")
 
 
 @router.post("/prescription", status_code=status.HTTP_201_CREATED)
@@ -93,11 +116,12 @@ async def create_prescription(
 
     logger.info(f"频率处方已创建 | prescription_id={prescription['prescription_id']} | user_id={current_user.id}")
 
-    return {
+    response = {
         "success": True,
         "prescription_id": prescription["prescription_id"],
         "prescription": prescription,
     }
+    return _apply_claims(response, current_user, "/api/v1/frequency/prescription")
 
 
 @router.get("/prescription/{prescription_id}")
@@ -119,10 +143,11 @@ async def get_prescription_detail(
             detail="无权访问该处方",
         )
 
-    return {
+    response = {
         "success": True,
         "prescription": prescription,
     }
+    return _apply_claims(response, current_user, "/api/v1/frequency/prescription")
 
 
 @router.get("/prescriptions")
@@ -131,11 +156,12 @@ async def list_user_prescriptions(
 ):
     """获取当前用户的所有频率处方"""
     prescriptions = get_prescriptions_by_user(current_user.id)
-    return {
+    response = {
         "success": True,
         "count": len(prescriptions),
         "prescriptions": prescriptions,
     }
+    return _apply_claims(response, current_user, "/api/v1/frequency/prescriptions")
 
 
 @router.post("/prescription/{prescription_id}/feedback")
@@ -229,8 +255,9 @@ async def create_prescription_from_diagnosis(
         f"prescription_id={prescription['prescription_id']}"
     )
 
-    return {
+    response = {
         "success": True,
         "prescription_id": prescription["prescription_id"],
         "prescription": prescription,
     }
+    return _apply_claims(response, current_user, "/api/v1/frequency/prescription/from-diagnosis-agent")
