@@ -9,6 +9,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.tcm_knowledge import FoodTherapyRecipe, ClassicalFormula, NonPharmaTreatment, TcmClassicalBook
 from app.api.deps import get_current_user
+from app.lib.claims_guard import apply_claims
 
 router = APIRouter(tags=["knowledge"])
 
@@ -84,11 +85,15 @@ async def recommend_food_therapy(
             "seasonal": rec.seasonal,
         })
 
-    return {
-        "success": True,
-        "data": data,
-        "meta": {"count": len(data)},
-    }
+    return apply_claims(
+        {
+            "success": True,
+            "data": data,
+            "meta": {"count": len(data)},
+        },
+        current_user,
+        "/api/v1/knowledge/food-therapy/recommend",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -133,11 +138,15 @@ async def recommend_non_pharma(
             "source": rec.source,
         })
 
-    return {
-        "success": True,
-        "data": data,
-        "meta": {"count": len(data)},
-    }
+    return apply_claims(
+        {
+            "success": True,
+            "data": data,
+            "meta": {"count": len(data)},
+        },
+        current_user,
+        "/api/v1/knowledge/food-therapy/recommend",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -182,47 +191,51 @@ async def get_wellness_plan(
         limit=1,
     )
 
-    return {
-        "success": True,
-        "data": {
-            "constitution": {
-                "type": constitution_type,
-                "name": const_info.get("name", constitution_type),
-                "keywords": const_info.get("keywords", []),
+    return apply_claims(
+        {
+            "success": True,
+            "data": {
+                "constitution": {
+                    "type": constitution_type,
+                    "name": const_info.get("name", constitution_type),
+                    "keywords": const_info.get("keywords", []),
+                },
+                "food_therapy": [
+                    {
+                        "name": r.name,
+                        "category": r.category,
+                        "ingredients": r.ingredients,
+                        "indications": r.indications,
+                        "method": r.method,
+                        "source": r.source,
+                    }
+                    for r in food_recs
+                ],
+                "non_pharma_treatments": [
+                    {
+                        "type": r.treatment_type,
+                        "type_name": r.treatment_type_name,
+                        "name": r.name,
+                        "description": r.description,
+                        "instructions": r.instructions,
+                        "frequency": r.frequency,
+                        "duration": r.duration,
+                    }
+                    for r in non_pharma
+                ],
+                "diet_guide": [
+                    {
+                        "name": r.name,
+                        "instructions": r.instructions,
+                        "source": r.source,
+                    }
+                    for r in diet_guide
+                ],
             },
-            "food_therapy": [
-                {
-                    "name": r.name,
-                    "category": r.category,
-                    "ingredients": r.ingredients,
-                    "indications": r.indications,
-                    "method": r.method,
-                    "source": r.source,
-                }
-                for r in food_recs
-            ],
-            "non_pharma_treatments": [
-                {
-                    "type": r.treatment_type,
-                    "type_name": r.treatment_type_name,
-                    "name": r.name,
-                    "description": r.description,
-                    "instructions": r.instructions,
-                    "frequency": r.frequency,
-                    "duration": r.duration,
-                }
-                for r in non_pharma
-            ],
-            "diet_guide": [
-                {
-                    "name": r.name,
-                    "instructions": r.instructions,
-                    "source": r.source,
-                }
-                for r in diet_guide
-            ],
         },
-    }
+        current_user,
+        "/api/v1/knowledge/wellness-plan",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -264,16 +277,20 @@ async def list_classical_books(
             "category": book.category,
         })
 
-    return {
-        "success": True,
-        "data": data,
-        "meta": {
-            "page": page,
-            "page_size": page_size,
-            "total": total,
-            "total_pages": (total + page_size - 1) // page_size,
+    return apply_claims(
+        {
+            "success": True,
+            "data": data,
+            "meta": {
+                "page": page,
+                "page_size": page_size,
+                "total": total,
+                "total_pages": (total + page_size - 1) // page_size,
+            },
         },
-    }
+        jurisdiction="cn",
+        endpoint="/api/v1/knowledge/books",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -320,13 +337,17 @@ async def search_food_therapy(
             "seasonal": r.seasonal,
         })
 
-    return {
-        "success": True,
-        "data": data,
-        "meta": {
-            "page": page,
-            "page_size": page_size,
-            "total": total,
-            "total_pages": (total + page_size - 1) // page_size,
+    return apply_claims(
+        {
+            "success": True,
+            "data": data,
+            "meta": {
+                "page": page,
+                "page_size": page_size,
+                "total": total,
+                "total_pages": (total + page_size - 1) // page_size,
+            },
         },
-    }
+        jurisdiction="cn",
+        endpoint="/api/v1/knowledge/food-therapy/search",
+    )
