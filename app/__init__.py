@@ -260,28 +260,28 @@ def create_app() -> FastAPI:
 
         app.include_router(evidence_router, prefix="/api/v1/evidence", tags=["证据层L1"])
     except Exception as _ev_err:  # noqa: BLE001
-        logger.warning(f"[EVIDENCE-L1] 证据层路由未加载（能力不可用，已跳过）: {_ev_err}")
+        logger.error(f"[EVIDENCE-L1] 证据层路由未加载（能力不可用，已跳过）: {_ev_err}")
 
     try:
         from app.api.timeseries import router as timeseries_router
 
         app.include_router(timeseries_router, prefix="/api/v1/timeseries", tags=["表征层L2"])
     except Exception as _ts_err:  # noqa: BLE001
-        logger.warning(f"[TIMESERIES-L2] 表征层路由未加载（能力不可用，已跳过）: {_ts_err}")
+        logger.error(f"[TIMESERIES-L2] 表征层路由未加载（能力不可用，已跳过）: {_ts_err}")
 
     try:
         from app.api.federated import router as federated_router
 
         app.include_router(federated_router, prefix="/api/v1/federated", tags=["联邦层L3"])
     except Exception as _fd_err:  # noqa: BLE001
-        logger.warning(f"[FEDERATED-L3] 联邦层路由未加载（能力不可用，已跳过）: {_fd_err}")
+        logger.error(f"[FEDERATED-L3] 联邦层路由未加载（能力不可用，已跳过）: {_fd_err}")
 
     try:
         from app.api.evaluation import router as evaluation_router
 
         app.include_router(evaluation_router, prefix="/api/v1/evaluation", tags=["评估层L4"])
     except Exception as _evl_err:  # noqa: BLE001
-        logger.warning(f"[EVALUATION-L4] 评估层路由未加载（能力不可用，已跳过）: {_evl_err}")
+        logger.error(f"[EVALUATION-L4] 评估层路由未加载（能力不可用，已跳过）: {_evl_err}")
 
     # MCP over HTTP（海外 Agent 一行 URL 接入，无需 pip install）
     try:
@@ -289,7 +289,7 @@ def create_app() -> FastAPI:
 
         app.include_router(mcp_http_router)
     except Exception as _mcp_err:  # noqa: BLE001
-        logger.warning(f"[MCP-HTTP] MCP HTTP 路由未加载: {_mcp_err}")
+        logger.error(f"[MCP-HTTP] MCP HTTP 路由未加载: {_mcp_err}")
 
     # 智能体能力路由（GOAI 借鉴落地）
     # 注意：app/api/agent.py 内已写死 "/api/v1/agent/..." 全路径，
@@ -299,7 +299,7 @@ def create_app() -> FastAPI:
 
         app.include_router(agent_router)
     except Exception as _agent_err:  # noqa: BLE001
-        logger.warning(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
+        logger.error(f"[AGENT] 智能体路由未加载（能力不可用，已跳过）: {_agent_err}")
 
     # 健康护栏预检端点（前端提交自由文本前调用，命中即渲染强提示）
     try:
@@ -307,7 +307,7 @@ def create_app() -> FastAPI:
 
         app.include_router(emergency_router, prefix="/api/v1/emergency", tags=["健康护栏"])
     except Exception as _emg_err:  # noqa: BLE001
-        logger.warning(f"[EMERGENCY] 健康护栏预检路由未加载: {_emg_err}")
+        logger.error(f"[EMERGENCY] 健康护栏预检路由未加载: {_emg_err}")
 
     # 静态前端文件服务 (frontend/) - 带缓存控制
     import os
