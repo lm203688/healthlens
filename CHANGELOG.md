@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.33.2] - 2026-10-21（R5：收尾 wellness 端点覆盖 + fail-loud 语义修复）
+
+### Changed
+
+- **`app/api/partner_api.py` 2 个 B2B 高风险端点接入 `apply_claims`**：
+  - `POST /api/v1/partner-api/tcm-recommendations` — TCM 生活方式推荐，返回 3 轴 focus + note
+  - `POST /api/v1/partner-api/wellness-report` — 综合 wellness 报告，返回 composite_score + axis_scores + focus_axes
+  - 合作方通过 X-API-Key 调用，**用户不可见**——风险最高（越权输出会直接进合作方产品 UI），故走 `jurisdiction="cn"` 首发市场最严策略。
+- **`app/api/fusion.py` 3 个 GET 端点接入 `apply_claims`**：
+  - `GET /api/v1/fusion/chain` — 五层因果链完整 demo 数据（含 layer5_interventions 干预建议文本）
+  - `GET /api/v1/fusion/pathways` — 第三层细胞通路
+  - `GET /api/v1/fusion/interventions` — 第五层治疗干预（示例数据，但含"干预"字样，防 LLM 层未来接入真数据时误伤）
+  - 均为公开端点，走 `jurisdiction="cn"`。
+- **`app/__init__.py` 7 处 fail-silent warning → error**：
+  - `[EVIDENCE-L1]` / `[TIMESERIES-L2]` / `[FEDERATED-L3]` / `[EVALUATION-L4]` / `[MCP-HTTP]` / `[AGENT]` / `[EMERGENCY]` 路由未加载原本只 `logger.warning`，导致 2026-10-21 生产日志里 agent/mcp 路由 **8 次启动失败（`No module named 'healthlens_agent'`）从未被发现**——直到 docker cp + commit 后偶然看到 `/api/v1/agent/*` 首次 200 才回查日志定位。
+  - 改 `logger.error` 让 fail-loud 语义与 SVIEE 五层设计意图一致；`try/except` 保留（向后兼容，避免生产因依赖缺失直接挂）。
+
+### Verified
+
+- pytest 全量 **1939 passed / 8 skipped / 0 failed**（319.19s）。
+- 针对性测试：`tests/api/test_knowledge.py` + `tests/api/test_tcm_*.py` + `tests/lib/test_claims_engine.py` + `tests/test_agent_card.py` + `tests/core/test_fusion_*.py` **78/78 通过**；`tests/lib/test_powered_by_sdk.py` **62/62 通过**。
+
+### Design Decisions
+
+- **`partner_api` 走 `jurisdiction="cn"` 而非 partner 级 jurisdiction**：合作方无用户级法域，且 SDK 首发市场锁定 CN（`DISCLAIMER` 也是中文）。未来若 partner 集成 EU 用户，可通过 partner config 加 `jurisdiction` 字段，本库已支持透传。
+- **fusion.py 是 demo 数据也接入**：`layer5_interventions` 里已含"药物/疗法/干预"字样，虽然是 demo 但一旦被 LLM 层引用（如 agent 团队调 fusion 输出）会形成宣称。宁可"过度包裹 demo"也不可"遗漏真数据"。
+- **fail-loud 只升日志级别、不改异常语义**：保留 `try/except` 让生产仍能启动，但 `logger.error` 会在默认 loguru sink 里被标红/告警通道捕获；未来若接入 Sentry/Prometheus alerting，天然会被捕获。
+
+### Milestone
+
+- 至此所有面向用户与合作方的 wellness/LLM 生成端点均已覆盖 claims_guard：`frequency.py`（5）+ `knowledge.py`（5）+ `tcm.py`（4 AI 生成）+ `agent.py`（2 LLM）+ `partner_api.py`（2 B2B）+ `fusion.py`（3 demo 含干预文本）= **21 端点**。剩余未包裹端点：`axes.py`（数值评分）、`genome.py`（profile 数据）、`evidence.py`（学术统计）、`federated.py`（联邦聚合）、`timeseries.py`（时序序列化）、`evaluation.py`（评估协议）——均输出结构化数值或统计摘要，非 AI 生成文本，风险面为零，暂不包裹以避免"过度包裹"造成的性能与误伤成本。
+
 ## [0.33.1] - 2026-10-20（R4 补：agent 端点接入 claims_guard）
 
 ### Changed
