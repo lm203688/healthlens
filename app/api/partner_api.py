@@ -30,6 +30,7 @@ from app.database import get_db
 from app.integrations.sdk.auth import api_key_header, hash_api_key
 from app.integrations.sdk.config import DISCLAIMER, get_partner_config
 from app.integrations.sdk.health_check import check_health
+from app.lib.claims_guard import apply_claims
 from app.models.user import User
 
 router = APIRouter(tags=["合作方API"])
@@ -200,13 +201,17 @@ async def partner_tcm_recommendations(
         }
         for ax, score in weakest
     ]
-    return {
-        "success": True,
-        "user_id": body.user_id,
-        "recommendations": recommendations,
-        "partner_id": partner["partner_id"],
-        "disclaimer": DISCLAIMER,
-    }
+    return apply_claims(
+        {
+            "success": True,
+            "user_id": body.user_id,
+            "recommendations": recommendations,
+            "partner_id": partner["partner_id"],
+            "disclaimer": DISCLAIMER,
+        },
+        endpoint="/api/v1/partner-api/tcm-recommendations",
+        jurisdiction="cn",
+    )
 
 
 @router.post("/wellness-report")
@@ -220,12 +225,16 @@ async def partner_wellness_report(
     scores = _axis_scores(body.user_id)
     composite = _composite_score(body.user_id)
     weakest = sorted(scores.items(), key=lambda kv: kv[1])[:3]
-    return {
-        "success": True,
-        "user_id": body.user_id,
-        "composite_score": composite,
-        "axis_scores": scores,
-        "focus_axes": [ax for ax, _ in weakest],
-        "partner_id": partner["partner_id"],
-        "disclaimer": DISCLAIMER,
-    }
+    return apply_claims(
+        {
+            "success": True,
+            "user_id": body.user_id,
+            "composite_score": composite,
+            "axis_scores": scores,
+            "focus_axes": [ax for ax, _ in weakest],
+            "partner_id": partner["partner_id"],
+            "disclaimer": DISCLAIMER,
+        },
+        endpoint="/api/v1/partner-api/wellness-report",
+        jurisdiction="cn",
+    )
