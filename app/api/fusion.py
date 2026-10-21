@@ -1,6 +1,8 @@
 """融合诊断 API - 五层知识图谱因果链"""
 from fastapi import APIRouter, Request
 
+from app.lib.claims_guard import apply_claims
+
 router = APIRouter(tags=["融合诊断"])
 
 
@@ -268,16 +270,28 @@ def _demo_response(data: dict) -> dict:
 @router.get("/chain")
 async def get_fusion_chain(request: Request):
     """获取完整五层因果链（示例数据，仅用于预览）"""
-    return _demo_response(DEMO_FUSION_CHAIN)
+    return apply_claims(
+        _demo_response(DEMO_FUSION_CHAIN),
+        endpoint="/api/v1/fusion/chain",
+        jurisdiction="cn",
+    )
 
 
 @router.get("/pathways")
 async def get_fusion_pathways(request: Request):
     """获取第三层细胞通路数据（示例数据，仅用于预览）"""
-    return _demo_response(DEMO_FUSION_CHAIN["layers"]["layer3_pathways"])
+    return apply_claims(
+        _demo_response(DEMO_FUSION_CHAIN["layers"]["layer3_pathways"]),
+        endpoint="/api/v1/fusion/pathways",
+        jurisdiction="cn",
+    )
 
 
 @router.get("/interventions")
 async def get_fusion_interventions(request: Request):
     """获取第五层治疗干预数据（示例数据，仅用于预览）"""
-    return _demo_response(DEMO_FUSION_CHAIN["layers"]["layer5_interventions"])
+    return apply_claims(
+        _demo_response(DEMO_FUSION_CHAIN["layers"]["layer5_interventions"]),
+        endpoint="/api/v1/fusion/interventions",
+        jurisdiction="cn",
+    )
