@@ -1,6 +1,6 @@
 # HealthLens Model Card
 
-Version: v0.31.0  ·  Date: 2026-10-19  ·  License: MIT (code) + CC-BY-4.0 (data)
+Version: v0.34.1  ·  Date: 2026-10-22  ·  License: MIT (code) + CC-BY-4.0 (data)
 
 > **Not a medical device.** HealthLens is a wellness framework. Nothing in
 > this model card is a diagnostic, therapeutic, or predictive medical claim.
@@ -16,14 +16,14 @@ beyond the original model-card template.
 | Field | Value |
 |---|---|
 | **Model name** | HealthLens Integrated Steady-State Axis Framework |
-| **Version** | v0.31.0 |
-| **Date released** | 2026-10-19 |
+| **Version** | v0.34.1 |
+| **Date released** | 2026-10-22 |
 | **Developer(s)** | HealthLens Research Team |
 | **Model type** | Rule-based fusion engine over eight physiological axes (A-H); no trained ML model, no learned weights |
 | **Intended use** | Wellness reference and structural causal exploration; supports prospective n-of-1 cohort tracking |
 | **Out of scope** | Diagnostic, therapeutic, or predictive medical use; not an FDA-regulated device; not a Clinical Decision Support System |
 | **Training data** | None (deterministic fixed-threshold rules) |
-| **Evaluation data** | 120-entry evidence DB (7 Crossref-verified + 8 traditional-text + 14 unverified_no_publication + 91 synthetic_validation); 18 profile reliability battery; 200 cross-instrument synthetic profiles; 2,500 multi-seed runs; 300 adversarial profiles |
+| **Evaluation data** | 120-entry evidence DB (7 Crossref-verified + 8 traditional-text + 14 unverified_no_publication + 91 synthetic_validation); 16-indicator lab/vitals dictionary (data/indicator_dictionary.yaml) with 4-stratum demographic ref_range; 18 profile reliability battery; 200 cross-instrument synthetic profiles; 2,500 multi-seed runs; 300 adversarial profiles |
 | **Hardware** | Runs on a Raspberry Pi-class edge node; no GPU required |
 | **Software stack** | Python 3.13, FastAPI, SQLAlchemy, Alembic, DoWhy (optional), Flower (optional) |
 | **Random seeds** | 20261017 (reliability bootstrap), 20261018 (all other quantitative runs) |
@@ -156,18 +156,30 @@ In priority order:
    wearables for 8-12 weeks. Replace the synthetic bridge with real
    cross-instrument concordance (SF-36 + PHQ-9 + PROMIS administered in
    parallel with the wearable-derived axis scores).
-2. **Expert Delphi (D4) — deferred to v2, L-CVI disclosed as partial substitute.**
+2. **Expert Delphi (D4) — deferred to v2, disclosed three-source content-validity triangulation as partial substitute.**
    No expert pool is currently available, so a full mini-Delphi (5–8 TCM
    clinicians, 2 rounds, S-CVI/Ave ≥ 0.78) is deferred to v2 and is
-   flagged as a stated limitation, not a submission blocker. As an
-   AI-only methodological substitute, `tools/literature_triangulation_cvi.py`
-   computes a Literature Triangulation CVI (L-CVI): each of the eight axes
-   A–H is mapped to ≥ 3 independent peer-reviewed construct-level sources.
-   Current result: **S-L-CVI/Ave = 1.000 (conservative, DOI-verified only);
-   8/8 axes pass the ≥ 3 independent-source threshold.** L-CVI validates
-   construct-level literature convergence only — it does **not** substitute
-   for expert Delphi and does **not** claim content validity. Full per-axis
-   source inventory in `data/LITERATURE_TRIANGULATION_CVI_REPORT.md`.
+   flagged as a stated limitation, not a submission blocker. Two AI-only
+   methodological substitutes are reported:
+   - **Literature Triangulation CVI (L-CVI)** — `tools/literature_triangulation_cvi.py`.
+     Each of the eight axes A–H is mapped to ≥ 3 independent peer-reviewed
+     construct-level sources. Current result: **S-L-CVI/Ave = 1.000
+     (conservative, DOI-verified only); 8/8 axes pass the ≥ 3 independent-
+     source threshold.** Full per-axis source inventory in
+     `data/LITERATURE_TRIANGULATION_CVI_REPORT.md`.
+   - **Indicator Content-Validity Panel (ICV-Panel)** — `tools/indicator_content_validity.py`.
+     The 16-indicator lab/vitals dictionary (v0.34.0) is cross-referenced
+     against published consensus sources (ADA 2024, IDF 2021, ESC/EAS 2019,
+     WHO 2019, KDIGO 2024, ATA 2017, ESH 2023, CLSI 2010/2013, IFCC 2017,
+     EULAR 2016, Chinese 2020/2023 guidelines) to compute per-indicator
+     agreement on unit_si, unit_alt factors, and 4-stratum demographic
+     reference ranges (±10% tolerance for inter-lab variability). Current
+     result: **S-ICV/Ave = 0.9409; 16/16 indicators at or above the
+     ≥ 0.78 threshold; 176/188 fields matched.** Full per-indicator source
+     inventory in `data/INDICATOR_CONTENT_VALIDITY_REPORT.md`.
+   Both substitutes validate construct-level literature and published-consensus
+   agreement only — they do **not** substitute for expert Delphi and do
+   **not** claim content validity in the classical Lavrakas sense.
 3. **Fuzzing.** Replace the hand-designed adversarial battery with
    mutation-based fuzzing over the input schema.
 4. **Semantic audit of recommendations** on adversarial inputs - do the
