@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.34.1] - 2026-10-22（SCI 就绪度收敛：CVI 替代三源 + agent-card 合规 + manifest 自动同步）
+
+### Added
+
+- **`tools/indicator_content_validity.py` + `data/published_consensus_ranges.json` + `data/indicator_content_validity.json` + `data/INDICATOR_CONTENT_VALIDITY_REPORT.md`** —— **Indicator Content-Validity Panel (ICV-Panel)**：针对 16 项 lab/vitals 指标的**指标层 AI-only CVI 替代方案**，作为已有 L-CVI（`tools/literature_triangulation_cvi.py`，轴层构造文献三角互证）的补充，形成"**L-CVI + ICV-Panel**"两源 CVI 三角互证：
+  - 覆盖 16 指标 × 4 人口学分层（adult_male / adult_female / pediatric / senior）×（unit_si + unit_alt 因子 + ref_range.low + ref_range.high）= 188 字段级对比
+  - 共识来源：ADA 2024、IDF 2021、ESC/EAS 2019、WHO 2019、KDIGO 2024、ATA 2017、ESH 2023、CLSI 2010/2013、IFCC 2017、EULAR 2016、Chinese 2020/2023 指南
+  - 容差：±10% 相对（inter-lab/inter-method 变异性），±2.0 绝对封顶；unit_si 精确字符串
+  - **结果：S-ICV/Ave = 0.9409；16/16 指标 ≥ 0.78 阈值；176/188 字段匹配**（`--check` CI 门限 ≥ 0.78 通过）
+  - 诚实标注：非专家 Delphi 替代、不宣称 classical Lavrakas content validity、参考区间口径差异（临床参考范围 vs 疾病风险阈值）在 `_meta.definition_of_ref_range` 显式说明
+- **`tools/sync_test_count.py`（新增 CI 门）**：把 `submissions/medrxiv/` 下 4 个文件的 "All N automated tests pass" claim 与 `pytest -q` 的实测 passed 数对齐；`--check` 门（drift 非零 → 拒），`--apply --pytest-out` 一键回写。消除 A5/A5' 手写漂移陷阱。
+- **`tests/test_indicator_content_validity.py`**：ICV-Panel 工具自身的单元测试（工具可运行 / S-ICV 阈值 / 报告产物字段完整）
+
+### Fixed
+
+- **`agent-card.json` 尺寸合规修复**：从 10,586B 压缩到 8,929B（-1,657B），距 10,240B 硬顶 **余量 1,311B ≥ 1KB 目标**（此前 margin 215B < 1KB 触发 `tests/test_agent_card.py::TestCardFilePresence` 两个 test 失败）。措施：
+  - 精简 10 个 skills 的冗余 `examples`（A2A examples 是可选展示性字段，删除不影响 skills 可发现性）
+  - 精简 8 个 skills 的 `description`（去掉重复的"含个人数据"/"经法域感知 claims 引擎过滤"等冗余尾缀，保留关键动词+名词）
+  - `conformanceNote` 压缩但保留 `已实现 + SendMessage + ListTasks + GetTask + CancelTask` 五个必填关键词（`test_conformance_note_declares_a2a_endpoints` 要求）
+  - `capabilities.EXTENSIONS[].description` 各压缩
+- **`submissions/medrxiv/` 4 文件测试数从 1934 → 1946**（与 v0.34.0 后 62 个 indicator 测试新增对齐），经 `tools/sync_test_count.py --check` 一致性通过。
+
+### Changed
+
+- **`docs/model_card.md` v0.34.0 → v0.34.1**：§1 Model Details 版本更新；§6 Recommendation #2 从"L-CVI 单源替代"改为"L-CVI + ICV-Panel 双源 CVI 三角互证"，明确列出 ICV-Panel 的 11 家共识来源 + 0.9409 结果 + 16/16 通过；诚实边界"非 Delphi 替代、不宣称 classical Lavrakas content validity"保留。
+- **`HealthLens_论文_英文版_全文.md` §9 Limitations #2**：从"L-CVI 单源 AI-only 替代"改为"L-CVI + ICV-Panel 双源"，正文加入 ICV-Panel 结果（S-ICV/Ave=0.9409, 16/16, 176/188 fields, ±10% 容差），并显式声明"triangulate construct-level literature convergence with indicator-level agreement against published clinical ranges"；§9 Limitations #6(a) 补一句"ICV-Panel 与 L-CVI 同为 AI-only 代理，不替代 expert Delphi"。
+- **`docs/model_card.md` §3.3 Performance Summary** 保持 v0.34.0 数值（ICC/Convergent/Multi-seed/Adversarial/PhenoAge/Checklist/Evidence），ICV-Panel 归入 §6 Recommendation 而非 headline metric（避免与 CVI 混淆为独立验证层）。
+
+### Notes
+
+- 本次发布对应 10-19 独立审查的 **N5 + manifest 同步 + R6 (CVI)** 三个未闭合项；#373/#374/#375/#376/#377 五个 sub-task 全部完成。
+- Expert Delphi 仍未启动，作为 v2 deferred limitation 保留（诚实边界未变）；ICV-Panel + L-CVI 是**AI-only 代理**，不是 expert Delphi 的替代。
+- `submissions/medrxiv/` 下所有文件现均可由 `tools/sync_test_count.py --check` 一致性校验；后续测试套件变动只需跑 `pytest > pytest.out && python tools/sync_test_count.py --apply --pytest-out pytest.out` 一次即可回写 4 文件。
+
 ## [0.34.0] - 2026-10-22（M02 P1：指标别名词典 + 单位归一化 + 全链路接入）
 
 ### Added
