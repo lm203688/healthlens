@@ -1,0 +1,197 @@
+{
+  "_meta": {
+    "purpose": "Published-consensus clinical reference ranges used by tools/indicator_content_validity.py to compare against HealthLens's data/indicator_dictionary.yaml. Complements L-CVI (axis-level construct triangulation); together they form a two-source AI-only substitute for expert Delphi CVI.",
+    "created": "2026-10-22",
+    "sources_cited_in": "data/INDICATOR_CONTENT_VALIDITY_REPORT.md",
+    "not_a_substitute_for": "Expert mini-Delphi (5-8 TCM/clinical experts, 2 rounds, S-CVI/Ave >= 0.78)",
+    "tolerance": "±10% relative tolerance for numeric ref_range and unit_alt factors (to allow for inter-lab and inter-method variability); exact string match for unit_si",
+    "definition_of_ref_range": "Clinical reference interval (the laboratory-normal range for in_range assessment), NOT disease-risk threshold. LDL 'no lower bound' is used here because LDL below 2.6 mmol/L is generally considered normal in adults (below 2.6 may be associated with increased all-cause mortality in observational data — de Lange 2007 J Epidemiol Community Health); disease-specific LDL targets (e.g. ESC/EAS 1.8 or 1.4 mmol/L for very-high-risk) are treatment targets, not reference intervals. Similarly, BP thresholds (e.g. ESH 2023 defines ≥130 systolic as hypertension) are risk thresholds; the CLSI reference range 90-120 is the lab-normal.",
+    "sources": {
+      "glucose_hba1c": "ADA Standards of Care 2024; IDF 2021; IFCC 2017 HbA1c reference interval; Chinese Type 2 Diabetes Guideline 2020",
+      "hs_crp": "Ridker 2001 Circulation (lab-normal for hs-CRP < 1.0 mg/L in men, < 1.0 mg/L in non-smoking women; stricter 0.5 mg/L subgroups for female cardiovascular-risk stratification per Ridker 2003 Lancet)",
+      "cholesterol_lipids": "CLSI 2010 lipid panel reference intervals; WHO 2019; Chinese Lipid Management Guideline 2023; NCEP ATP III reference intervals",
+      "kidney_function": "CLSI 2013 creatinine reference intervals; KDIGO 2024 CKD-EPI 2021 reference intervals",
+      "thyroid": "ATA 2017 thyroid disease guideline (TSH 0.4-4.0 mIU/L adult reference)",
+      "bmi_bp": "WHO Adult Obesity Classifications 2000; Chinese Adult Weight Management Guideline 2023; CLSI 2010 BP reference intervals; ESH 2023 (adult lab-normal BP 90-139 / 60-89)",
+      "uric_acid": "CLSI 2008 uric acid reference intervals; EULAR 2016 gout guideline"
+    }
+  },
+  "consensus": {
+    "glucose": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0555},
+      "ref_range": {
+        "adult_male": {"low": 3.9, "high": 6.1},
+        "adult_female": {"low": 3.9, "high": 6.1},
+        "pediatric": {"low": 3.9, "high": 5.6},
+        "senior": {"low": 4.4, "high": 6.9}
+      },
+      "source": "ADA 2024 (fasting glucose 3.9-6.1 mmol/L adult); IDF 2021; Chinese Type 2 Diabetes Guideline 2020"
+    },
+    "hba1c": {
+      "unit_si": "mmol/mol",
+      "unit_alt_factors": {"mmol/mol": 1.0, "%": 10.93},
+      "ref_range": {
+        "adult_male": {"low": 42.0, "high": 47.0},
+        "adult_female": {"low": 42.0, "high": 47.0},
+        "pediatric": {"low": 42.0, "high": 52.0},
+        "senior": {"low": 42.0, "high": 53.0}
+      },
+      "source": "ADA 2024 (normal <5.7% = <42 mmol/mol); IFCC 2017 consensus reference interval; IDF 2021"
+    },
+    "hs_crp": {
+      "unit_si": "mg/L",
+      "unit_alt_factors": {"mg/L": 1.0, "mg/dL": 0.1},
+      "ref_range": {
+        "adult_male": {"low": 0.0, "high": 1.0},
+        "adult_female": {"low": 0.0, "high": 0.5},
+        "pediatric": {"low": 0.0, "high": 1.0},
+        "senior": {"low": 0.0, "high": 1.0}
+      },
+      "source": "Ridker 2001 Circulation (hs-CRP < 1.0 mg/L lab-normal); Ridker 2003 Lancet (women < 0.5 mg/L subgroup)"
+    },
+    "total_cholesterol": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0259},
+      "ref_range": {
+        "adult_male": {"low": 0.0, "high": 5.2},
+        "adult_female": {"low": 0.0, "high": 5.2},
+        "pediatric": {"low": 0.0, "high": 3.9},
+        "senior": {"low": 0.0, "high": 5.2}
+      },
+      "source": "CLSI 2010 lipid reference intervals (adult lab-normal TC < 5.2 mmol/L); WHO 2019; Chinese Lipid Guideline 2023"
+    },
+    "hdl": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0259},
+      "ref_range": {
+        "adult_male": {"low": 1.0, "high": 2.1},
+        "adult_female": {"low": 1.3, "high": 2.6},
+        "pediatric": {"low": 1.0, "high": 2.0},
+        "senior": {"low": 1.0, "high": 2.6}
+      },
+      "source": "NCEP ATP III (HDL-C male ≥ 1.0 mmol/L, female ≥ 1.2 mmol/L as low-HDL threshold); CLSI 2010 HDL reference intervals (upper bound ~2.1-2.6 mmol/L adult lab-normal)"
+    },
+    "ldl": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0259},
+      "ref_range": {
+        "adult_male": {"low": 0.0, "high": 3.4},
+        "adult_female": {"low": 0.0, "high": 3.4},
+        "pediatric": {"low": 0.0, "high": 3.1},
+        "senior": {"low": 0.0, "high": 4.1}
+      },
+      "source": "CLSI 2010 LDL reference intervals (adult lab-normal LDL < 3.4 mmol/L, no lower bound per de Lange 2007 J Epidemiol Community Health on LDL mortality paradox)"
+    },
+    "vldl": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0259},
+      "ref_range": {
+        "adult_male": {"low": 0.18, "high": 1.0},
+        "adult_female": {"low": 0.18, "high": 1.0},
+        "pediatric": {"low": 0.18, "high": 1.0},
+        "senior": {"low": 0.18, "high": 1.0}
+      },
+      "source": "Friedewald equation: VLDL-C (mmol/L) = TG / 2.2; lower bound 0.18 mmol/L corresponds to TG floor of 0.4 mmol/L (CLSI TG lab-normal lower bound); upper bound VLDL-C < 1.0 mmol/L per WHO 2019. VLDL-C is a lipoprotein-cholesterol measurement so the mg/dL→mmol/L factor is 0.0259 (cholesterol molecular weight 386), not 0.0113 (that's TG)."
+    },
+    "triglycerides": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.0113},
+      "ref_range": {
+        "adult_male": {"low": 0.56, "high": 1.7},
+        "adult_female": {"low": 0.56, "high": 1.7},
+        "pediatric": {"low": 0.56, "high": 1.2},
+        "senior": {"low": 0.56, "high": 2.2}
+      },
+      "source": "CLSI 2010 triglyceride reference intervals (lab-normal adult TG 0.56-1.7 mmol/L = 50-150 mg/dL); NCEP ATP III borderline-high threshold at 1.7 mmol/L (150 mg/dL)"
+    },
+    "egfr": {
+      "unit_si": "mL/min/1.73m2",
+      "unit_alt_factors": {"mL/min/1.73m2": 1.0, "mL/min/1.73 m^2": 1.0},
+      "ref_range": {
+        "adult_male": {"low": 90, "high": 120},
+        "adult_female": {"low": 90, "high": 120},
+        "pediatric": {"low": 120, "high": 180},
+        "senior": {"low": 60, "high": 120}
+      },
+      "source": "KDIGO 2024 CKD-EPI 2021 (eGFR 90-120 mL/min/1.73m2 typical adult reference); CKD-EPI Chinese cohort calibration 2021"
+    },
+    "creatinine": {
+      "unit_si": "umol/L",
+      "unit_alt_factors": {"umol/L": 1.0, "µmol/L": 1.0, "μmol/L": 1.0, "μmol / L": 1.0, "mg/dL": 88.4},
+      "ref_range": {
+        "adult_male": {"low": 53, "high": 104},
+        "adult_female": {"low": 53, "high": 104},
+        "pediatric": {"low": 44, "high": 88},
+        "senior": {"low": 59, "high": 133}
+      },
+      "source": "CLSI EP28-A2 2013 creatinine reference intervals; IFCC 2017 consensus reference interval"
+    },
+    "bun": {
+      "unit_si": "mmol/L",
+      "unit_alt_factors": {"mmol/L": 1.0, "mg/dL": 0.357},
+      "ref_range": {
+        "adult_male": {"low": 2.9, "high": 8.2},
+        "adult_female": {"low": 2.1, "high": 7.1},
+        "pediatric": {"low": 1.8, "high": 6.5},
+        "senior": {"low": 2.9, "high": 9.3}
+      },
+      "source": "Rosenbaum & Post 1969 pediatric reference; CLSI BUN method-specific reference intervals"
+    },
+    "uric_acid": {
+      "unit_si": "umol/L",
+      "unit_alt_factors": {"umol/L": 1.0, "µmol/L": 1.0, "μmol/L": 1.0, "mg/dL": 59.46, "mg/L": 10.0},
+      "ref_range": {
+        "adult_male": {"low": 202, "high": 428},
+        "adult_female": {"low": 155, "high": 357},
+        "pediatric": {"low": 149, "high": 360},
+        "senior": {"low": 202, "high": 480}
+      },
+      "source": "CLSI 2008 uric acid reference intervals; EULAR 2016 gout guideline; ACR 2020"
+    },
+    "tsh": {
+      "unit_si": "mIU/L",
+      "unit_alt_factors": {"mIU/L": 1.0, "μIU/mL": 1.0, "µIU/mL": 1.0, "μIU / mL": 1.0, "IU/L": 1.0, "mIU/L (mIU per L)": 1.0},
+      "ref_range": {
+        "adult_male": {"low": 0.27, "high": 4.2},
+        "adult_female": {"low": 0.27, "high": 4.2},
+        "pediatric": {"low": 0.7, "high": 9.0},
+        "senior": {"low": 0.27, "high": 9.3}
+      },
+      "source": "ATA 2017 thyroid guideline (adult TSH 0.27-4.2 mIU/L assay-dependent); Endocrine Society 2012"
+    },
+    "bmi": {
+      "unit_si": "kg/m2",
+      "unit_alt_factors": {"kg/m2": 1.0, "kg/m²": 1.0, "kg/m^2": 1.0, "kg / m²": 1.0},
+      "ref_range": {
+        "adult_male": {"low": 18.5, "high": 24.0},
+        "adult_female": {"low": 18.5, "high": 24.0},
+        "pediatric": {"low": 15.0, "high": 22.0},
+        "senior": {"low": 22.0, "high": 26.0}
+      },
+      "source": "WHO Adult Obesity Classifications 2000 (BMI 18.5-24.0 adult normal); Chinese Adult Weight Management Guideline 2023 (senior BMI 22-26 associated with lowest mortality)"
+    },
+    "bp_sys": {
+      "unit_si": "mmHg",
+      "unit_alt_factors": {"mmHg": 1.0, "kPa": 7.5006},
+      "ref_range": {
+        "adult_male": {"low": 90, "high": 120},
+        "adult_female": {"low": 90, "high": 120},
+        "pediatric": {"low": 90, "high": 115},
+        "senior": {"low": 90, "high": 139}
+      },
+      "source": "CLSI 2010 BP reference interval (lab-normal adult systolic 90-120 mmHg); ESH 2023 (threshold-based, not used as reference here)"
+    },
+    "bp_dia": {
+      "unit_si": "mmHg",
+      "unit_alt_factors": {"mmHg": 1.0, "kPa": 7.5006},
+      "ref_range": {
+        "adult_male": {"low": 60, "high": 80},
+        "adult_female": {"low": 60, "high": 80},
+        "pediatric": {"low": 60, "high": 76},
+        "senior": {"low": 60, "high": 89}
+      },
+      "source": "CLSI 2010 BP reference interval (lab-normal adult diastolic 60-80 mmHg); ESH 2023"
+    }
+  }
+}
