@@ -1,0 +1,361 @@
+{
+  "tool": "tools/indicator_content_validity.py",
+  "generated_at": "2026-10-22",
+  "method": "ICV-Panel: compare data/indicator_dictionary.yaml fields against published-consensus ranges in data/published_consensus_ranges.json with ±5% numeric tolerance",
+  "threshold": 0.78,
+  "tolerance": {
+    "relative": 0.1,
+    "absolute_cap": 2.0
+  },
+  "summary": {
+    "n_indicators": 16,
+    "n_consensus_matched": 16,
+    "n_consensus_missing": 0,
+    "s_icv_ave": 0.9409,
+    "indicators_at_or_above_threshold": 16,
+    "total_fields_compared": 188,
+    "total_fields_matched": 176,
+    "field_level_agreement": 0.9362
+  },
+  "unmatched_indicators": [],
+  "per_indicator": {
+    "glucose": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "ADA 2024 (fasting glucose 3.9-6.1 mmol/L adult); IDF 2021; Chinese Type 2 Diabetes Guideline 2020"
+    },
+    "hba1c": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor % ✓",
+        "factor mmol/mol ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "ADA 2024 (normal <5.7% = <42 mmol/mol); IFCC 2017 consensus reference interval; IDF 2021"
+    },
+    "hs_crp": {
+      "ok": true,
+      "agreement": 0.9091,
+      "matched_fields": 10,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mg/dL ✗ (10.0 vs 0.1)",
+        "factor mg/L ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "Ridker 2001 Circulation (hs-CRP < 1.0 mg/L lab-normal); Ridker 2003 Lancet (women < 0.5 mg/L subgroup)"
+    },
+    "total_cholesterol": {
+      "ok": true,
+      "agreement": 0.9091,
+      "matched_fields": 10,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✗ (6.2 vs 5.2)"
+      ],
+      "consensus_source": "CLSI 2010 lipid reference intervals (adult lab-normal TC < 5.2 mmol/L); WHO 2019; Chinese Lipid Guideline 2023"
+    },
+    "hdl": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "NCEP ATP III (HDL-C male ≥ 1.0 mmol/L, female ≥ 1.2 mmol/L as low-HDL threshold); CLSI 2010 HDL reference intervals (upper bound ~2.1-2.6 mmol/L adult lab-normal)"
+    },
+    "ldl": {
+      "ok": true,
+      "agreement": 0.9091,
+      "matched_fields": 10,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✗ (3.4 vs 4.1)"
+      ],
+      "consensus_source": "CLSI 2010 LDL reference intervals (adult lab-normal LDL < 3.4 mmol/L, no lower bound per de Lange 2007 J Epidemiol Community Health on LDL mortality paradox)"
+    },
+    "vldl": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "Friedewald equation: VLDL-C (mmol/L) = TG / 2.2; lower bound 0.18 mmol/L corresponds to TG floor of 0.4 mmol/L (CLSI TG lab-normal lower bound); upper bound VLDL-C < 1.0 mmol/L per WHO 2019. VLDL-C is a lipoprotein-cholesterol measurement so the mg/dL→mmol/L factor is 0.0259 (cholesterol molecular weight 386), not 0.0113 (that's TG)."
+    },
+    "triglycerides": {
+      "ok": true,
+      "agreement": 0.8182,
+      "matched_fields": 9,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✗ (0.45 vs 0.56)",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✗ (1.7 vs 2.2)"
+      ],
+      "consensus_source": "CLSI 2010 triglyceride reference intervals (lab-normal adult TG 0.56-1.7 mmol/L = 50-150 mg/dL); NCEP ATP III borderline-high threshold at 1.7 mmol/L (150 mg/dL)"
+    },
+    "egfr": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mL/min/1.73m2 ✓",
+        "factor mL/min/1.73 m^2 ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "KDIGO 2024 CKD-EPI 2021 (eGFR 90-120 mL/min/1.73m2 typical adult reference); CKD-EPI Chinese cohort calibration 2021"
+    },
+    "creatinine": {
+      "ok": true,
+      "agreement": 0.8571,
+      "matched_fields": 12,
+      "total_fields": 14,
+      "notes": [
+        "unit_si ✓",
+        "factor umol/L ✓",
+        "factor µmol/L ✓",
+        "factor mg/dL ✓",
+        "factor μmol / L ✓",
+        "factor μmol/L ✓",
+        "adult_male.low ✗ (62 vs 53)",
+        "adult_male.high ✗ (115 vs 104)",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "CLSI EP28-A2 2013 creatinine reference intervals; IFCC 2017 consensus reference interval"
+    },
+    "bun": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmol/L ✓",
+        "factor mg/dL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "Rosenbaum & Post 1969 pediatric reference; CLSI BUN method-specific reference intervals"
+    },
+    "uric_acid": {
+      "ok": true,
+      "agreement": 0.7857,
+      "matched_fields": 11,
+      "total_fields": 14,
+      "notes": [
+        "unit_si ✓",
+        "factor umol/L ✓",
+        "factor µmol/L ✓",
+        "factor mg/L ✗ (59.46 vs 10.0)",
+        "factor mg/dL ✓",
+        "factor μmol/L ✓",
+        "adult_male.low ✗ (208 vs 202)",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✗ (428 vs 480)"
+      ],
+      "consensus_source": "CLSI 2008 uric acid reference intervals; EULAR 2016 gout guideline; ACR 2020"
+    },
+    "tsh": {
+      "ok": true,
+      "agreement": 0.8667,
+      "matched_fields": 13,
+      "total_fields": 15,
+      "notes": [
+        "unit_si ✓",
+        "factor IU/L ✗ (0.001 vs 1.0)",
+        "factor µIU/mL ✓",
+        "factor mIU/L (mIU per L) ✓",
+        "factor mIU/L ✓",
+        "factor μIU/mL ✓",
+        "factor μIU / mL ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✗ (0.41 vs 0.27)",
+        "senior.high ✓"
+      ],
+      "consensus_source": "ATA 2017 thyroid guideline (adult TSH 0.27-4.2 mIU/L assay-dependent); Endocrine Society 2012"
+    },
+    "bmi": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 13,
+      "total_fields": 13,
+      "notes": [
+        "unit_si ✓",
+        "factor kg/m² ✓",
+        "factor kg / m² ✓",
+        "factor kg/m2 ✓",
+        "factor kg/m^2 ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "WHO Adult Obesity Classifications 2000 (BMI 18.5-24.0 adult normal); Chinese Adult Weight Management Guideline 2023 (senior BMI 22-26 associated with lowest mortality)"
+    },
+    "bp_sys": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmHg ✓",
+        "factor kPa ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "CLSI 2010 BP reference interval (lab-normal adult systolic 90-120 mmHg); ESH 2023 (threshold-based, not used as reference here)"
+    },
+    "bp_dia": {
+      "ok": true,
+      "agreement": 1.0,
+      "matched_fields": 11,
+      "total_fields": 11,
+      "notes": [
+        "unit_si ✓",
+        "factor mmHg ✓",
+        "factor kPa ✓",
+        "adult_male.low ✓",
+        "adult_male.high ✓",
+        "adult_female.low ✓",
+        "adult_female.high ✓",
+        "pediatric.low ✓",
+        "pediatric.high ✓",
+        "senior.low ✓",
+        "senior.high ✓"
+      ],
+      "consensus_source": "CLSI 2010 BP reference interval (lab-normal adult diastolic 60-80 mmHg); ESH 2023"
+    }
+  },
+  "caveats": [
+    "AI-only substitute for expert Delphi; no human expert judgement is captured.",
+    "Validates agreement with published consensus, not framework-item acceptance.",
+    "Consensus sources reflect the 2019-2024 guideline window; earlier or regional guidelines are not represented.",
+    "Reference ranges are clinical reference intervals, not population prevalence thresholds."
+  ]
+}
