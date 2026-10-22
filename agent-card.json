@@ -3,7 +3,7 @@
   "description": "HealthLens 整合医学健康推演 Agent：八轴稳态框架（A–H）+ 六公理内核，融合生物标志物、中医古籍与可穿戴数据。健康参考工具，非医疗器械。",
   "url": "https://healthlens.cc/api/v1",
   "protocolVersion": "1.0.1",
-  "version": "0.34.0",
+  "version": "0.34.1",
   "provider": {
     "organization": "HealthLens",
     "url": "https://github.com/lm203688/healthlens"
@@ -21,7 +21,7 @@
     "EXTENSIONS": [
       {
         "uri": "https://github.com/lm203688/healthlens#mcp",
-        "description": "MCP JSON-RPC 2.0（protocolVersion 2026-07-28 无状态化），端点 POST /api/v1/mcp，工具清单 GET /api/v1/mcp/tools。",
+        "description": "MCP JSON-RPC 2.0（2026-07-28），端点 POST /api/v1/mcp，工具清单 GET /api/v1/mcp/tools。",
         "specs": [
           {
             "spec": "https://modelcontextprotocol.io/specification/2026-07-28",
@@ -31,7 +31,7 @@
       },
       {
         "uri": "https://google.github.io/A2A/specification/v1.0.1/",
-        "description": "A2A v1.0.1：SendMessage/ListTasks/GetTask/CancelTask JSON-RPC（POST /a2a），JWS optional。",
+        "description": "A2A v1.0.1：SendMessage/ListTasks/GetTask/CancelTask JSON-RPC（POST /a2a）。",
         "verbs": [
           "SendMessage",
           "ListTasks",
@@ -47,7 +47,7 @@
       }
     ]
   },
-  "conformanceNote": "A2A v1.0.1；Agent Card + JWS 签名（signing_key=KMS 引用）；SendMessage/ListTasks/GetTask/CancelTask JSON-RPC 端点已实现（POST /a2a），JWS optional。能力边界如实披露：STATE_TRANSITION_HISTORY 未实现（ capabilities 标记 false），多租户/mTLS 未声明。并行接口：MCP JSON-RPC 2.0 + skills[].interfaceUrl REST。",
+  "conformanceNote": "A2A v1.0.1 端点已实现（SendMessage/ListTasks/GetTask/CancelTask via POST /a2a JSON-RPC）；Agent Card + JWS 签名（KMS）。STATE_TRANSITION_HISTORY 未实现。并行接口：MCP JSON-RPC 2.0 + skills[].interfaceUrl REST。",
   "defaultInputModes": [
     "text/plain",
     "application/json"
@@ -80,9 +80,6 @@
         "health",
         "discovery"
       ],
-      "examples": [
-        "check service health"
-      ],
       "inputModes": [
         "application/json"
       ],
@@ -95,7 +92,7 @@
     {
       "id": "eight-axis-assessment",
       "name": "八轴稳态评估",
-      "description": "基于生物标志物/可穿戴/自评计算八轴（A–H）评分，score<70 判定弱轴。需登录。",
+      "description": "基于生物标志物/可穿戴/自评计算八轴（A–H）评分。需登录。",
       "tags": [
         "assessment",
         "biomarkers",
@@ -127,8 +124,7 @@
         "public"
       ],
       "examples": [
-        "解释 HealthLens 八轴框架是什么",
-        "列出 A 到 H 各轴的定义"
+        "解释 HealthLens 八轴框架是什么"
       ],
       "inputModes": [
         "text/plain"
@@ -142,15 +138,14 @@
     {
       "id": "axis-evidence",
       "name": "案例证据检索",
-      "description": "按 case_id 返回证据案例（DOI / 等级 L1-L3 / 轴归属）。案例库 120 条 = 7 条 Crossref 验真 + 8 条古籍来源 + 14 条诚实标注未验证 + 91 条合成夹具。不含个人数据。",
+      "description": "按 case_id 返回证据案例（DOI / 等级 / 轴归属）。案例库 120 条：7 Crossref 验真 + 8 古籍 + 14 未验证 + 91 合成。",
       "tags": [
         "evidence",
         "doi",
         "public"
       ],
       "examples": [
-        "CASE-006 的证据来源是什么",
-        "给我 L1 级别的证据案例"
+        "CASE-006 的证据来源是什么"
       ],
       "inputModes": [
         "application/json"
@@ -164,15 +159,11 @@
     {
       "id": "bio-age",
       "name": "生物学年龄偏移（H 轴）",
-      "description": "计算生物年龄偏移（bioage_delta），对标 PhenoAge 时钟（Liu 2018, DOI 10.1371/journal.pmed.1002760），SI 单位。需登录。",
+      "description": "计算生物年龄偏移，对标 PhenoAge（Liu 2018）。SI 单位。需登录。",
       "tags": [
         "aging",
         "phenoage",
         "biomarkers"
-      ],
-      "examples": [
-        "我的生物学年龄比实际年龄老多少",
-        "我的 H 轴分数是多少"
       ],
       "inputModes": [
         "application/json"
@@ -190,16 +181,12 @@
     {
       "id": "causal-structure",
       "name": "因果结构查询",
-      "description": "八轴 SCM：8 节点 / 5 边 / 7 杠杆 / 2 未观测混杂 + 桥接敏感度（E-value）。不含个人数据，可公开调用。",
+      "description": "八轴 SCM：8 节点 / 5 边 / 7 杠杆 + E-value。可公开调用。",
       "tags": [
         "causal",
         "scm",
         "e-value",
         "public"
-      ],
-      "examples": [
-        "HealthLens 的八轴之间有什么因果假设",
-        "改善睡眠对炎症轴的传导路径是什么"
       ],
       "inputModes": [
         "text/plain"
@@ -213,16 +200,12 @@
     {
       "id": "causal-scenario",
       "name": "反事实干预推演",
-      "description": "给定基线八轴分数与干预杠杆，推演反事实效应 + 灵敏度 + E-value + bootstrap 区间。in-silico，not_clinical 标记。需登录。",
+      "description": "给定八轴分数与干预，推演反事实效应 + E-value + bootstrap 区间。in-silico。需登录。",
       "tags": [
         "causal",
         "counterfactual",
         "simulation",
         "personalized"
-      ],
-      "examples": [
-        "如果我只改善睡眠，八轴会怎么变",
-        "12 周抗炎饮食干预的推演结果"
       ],
       "inputModes": [
         "application/json"
@@ -240,16 +223,12 @@
     {
       "id": "knowledge-search",
       "name": "中医古籍知识检索",
-      "description": "检索中医健康知识库（TCM-MKG 图谱 + 古籍切片），返回带证据等级的条目。不含个人数据。",
+      "description": "检索中医知识库（TCM-MKG 图谱 + 古籍切片）。",
       "tags": [
         "tcm",
         "knowledge",
         "herbs",
         "public"
-      ],
-      "examples": [
-        "哪些中药适合改善睡眠",
-        "查一下丹沙的功效与出处"
       ],
       "inputModes": [
         "text/plain",
@@ -264,16 +243,12 @@
     {
       "id": "food-therapy-recommend",
       "name": "食疗方案推荐",
-      "description": "基于体质与目标推荐非药物食疗法案（非药物干预，不处方用药）。输出经法域感知 claims 引擎过滤，含合规免责声明。需要登录。",
+      "description": "基于体质与目标推荐非药物食疗。经法域感知 claims 引擎过滤。需登录。",
       "tags": [
         "tcm",
         "diet",
         "non-pharma",
         "personalized"
-      ],
-      "examples": [
-        "针对气虚体质给我推荐食疗方案",
-        "抗炎饮食建议"
       ],
       "inputModes": [
         "application/json"
@@ -291,16 +266,12 @@
     {
       "id": "frequency-prescription",
       "name": "放松音频体验处方",
-      "description": "放松音频体验方案。非治疗，不宣称疗效（not_clinical 标注，不进八轴机制链）。仅关联放松音频素材。需登录。",
+      "description": "放松音频体验方案。非治疗，not_clinical 标注。仅关联音频素材。需登录。",
       "tags": [
         "audio",
         "relaxation",
         "wellness",
         "personalized"
-      ],
-      "examples": [
-        "推荐一个帮助放松的音频方案",
-        "给我生成一个睡眠放松音频"
       ],
       "inputModes": [
         "application/json"
@@ -318,15 +289,12 @@
     {
       "id": "mcp-tools",
       "name": "MCP 工具接口（JSON-RPC 2.0）",
-      "description": "MCP JSON-RPC 2.0 (2026-07-28 无状态化) 暴露分层工具。L1/L2 公开，L3 由服务端开关控制。",
+      "description": "MCP JSON-RPC 2.0 暴露分层工具。L1/L2 公开，L3 服务端开关。",
       "tags": [
         "mcp",
         "protocol",
         "tools",
         "interoperability"
-      ],
-      "examples": [
-        "列出 HealthLens 提供的 MCP 工具"
       ],
       "inputModes": [
         "application/json"
