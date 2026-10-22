@@ -1,0 +1,433 @@
+# HealthLens 指标别名词典 v1.0
+#
+# 覆盖 16 项核心 lab / vitals 指标，用于：
+#   - OCR 报告后处理：中英文名 → canonical slug + LOINC
+#   - 单位归一化：单位换算到 unit_si，记录 canonical_value
+#   - 参考区间分层：按 adult_male / adult_female / pediatric / senior
+#     给出 loinc 一致的分层参考范围，落库供 in_range 判定。
+#
+# Schema per indicator:
+#   loinc_code:     标准 LOINC (可能是一个 list，多 code 时以 primary code 落库)
+#   name_en:        canonical English name (used as primary lookup)
+#   name_cn:        canonical Chinese name
+#   aliases:        别名列表（中英、简写、常见误写、单位粘连写法），
+#                   匹配层做 case-insensitive + 空白/下划线归一化 + 全半角归一
+#   unit_si:        我们落库的 SI 单位
+#   unit_alt:      别名 → 换算到 unit_si 的因子（value_si = value * factor）
+#   ref_range:      人口学分层参考区间，值已按 unit_si 表达
+#   notes:         采集场景备注（禁食/时段/年龄门槛）
+#
+# 单位换算因子来源：
+#   - glucose:  mg/dL * 0.0555 = mmol/L           (NIFL / ADA)
+#   - cholesterol: mg/dL * 0.02586 = mmol/L       (WHO)
+#   - triglycerides: mg/dL * 0.01129 = mmol/L
+#   - creatinine:  umol/L * 0.01127 = mg/dL       (CLSI)
+#   - urea / BUN:  mmol/L 和 mg/dL 转换：
+#       urea  mmol/L * 6.0066 = mg/dL  (molecular weight 60)
+#       BUN   mg/dL * 0.357 = mmol/L   (BUN = urea * 0.667)
+#   - uric acid: mg/dL * 0.05946 = umol/L
+#   - hs-CRP:   mg/L 与 mg/dL 差 10×
+#
+# 参考区间来源（临床共识，取中位数区间，非个体化）：
+#   - 中国 2 型糖尿病防治指南 2020 (TSH/CV 参数以中国成人内分泌参考为准)
+#   - IDF Global Consensus on HbA1c
+#   - 中国血脂管理指南 2023
+#   - eGFR 采用 CKD-EPI 2021 中国人群校准建议范围
+#   - 参考值仅作参考，不作诊断——HealthLens 严守 wellness 边界
+
+metadata:
+  schema_version: "1.0"
+  released_at: "2026-10-22"
+  owner: "healthlens-core"
+  disclaimer: "参考区间仅供 wellness 参考，不作临床诊断依据"
+
+indicators:
+
+  # ========== 血糖代谢 ==========
+
+  glucose:
+    loinc_code: "2345-7"
+    name_en: "Fasting Glucose"
+    name_cn: "空腹血糖"
+    aliases:
+      - "血糖"
+      - "空腹血糖"
+      - "FBG"
+      - "FBG (Fasting Glucose)"
+      - "Fasting Blood Glucose"
+      - "Fasting Plasma Glucose"
+      - "Glu"
+      - "GLU"
+      - "葡萄糖"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0555
+    ref_range:
+      adult_male:   { low: 3.9, high: 6.1 }
+      adult_female: { low: 3.9, high: 6.1 }
+      pediatric:    { low: 3.9, high: 5.6 }   # 儿童按 18 岁以下粗分
+      senior:       { low: 4.4, high: 6.9 }   # 老年 (>65y) 略微放宽
+    notes: "空腹至少 8h 禁食；餐后 2h 参考 4.4-7.8 mmol/L"
+
+  hba1c:
+    loinc_code: "41995-4"
+    name_en: "Hemoglobin A1c"
+    name_cn: "糖化血红蛋白"
+    aliases:
+      - "HbA1c"
+      - "糖化血红蛋白"
+      - "糖化血红蛋白A1c"
+      - "Glycated Hemoglobin"
+      - "Glycated Hb"
+      - "Hemoglobin A1C"
+      - "HBA1C"
+    unit_si: "mmol/mol"
+    unit_alt:
+      mmol/mol: 1.0
+      "%": 10.93      # IDF 换算：mmol/mol = % × 10.93
+    ref_range:
+      adult_male:   { low: 42, high: 47 }
+      adult_female: { low: 42, high: 47 }
+      pediatric:    { low: 42, high: 52 }
+      senior:       { low: 42, high: 53 }
+    notes: "反映近 3 个月平均血糖；正常 <48 mmol/mol (<6.0%)"
+
+  # ========== 炎症标志物 ==========
+
+  hs_crp:
+    loinc_code: "30522-7"
+    name_en: "High-sensitivity C-reactive protein"
+    name_cn: "超敏C反应蛋白"
+    aliases:
+      - "超敏C反应蛋白"
+      - "超敏CRP"
+      - "hs-CRP"
+      - "HS-CRP"
+      - "hsCRP"
+      - "C反应蛋白"
+      - "CRP"
+      - "CRP(高敏)"
+      - "高敏CRP"
+      - "High sensitivity CRP"
+    unit_si: "mg/L"
+    unit_alt:
+      mg/L: 1.0
+      mg/dL: 10.0     # mg/dL × 10 = mg/L
+    ref_range:
+      adult_male:   { low: 0.0, high: 1.0 }
+      adult_female: { low: 0.0, high: 0.5 }
+      pediatric:    { low: 0.0, high: 1.0 }
+      senior:       { low: 0.0, high: 1.0 }
+    notes: "hs-CRP 心血管风险评估：<1 低 / 1-3 中 / >3 高"
+
+  # ========== 血脂谱 ==========
+
+  total_cholesterol:
+    loinc_code: "2093-3"
+    name_en: "Total Cholesterol"
+    name_cn: "总胆固醇"
+    aliases:
+      - "总胆固醇"
+      - "TC"
+      - "T-C"
+      - "TCO"
+      - "Total Cholesterol"
+      - "Cholesterol"
+      - "胆固醇"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0259
+    ref_range:
+      adult_male:   { low: 0.0, high: 5.2 }
+      adult_female: { low: 0.0, high: 5.2 }
+      pediatric:    { low: 0.0, high: 3.9 }
+      senior:       { low: 0.0, high: 6.2 }
+    notes: "空腹抽血；≥5.2 mmol/L 提示偏高"
+
+  hdl:
+    loinc_code: "2085-9"
+    name_en: "HDL Cholesterol"
+    name_cn: "高密度脂蛋白胆固醇"
+    aliases:
+      - "高密度脂蛋白"
+      - "HDL"
+      - "HDL-C"
+      - "HDL胆固醇"
+      - "High density lipoprotein"
+      - "Good cholesterol"
+      - "好胆固醇"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0259
+    ref_range:
+      adult_male:   { low: 1.0, high: 2.1 }
+      adult_female: { low: 1.3, high: 2.6 }
+      pediatric:    { low: 1.0, high: 2.0 }
+      senior:       { low: 1.0, high: 2.6 }
+    notes: "越高越好；男性 <1.0 / 女性 <1.3 mmol/L 为心血管风险因素"
+
+  ldl:
+    loinc_code: "13457-7"
+    name_en: "LDL Cholesterol"
+    name_cn: "低密度脂蛋白胆固醇"
+    aliases:
+      - "低密度脂蛋白"
+      - "LDL"
+      - "LDL-C"
+      - "LDL胆固醇"
+      - "Low density lipoprotein"
+      - "Bad cholesterol"
+      - "坏胆固醇"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0259
+    ref_range:
+      adult_male:   { low: 0.0, high: 3.4 }
+      adult_female: { low: 0.0, high: 3.4 }
+      pediatric:    { low: 0.0, high: 3.1 }
+      senior:       { low: 0.0, high: 3.4 }
+    notes: "<1.8 mmol/L 为极低；3.4-4.9 偏高；≥4.9 显著增高"
+
+  vldl:
+    loinc_code: "16225-4"
+    name_en: "VLDL Cholesterol"
+    name_cn: "极低密度脂蛋白胆固醇"
+    aliases:
+      - "极低密度脂蛋白"
+      - "VLDL"
+      - "VLDL-C"
+      - "VLDL胆固醇"
+      - "Very low density lipoprotein"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0259
+    ref_range:
+      adult_male:   { low: 0.18, high: 1.0 }
+      adult_female: { low: 0.18, high: 1.0 }
+      pediatric:    { low: 0.18, high: 1.0 }
+      senior:       { low: 0.18, high: 1.0 }
+    notes: "常由 TG/5 (mg/dL) 或 TG/2.2 (mmol/L) 估算"
+
+  triglycerides:
+    loinc_code: "2544-0"
+    name_en: "Triglycerides"
+    name_cn: "甘油三酯"
+    aliases:
+      - "甘油三酯"
+      - "TG"
+      - "T-TG"
+      - "Triglyceride"
+      - "甘油三酸酯"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.0113
+    ref_range:
+      adult_male:   { low: 0.56, high: 1.70 }
+      adult_female: { low: 0.45, high: 1.70 }
+      pediatric:    { low: 0.56, high: 1.23 }
+      senior:       { low: 0.56, high: 1.70 }
+    notes: "空腹抽血；≥1.7 边缘升高；≥2.3 升高；≥5.6 显著升高"
+
+  # ========== 肾功能 ==========
+
+  egfr:
+    loinc_code: "33914-3"   # 注：eGFR 无单一 LOINC，常用 33914-3 (Urea 系列) 或按检验方法另计
+    name_en: "eGFR"
+    name_cn: "估算肾小球滤过率"
+    aliases:
+      - "eGFR"
+      - "EGFR"
+      - "估算肾小球滤过率"
+      - "肾小球滤过率"
+      - "GFR"
+      - "Estimated Glomerular Filtration Rate"
+    unit_si: "mL/min/1.73m2"
+    unit_alt:
+      "mL/min/1.73m2": 1.0
+      "mL/min/1.73 m^2": 1.0
+    ref_range:
+      adult_male:   { low: 90.0, high: 120.0 }
+      adult_female: { low: 90.0, high: 120.0 }
+      pediatric:    { low: 120.0, high: 180.0 }
+      senior:       { low: 60.0, high: 120.0 }   # 老年自然下降，放宽到 60
+    notes: "CKD-EPI 2021 公式；<60 提示肾功能下降；<15 严重下降"
+
+  creatinine:
+    loinc_code: "2160-0"
+    name_en: "Creatinine"
+    name_cn: "肌酐"
+    aliases:
+      - "肌酐"
+      - "Cr"
+      - "Crea"
+      - "CREA"
+      - "Creatinine"
+      - "血清肌酐"
+      - "Scr"
+    unit_si: "umol/L"
+    unit_alt:
+      umol/L: 1.0
+      "μmol/L": 1.0
+      "µmol/L": 1.0
+      "μmol / L": 1.0
+      mg/dL: 88.4     # mg/dL × 88.4 = umol/L
+    ref_range:
+      adult_male:   { low: 62, high: 115 }
+      adult_female: { low: 53, high: 104 }
+      pediatric:    { low: 44, high: 88 }
+      senior:       { low: 59, high: 133 }
+    notes: "肌肉量影响；素食者可能偏低"
+
+  bun:
+    loinc_code: "6299-2"
+    name_en: "Blood Urea Nitrogen"
+    name_cn: "尿素氮"
+    aliases:
+      - "尿素氮"
+      - "BUN"
+      - "BUN (Blood Urea Nitrogen)"
+      - "Urea Nitrogen"
+      - "氮质血症"
+    unit_si: "mmol/L"
+    unit_alt:
+      mmol/L: 1.0
+      mg/dL: 0.357     # BUN mg/dL × 0.357 = mmol/L
+    ref_range:
+      adult_male:   { low: 2.9, high: 8.2 }
+      adult_female: { low: 2.1, high: 7.1 }
+      pediatric:    { low: 1.8, high: 6.5 }
+      senior:       { low: 2.9, high: 9.3 }
+    notes: "高蛋白饮食/脱水时假性升高"
+
+  uric_acid:
+    loinc_code: "2160-0"   # 注：尿酸常用 LOINC 也是 6299-2 或 2160-0，此处用 uric acid 专用 2160-0
+    name_en: "Uric Acid"
+    name_cn: "尿酸"
+    aliases:
+      - "尿酸"
+      - "UA"
+      - "SUA"
+      - "Serum Uric Acid"
+      - "Uric Acid"
+    unit_si: "umol/L"
+    unit_alt:
+      umol/L: 1.0
+      "μmol/L": 1.0
+      "µmol/L": 1.0
+      mg/dL: 59.46     # mg/dL × 59.46 = umol/L
+      mg/L: 59.46
+    ref_range:
+      adult_male:   { low: 208, high: 428 }
+      adult_female: { low: 155, high: 357 }
+      pediatric:    { low: 149, high: 360 }
+      senior:       { low: 202, high: 428 }
+    notes: "痛风阈值：男性 >420 / 女性 >360 umol/L"
+
+  # ========== 甲状腺功能 ==========
+
+  tsh:
+    loinc_code: "3016-3"
+    name_en: "TSH"
+    name_cn: "促甲状腺激素"
+    aliases:
+      - "TSH"
+      - "TSH(u)"
+      - "TSH（u）"
+      - "促甲状腺激素"
+      - "甲状腺刺激激素"
+      - "TSH(ultra)"
+      - "TSH (Ultra)"
+    unit_si: "mIU/L"
+    unit_alt:
+      "mIU/L": 1.0
+      "mIU/L (mIU per L)": 1.0
+      "µIU/mL": 1.0    # mIU/L 与 µIU/mL 数值等价
+      "μIU/mL": 1.0
+      "μIU / mL": 1.0
+      "IU/L": 0.001
+    ref_range:
+      adult_male:   { low: 0.27, high: 4.2 }
+      adult_female: { low: 0.27, high: 4.2 }
+      pediatric:    { low: 0.7,  high: 9.0 }
+      senior:       { low: 0.41, high: 9.3 }
+    notes: "<0.27 亚临床甲亢倾向；>4.2 亚临床甲减倾向；孕妇另计"
+
+  # ========== 体格 ==========
+
+  bmi:
+    loinc_code: "39156-5"
+    name_en: "BMI"
+    name_cn: "体质指数"
+    aliases:
+      - "BMI"
+      - "bmi"
+      - "体质指数"
+      - "身体质量指数"
+      - "体脂指数"   # 常见误写，非严格
+      - "Body Mass Index"
+    unit_si: "kg/m2"
+    unit_alt:
+      "kg/m2": 1.0
+      "kg/m^2": 1.0
+      "kg / m²": 1.0
+      "kg/m²": 1.0
+    ref_range:
+      adult_male:   { low: 18.5, high: 23.9 }
+      adult_female: { low: 18.5, high: 23.9 }
+      pediatric:    { low: 15.0, high: 22.0 }   # 儿童粗分，实际按年龄-性别百分位
+      senior:       { low: 22.0, high: 26.9 }   # 老年 BMI 22-27 生存率最优（Flegal 2013）
+    notes: "中国成人：<18.5 偏瘦 / 18.5-23.9 正常 / 24-27.9 超重 / ≥28 肥胖"
+
+  # ========== 血压 ==========
+
+  bp_sys:
+    loinc_code: "85354-9"
+    name_en: "Systolic Blood Pressure"
+    name_cn: "收缩压"
+    aliases:
+      - "收缩压"
+      - "SBP"
+      - "SBP (Systolic)"
+      - "Systolic BP"
+      - "高压"
+      - "SYS"
+      - "Systolic Blood Pressure"
+    unit_si: "mmHg"
+    unit_alt:
+      mmHg: 1.0
+      kPa: 7.5006      # kPa × 7.5006 = mmHg
+    ref_range:
+      adult_male:   { low: 90, high: 120 }
+      adult_female: { low: 90, high: 120 }
+      pediatric:    { low: 90, high: 115 }
+      senior:       { low: 90, high: 139 }     # 老年 SBP 120-139 属正常高值
+    notes: "120-139 正常高值；≥140 高血压"
+
+  bp_dia:
+    loinc_code: "8480-6"
+    name_en: "Diastolic Blood Pressure"
+    name_cn: "舒张压"
+    aliases:
+      - "舒张压"
+      - "DBP"
+      - "DBP (Diastolic)"
+      - "Diastolic BP"
+      - "低压"
+      - "DIA"
+      - "Diastolic Blood Pressure"
+    unit_si: "mmHg"
+    unit_alt:
+      mmHg: 1.0
+      kPa: 7.5006
+    ref_range:
+      adult_male:   { low: 60, high: 80 }
+      adult_female: { low: 60, high: 80 }
+      pediatric:    { low: 60, high: 76 }
+      senior:       { low: 60, high: 89 }
+    notes: "80-89 正常高值；≥90 高血压"
