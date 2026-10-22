@@ -141,6 +141,7 @@ def create_app() -> FastAPI:
     from app.api.gdpr import router as gdpr_router
     from app.api.genome import router as genome_router
     from app.api.graphrag import router as graphrag_router
+    from app.api.indicator import router as indicator_router
     from app.api.national_standard import router as national_standard_router
     from app.api.geo_infra import geo_router
     from app.api.goals import router as goals_router
@@ -210,6 +211,8 @@ def create_app() -> FastAPI:
     app.include_router(points_router, prefix="/api/v1/points", tags=["积分系统"])
     # 知识图谱（GraphRAG S2-5）
     app.include_router(graphrag_router, prefix="/api/v1/graphrag", tags=["知识图谱"])
+    # 指标别名词典（M02 P1：#126）— 名称解析 / 单位换算 / 参考区间分层
+    app.include_router(indicator_router, prefix="/api/v1/indicator", tags=["指标词典"])
     # 号脉终端：脉象解读（agent 可调用的「号脉判断」入口）
     from app.api.pulse import router as pulse_router
 
