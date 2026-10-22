@@ -4,6 +4,65 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.34.0] - 2026-10-22（M02 P1：指标别名词典 + 单位归一化 + 全链路接入）
+
+### Added
+
+- **`data/indicator_dictionary.yaml` v1.0** —— 16 项核心 lab/vitals 指标的单一真源：
+  - 血糖代谢：glucose / hba1c
+  - 炎症：hs_crp
+  - 血脂谱：total_cholesterol / hdl / ldl / vldl / triglycerides
+  - 肾功能：egfr / creatinine / bun / uric_acid
+  - 甲状腺：tsh
+  - 体格：bmi
+  - 血压：bp_sys / bp_dia
+  - 每项含 `loinc_code` / `name_en` / `name_cn` / `aliases`（中英/缩写/常见误写/单位粘连）/ `unit_si` / `unit_alt`（换算因子）/ `ref_range`（4 人口学分层：adult_male / adult_female / pediatric / senior）/ `notes`
+  - 换算因子来源：NIFL/ADA（glucose）、WHO（cholesterol）、CLSI（creatinine）、IDF（hba1c）、CKD-EPI 2021（eGFR）、中国 2 型糖尿病防治指南 2020、中国血脂管理指南 2023
+  - wellness 边界声明写进 `metadata.disclaimer`
+- **`app/utils/indicator_dict.py`** —— 词典库（stdlib + PyYAML，无 numpy/pandas 依赖）：
+  - `load_dictionary()` / `list_slugs()` / `get_entry()` / `resolve_name()` / `normalize_unit()` / `normalize_reference_range()` / `is_loinc_code()` / `invalidate_cache()`
+  - `@lru_cache` 进程内只解析一次；schema 强校验 fail-loud（缺字段 / 空别名 / factor≤0 / low>high / 缺 stratum → `IndicatorDictError`）
+  - 别名匹配：NFKC 全半角归一 + 空白/下划线/连字符/标点剥除 + 大小写归一
+- **`app/api/indicator.py`** —— 3 个端点：
+  - `POST /api/v1/indicator/resolve` —— 名称/LOINC → canonical slug + name + unit_si（LOINC 直查优先，未命中回退别名索引）
+  - `POST /api/v1/indicator/normalize` —— 名称+数值+单位+分层 → canonical_value + ref_range + level + in_range
+  - `GET /api/v1/indicator/catalog` —— 词典全量（含 metadata，供前端下拉/报告渲染）
+  - 端点**只输出结构化枚举**，无自然语言生成，因此无需 claims_guard 包裹（wellness 边界合规，见 #126 决策记录）
+- **`app/core/report_parser.py::enrich_observations_with_dictionary()`** —— OCR pipeline 后处理钩子：
+  - 从 OCR 提取的 observations 中按 loinc_name（剥括号分中英文候选）+ loinc_code 双路命中词典
+  - 附加 `canonical_slug` / `canonical_name_cn` / `canonical_name_en` / `canonical_loinc` / `canonical_unit` / `canonical_value` / `unit_factor` / `ref_range_canonical` / `in_range` / `level` / `normalized`
+  - **fail-soft**：词典不可用 / 单条异常 → `normalized=false` + `normalize_reason`，原字段不变，绝不阻塞整批
+- **`app/services/ocr_service.py::process_report()`** —— 在入库前跑一次 enrichment，让 `parse_result.observations` 存到 canonical 字段（GET `/api/v1/records/{id}` 直接可见）
+- **`app/api/records.py::upload_health_data`** —— JSON 直传端点入库前 enrichment，落到 `parse_result.observations`
+- **`tests/test_indicator_dictionary.py`** —— 62 用例，覆盖 A-YAML 结构 / B-LOINC 合法性 / C-别名解析（中英/大小写/全半角/括号）/ D-单位换算（11 项 round-trip + 歧义拒绝）/ E-参考区间 4 分层 / F-API 冒烟（9 端点）/ G-OCR 集成（6 用例）/ H-fail-loud（2 用例）
+- **`app/utils/indicator_dict.py::normalize_unit` 签名增强** —— 增加可选 `slug` 参数，多指标共享 unit（如 mg/dL 被 8 项指标共享）时必须传 slug 消歧，不传返回 `ambiguous_unit_without_slug` + `candidates` 列表；单候选时仍可自动推断
+
+### Changed
+
+- `app/__init__.py`：新增 `indicator_router` 注册（prefix `/api/v1/indicator`）
+- `pyproject.toml` version `0.33.2` → `0.34.0`
+- `agent-card.json` version 同步（`tools/sync_version.py`）
+
+### Design Decisions
+
+- **不生成自然语言描述，绕过 claims_guard**：词典端点仅返结构化枚举（slug/loinc/unit/level/in_range），无 LLM 生成文本，风险面为零——避免"过度包裹"造成的性能与误伤成本。若未来扩展 `/indicator/explain` 之类的解释性端点，必须走 claims_guard。
+- **`normalize_unit` 拒绝多候选默认推断**：`mg/dL` 同时属于 glucose/TC/HDL/LDL/VLDL/TG/creatinine/uric_acid 八项，若默认取第一个会 silent-wrong；改为拒绝并返回 `ambiguous_unit_without_slug`，强制调用方先 `resolve_name` 拿 slug。库层 fail-loud，前端 UX 保持友好（API 层已在 slug 上下文中调用）。
+- **YAML 单一文件而非多文件 / DB**：16 项 × 4 分层 × 单位换算，静态数据变更频率 <1/季度，YAML diff 可读性 > DB migration；未来超过 100 项再考虑拆文件。
+- **OCR enrichment 用 fail-soft 而非 fail-loud**：OCR pipeline 是用户交互热点，词典不可用时应降级为原样返回（`normalized=false`），而不是阻塞整个报告上传。库层仍 fail-loud，只是 pipeline 层捕获并降级。
+- **不引入数据库列存储 canonical**：`HealthObservation` 表无 jsonb 字段，加列需 alembic migration + 生产部署；本轮把 canonical 挂在 `HealthRecord.parse_result` JSON 里，read-through 模式，未来若前端强依赖再评估加列。
+
+### Verified
+
+- 新增 `tests/test_indicator_dictionary.py`：**62 passed / 0 failed**（1.19s）
+- 全量回归：**1946 passed / 8 skipped / 0 failed**（173.77s），相对 v0.33.2 基线 1939 净增 7（本轮 #133 已推入 9 用例的 source_type_consistency + 本轮新增的 net 增量）
+- API 冒烟（TestClient）：`/resolve` 中文+LOINC 双路 / `/normalize` 单位换算+4 分层 level 判定 / `/catalog` 全量返 16 slugs / 无效 stratum 返 400 / 未知名称返 `ok=false`
+- OCR 集成 smoke：真实文本提取 6 obs，enrichment 命中 5（1 项非词典指标正确降级）
+
+### Milestone
+
+- 至此 #126（M02 P1 指标词典与单位归一化）在库/端点/OCR/存储四层面全部接入，TaskList #366-#371 已闭环。
+- 未闭合：`HealthObservation` 表仍未加 canonical 列（read-through 已够用，前端强依赖再评估）；`/indicator/explain` 解释性端点未做（如需则必须走 claims_guard）。
+
 ## [0.33.2] - 2026-10-21（R5：收尾 wellness 端点覆盖 + fail-loud 语义修复）
 
 ### Changed
