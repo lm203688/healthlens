@@ -273,8 +273,22 @@ async def upload_health_data(
     """
     from decimal import Decimal
     from app.models.observation import HealthObservation
+    from app.core.report_parser import enrich_observations_with_dictionary
 
     record_id = str(uuid.uuid4())
+
+    # 指标别名词典归一化（M02 P1 · #126）：在入库前跑一次 enrichment，
+    # 把 canonical_* 字段挂在 parse_result.observations 里，
+    # 让 GET /records/{id} 能取到 canonical_unit/canonical_value/in_range/level。
+    raw_observations = [item.model_dump() for item in body.observations]
+    try:
+        enriched_observations = enrich_observations_with_dictionary(raw_observations, stratum="adult_male")
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"indicator_dict enrichment skipped: {e}")
+        for _obs in raw_observations:
+            _obs.setdefault("normalized", False)
+            _obs.setdefault("normalize_reason", f"enrichment_error: {e}")
+        enriched_observations = raw_observations
 
     # 创建健康记录
     record = HealthRecord(
@@ -290,6 +304,7 @@ async def upload_health_data(
             "source": body.source,
             "notes": body.notes,
             "upload_type": "json_data",
+            "observations": enriched_observations,
         }),
     )
     db.add(record)
