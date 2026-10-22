@@ -136,3 +136,161 @@ def extract_observations_from_text(text: str) -> list[dict]:
 
     logger.info(f"Report parser: extracted {len(observations)} observations from text")
     return observations
+
+
+def enrich_observations_with_dictionary(
+    observations: list[dict],
+    stratum: str = "adult_male",
+) -> list[dict]:
+    """把 OCR 抽出的 observations 补一层「指标词典归一化」字段。
+
+    每个 observation 原地附加（若可解析）：
+      - canonical_slug:   词典 slug（如 "glucose"）
+      - canonical_name_cn: 词典中文名
+      - canonical_name_en: 词典英文名
+      - canonical_loinc:   词典 LOINC（可能覆盖 OCR 猜的）
+      - canonical_unit:    SI 单位
+      - canonical_value:   换算到 SI 单位的数值（若可换算）
+      - unit_factor:       换算因子
+      - ref_range_canonical: {"low": ..., "high": ...}（按 stratum）
+      - in_range:          bool
+      - level:             "low" | "normal" | "high"
+
+    未命中词典 / 单位无法识别时只附加 `normalized: false, reason: "..."`，
+    其他字段保持 None —— **绝不静默丢弃原 observations**。
+
+    设计要点：
+      - fail-soft：任何单条解析失败不影响整批返回
+      - 词典不可用（YAML 缺失/损坏）时整体降级为「原样返回 + 全部 normalized=false」
+      - wellness 边界：level/in_range 只作 wellness 参考，前端展示时必须携 disclaimer
+    """
+    from app.utils.indicator_dict import (
+        IndicatorDictError,
+        STRATA,
+        get_entry,
+        is_loinc_code,
+        load_dictionary,
+        normalize_reference_range,
+        resolve_name,
+    )
+
+    # stratum 非法回退到默认（不抛异常，OCR pipeline 层不做输入校验）
+    if stratum not in STRATA:
+        stratum = "adult_male"
+
+    try:
+        _ = load_dictionary()
+    except IndicatorDictError as e:
+        logger.warning(f"indicator dictionary unavailable, skip enrichment: {e}")
+        for obs in observations:
+            obs["normalized"] = False
+            obs["normalize_reason"] = f"dictionary_unavailable: {e}"
+        return observations
+
+    resolved_count = 0
+    for obs in observations:
+        try:
+            # 1) 名称或 LOINC 解析
+            name = obs.get("loinc_name") or obs.get("name") or ""
+            # loinc_name 通常是 "血糖(Glucose)" 这种中英夹拼，剥括号后取中文或英文部分
+            name_candidates = [name]
+            if "(" in name and name.endswith(")"):
+                inner = name[name.find("(") + 1 : -1]
+                outer = name[: name.find("(")].strip()
+                if outer:
+                    name_candidates.insert(0, outer)
+                if inner:
+                    name_candidates.insert(1, inner)
+
+            resolved = None
+            for candidate in name_candidates:
+                resolved = resolve_name(candidate)
+                if resolved:
+                    break
+            if resolved is None:
+                # 尝试用 loinc_code 直查（可能 OCR 猜的 code 与词典一致）
+                loinc = obs.get("loinc_code")
+                if loinc and is_loinc_code(str(loinc)):
+                    data = load_dictionary()
+                    for slug, entry in data["indicators"].items():
+                        code = entry.get("loinc_code")
+                        codes = code if isinstance(code, list) else [code]
+                        if str(loinc) in [str(c) for c in codes]:
+                            resolved = {
+                                "slug": slug,
+                                "name_en": entry["name_en"],
+                                "name_cn": entry["name_cn"],
+                                "loinc_code": code,
+                                "unit_si": entry["unit_si"],
+                            }
+                            break
+
+            if resolved is None:
+                obs["normalized"] = False
+                obs["normalize_reason"] = "unknown_indicator"
+                continue
+
+            entry = get_entry(resolved["slug"])
+            obs["canonical_slug"] = resolved["slug"]
+            obs["canonical_name_cn"] = resolved["name_cn"]
+            obs["canonical_name_en"] = resolved["name_en"]
+            # 词典 LOINC 若与 OCR 猜的不同，以词典为准（更权威）
+            obs["canonical_loinc"] = resolved["loinc_code"]
+            obs["canonical_unit"] = resolved["unit_si"]
+
+            # 2) 单位换算
+            value = obs.get("value_numeric")
+            unit = obs.get("value_unit")
+            unit_alt = entry.get("unit_alt", {}) if entry else {}
+            factor = None
+            if isinstance(value, (int, float)) and unit:
+                for k, v in unit_alt.items():
+                    if k == unit:
+                        factor = v
+                        break
+                if factor is None:
+                    from app.utils.indicator_dict import _normalize_unit
+                    target = _normalize_unit(str(unit))
+                    for k, v in unit_alt.items():
+                        if _normalize_unit(k) == target:
+                            factor = v
+                            break
+
+            if factor is not None and isinstance(value, (int, float)):
+                canonical_value = float(value) * factor
+                obs["canonical_value"] = canonical_value
+                obs["unit_factor"] = factor
+                # 3) 参考区间 + level
+                try:
+                    ref = normalize_reference_range(
+                        resolved["slug"], canonical_value, stratum
+                    )
+                    obs["ref_range_canonical"] = ref["ref_range"]
+                    obs["in_range"] = ref["in_range"]
+                    obs["level"] = ref["level"]
+                    obs["normalized"] = True
+                    resolved_count += 1
+                    continue
+                except IndicatorDictError:
+                    pass
+            else:
+                obs["canonical_value"] = None
+                obs["unit_factor"] = None
+
+            # 单位或数值缺失但名称匹配，仍返回部分归一化字段
+            obs["ref_range_canonical"] = None
+            obs["in_range"] = None
+            obs["level"] = None
+            obs["normalized"] = True
+            obs["normalize_reason"] = "partial_no_unit_conversion"
+            resolved_count += 1
+
+        except Exception as e:  # noqa: BLE001
+            # 单条异常不能阻塞整批；fail-soft
+            obs["normalized"] = False
+            obs["normalize_reason"] = f"error: {e}"
+
+    logger.info(
+        f"indicator_dict enrichment: {resolved_count}/{len(observations)} observations enriched (stratum={stratum})"
+    )
+    return observations
