@@ -77,7 +77,7 @@ def _make_profile_battery() -> list[dict[str, Any]]:
             "sleep_duration_cv": 0.12, "social_jetlag_h": 0.5,
         },
         "symptoms": [],
-        "bioage_delta": 0.0,
+        "bioage_delta": 0.3,  # P0-1（2026-10-23）：0.0 现被视为缺失，"健康基线"用 0.3
     })
 
     # 2. 每轴单独弱（8 个）
@@ -99,7 +99,7 @@ def _make_profile_battery() -> list[dict[str, Any]]:
         w = {"hrv_rmssd": 45, "resting_hr": 65, "sleep_midpoint_jitter": 15,
              "sleep_duration_h": 7.2, "sleep_duration_cv": 0.15}
         w.update(w_delta)
-        bioage = 6.0 if pid == "P09-H-weak" else 0.0
+        bioage = 6.0 if pid == "P09-H-weak" else 0.3  # P0-1：0.0 → 0.3（防 H 轴 fail-open 后 0.0 变缺失）
         battery.append({"id": pid, "biomarkers": bm, "wearable": w,
                         "symptoms": ["疲劳"] if pid == "P06-E-weak" else [],
                         "bioage_delta": bioage})
@@ -120,7 +120,7 @@ def _make_profile_battery() -> list[dict[str, Any]]:
         w = {"hrv_rmssd": 45, "resting_hr": 65, "sleep_midpoint_jitter": 15,
              "sleep_duration_h": 7.2, "sleep_duration_cv": 0.15}
         w.update(w_delta)
-        bioage = 4.0 if pid == "P15-DH" else 0.0
+        bioage = 4.0 if pid == "P15-DH" else 0.3
         battery.append({"id": pid, "biomarkers": bm, "wearable": w,
                         "symptoms": ["焦虑"] if pid == "P13-EF" else [],
                         "bioage_delta": bioage})
