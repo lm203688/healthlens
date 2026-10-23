@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
+import { track } from '../lib/track';
 
 // 结构化健康自评：按身体系统分维度，选项为频率量表
 // i18n: 使用 key 而非硬编码中文，翻译在 locale JSON 中
@@ -211,7 +213,13 @@ function LoadingState() {
 
 function ResultsView({ data, onRetry }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const recs = data?.recommendations || [];
+  // P0-4：埋点——结果查看（每次进入结果页触发一次）
+  useEffect(() => {
+    try { track("result_viewed", { page: "dashboard_results", recommendations: recs.length }); } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="text-center mb-2">
@@ -280,7 +288,9 @@ function ResultsView({ data, onRetry }) {
       )}
 
       <div className="flex gap-3 pt-2">
-        <button onClick={() => { window.location.href = '/assess'; }} className="btn-primary flex-1">{t('dashboard.detailAssess')} →</button>
+        {/* P0-3（2026-10-23）：修 U1——window.location.href='/assess' 是硬编码绝对路径，
+            部署在 /app/ 子路径下会跳到域名根。改用 React Router 的 useNavigate。*/}
+        <button onClick={() => navigate('/assess')} className="btn-primary flex-1">{t('dashboard.detailAssess')} →</button>
         <button onClick={onRetry} className="btn-ghost flex-1">{t('dashboard.reAssess')}</button>
       </div>
     </div>
@@ -326,11 +336,16 @@ function StatCard({ label, value, color }) {
 }
 
 function QuickLink({ to, icon, label, desc }) {
+  // P0-3（2026-10-23）：修 U2——<a href={to}> 整页重载，PWA 离线态失效。改用 useNavigate。
+  const navigate = useNavigate();
   return (
-    <a href={to} className="card p-5 hover:shadow-md transition block">
+    <button
+      onClick={() => navigate(to)}
+      className="card p-5 hover:shadow-md transition block text-left w-full"
+    >
       <div className="text-2xl mb-2">{icon}</div>
       <p className="font-semibold text-slate-800">{label}</p>
       <p className="text-sm text-slate-500 mt-0.5">{desc}</p>
-    </a>
+    </button>
   );
 }
