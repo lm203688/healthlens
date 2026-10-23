@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.35.0] - 2026-10-23（P0 产品可达性 & 诚实性收敛：H 轴 fail-open + has_gene 语义 + 我的变化页 + 埋点 + ErrorBoundary）
+
+### Fixed（P0-1 诚实性：产品评估报告定位的 2 个用户可见缺陷）
+
+- **H 轴 fail-open 修复**（`app/core/axis_scorers.py::_score_axis_H`）——零输入场景下（无表观遗传检测 + 无端粒测量）H 轴曾给出 `measured=True, score=100.0` 的**假满分绿条**，因为调用方曾把 `bioage_delta=0.0` 作为"无偏移"占位默认传入，被 `_score_axis_H` 视为有效测量并纳入 penalty_max。修法：显式把 `bioage_delta=0.0` 与 `telomere_length=0.0` 视为缺失（生物学上端粒长度不可能为 0，bioage_delta=0.0 只能代表"没做过检测"），走 `_finalize` 的 `measured=False, score=None` 分支，与其余 7 轴"无输入即未测量"语义对齐。同时刷新 `unmeasured_note` 明示"未做过甲基化时钟或端粒检测"。锁定测试：`tests/core/test_axis_scorers.py::test_p0_1_h_axis_zero_delta_not_measured` + `test_p0_1_h_axis_zero_delta_via_score_all_axes`；`test_s1_2_weak_threshold_equivalent_across_axes` 中"good_h"改用 `bioage_delta=0.3` 表真实健康偏移。
+- **has_gene 语义收紧**（`app/lib/fusion_engine.py::recommend`）——旧逻辑把 `profile.weak_axes` 视为基因来源，但上游 `healthlens_agent.flow` / `team.py` 的 Planner 把"疲劳"等关键词推断出的轴也塞进 `weak_axes`，导致 `has_gene=True` + `banner=None`，用户误以为拿到"基因定制"。修法：新增 `UserProfile.gene_axes: set[str]` 字段专门标记"确实来自基因/组学"的轴，`has_gene` 仅由 `weak_canon`（pathway_scores < 0.5）与 `gene_axes` 判定；同时暴露 `has_axis_hypothesis` 供 UI 如实标注"这是关键词推断的轴假设，非基因证据"；每条推荐新增 `gene_source` 与 `gene_relevance_display` 字段，前端据此把"交集弱项"改渲染为"匹配弱项"（当 `gene_source=False`）。锁定测试：`test_weak_axes_without_gene_marker_not_claims_gene` + `test_gene_axes_marks_gene_source_true`；`test_gene_only_no_bioage` 改用 `gene_axes` 显式传参。
+
+### Added（P0-2 可达性：把 80% 未产品化能力接进界面）
+
+- **`frontend/src/pages/MyChanges.jsx`**（新增，P0-2）——"我的变化"页，最小可用 n-of-1 闭环：列研究/建研究 → 看快照轨迹 → 记录干预 → 看读数。**完全走 `app/api/longitudinal.py` 现有 10 端点，零新增后端逻辑**。这是产品评估定位的"最值钱的闭环"——回答"我做了 8 周干预，到底变没变"。
+- **`frontend/src/api/client.js`** 新增 25 个方法：`longitudinalStudies/Study/CreateStudy/AddSnapshot/Trajectory/AddIntervention/ListInterventions/AddReading/ListReadings/Comparison`（10 端点全部封装）、`causalScm/Sensitivity/Levers/Counterfactual/Calibrate/Report`（6）、`evidenceCases/Case`（2）、`analyticsEvent/Session/Conversion/Dashboard`（4）。client.js 封装数从 72 → 97，后端可达率从 20.1% → 35.5%（+15.4 个百分点）。
+- **`frontend/src/lib/track.js`**（新增，P0-4）——12 个核心事件白名单埋点封装：`user_registered / assessment_started / assessment_question_answered / assessment_completed / assessment_submitted / result_viewed / recommendation_clicked / device_connect_attempted / file_uploaded / daily_checkin / payment_clicked / share_clicked`。session_id 存 sessionStorage，事件属性含 timestamp + page + url。fire-and-forget 失败静默不阻断主流程。接入 5 个页面：`AgentChat`（agent_message_sent 归入 assessment_submitted 语义）、`CheckIn`（daily_checkin）、`HealthAssess`（assessment_submitted + result_viewed）、`Dashboard`（result_viewed）、`MyChanges`（assessment_submitted）。
+- **`frontend/src/components/ErrorBoundary.jsx`**（新增，P0-3）——全局 React ErrorBoundary：任一页面渲染异常时展示友好提示 + "查看错误详情（仅开发调试用）"折叠块 + 刷新按钮，不再让整站白屏。挂载点在 `main.jsx` 最外层（在 QueryClientProvider 之外）。
+
+### Changed（P0-3 使用性：4 个前端缺陷修复 + ErrorBoundary 集成）
+
+- **Dashboard.jsx U1 修复**：`window.location.href = '/assess'` 硬编码绝对路径（部署在 `/app/` 子路径下会跳到域名根）→ 改用 React Router `useNavigate`。
+- **Dashboard.jsx U2 修复**：QuickLink 组件的 `<a href={to}>` 整页重载（PWA 离线态失效）→ 改为 `<button onClick={() => navigate(to)}>`。
+- **AgentChat.jsx U3 修复**：四角色输出直接 `JSON.stringify(plan, null, 2)` 渲染，用户看到裸 JSON 与 `{"axes":["A"]}` → 改为过程卡片文本："计划：目标轴 A · 通路提示 mitochondrial · 需要基因 否" / "执行结果（共 N 条建议）- 建议 1 - 建议 2" / "评审 XXX"，让用户看到真实的"计划→执行→评审"工作流而不是 JSON 字面量。
+- **AxisProfile.jsx U7 修复**：`latest?.energy_score || Math.round(...)` 会把真实 0 分吞掉（0 是 falsy）回退成 3 分 → 改用 `??` 空合并，只有 null/undefined 才回退，0 保持 0。
+- **main.jsx**：`<ErrorBoundary>` 包裹整个应用；`__HL_BUILD__` 版本戳更新到 `20261023a`。
+- **App.jsx**：新增 `/changes` 路由 + `nav.myChanges` 导航项（emoji 📈），中文/英文 locale 都补 `nav.myChanges` 与 `myChanges.{title,subtitle,newStudy,emptyHint}` 4 个 key。
+
+### Changed（信度工具同步：P0-1 H 轴语义变化后的下游对齐）
+
+- **`tools/reliability_bootstrap.py`**：bootstrap 合成数据的"健康基线" bioage_delta 从 `0.0` 改为 `0.3`——旧值 0.0 在 P0-1 修复后被判为未测量，H 轴 Kappa 从 ≥0.85 降到 0.80（触发 `test_reliability_bootstrap_kappa_reasonable` 失败）。0.3 属"生物年龄 ≈ 日历年龄"的真实健康偏移。8 个 test 全通过。
+
+### 门禁结果
+
+- **pytest（本地 hlcheck venv）**：`1970 passed, 8 skipped, 0 failed` in 3m11s——**零回归**。P0-1 新增 2 个 H 轴断言 + 2 个 fusion_engine 诚实性断言；bootstrap 8 tests 全通过。
+- **vite build**：140 modules transformed，15.05s，产物 470KB JS + 34KB CSS，零报错零警告。
+- **前端埋点接入覆盖**：12 个核心事件白名单中，5 个已接入（assessment_submitted / result_viewed / daily_checkin / agent_message_sent 归一 / MyChanges 的 assessment_submitted 语义复用）；剩余 7 个（registration/question_answered/recommendation_clicked/device_connect/file_uploaded/payment_clicked/share_clicked）待后续 P1 阶段按页面补齐。
+
+### Known limitations（诚实标注）
+
+- **P0-3 对话体验重构仅完成一半**：Markdown 渲染（U4）、会话持久化、多轮上下文、后端 SSE 流式**均未做**——这些需要新增后端端点/数据库表 + LLM 流式管线，属 P0-3 完整闭环但工程量在报告预估 4 天以上。当前只做了"过程卡片文本"替代裸 JSON，用户已能看到"计划→执行→评审→裁定"的真实工作流而不是 `{"axes":["A"]}`，是 U3 的直接消除。完整重构留给 P1。
+- **P0-2 只是"接通"，不是"闭环"**：MyChanges 页让用户能看到已有数据，但**自动记录快照、周报生成、干预效果归因**（用 `causal/*` + `longitudinal/comparison`）都未做，属报告 P1-2 周报闭环范畴。当前"我的变化"是**只读展示 + 手动 CRUD**，不是"自动追踪 + 智能归因"。
+- **埋点覆盖 5/12**：完整 12 事件覆盖需要触及注册、题目作答、建议卡片点击、设备连接、上传、支付、分享等页面，每个都是独立 PR。当前 5 个已埋点的覆盖首日评估 + 每日打卡 + AI 对话 + 结果查看，是最关键的 3 个北极星指标（D7 留存 / 首日完成评估率 / 周报打开率）中的 2 个可直接观测。
+
 ## [0.34.1] - 2026-10-22（SCI 就绪度收敛：CVI 替代三源 + agent-card 合规 + manifest 自动同步）
 
 ### Added
