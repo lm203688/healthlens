@@ -16,6 +16,7 @@ import Payment from './pages/Payment';
 import Upload from './pages/Upload';
 import Share from './pages/Share';
 import Retention from './pages/Retention';
+import MyChanges from './pages/MyChanges';
 import LanguageSwitcher from './components/LanguageSwitcher';
 
 const NAV_ITEMS = [
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { to: '/pulse',      key: 'nav.pulse', icon: '🫀' },
   { to: '/axes',       key: 'nav.axis', icon: '🧭' },
   { to: '/checkin',    key: 'nav.checkin', icon: '📅' },
+  { to: '/changes',    key: 'nav.myChanges', icon: '📈' },
   { to: '/reports',    key: 'nav.reports', icon: '📊' },
   { to: '/knowledge',  key: 'nav.knowledge', icon: '📚' },
   { to: '/agent',      key: 'nav.agent', icon: '🤖' },
@@ -241,6 +243,9 @@ export default function App() {
           } />
           <Route path="/checkin" element={
             <RequireAuth><CheckIn /></RequireAuth>
+          } />
+          <Route path="/changes" element={
+            <RequireAuth><MyChanges /></RequireAuth>
           } />
           <Route path="/reports" element={
             <RequireAuth><Reports /></RequireAuth>
