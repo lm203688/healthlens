@@ -531,7 +531,8 @@
     "login": "登录",
     "language": "语言",
     "retention": "健康目标",
-    "pulse": "号脉"
+    "pulse": "号脉",
+    "myChanges": "我的变化"
   },
   "errors": {
     "notFound": "页面不存在",
@@ -768,5 +769,11 @@
     "fSlope": "升支斜率",
     "fPerf": "灌注指数",
     "fRhythm": "节律规整度"
+  },
+  "myChanges": {
+    "title": "我的变化",
+    "subtitle": "追踪一段时间的健康干预，看真的变没变",
+    "newStudy": "新建追踪",
+    "emptyHint": "还没有追踪项目。点击上方「新建追踪」开始记录。"
   }
 }
