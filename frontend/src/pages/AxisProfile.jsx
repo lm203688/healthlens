@@ -143,9 +143,12 @@ export default function AxisProfile() {
         const histData = await histResp.json();
         const latest = histData?.data?.items?.[0] || null;
         setCheckinData({
-          energy: latest?.energy_score || Math.round((a.energy_score || 3) * 10) / 10,
-          digestion: latest?.digestion_score || Math.round((a.digestion_score || 3) * 10) / 10,
-          sleep: latest?.sleep_score || Math.round((a.sleep_score || 3) * 10) / 10,
+          // P0-3（2026-10-23）：修 U7——原 `latest?.energy_score || fallback` 会把真实 0 分
+          // 吞掉（0 是 falsy），回退到 a.energy_score 再乘 10 除 10，显示成 3 分。
+          // 改用 ?? 空合并：只有 null/undefined 才回退，0 保持 0。
+          energy: latest?.energy_score ?? Math.round((a.energy_score ?? 3) * 10) / 10,
+          digestion: latest?.digestion_score ?? Math.round((a.digestion_score ?? 3) * 10) / 10,
+          sleep: latest?.sleep_score ?? Math.round((a.sleep_score ?? 3) * 10) / 10,
           source: latest ? 'latest' : 'average',
         });
         setCheckinApplied(true);
