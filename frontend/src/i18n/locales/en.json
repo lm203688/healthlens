@@ -531,7 +531,8 @@
     "login": "Sign In",
     "language": "Language",
     "retention": "Goals",
-    "pulse": "Pulse"
+    "pulse": "Pulse",
+    "myChanges": "My Changes"
   },
   "errors": {
     "notFound": "Page not found",
@@ -768,5 +769,11 @@
     "fSlope": "Ascending slope",
     "fPerf": "Perfusion index",
     "fRhythm": "Rhythm regularity"
+  },
+  "myChanges": {
+    "title": "My Changes",
+    "subtitle": "Track a health intervention over time and see if it really works",
+    "newStudy": "New Study",
+    "emptyHint": "No study yet. Click “New Study” to start tracking."
   }
 }
