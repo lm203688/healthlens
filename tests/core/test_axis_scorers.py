@@ -121,10 +121,67 @@ def test_s1_2_weak_threshold_equivalent_across_axes():
         assert good.score == 100.0 and good.penalty_ratio == 0.0, axis
         assert good.status == "measured_normal", axis
     # H 轴：bioage_delta 打满 / 正常
+    # P0-1（2026-10-23）：0.0 现被视为缺失（防"0.0 兜底 → 满分绿条"的 fail-open 陷阱），
+    # 正常样本改用 bioage_delta=0.3（在 normal_max=0.5 以下，属健康偏移）。
     bad_h = score_axis("H", bioage_delta=8.0)
-    good_h = score_axis("H", bioage_delta=0.0)
+    good_h = score_axis("H", bioage_delta=0.3)
     assert bad_h.score == 0.0 and bad_h.penalty_ratio == 1.0
     assert good_h.score == 100.0 and good_h.penalty_ratio == 0.0
+
+
+def test_p0_1_h_axis_zero_delta_not_measured():
+    """P0-1（2026-10-23）：bioage_delta=0.0 或 telomere_length=0.0 视为缺失。
+
+    背景：2026-10-22 产品评估报告定位到 H 轴 fail-open——调用方在用户完全没
+    做过表观遗传检测时把 bioage_delta 默认填 0.0，导致 H 轴显示"先天-肾精
+    100 分"的绿色满格，属于对用户的事实性错误陈述。修复后：
+      - bioage_delta=0.0 → 视同 None（无表观遗传测量）
+      - telomere_length=0.0 → 视同 None（真实端粒长度不可能为 0）
+      - 两者皆缺失 → measured=False, score=None，与其余 7 轴"无输入即未测量"对齐
+    """
+    # 完全无输入 → 未测量
+    r = score_axis("H")
+    assert r.measured is False
+    assert r.score is None
+    assert r.sources == []
+    assert "未测量" in r.note
+
+    # 只传 0.0 兜底 → 视为缺失
+    r = score_axis("H", bioage_delta=0.0)
+    assert r.measured is False
+    assert r.score is None
+
+    # 端粒=0.0 → 视为缺失（生物学上不可能）
+    r = score_axis("H", biomarkers={"telomere_length": 0.0})
+    assert r.measured is False
+    assert r.score is None
+
+    # 端粒=0.0 + bioage_delta=0.0 → 依然未测量
+    r = score_axis("H", bioage_delta=0.0, biomarkers={"telomere_length": 0.0})
+    assert r.measured is False
+
+    # 端粒非零（短端粒）→ 已测量，有扣分
+    r = score_axis("H", biomarkers={"telomere_length": 0.6})
+    assert r.measured is True
+    assert r.score is not None
+    assert r.sources == ["telomere_length"]
+    assert r.status == "measured_risk"
+
+    # 只有端粒正常（1.2）→ 已测量满分
+    r = score_axis("H", biomarkers={"telomere_length": 1.2})
+    assert r.measured is True
+    assert r.score == 100.0
+
+
+def test_p0_1_h_axis_zero_delta_via_score_all_axes():
+    """P0-1 集成断言：score_all_axes(bioage_delta=0.0) 时 H 轴不再给出 100 分假分。
+
+    这是产品评估报告中"零输入 H 轴给满分"的直接复现。
+    """
+    res = score_all_axes(wearable={}, biomarkers={}, symptoms=[], bioage_delta=0.0)
+    h = res["H"]
+    assert h.measured is False, f"H 轴 0.0 兜底不应 measured=True (got measured={h.measured})"
+    assert h.score is None, f"H 轴 0.0 兜底不应给分 (got score={h.score})"
 
 
 def test_s1_2_penalty_ratio_audit_field():
