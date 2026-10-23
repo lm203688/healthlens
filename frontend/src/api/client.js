@@ -144,4 +144,37 @@ export const api = {
   observationsBatch: (body) => request('/observations/batch', { method: 'POST', body: JSON.stringify(body) }),
   observationTrend: () => request('/observations/trend'),
   observationSummary: () => request('/observations/summary'),
+
+  /* ===== 纵向追踪 / n-of-1 对比（P0-2 可达性打通，2026-10-23）=====
+   * 全项目最值钱的闭环："我做了 8 周干预，到底变没变？"
+   * 后端已有 10 端点，但 client.js 曾完全未封装，前端零触达。
+   */
+  longitudinalStudies: () => request('/longitudinal/studies'),
+  longitudinalStudy: (id) => request(`/longitudinal/studies/${id}`),
+  longitudinalCreateStudy: (body) => request('/longitudinal/studies', { method: 'POST', body: JSON.stringify(body) }),
+  longitudinalAddSnapshot: (id, body) => request(`/longitudinal/studies/${id}/snapshots`, { method: 'POST', body: JSON.stringify(body) }),
+  longitudinalTrajectory: (id) => request(`/longitudinal/studies/${id}/trajectory`),
+  longitudinalAddIntervention: (id, body) => request(`/longitudinal/studies/${id}/interventions`, { method: 'POST', body: JSON.stringify(body) }),
+  longitudinalListInterventions: (id) => request(`/longitudinal/studies/${id}/interventions`),
+  longitudinalAddReading: (id, body) => request(`/longitudinal/studies/${id}/readings`, { method: 'POST', body: JSON.stringify(body) }),
+  longitudinalListReadings: (id) => request(`/longitudinal/studies/${id}/readings`),
+  longitudinalComparison: (id, body) => request(`/longitudinal/studies/${id}/comparison`, { method: 'POST', body: JSON.stringify(body) }),
+
+  /* ===== 因果推断 / DoWhy（P0-2，把"为什么这么建议"讲清楚）===== */
+  causalScm: () => request('/causal/scm'),
+  causalSensitivity: () => request('/causal/sensitivity'),
+  causalLevers: () => request('/causal/levers'),
+  causalCounterfactual: (body) => request('/causal/counterfactual', { method: 'POST', body: JSON.stringify(body) }),
+  causalCalibrate: (body) => request('/causal/calibrate', { method: 'POST', body: JSON.stringify(body) }),
+  causalReport: (body) => request('/causal/report', { method: 'POST', body: JSON.stringify(body) }),
+
+  /* ===== 证据库（P0-2，点开建议看 L1/L2/L3 出处）===== */
+  evidenceCases: (q) => request(`/evidence/cases${q ? `?q=${encodeURIComponent(q)}` : ''}`),
+  evidenceCase: (id) => request(`/evidence/cases/${id}`),
+
+  /* ===== 行为分析 / 埋点（P0-4，前端 12 个核心事件 → analytics/event）===== */
+  analyticsEvent: (body) => request('/analytics/event', { method: 'POST', body: JSON.stringify(body) }),
+  analyticsSession: (body) => request('/analytics/session', { method: 'POST', body: JSON.stringify(body) }),
+  analyticsConversion: (body) => request('/analytics/conversion', { method: 'POST', body: JSON.stringify(body) }),
+  analyticsDashboard: () => request('/analytics/dashboard'),
 };
