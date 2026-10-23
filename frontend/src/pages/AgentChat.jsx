@@ -1,7 +1,8 @@
 /** AI Chat — Four-role Agent team */
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api/client";
+import { track } from "../lib/track";
 
 const ROLES = [
   { key: "Planner", color: "#6366f1", labelKey: "agent.rolePlanner" },
@@ -52,6 +53,8 @@ export default function AgentChat() {
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setLoading(true);
+    // P0-4（2026-10-23）：埋点——agent_message_sent
+    try { track("agent_message_sent", { chars: text.length }); } catch {}
 
     try {
       const res = await api.agentTeam({ user_input: text });
@@ -75,12 +78,36 @@ export default function AgentChat() {
           metadata: msg.metadata || {},
         }))]);
       } else if (data.plan || data.result || data.summary) {
-        // team_run may return { plan, result, summary }
+        // P0-3（2026-10-23）：修 U3——原来直接 JSON.stringify(plan) 让用户看到裸 JSON 与
+        // {"axes":["A"]}。改为把四角色输出转成"过程卡片"文本：标题 + 关键事实行，
+        // 用户能看到"计划→执行→评审→裁定"的真实工作流而不是 JSON 字面量。
         const parts = [];
-        if (data.plan) parts.push({ role: "Planner", content: JSON.stringify(data.plan, null, 2) });
-        if (data.result) parts.push({ role: "Executor", content: typeof data.result === 'string' ? data.result : JSON.stringify(data.result, null, 2) });
-        if (data.summary) parts.push({ role: "Referee", content: data.summary });
-        if (parts.length === 0) parts.push({ role: "agent", content: JSON.stringify(data, null, 2) });
+        if (data.plan) {
+          const axes = (data.plan.axes || []).join(", ") || "—";
+          const hints = (data.plan.pathway_hints || []).join(", ") || "—";
+          parts.push({
+            role: "Planner",
+            content: `**计划**\n- 目标轴：${axes}\n- 通路提示：${hints}\n- 需要基因：${data.plan.needs_gene ? "是" : "否"}`,
+          });
+        }
+        if (data.result) {
+          const recs = Array.isArray(data.result.recommendations)
+            ? data.result.recommendations
+            : [];
+          const summary = recs.slice(0, 3).map((r) =>
+            `- ${r.prescription || r.targeted_pathway || r.case_id}`
+          ).join("\n");
+          parts.push({
+            role: "Executor",
+            content: `**执行结果**（共 ${recs.length} 条建议）\n${summary || typeof data.result === 'string' ? data.result : "（无）"}`,
+          });
+        }
+        if (data.summary) {
+          parts.push({ role: "Referee", content: `**评审**\n${data.summary}` });
+        }
+        if (parts.length === 0) {
+          parts.push({ role: "assistant", content: JSON.stringify(data, null, 2) });
+        }
         setMessages((m) => [...m, ...parts]);
       } else {
         setMessages((m) => [...m, { role: "assistant", content: JSON.stringify(data, null, 2) }]);
