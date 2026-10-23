@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import MedicalDisclaimer from '../components/HealthDisclaimer';
 import SelfCheck from '../components/SelfCheck';
+import { track } from '../lib/track';
 
 const METRIC_DEFS = [
   { code: '8867-4', key: 'checkin.metricBloodSbp', unit: 'mmHg', refLow: 90, refHigh: 140, type: 'number' },
@@ -94,6 +95,8 @@ export default function CheckIn() {
       setSuccess(t('checkin.submitSuccess', { count: entries.length }));
       setValues({});
       fetchHistory();
+      // P0-4：埋点——每日打卡
+      try { track("daily_checkin", { count: entries.length }); } catch {}
     } catch (e) {
       setError(e.message);
     } finally {
