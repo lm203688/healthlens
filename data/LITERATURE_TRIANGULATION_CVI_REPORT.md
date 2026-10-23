@@ -1,6 +1,6 @@
 # Literature Triangulation CVI (L-CVI) Report
 
-- **Date**: 2026-10-22
+- **Date**: 2026-10-23
 - **Axes**: 8 (A–H)
 - **Threshold**: ≥3 independent construct sources per axis (Lavrakas 2003 analogue)
 - **S-L-CVI/Ave (conservative, DOI-verified only)**: **1.0000**
