@@ -80,11 +80,48 @@ def test_no_data_still_demo_banner():
 
 
 def test_gene_only_no_bioage():
-    """仅基因数据 → has_gene=True，bioage 不参与。"""
-    out = recommend(UserProfile(weak_axes={"D"}), top_k=3)
+    """仅基因数据 → has_gene=True，bioage 不参与。
+
+    P0-1（2026-10-23）：has_gene 语义收紧——关键词推断的 weak_axes 不再冒充
+    基因证据，只有显式标注为基因来源（gene_axes）或通路得分 <0.5（pathway_scores）
+    才算基因数据。此测试因此改用 gene_axes 表达"确实来自基因"。
+    """
+    out = recommend(UserProfile(weak_axes={"D"}, gene_axes={"D"}), top_k=3)
     assert out["has_gene"] is True
     assert out["has_bioage"] is False
     assert out["bioage"] is None
+    assert out["has_axis_hypothesis"] is False
+
+
+def test_weak_axes_without_gene_marker_not_claims_gene():
+    """P0-1 核心断言：仅传 weak_axes（无 gene_axes/pathway_scores）不应冒充基因证据。
+
+    这是 2026-10-22 产品评估报告中定位到的最严重语义错位——
+    上游 Planner 把"疲劳"关键词映射到 A 轴后传入 weak_axes，
+    旧代码因此把 has_gene 置 True，导致：
+      (1) banner 不显示"未提供基因数据"的免责
+      (2) 推荐条目 gene_relevance 冒充"基因交集"
+    """
+    out = recommend(UserProfile(weak_axes={"A", "B"}, symptoms=["疲劳", "易感冒"]), top_k=5)
+    assert out["has_gene"] is False, "关键词推断的轴不得冒充基因证据"
+    assert out["has_axis_hypothesis"] is True, "应如实标注这是轴假设"
+    assert out["has_bioage"] is False
+    # banner 必须显式提示"未提供基因数据"，杜绝用户误以为拿到"基因定制"
+    assert out["banner"] is not None and "未提供基因/组学数据" in out["banner"]
+    # 每条个性化推荐都带 gene_source=False，前端据此不渲染"基因交集"文案
+    personalized = [r for r in out["recommendations"] if r["mode"] == "personalized"]
+    assert personalized, "至少要有一条 personalized 建议才能验证"
+    for r in personalized:
+        assert r["gene_source"] is False
+        assert "基因交集" not in r.get("gene_relevance_display", "")
+
+
+def test_gene_axes_marks_gene_source_true():
+    """显式 gene_axes 或 pathway_scores 通路 <0.5 时，推荐条目标 gene_source=True。"""
+    out = recommend(UserProfile(pathway_scores={"mitochondrial": 0.3}), top_k=5)
+    assert out["has_gene"] is True
+    personalized = [r for r in out["recommendations"] if r["mode"] == "personalized"]
+    assert any(r["gene_source"] is True for r in personalized)
 
 
 def test_bioage_output_shape_and_honesty():
