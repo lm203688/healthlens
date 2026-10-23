@@ -619,27 +619,36 @@ def _score_axis_H(
     src = []
     penalty = 0.0
     penalty_max = 0.0
-    if bioage_delta is not None:
+    # P0-1（2026-10-23）：H 轴硬门控——只有显式非零 bioage_delta 或有效端粒长度
+    # 才能视为「已测量」。bioage_delta=0.0 在调用方缺生物年龄/无端粒输入时会被
+    # 上游"0.0 兜底"传入（历史 bug：融合引擎/单轴探针曾把 0.0 当"无偏移"用），
+    # 会让 src 误增一项、进而给出一个 100 分"满分绿条"给完全没做过表观遗传检测
+    # 的用户。修法：把 0.0 显式视同缺失（None），让 _finalize 走 measured=False 分支，
+    # 与其它 7 轴的"无输入即未测量"语义对齐。
+    bioage_delta_eff = bioage_delta if (bioage_delta is not None and bioage_delta != 0.0) else None
+    if bioage_delta_eff is not None:
         src.append("bioage_delta")
         penalty_max += 30
-        if bioage_delta >= _t('H', 'bioage_delta', 'severe_max', 6.0, jurisdiction):
+        if bioage_delta_eff >= _t('H', 'bioage_delta', 'severe_max', 6.0, jurisdiction):
             penalty += 30
-        elif bioage_delta >= _t('H', 'bioage_delta', 'elevated_max', 3.0, jurisdiction):
+        elif bioage_delta_eff >= _t('H', 'bioage_delta', 'elevated_max', 3.0, jurisdiction):
             penalty += 18
-        elif bioage_delta >= _t('H', 'bioage_delta', 'normal_max', 0.5, jurisdiction):
+        elif bioage_delta_eff >= _t('H', 'bioage_delta', 'normal_max', 0.5, jurisdiction):
             penalty += 8
     tl = (bm or {}).get("telomere_length")
-    if tl is not None:
+    # 端粒同理：0.0 视为缺失（真实端粒长度不可能为 0）
+    tl_eff = tl if (tl is not None and tl > 0.0) else None
+    if tl_eff is not None:
         src.append("telomere_length")
         penalty_max += 15
-        if tl < _t('H', 'telomere_length', 'low_max', 0.8, jurisdiction):
+        if tl_eff < _t('H', 'telomere_length', 'low_max', 0.8, jurisdiction):
             penalty += 15
-        elif tl < _t('H', 'telomere_length', 'normal_min', 1.0, jurisdiction):
+        elif tl_eff < _t('H', 'telomere_length', 'normal_min', 1.0, jurisdiction):
             penalty += 8
     return _finalize(
         "H", src, penalty, penalty_max,
         note="表观遗传完整性代理：生物学年龄偏移反映先天之本耗损",
-        unmeasured_note="无表观遗传年龄偏移/端粒输入，H 轴未测量",
+        unmeasured_note="无表观遗传年龄偏移/端粒输入，H 轴未测量（未做过甲基化时钟或端粒检测）",
     )
 
 
