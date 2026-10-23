@@ -321,8 +321,14 @@ def axis_bridges_for(weak_axes: set[str]) -> list[dict]:
 class UserProfile:
     # 基因/组学：通路级得分（0-1），<0.5 视为弱项；禁 SNP 级
     pathway_scores: dict[str, float] = field(default_factory=dict)
-    # 也可直接给弱项轴字母（A-H）
+    # 弱项轴字母（A-H）——来源可能是基因通路反查、也可能是 Planner 关键词推断。
+    # 语义上属"轴假设"而非"基因证据"，见 gene_axes 与 has_axis_hypothesis。
     weak_axes: set[str] = field(default_factory=set)
+    # P0-1（2026-10-23）：显式标记"来自真实基因/组学数据"的轴。
+    # 之前 profile.weak_axes 混合了通路反查 + 关键词推断，导致
+    # has_gene 被误置 True（把"疲劳→A 轴"当成"基因证据"），推荐条目里的
+    # gene_relevance 也会跟着冒充"基因交集"。现在把这一维度独立出来。
+    gene_axes: set[str] = field(default_factory=set)
     # 个体禁忌（命中即排除相关建议）
     contraindications: set[str] = field(default_factory=set)
     # v0.4：体检指标驱动的「代谢-炎症轴」（PhenoAge 代理，非临床）
@@ -580,16 +586,29 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
             axis_scores_block = {}
     weak_axes |= measured_weak_axes
 
-    # has_gene 仅由基因/组学来源判定。
+    # has_gene 仅由真实基因/组学来源判定。
     # S0-3（2026-10-12）：明确排除 bioage（代谢-炎症代理轴）与体检-可穿戴
     # 驱动的 measured_weak_axes 对 has_gene 的污染，保证"体检指标驱动的
     # 个性化"不会被误报为"基因/组学个性化"——即 test_bioage_does_not_pollute_has_gene
     # 的核心断言。
-    # 基因/通路来源 = 初始 profile.weak_axes 与 weak_canon（不含后续新增）。
-    _gene_source_weak = weak_canon | (set(profile.weak_axes or ()) - _bioage_axes_added - measured_weak_axes)
+    # P0-1（2026-10-23）：进一步收紧——基因来源仅限 (a) 通路得分 <0.5 的通路
+    # (weak_canon)、(b) 调用方显式标注为基因来源的 gene_axes。profile.weak_axes
+    # 不再参与 has_gene 判定：它在上游（healthlens_agent.flow / team 的 Planner）
+    # 由关键词/用户输入推断而来，属"轴假设"而非"基因证据"。此前 has_gene 会被
+    # 关键词推断出的轴污染，导致 (i) banner 不显示"未提供基因数据"的免责、
+    # (ii) 推荐条目的 gene_relevance 冒充"基因交集"。这一改动的验收断言见
+    # tests/core/test_fusion_engine_honesty.py::test_keyword_axes_do_not_claim_gene。
+    _gene_source_weak = weak_canon | set(profile.gene_axes or ())
     has_gene = bool(_gene_source_weak)
+    # 轴假设（关键词/Planner 推断的弱轴，未附基因/组学证据）：单独暴露给前端，
+    # 让 UI 能如实呈现"这些轴是基于症状关键词推断，非基因证据"。
+    has_axis_hypothesis = bool(
+        set(profile.weak_axes or ()) - _bioage_axes_added - measured_weak_axes
+        - set(profile.gene_axes or ())
+    )
 
     recs: list[Recommendation] = []
+    rec_gene_sources: list[bool] = []  # 与 recs 平行，标记每条推荐的 gene_source
     for c in cases:
         case_canon = _pathway_tokens(c)
         case_axes = _axes(c)
@@ -615,6 +634,11 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         if contra:
             continue
 
+        # P0-1（2026-10-23）：gene_source 显式标注——True 仅当这条推荐的匹配
+        # 通路/轴确实来自 gene_axes 或 pathway_scores 通路反查。若匹配纯粹来自
+        # profile.weak_axes（Planner 关键词推断），gene_source=False，前端应把
+        # gene_relevance 显示为"轴/通路匹配"而非"基因交集"，避免语义错位。
+        rec_gene_source = bool(hit_path) or bool(hit_axis & _gene_source_weak)
         recs.append(Recommendation(
             case_id=c.get("id", c.get("case_id", "")),
             targeted_pathway="; ".join(_AXIS_LABEL.get(a, a) for a in sorted(case_axes)),
@@ -632,11 +656,25 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
             prescription=c.get("intervention", ""),
             mode=mode, score=score,
         ))
+        rec_gene_sources.append(rec_gene_source)
 
     recs.sort(key=lambda r: r.score, reverse=True)
     recs = recs[:top_k]
+    rec_gene_sources = rec_gene_sources[:top_k]
 
     rec_dicts = [asdict(r) for r in recs]
+
+    # P0-1：把 gene_source 显式挂回每条推荐 dict，前端据此区分
+    # 「基因/组学个性化」与「关键词推断的轴匹配」，避免语义错位。
+    for r, gs in zip(rec_dicts, rec_gene_sources):
+        r["gene_source"] = bool(gs)
+        # 保留原有 gene_relevance 文案供调试；前端渲染时应先看 gene_source。
+        if not gs and r.get("gene_relevance", "").startswith("交集弱项"):
+            r["gene_relevance_display"] = r["gene_relevance"].replace(
+                "交集弱项", "匹配弱项"
+            )
+        else:
+            r["gene_relevance_display"] = r.get("gene_relevance", "")
 
     # 证据链可视化：把每条推荐挂上完整证据来源（来源/机制/设计/人群/结局/等级）
     case_by_id = {c.get("id"): c for c in cases}
@@ -647,7 +685,9 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
     user_context = "; ".join((profile.pathway_scores or {}).keys())
     rec_dicts = _llm_enhance(rec_dicts, user_context)
 
-    # is_demo 三态：基因/组学 与 体检指标 两条个性化来源分别标注
+    # is_demo 三态：基因/组学 与 体检指标 两条个性化来源分别标注。
+    # P0-1（2026-10-23）：轴假设（关键词推断）不算基因证据，只要没有真实
+    # 基因/组学输入就必须在 banner 里明说，避免用户以为拿到了"基因定制"。
     banner = None
     if not has_gene and not has_bioage:
         banner = "is_demo：未提供基因/组学数据，以下为「通用健康建议」示例，非为你定制。"
@@ -663,6 +703,7 @@ def recommend(profile: UserProfile, cases: list[dict] | None = None,
         "banner": banner,
         "has_gene": has_gene,
         "has_bioage": has_bioage,
+        "has_axis_hypothesis": has_axis_hypothesis,
         "weak_pathways": sorted(weak_display),
         "weak_axes": sorted(weak_axes),
         "axis_bridges": axis_bridges_for(weak_axes),
