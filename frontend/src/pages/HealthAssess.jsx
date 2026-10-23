@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import MedicalDisclaimer from '../components/HealthDisclaimer';
+import { track } from '../lib/track';
 
 const SYMPTOM_CATEGORIES = [
   { titleKey: 'healthAssess.catSleep', items: ['healthAssess.symInsomnia','healthAssess.symEarlyWake','healthAssess.symDifficultySleep','healthAssess.symDaytimeFatigue','healthAssess.symLowEnergy','healthAssess.symDrowsy'] },
@@ -55,11 +56,15 @@ export default function HealthAssess() {
     if (lifestyle.length) parts.push(t('healthAssess.lifestyleLabel') + lifestyle.join('、'));
 
     try {
+      // P0-4（2026-10-23）：埋点——评估提交（含用户输入维度分布）
+      try { track("assessment_submitted", { symptoms: symptoms.length, lifestyle: lifestyle.length, has_freetext: !!freeText.trim() }); } catch {}
       const resp = await api.agentFusion({ user_input: parts.join(' | ') });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.detail || data.message || t('healthAssess.analyzeFailed'));
       setResult(data);
       setStep(3);
+      // P0-4：埋点——结果查看
+      try { track("result_viewed", { page: "health_assess" }); } catch {}
     } catch (err) {
       setError(err.message);
     } finally {
