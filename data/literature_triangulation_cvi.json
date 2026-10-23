@@ -1,7 +1,7 @@
 {
   "method": "Literature Triangulation CVI (L-CVI)",
   "method_note": "Construct-level literature convergence proxy for expert Delphi. Threshold: >=3 independent peer-reviewed construct sources per axis (Lavrakas 2003 Delphi convention analogue). This is NOT a substitute for expert judgment; it validates whether the framework's underlying biological constructs are documented in the independent peer-reviewed literature. Expert Delphi remains future work.",
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "threshold_per_axis": 3,
   "axes_count": 8,
   "axes_passing_construct_convergence": [
