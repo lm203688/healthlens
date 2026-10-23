@@ -40,7 +40,7 @@ data structures with a single verification pass over all links.
 
 ## Rigor and Reproducibility
 
-- **1966 automated tests** pass as of the current codebase (v0.31.0), covering
+- **1970 automated tests** pass as of the current codebase (v0.35.0), covering
   axis scoring, causal simulation, compliance filtering, longitudinal tracking,
   claims policy differential behavior, connector OAuth semantics, and the
   SVIEE five-layer stack (L0 protocol / L1 statistics / L2 representations /
