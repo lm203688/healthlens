@@ -4,6 +4,44 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.37.0] - 2026-10-25（P1 产品收敛：Onboarding + 周报自动化 + 华为健康 + 合作开发者中心）
+
+### Added（P1-1 首次进入 3 步引导）
+
+- **`frontend/src/pages/Onboarding.jsx`**（新增 335 行）——首次登录用户 3 步引导：① 30 秒 3 题快速评估（睡眠 / 精力 / 情绪各 4 选项，映射到 G/D/H 轴）→ ② 3-of-8 雷达预览 + 5 轴「待解锁」CTA → ③ 上传化验单 / 连接设备 / 完整评估三选一。用 `localStorage.onboarding_completed` 一次性标记，之后登录直达 Dashboard。诚实可视化：3 轴已测（彩色）+ 5 轴待解锁（灰 `#cbd5e1`），不用假后端数据装「3 轴已测」。埋点 6 事件：`onboarding_started / onboarding_quick_done / onboarding_device_cta_clicked / onboarding_upload_cta_clicked / onboarding_full_assess_cta_clicked / onboarding_skipped`。
+- **App.jsx**：新增 `/onboarding` 路由（`RequireAuth` 包裹）；Login.jsx 的 OTP 与 TOTP 双通道完成后根据 `onboarding_completed` 决定跳 `/` 或 `/onboarding`。
+- **i18n**：`onboarding.*` 命名空间新增 44 个 key（zh / en 各一套）。
+
+### Added（P1-2 周报自动化）
+
+- **`app/tasks/weekly_report_tasks.py`**（新增 325 行）——Celery 后台周报任务：`generate_weekly_reports(days_back=14, min_snapshots=2, batch_limit=200)` 全量扫 + `generate_weekly_report_for_user(user_id, study_id, days_back=14)` 单用户异步入口。核心工具：`_compute_axis_delta()`（快照按时间 70/30 分窗，末窗均值 - 首窗均值）、`_top_changes(deltas, top_k=2)`（|delta|≥1 过滤）、`_build_report_body()`（纯文本 wellness 措辞，禁疗效/诊断）。写 `Notification(category="weekly_report", action_url="/changes")` 到通知表，`extra_data` JSON 存 study_id / week_start / deltas / top_changes。
+- **`app/worker.py`**：Celery Beat 新增 `user-weekly-report` 定时任务——`crontab(hour=7, minute=0, day_of_week="mon")`，每周一 07:00 触发全量周报生成。
+- **`app/api/longitudinal.py`** 追加 2 个端点：`POST /studies/{study_id}/weekly-report?days_back=N`（手动触发，走同一 `_generate_single_user_report`）+ `GET /weekly-reports?days_back=60&limit=10`（列历史，倒序）。
+- **client.js**：新增 `longitudinalTriggerWeeklyReport` + `longitudinalListWeeklyReports`。MyChanges.jsx 新增「📬 历史周报」卡片，`generateReport()` 优先调后端新端点，失败降级走 v0.36.0 的本地比较+causal 路径。
+
+### Added（P1-5 华为健康连接器）
+
+- **`app/connectors/huawei_health.py`**（v0.36.0 已上；本轮无代码变更）——华为运动健康 OAuth2 连接器：`health-health.cloud.huawei.com` 端点，`source_type="huawei_health"`，走 OAuth2 Authorization Code Flow。
+- **`/connections/status`**：华为品牌状态卡（`ready` / `needs_credentials`，缺失 `HUAWEI_HEALTH_CLIENT_ID` / `HUAWEI_HEALTH_CLIENT_SECRET` 环境时诚实报红不 fail-silent）。
+- **PulseDevice.jsx**：华为入口走同一 WearableDevices 状态接口，前端零改动即生效。
+
+### Added（P1-4 合作开发者中心）
+
+- **`frontend/src/pages/Partner.jsx`**（新增 295 行）——公开页（无 RequireAuth），面向外部开发者。结构：Hero + 三步 Quick Start + 6 端点表格（GET/POST 色块 + Key 需求标记）+ curl 示例（带复制按钮 + 每端点独立 curl 生成）+ Auth/SDK/Quota 三卡 + 合规声明（claims_guard 5 法域）+ 申请 Key 表单（mailto 兜底 partners@healthlens.cc）。埋点：`partner_apply_submitted / partner_apply_clicked / partner_docs_opened / partner_openapi_opened`。
+- **App.jsx**：`PUBLIC_ROUTES` 新增 `/partner`；NAV_ITEMS 加 `{to: "/partner", key: "nav.partner", icon: "🔌"}` 导航入口。i18n `partner.*` 44 key + `nav.partner` 1 key。
+
+### Changed（版本 & 门禁）
+
+- 版本从 0.36.0 → **0.37.0**：`pyproject.toml` + `agent-card.json`（走 `tools/sync_version.py`）。
+- **前端构建**：`vite build` 通过（513 KB JS + 36.65 KB CSS）；相较 v0.36.0（483 KB）净增 ~30 KB，主要来自 Onboarding + Partner + 周报历史卡片。
+
+### Known limitations（诚实标注）
+
+- **周报是「快照级」而非「连续级」**：`_compute_axis_delta` 用 70/30 分窗，需要 ≥ 2 个快照。若用户 14 天内只做过 1 次评估，`POST /weekly-report` 返回 409，前端降级走 v0.36.0 本地路径。Celery Beat 每周一 07:00 才扫，当天手动的 `POST` 是同步立即出结果。
+- **华为健康 OAuth 未在真实账户验证**：MVP 只完成协议接入与状态诚实上报，OAuth2 code exchange 全流程需要用户在 huawei health 开发者后台注册 client_id 并授权一个测试账号才能端到端跑通。
+- **合作开发者中心是「文档站 + 申请入口」，不是自助控制台**：申请 Key 走 mailto 到 partners@healthlens.cc，管理员手动审批+签发（走 `/api/v1/partners` admin 端点）。自助创建 Key / 用量仪表盘是 P2 项。
+- **Onboarding 的 3 轴「预览」是本地构造分**：3 题答案在浏览器内映射为 D/G/H 轴的 30–92 分区间，展示为雷达但**不会**入库或影响后续 Dashboard 真实评估；用户点「去完整评估」才走真实后端流程。
+
 ## [0.36.0] - 2026-10-24（P0 剩余收敛：对话体验完整闭环 + 我的变化周报 + 埋点全覆盖）
 
 ### Added（P0-3b SSE 流式对话端点）
