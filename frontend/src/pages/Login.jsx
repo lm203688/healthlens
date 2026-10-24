@@ -130,7 +130,8 @@ export default function Login() {
       // P0-4（2026-10-24）：登录成功 = 新用户或老用户回流；后端首次见到该账号即视为注册
       try { track("user_registered", { source: "otp_verify", channel: kind || "unknown" }); } catch {}
       setNotice(t('login.verifySuccess'));
-      setTimeout(() => navigate('/'), 600);
+      const dest = localStorage.getItem('onboarding_completed') === '1' ? '/' : '/onboarding';
+      setTimeout(() => navigate(dest), 600);
     } catch (err) {
       setError(err.message || t('login.verifyFailed'));
     } finally {
@@ -166,7 +167,8 @@ export default function Login() {
       // P0-4（2026-10-24）：TOTP 通道同样记录登录事件
       try { track("user_registered", { source: "totp_verify" }); } catch {}
       setNotice(t('login.verifySuccess'));
-      setTimeout(() => navigate('/'), 600);
+      const dest = localStorage.getItem('onboarding_completed') === '1' ? '/' : '/onboarding';
+      setTimeout(() => navigate(dest), 600);
     } catch (err) {
       setError(err.message || t('login.verifyFailed'));
     } finally {
