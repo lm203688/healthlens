@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import HealthDisclaimer from '../components/HealthDisclaimer';
+import { track } from '../lib/track';
 
 /* 特征字段：键名必须与 data/pulse_signatures.json 的 device_output_contract
  * 以及 edge/healthgateway/pulse_source.py 输出一致，改名会全部读成 None。 */
@@ -66,6 +67,8 @@ export default function PulseDevice() {
     setLoading(true);
     setError(null);
     setResult(null);
+    // P0-4（2026-10-24）：设备交互埋点——用户提交一次脉象特征即视为一次设备连接尝试
+    try { track("device_connect_attempted", { source: "pulse_manual", features_count: Object.keys(features).length }); } catch {}
     try {
       const payload = { ...features, 'hl.pulse.depth': depth, 'hl.pulse.pause_pattern': pause };
       // 去掉空值，避免把 0 当成有效读数
