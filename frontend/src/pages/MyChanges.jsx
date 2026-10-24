@@ -26,10 +26,25 @@ export default function MyChanges() {
   const [snapshotting, setSnapshotting] = useState(false);
   const [reporting, setReporting] = useState(false);
   const [report, setReport] = useState(null);
+  // P1-2（2026-10-24）：历史周报列表（从 notifications 拉 category=weekly_report）
+  const [historyReports, setHistoryReports] = useState([]);
 
   useEffect(() => {
     fetchStudies();
+    fetchWeeklyHistory();
   }, []);
+
+  async function fetchWeeklyHistory() {
+    try {
+      const resp = await api.longitudinalListWeeklyReports(60, 10);
+      if (resp.ok) {
+        const data = await resp.json();
+        setHistoryReports(data.data || []);
+      }
+    } catch {
+      // 拉取历史失败不阻断主流程
+    }
+  }
 
   useEffect(() => {
     if (activeId) fetchStudy(activeId);
@@ -134,11 +149,41 @@ export default function MyChanges() {
    * 1) 取首末两个快照调 longitudinalComparison
    * 2) 用因果引擎对当前弱轴做反事实推演
    */
+  /* P1-2（2026-10-24）：走后端周报端点，生成结构化报告 + 同步投递站内通知。
+   * 失败时降级到本地 comparison（原逻辑），保持向后兼容。
+   */
   async function generateReport() {
     if (!activeId) return;
     setReporting(true);
     setError(null);
     try {
+      // 优先走后端周报端点
+      try {
+        const resp = await api.longitudinalTriggerWeeklyReport(activeId, 14);
+        const body = await resp.json();
+        if (resp.ok && body.data) {
+          const d = body.data;
+          setReport({
+            first: { id: null, date: d.week_start },
+            last: { id: null, date: d.week_end, weak_axes: (d.axis_deltas || {}) },
+            days: d.days_back || 14,
+            snapshots_count: d.snapshots_count,
+            comparison: null,
+            causal: null,
+            backendWeekly: d,  // 标记：来自后端周报，含 deltas 与 top_changes
+            generated_at: new Date().toISOString(),
+          });
+          try { track("weekly_report_generated", { page: "my_changes", via: "backend", snapshots: d.snapshots_count }); } catch {}
+          // 刷新历史列表（因为新周报已投递站内通知）
+          setTimeout(fetchWeeklyHistory, 500);
+          return;
+        }
+        // 端点返回非 OK 时抛错进入 fallback
+        throw new Error(body.detail || "周报端点返回异常");
+      } catch (backendErr) {
+        // fallback 到本地 comparison（原逻辑保留）
+        console.warn("[MyChanges] backend weekly report failed, falling back:", backendErr.message);
+      }
       const snaps = active?.snapshots || [];
       if (snaps.length < 2) {
         setError("至少需要 2 次快照才能生成周报。请先创建 baseline。");
@@ -415,6 +460,41 @@ export default function MyChanges() {
               </div>
             )}
           </div>
+
+          {/* P1-2（2026-10-24）：历史周报（来自每周一自动投递的站内通知）*/}
+          {historyReports.length > 0 && (
+            <div className="card p-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-slate-800">📬 历史周报</h3>
+                <span className="text-xs text-slate-400">
+                  每周一 07:00 自动投递 · 最近 {historyReports.length} 条
+                </span>
+              </div>
+              <div className="space-y-2">
+                {historyReports.map((r) => {
+                  const extra = r.extra || {};
+                  const topChanges = extra.top_changes || [];
+                  return (
+                    <div
+                      key={r.id}
+                      className="p-3 rounded-lg bg-blue-50/50 border border-blue-100 hover:bg-blue-50 transition cursor-pointer"
+                      onClick={() => { if (r.action_url) window.location.hash = r.action_url; }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-slate-800 truncate">{r.title}</span>
+                        <span className="text-xs text-slate-400 shrink-0 ml-2">
+                          {r.created_at ? new Date(r.created_at).toLocaleDateString() : "—"}
+                        </span>
+                      </div>
+                      <pre className="text-xs text-slate-600 whitespace-pre-wrap font-sans leading-relaxed">
+                        {r.content}
+                      </pre>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* 干预记录 */}
           <div className="card p-5">
