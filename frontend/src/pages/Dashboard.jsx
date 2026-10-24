@@ -82,6 +82,14 @@ export default function Dashboard() {
 
   function pick(sectionKey, qi, optKey) {
     setAnswers((p) => ({ ...p, [`${sectionKey}-${qi}`]: optKey }));
+    // P0-4（2026-10-24）：题目作答埋点——记录每道题的选择，用于漏斗分析
+    try {
+      track("assessment_question_answered", {
+        section: sectionKey,
+        question_index: qi,
+        option: optKey,
+      });
+    } catch {}
   }
 
   function buildInput() {
@@ -102,11 +110,33 @@ export default function Dashboard() {
       return;
     }
     setError(null);
+    // P0-4（2026-10-24）：问卷开始 + 完成埋点（进入加载态即算提交）
+    try {
+      track("assessment_started", { questions: answered, has_free: !!answers._free });
+      track("assessment_completed", { questions: answered, has_free: !!answers._free });
+    } catch {}
     setPhase('loading');
     api.agentFusion({ user_input: buildInput() })
       .then((r) => r.json())
-      .then(setResult)
-      .then(() => setPhase('results'))
+      .then((data) => {
+        setResult(data);
+        // P0-2b（2026-10-24）：缓存最近一次评估结果到 localStorage，
+        // 供 MyChanges 的「自动快照」读取当前 baseline。
+        try {
+          localStorage.setItem("hl_last_assessment", JSON.stringify({
+            axis_scores: data.axis_scores || null,
+            weak_axes: data.weak_axes || null,
+            overall_score: data.overall_score || null,
+            recommendations: (data.recommendations || []).slice(0, 3),
+            has_gene: data.has_gene,
+            ts: Date.now(),
+          }));
+        } catch {}
+      })
+      .then(() => {
+        try { track("assessment_submitted", { questions: answered }); } catch {}
+        setPhase('results');
+      })
       .catch((err) => { setError(err.message || t('dashboard.analysisFailed')); setPhase('quiz'); });
   }
 
@@ -249,7 +279,21 @@ function ResultsView({ data, onRetry }) {
         <div className="space-y-3">
           <h3 className="font-semibold text-slate-800">{t('dashboard.personalizedRecs')}（{recs.length} {t('dashboard.recCount')}）</h3>
           {recs.map((r, i) => (
-            <div key={i} className={`card p-4 ${r.gate_passed ? '' : 'border-red-200 bg-red-50'}`}>
+            <div
+              key={i}
+              className={`card p-4 cursor-pointer hover:shadow-md transition ${r.gate_passed ? '' : 'border-red-200 bg-red-50'}`}
+              onClick={() => {
+                // P0-4（2026-10-24）：建议卡点击埋点
+                try {
+                  track("recommendation_clicked", {
+                    index: i,
+                    name: r.name || "",
+                    gate_passed: r.gate_passed,
+                    target: r.target || r.targeted_pathway || "",
+                  });
+                } catch {}
+              }}
+            >
               <div className="flex items-center gap-2 mb-1">
                 <span className={`text-xs font-bold px-2 py-0.5 rounded ${r.gate_passed ? 'bg-brand-100 text-brand-700' : 'bg-red-100 text-red-700'}`}>
                   {r.gate_passed ? '✅ ' + t('dashboard.gatePassed') : '🚫 ' + t('dashboard.gateFailed')}
