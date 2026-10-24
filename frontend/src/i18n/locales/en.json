@@ -511,7 +511,10 @@
       "matched": "Matched signals",
       "close": "I understand, will handle later",
       "fallback": "Your description contains health signals that require immediate professional help.\nPlease call 120 (emergency services) or go to the nearest hospital emergency department immediately.\nHealthLens is a health management platform and does not provide medical diagnosis or treatment advice."
-    }
+    },
+    "clearBtn": "Clear",
+    "confirmClear": "Clear this conversation history? This cannot be undone.",
+    "clearHint": "Clear all messages in current session"
   },
   "nav": {
     "dashboard": "Dashboard",
