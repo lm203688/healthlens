@@ -166,6 +166,8 @@ export const api = {
   longitudinalAddReading: (id, body) => request(`/longitudinal/studies/${id}/readings`, { method: 'POST', body: JSON.stringify(body) }),
   longitudinalListReadings: (id) => request(`/longitudinal/studies/${id}/readings`),
   longitudinalComparison: (id, body) => request(`/longitudinal/studies/${id}/comparison`, { method: 'POST', body: JSON.stringify(body) }),
+  longitudinalTriggerWeeklyReport: (id, daysBack = 14) => request(`/longitudinal/studies/${id}/weekly-report?days_back=${daysBack}`, { method: 'POST' }),
+  longitudinalListWeeklyReports: (daysBack = 60, limit = 10) => request(`/longitudinal/weekly-reports?days_back=${daysBack}&limit=${limit}`),
 
   /* ===== 因果推断 / DoWhy（P0-2，把"为什么这么建议"讲清楚）===== */
   causalScm: () => request('/causal/scm'),

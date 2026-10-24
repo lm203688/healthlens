@@ -846,3 +846,105 @@ def _study_to_dict(study: LongitudinalStudy) -> dict:
         "created_at": study.created_at.isoformat() if study.created_at else None,
         "updated_at": study.updated_at.isoformat() if study.updated_at else None,
     }
+
+
+# ---------------------------------------------------------------------------
+# P1-2 周报（2026-10-24）：手动触发 + 拉历史
+# ---------------------------------------------------------------------------
+
+@router.post("/studies/{study_id}/weekly-report")
+async def trigger_weekly_report(
+    study_id: str,
+    days_back: int = 14,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """手动触发周报（前端 MyChanges 页按钮调用）。
+
+    - 复用 Celery task 的函数体，同步返回结果
+    - 同时投递一条站内通知，走 notifications 表 + action_url=/changes
+    - 若快照不足则 400，用户可据此提示"多几天再来"
+    """
+    from app.tasks.weekly_report_tasks import _generate_single_user_report
+    from app.models.notification import Notification
+    import json as _json
+
+    study = await _get_owned_study(study_id, current_user, db)
+
+    try:
+        report = await _generate_single_user_report(str(current_user.id), study_id, days_back)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    # 同步投递站内通知，让用户下次进 App 就能看到
+    try:
+        notification = Notification(
+            user_id=str(current_user.id),
+            category="weekly_report",
+            title=f"📊 本周变化 · {report.get('study_name', study.name)}",
+            content=report.get("summary", ""),
+            severity="info",
+            action_url="/changes",
+            action_label="查看我的变化",
+            extra_data=_json.dumps({
+                "study_id": study_id,
+                "week_start": report.get("week_start"),
+                "days_back": report.get("days_back"),
+                "snapshots_count": report.get("snapshots_count"),
+                "interventions_count": report.get("interventions_count"),
+                "deltas": report.get("axis_deltas"),
+                "top_changes": report.get("top_changes"),
+                "trigger": "manual",
+            }),
+        )
+        db.add(notification)
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        # 通知投递失败不影响主流程
+        pass
+
+    return {"success": True, "data": report}
+
+
+@router.get("/weekly-reports")
+async def list_weekly_reports(
+    days_back: int = 60,
+    limit: int = 10,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """列出当前用户最近 N 条周报（按 created_at desc）。"""
+    from app.models.notification import Notification
+    import json as _json
+
+    since = datetime.now(timezone.utc) - timedelta(days=days_back)
+    result = await db.execute(
+        select(Notification)
+        .where(
+            Notification.user_id == str(current_user.id),
+            Notification.category == "weekly_report",
+            Notification.created_at >= since,
+        )
+        .order_by(desc(Notification.created_at))
+        .limit(limit)
+    )
+    items = result.scalars().all()
+
+    data = []
+    for n in items:
+        extra = {}
+        if n.extra_data:
+            try:
+                extra = _json.loads(n.extra_data)
+            except Exception:
+                extra = {}
+        data.append({
+            "id": str(n.id),
+            "created_at": n.created_at.isoformat() if n.created_at else None,
+            "title": n.title,
+            "content": n.content,
+            "action_url": n.action_url,
+            "extra": extra,
+        })
+    return {"success": True, "data": data}

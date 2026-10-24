@@ -17,6 +17,8 @@ import Upload from './pages/Upload';
 import Share from './pages/Share';
 import Retention from './pages/Retention';
 import MyChanges from './pages/MyChanges';
+import Onboarding from './pages/Onboarding';
+import Partner from './pages/Partner';
 import LanguageSwitcher from './components/LanguageSwitcher';
 
 const NAV_ITEMS = [
@@ -35,6 +37,7 @@ const NAV_ITEMS = [
   { to: '/share',      key: 'nav.share', icon: '🔗' },
   { to: '/payment',    key: 'nav.payment', icon: '💎' },
   { to: '/profile',    key: 'nav.profile', icon: '👤' },
+  { to: '/partner',    key: 'nav.partner', icon: '🔌' },
 ];
 
 // 移动端底部导航（5 个核心入口，其余走桌面端）
@@ -47,7 +50,7 @@ const MOBILE_NAV_ITEMS = [
 ];
 
 // P0-8：公开路由（无需登录）
-const PUBLIC_ROUTES = ['/login', '/share'];
+const PUBLIC_ROUTES = ['/login', '/share', '/partner'];
 
 /** 路由守卫：未登录时重定向到 /login */
 function RequireAuth({ children }) {
@@ -226,6 +229,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/share" element={<Share />} />
+          <Route path="/partner" element={<Partner />} />
           <Route path="/" element={
             <RequireAuth><Dashboard /></RequireAuth>
           } />
@@ -246,6 +250,9 @@ export default function App() {
           } />
           <Route path="/changes" element={
             <RequireAuth><MyChanges /></RequireAuth>
+          } />
+          <Route path="/onboarding" element={
+            <RequireAuth><Onboarding /></RequireAuth>
           } />
           <Route path="/reports" element={
             <RequireAuth><Reports /></RequireAuth>
