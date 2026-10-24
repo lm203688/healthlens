@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import { track } from '../lib/track';
 
 export default function Share() {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ export default function Share() {
   async function handleShare() {
     setGenerating(true);
     setError(null);
+    // P0-4（2026-10-24）：分享按钮点击埋点
+    try { track("share_clicked", { report_type: "health_summary" }); } catch {}
     try {
       const resp = await api.reportShare({ report_type: 'health_summary', expires_days: 30 });
       const data = await resp.json();
