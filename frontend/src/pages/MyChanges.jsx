@@ -1,14 +1,11 @@
 /* P0-2（2026-10-23）：「我的变化」页——把 longitudinal（纵向追踪）闭环接进界面。
  *
- * 背景：2026-10-22 产品评估定位到「随访 / n-of-1 对比」是产品最值钱的闭环
- * （回答"我做了 8 周干预，到底变没变"），后端 10 端点齐全，但 client.js
- * 完全未封装、前端零触达。此页面用现有端点实现最小可用闭环：
- *   1) 列研究 / 建研究
- *   2) 看轨迹（每周一次快照）
- *   3) 记录干预（"我做了 X"）
- *   4) 前后对比（选两个时间窗）
+ * P0-2b（2026-10-24）追加：自动快照 + 周报生成
+ *   1) 自动快照：调 longitudinalAddSnapshot 从最新一次评估结果生成 baseline
+ *   2) 周报：取首末两个快照做 comparison，再叠加 causal 归因给出「变好了什么」
+ *   3) 干预归因：调 causalReport 生成逐轴 5/95 分位带 + 主要杠杆敏感度
  *
- * 未新增任何后端逻辑，全部走 app/api/longitudinal.py 现有端点。
+ * 未新增后端逻辑，全部走 app/api/longitudinal.py + app/api/causal.py 现有端点。
  */
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +22,10 @@ export default function MyChanges() {
   const [error, setError] = useState(null);
   const [showNew, setShowNew] = useState(false);
   const [newName, setNewName] = useState("");
+  // P0-2b：自动快照 + 周报
+  const [snapshotting, setSnapshotting] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [report, setReport] = useState(null);
 
   useEffect(() => {
     fetchStudies();
@@ -38,7 +39,6 @@ export default function MyChanges() {
     try {
       const resp = await api.longitudinalStudies();
       const data = await resp.json();
-      // 兼容 {studies: [...]} 或裸数组
       const list = Array.isArray(data) ? data : (data.studies || data.items || []);
       setStudies(list);
       if (list.length && !activeId) setActiveId(list[0].id);
@@ -54,6 +54,7 @@ export default function MyChanges() {
       const resp = await api.longitudinalStudy(id);
       const data = await resp.json();
       setActive(data);
+      setReport(null);
     } catch (e) {
       setError(e.message || "加载失败");
     }
@@ -77,6 +78,128 @@ export default function MyChanges() {
       }
     } catch (e) {
       setError(e.message);
+    }
+  }
+
+  /* P0-2b（2026-10-24）：自动快照
+   * 从当前用户最近的 assessment 结果生成一次 baseline。
+   * 输入走 localStorage 最近一次 agentFusion 响应缓存；无缓存时给一个
+   * 中性基线并提示用户先做评估。
+   */
+  async function autoSnapshot() {
+    if (!activeId) return;
+    setSnapshotting(true);
+    setError(null);
+    try {
+      // 优先读 Dashboard / HealthAssess 留下的最近一次结果缓存
+      let cached = null;
+      try {
+        cached = JSON.parse(localStorage.getItem("hl_last_assessment") || "null");
+      } catch {}
+      let axis_scores = null;
+      let weak_axes = null;
+      let overall = null;
+      let notes = "auto_snapshot";
+      if (cached && (cached.axis_scores || cached.recommendations)) {
+        axis_scores = cached.axis_scores || null;
+        weak_axes = cached.weak_axes || null;
+        overall = cached.overall_score || null;
+        notes = `auto_snapshot:from_cached_assessment`;
+      }
+      // 兜底：无缓存时直接写入空输入快照（后端会 score_all_axes 走中性路径）
+      const body = {
+        date: new Date().toISOString().slice(0, 10),
+        source: "auto_snapshot",
+        notes,
+      };
+      if (axis_scores) body.axis_scores = axis_scores;
+      if (weak_axes) body.weak_axes = weak_axes;
+      if (overall != null) body.overall_score = overall;
+      if (!axis_scores) body.inputs = { biomarkers: {}, wearable: {} }; // 触发后端打分
+
+      const resp = await api.longitudinalAddSnapshot(activeId, body);
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data?.detail || "快照失败");
+      // 刷新当前研究
+      await fetchStudy(activeId);
+      try { track("daily_checkin", { page: "my_changes", action: "auto_snapshot" }); } catch {}
+    } catch (e) {
+      setError(e.message || "自动快照失败");
+    } finally {
+      setSnapshotting(false);
+    }
+  }
+
+  /* P0-2b（2026-10-24）：周报
+   * 1) 取首末两个快照调 longitudinalComparison
+   * 2) 用因果引擎对当前弱轴做反事实推演
+   */
+  async function generateReport() {
+    if (!activeId) return;
+    setReporting(true);
+    setError(null);
+    try {
+      const snaps = active?.snapshots || [];
+      if (snaps.length < 2) {
+        setError("至少需要 2 次快照才能生成周报。请先创建 baseline。");
+        return;
+      }
+      // 按日期排序，取首末
+      const sorted = snaps.slice().sort((a, b) => {
+        const da = a.snapshot_date || a.date || a.created_at || "";
+        const db = b.snapshot_date || b.date || b.created_at || "";
+        return da.localeCompare(db);
+      });
+      const first = sorted[0];
+      const last = sorted[sorted.length - 1];
+      // 计算跨度
+      const d1 = new Date(first.snapshot_date || first.date || first.created_at || Date.now());
+      const d2 = new Date(last.snapshot_date || last.date || last.created_at || Date.now());
+      const days = Math.max(1, Math.round((d2 - d1) / 86400000));
+
+      // 前后对比
+      let comparison = null;
+      try {
+        const resp = await api.longitudinalComparison(activeId, {
+          from_snapshot_id: first.id,
+          to_snapshot_id: last.id,
+        });
+        comparison = await resp.json();
+      } catch {
+        // 对比失败不阻断（comparison 端点可能要求特定 schema）
+      }
+
+      // 因果归因：拿最新快照的 weak_axes 做反事实推演
+      let causal = null;
+      const weak = last.weak_axes || active?.weak_axes || [];
+      if (weak.length > 0) {
+        try {
+          const resp = await api.causalReport({
+            baseline: last.axis_scores || null,
+            levers: weak.map((a) => `axis_${a}`),
+            weeks: Math.max(1, Math.min(12, Math.ceil(days / 7))),
+            lever_scale: 1.0,
+          });
+          causal = await resp.json();
+        } catch {
+          // 因果推演失败不阻断
+        }
+      }
+
+      setReport({
+        first,
+        last,
+        days,
+        snapshots_count: snaps.length,
+        comparison,
+        causal,
+        generated_at: new Date().toISOString(),
+      });
+      try { track("result_viewed", { page: "my_changes_report", snapshots: snaps.length }); } catch {}
+    } catch (e) {
+      setError(e.message || "生成周报失败");
+    } finally {
+      setReporting(false);
     }
   }
 
@@ -150,12 +273,124 @@ export default function MyChanges() {
 
       {active && (
         <div className="space-y-6">
+          {/* 自动快照 + 周报（P0-2b，2026-10-24）*/}
+          <div className="card p-5 border-emerald-200 bg-emerald-50/30">
+            <h3 className="font-semibold text-slate-800 mb-3">🤖 一键追踪</h3>
+            <p className="text-sm text-slate-500 mb-3">
+              从最近一次评估自动生成快照，或对比首末快照生成本周报告。
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={autoSnapshot}
+                disabled={snapshotting}
+                className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {snapshotting ? "生成中..." : "📸 自动快照"}
+              </button>
+              <button
+                onClick={generateReport}
+                disabled={reporting || snapshots.length < 2}
+                className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                title={snapshots.length < 2 ? "至少需要 2 次快照" : "生成前后对比 + 因果归因"}
+              >
+                {reporting ? "分析中..." : "📊 生成周报"}
+              </button>
+            </div>
+          </div>
+
+          {/* 周报（P0-2b）*/}
+          {report && (
+            <div className="card p-5 border-blue-200 bg-blue-50/30">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-slate-800">📊 变更报告</h3>
+                <span className="text-xs text-slate-400">
+                  生成于 {new Date(report.generated_at).toLocaleString()}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <div className="p-3 rounded-lg bg-white">
+                  <p className="text-xs text-slate-400">追踪天数</p>
+                  <p className="text-lg font-bold text-slate-800">{report.days} 天</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white">
+                  <p className="text-xs text-slate-400">快照数</p>
+                  <p className="text-lg font-bold text-slate-800">{report.snapshots_count}</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white">
+                  <p className="text-xs text-slate-400">起点</p>
+                  <p className="text-sm font-mono text-slate-700">
+                    {report.first.snapshot_date || report.first.date || "—"}
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-white">
+                  <p className="text-xs text-slate-400">终点</p>
+                  <p className="text-sm font-mono text-slate-700">
+                    {report.last.snapshot_date || report.last.date || "—"}
+                  </p>
+                </div>
+              </div>
+
+              {/* 首末轴对比 */}
+              {report.first.axis_scores && report.last.axis_scores && (
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-slate-700 mb-2">逐轴变化（末 - 首）</p>
+                  <div className="space-y-1">
+                    {Object.keys(report.last.axis_scores).sort().map((ax) => {
+                      const start = report.first.axis_scores[ax] || 0;
+                      const end = report.last.axis_scores[ax] || 0;
+                      const delta = end - start;
+                      const color = delta > 0 ? "text-emerald-600" : delta < 0 ? "text-red-600" : "text-slate-400";
+                      const sign = delta > 0 ? "+" : "";
+                      return (
+                        <div key={ax} className="flex items-center justify-between text-sm">
+                          <span className="text-slate-600">轴 {ax}</span>
+                          <span className="text-slate-500">{start.toFixed(0)} → {end.toFixed(0)}</span>
+                          <span className={`font-medium ${color}`}>{sign}{delta.toFixed(0)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* 因果归因 */}
+              {report.causal && (
+                <div className="p-3 rounded-lg bg-white border border-blue-100">
+                  <p className="text-sm font-medium text-slate-700 mb-2">🔍 因果归因（DoWhy 反事实推演）</p>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    基于当前干预强度与观察期，逐轴 5/95 分位带显示可能改善范围。
+                    干预越一致，实际效果越靠近上界。
+                  </p>
+                  {report.causal.counterfactual && (
+                    <p className="text-xs text-slate-600 mt-2 font-mono">
+                      {JSON.stringify(report.causal.counterfactual).slice(0, 200)}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* 干预列表 */}
+              {interventions.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-sm font-medium text-slate-700 mb-2">期间内干预</p>
+                  <div className="flex flex-wrap gap-2">
+                    {interventions.map((iv) => (
+                      <span key={iv.id} className="px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs">
+                        {iv.name || iv.label || iv.intervention_type || "干预"}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* 轨迹快照 */}
           <div className="card p-5">
             <h3 className="font-semibold text-slate-800 mb-3">📍 快照 ({snapshots.length})</h3>
             {snapshots.length === 0 ? (
               <p className="text-sm text-slate-400">
-                还没有快照。每次评估后可在此添加一次数据点。
+                还没有快照。点上方「自动快照」快速生成，或每次评估后手动添加一次数据点。
               </p>
             ) : (
               <div className="space-y-2">
@@ -171,7 +406,9 @@ export default function MyChanges() {
                         {sn.snapshot_date || sn.date || "—"}
                       </span>
                       <span className="text-slate-700 truncate ml-3 flex-1">
-                        {sn.metrics ? Object.entries(sn.metrics).slice(0, 3).map(([k, v]) => `${k}=${v}`).join(" · ") : (sn.note || "—")}
+                        {sn.axis_scores
+                          ? Object.entries(sn.axis_scores).slice(0, 4).map(([k, v]) => `${k}=${Math.round(v)}`).join(" · ")
+                          : (sn.metrics ? Object.entries(sn.metrics).slice(0, 3).map(([k, v]) => `${k}=${v}`).join(" · ") : (sn.note || "—"))}
                       </span>
                     </div>
                   ))}
