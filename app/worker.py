@@ -142,6 +142,15 @@ celery_app.conf.beat_schedule = {
         "args": [],
         "options": {"expires": _EXPIRES_WEEKLY},
     },
+    # ========== P1-2 用户周报闭环（2026-10-24） ==========
+    # 每周一 07:00（用户起床高峰前，避开 03-05 的 SEO/备份窗口）为有活跃
+    # study 的用户生成「本周变化」站内通知，走 notifications 表 + /changes 深链
+    "user-weekly-report": {
+        "task": "app.tasks.weekly_report_tasks.generate_weekly_reports",
+        "schedule": crontab(hour=7, minute=0, day_of_week="mon"),
+        "args": [14, 2, 200],
+        "options": {"expires": _EXPIRES_WEEKLY},
+    },
     # ========== 心跳 & 自检（供看门狗判活） ==========
     # 每 10 分钟写一次心跳。心跳断了 = beat 死了，看门狗据此告警。
     "pipeline-heartbeat": {
