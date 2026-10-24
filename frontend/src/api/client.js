@@ -49,6 +49,13 @@ export const api = {
   /* ===== 健康评估（Agent 融合管线）===== */
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
   agentTeam:   (body) => request('/agent/team',   { method: 'POST', body: JSON.stringify(body) }),
+  // P0-3b（2026-10-24）：SSE 流式版本，用 fetch + ReadableStream 消费（不用 EventSource 因为需要 POST body）
+  agentTeamStream: (body) => fetch(`${API_BASE}/agent/team/stream`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }),
 
   /* ===== 健康护栏预检（提交自由文本前调用，命中即强提示就医）===== */
   emergencyCheck: (text) => request('/emergency/check', { method: 'POST', body: JSON.stringify({ text }) }),
