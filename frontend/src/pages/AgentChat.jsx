@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../api/client";
 import { track } from "../lib/track";
-import { MessageContent } from "../lib/markdown";
+import { MessageContent } from "../lib/markdown.jsx";
 import {
   loadHistory,
   appendMessage,
