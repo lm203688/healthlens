@@ -4,6 +4,52 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.36.0] - 2026-10-24（P0 剩余收敛：对话体验完整闭环 + 我的变化周报 + 埋点全覆盖）
+
+### Added（P0-3b SSE 流式对话端点）
+
+- **`POST /api/v1/agent/team/stream`**（`app/api/agent.py` 新增）——四角色 Agent 团队的 SSE 流式版本，`Content-Type: text/event-stream`，事件序列 `meta → plan → result → summary → done`（异常时 `error`）。响应头带 `Cache-Control: no-cache, no-transform` 与 `X-Accel-Buffering: no` 让 nginx/Cloudflare 不缓冲。前端可分阶段渐进渲染，先看到 Planner 输出再看到 Executor 与 Referee，避免长时间盯 "thinking" spinner。非流式 `/agent/team` 保留作 fallback。
+
+### Added（P0-3a 对话体验完整闭环）
+
+- **`frontend/src/lib/markdown.js`**（新增）——零依赖 Markdown 渲染器：支持 `**bold**` / `*italic*` / `` `code` `` / ` ``` 代码块 ` ``` / `- ` 与 `1.` 列表 / `>` 引用 / 空行分段。逐行分类 + 逐字符行内解析，避免拉入 react-markdown 让 bundle 涨 200KB。
+- **`frontend/src/lib/chatStore.js`**（新增）——localStorage 会话持久化：按 session_id 分区存 `hl_chat_history_v1`，支持 loadHistory / appendMessage / clearHistory / buildContext / listSessions。会话上限 10 个（按 updatedAt 裁），每会话消息上限 100 条，LOAD_WINDOW=50，CONTEXT_WINDOW=6。
+- **AgentChat.jsx 完整重构**：初始化从 localStorage 恢复历史（不再冷启动）；每次消息 `appendMessage` 落盘；发送前 `buildContext()` 自动携带最近 6 条作为多轮上下文；`<MessageContent>` 用 `markdown.js` 渲染替代裸 `{content}`；新增"清空会话"按钮 + 自动滚动到底部；SSE 分阶段事件（`parseSSE` + `handleSSEEvent`）边收边渲染。
+
+### Added（P0-2b 我的变化周报闭环）
+
+- **MyChanges.jsx**（新增"一键追踪"区块）：
+  - **自动快照** `autoSnapshot()`——从 localStorage `hl_last_assessment` 读最近一次 Dashboard 评估结果，调 `longitudinalAddSnapshot` 生成 baseline。无缓存时兜底走后端 `score_all_axes` 中性打分路径。
+  - **周报** `generateReport()`——取首末两个快照调 `longitudinalComparison` 做逐轴 delta 计算（末 - 首，正负着色）；对最新弱轴调 `causalReport` 做 DoWhy 反事实推演，展示 5/95 分位带；报告 UI 含追踪天数 / 快照数 / 起点终点 / 逐轴变化 / 因果归因 / 期间内干预 5 个区块。
+- **Dashboard.jsx 评估结果自动缓存**：`agentFusion` 完成后写 `hl_last_assessment` 到 localStorage，供 MyChanges 的自动快照消费。
+
+### Added（P0-4 剩余 7 个埋点事件全接入）
+
+- **Login.jsx**：`user_registered`（OTP 与 TOTP 两通道）
+- **Dashboard.jsx**：`assessment_question_answered`（每题作答）、`assessment_started` + `assessment_completed`（问卷提交时）、`recommendation_clicked`（建议卡点击，含 gate_passed 与 target）
+- **Upload.jsx**：`file_uploaded`（含 type/source_type/filename/size_kb）
+- **PulseDevice.jsx**：`device_connect_attempted`（每次脉象特征提交视为一次设备连接）
+- **Payment.jsx**：`payment_clicked`（CNY 与 USD 两通道，含 package 与 currency）
+- **Share.jsx**：`share_clicked`
+
+### Changed（版本 & 客户端封装）
+
+- **`frontend/src/api/client.js`** 新增 `agentTeamStream(body)`——用 fetch + ReadableStream 消费 POST SSE（EventSource 只支持 GET）。client.js 封装数 97 → 98。
+- **`frontend/src/i18n/locales/{zh,en}.json`** 新增 `agent.{clearBtn, confirmClear, clearHint}` 3 个 key（清空会话按钮）。
+- 版本从 0.35.0 → **0.36.0**：`pyproject.toml` / `agent-card.json` / `submissions/medrxiv/{cover_letter,data_availability,reviewer_guidance}.md` 全部同步。
+
+### 门禁结果
+
+- **pytest（本地 hlcheck venv）**：`1970 passed, 8 skipped, 0 failed` in 3m39s——**零回归**。本轮改动集中在前端 + 一个新 SSE 端点，无后端核心逻辑改动。
+- **前端埋点覆盖**：12 个核心事件白名单中 **12/12 全覆盖**（v0.35.0 时的 5/12 → 本轮补齐剩余 7 个）。
+- **对话体验覆盖**：Markdown 渲染 ✓ / 会话持久化 ✓ / 多轮上下文（自动携带最近 6 条）✓ / SSE 流式 ✓——P0-3 四项一次补齐。
+
+### Known limitations（诚实标注）
+
+- **SSE 端点是"分阶段"而非"token 级流式"**：`team_run` 内部是同步跑完再分阶段 yield，不是 LLM token 级 streaming。用户能看到"计划 → 执行 → 评审"逐步出现，但每阶段内部仍是原子返回。真 token 级流式需要 `healthlens_agent.team` 改为 generator 并配合 LLM provider 的 streaming API，属工程量的 P1 项。
+- **多轮上下文走"提示词拼接"**：`_combine_with_history` 把最近 4 条历史以 `[历史] role: content` 格式拼进 `user_input`，让规则引擎的关键词匹配能感知之前的对话。这不是真正的会话状态管理——若未来接 LLM，应改为真正的对话上下文传递。
+- **Markdown 渲染器支持子集有限**：仅覆盖实际用到的语法（bold/italic/code/列表/引用/分段），不支持链接/图片/表格。用户若粘贴外部内容需自行注意。
+
 ## [0.35.0] - 2026-10-23（P0 产品可达性 & 诚实性收敛：H 轴 fail-open + has_gene 语义 + 我的变化页 + 埋点 + ErrorBoundary）
 
 ### Fixed（P0-1 诚实性：产品评估报告定位的 2 个用户可见缺陷）
