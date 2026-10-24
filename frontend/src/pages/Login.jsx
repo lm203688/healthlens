@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import { track } from '../lib/track';
 
 const PHONE_RE = /^1[3-9]\d{9}$/;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -126,6 +127,8 @@ export default function Login() {
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('user_email', user?.email || account.trim());
+      // P0-4（2026-10-24）：登录成功 = 新用户或老用户回流；后端首次见到该账号即视为注册
+      try { track("user_registered", { source: "otp_verify", channel: kind || "unknown" }); } catch {}
       setNotice(t('login.verifySuccess'));
       setTimeout(() => navigate('/'), 600);
     } catch (err) {
@@ -160,6 +163,8 @@ export default function Login() {
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('user_email', user?.email || user?.phone || '');
+      // P0-4（2026-10-24）：TOTP 通道同样记录登录事件
+      try { track("user_registered", { source: "totp_verify" }); } catch {}
       setNotice(t('login.verifySuccess'));
       setTimeout(() => navigate('/'), 600);
     } catch (err) {
