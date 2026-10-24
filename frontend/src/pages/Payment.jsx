@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api, apiBase } from '../api/client';
+import { track } from '../lib/track';
 
 export default function Payment() {
   const { t } = useTranslation();
@@ -48,6 +49,8 @@ export default function Payment() {
   async function handlePayment(packageCode) {
     setCreating(true);
     setError(null);
+    // P0-4（2026-10-24）：支付按钮点击（CNY 通道）
+    try { track("payment_clicked", { package: packageCode, currency: "CNY" }); } catch {}
     try {
       const resp = await api.paymentCreate({ package_code: packageCode, currency: 'CNY' });
       const data = await resp.json();
@@ -67,6 +70,8 @@ export default function Payment() {
   async function handleCreemCheckout(packageCode) {
     setCreating(true);
     setError(null);
+    // P0-4（2026-10-24）：支付按钮点击（USD 通道）
+    try { track("payment_clicked", { package: packageCode, currency: "USD" }); } catch {}
     try {
       const resp = await api.paymentCreate({ package_code: packageCode, currency: 'USD' });
       const data = await resp.json();
