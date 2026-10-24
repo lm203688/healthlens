@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
+import { track } from '../lib/track';
 
 // endpoint 决定走哪个后端路由；sourceType 是后端 ConnectorRegistry 的键
 // 后端：/connections/upload 支持 apple_health | google_health，/genome/upload 支持 VCF/txt
@@ -68,6 +69,15 @@ export default function Upload() {
       const data = await resp.json();
       if (!resp.ok) throw new Error(data?.detail || t('upload.uploadFailed'));
       setResult({ type: typeKey, data });
+      // P0-4（2026-10-24）：文件上传成功埋点
+      try {
+        track("file_uploaded", {
+          type: typeKey,
+          source_type: sourceType,
+          filename: file.name,
+          size_kb: Math.round(file.size / 1024),
+        });
+      } catch {}
     } catch (err) {
       setError(err.message);
     } finally {
