@@ -291,6 +291,33 @@ def build():
         _files = [f for f in (DIST / "app").rglob("*") if f.is_file()]
         _size = sum(f.stat().st_size for f in _files)
         log(f"  app/                  {len(_files)} 个文件 / {_size // 1024} KB（React SPA，入口 /app/）")
+        # ---------- 1c-ter. 根 / index.html 的 dev 模板修正 ----------
+        # 背景：frontend/index.html 是 vite dev 模板（含 <script src="/src/main.jsx">），
+        # build_site.py 步骤 [1/5] 会把它原样复制到 DIST/index.html 上线。生产环境
+        # /src/main.jsx 无对应文件（vite 只在 dev 模式解析该路径），Cloudflare Pages
+        # 会 SPA fallback 到 /app/index.html 但 URL 仍指向 /src/main.jsx，React 应用
+        # 完全起不来——根 / 变成一个"白屏 + 404 网络错误"的死角。
+        # 修复：SPA 构建完成后再回写 DIST/index.html，把 /src/main.jsx 替换为真实
+        # hashed bundle（/app/assets/index-XXXX.js）。这样 CF Pages 上：
+        #   /  → 命中真实 index.html → 加载 /app/assets/index-XXXX.js → React 起
+        #   /app/ → 走 SPA fallback → 加载同一份 bundle → React 起
+        # 两个入口共享同一份前端代码，v0.36.0 起 /app/ 独占 SPA 的分裂问题彻底消除。
+        root_idx = DIST / "index.html"
+        spa_assets = DIST / "app" / "assets"
+        if root_idx.is_file() and spa_assets.is_dir():
+            js_candidates = sorted(spa_assets.glob("index-*.js"))
+            if js_candidates:
+                bundle_name = js_candidates[-1].name
+                new_src = f"/app/assets/{bundle_name}"
+                old_txt = root_idx.read_text(encoding="utf-8")
+                new_txt = old_txt.replace('src="/src/main.jsx"', f'src="{new_src}"')
+                if new_txt != old_txt:
+                    root_idx.write_text(new_txt, encoding="utf-8")
+                    log(f"  根 index.html          /src/main.jsx -> {new_src}")
+                else:
+                    log(f"  [WARN] 根 index.html 未包含 /src/main.jsx（结构变更？跳过替换）")
+            else:
+                log(f"  [WARN] 未找到 /app/assets/index-*.js，根 index.html 无法修正")
     else:
         errors.append(
             f"React SPA 产物缺失且自动构建失败: {spa_dist}（/app/ 不可用；"
