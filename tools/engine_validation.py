@@ -191,7 +191,7 @@ def _git_sha() -> str:
             ["git", "rev-parse", "--short", "HEAD"],
             cwd=OUT,
             stderr=subprocess.DEVNULL,
-            text=True,
+            text=True, encoding="utf-8", errors="replace",
         ).strip()
     except Exception:
         return "nogit"
