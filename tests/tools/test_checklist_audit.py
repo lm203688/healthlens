@@ -14,7 +14,7 @@ SCRIPT = ROOT / "tools" / "checklist_audit.py"
 def _run(*args):
     return subprocess.run(
         [PY, str(SCRIPT), *args],
-        capture_output=True, text=True, cwd=str(ROOT), timeout=60,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(ROOT), timeout=60,
     )
 
 
