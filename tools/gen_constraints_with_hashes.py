@@ -28,7 +28,7 @@ def pip_freeze() -> list[str]:
     """跑 pip freeze，返回原始行列表。"""
     r = subprocess.run(
         [sys.executable, "-m", "pip", "freeze"],
-        capture_output=True, text=True, check=True,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", check=True,
     )
     return [l for l in r.stdout.splitlines() if l.strip() and not l.startswith("-e ")]
 
