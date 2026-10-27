@@ -201,10 +201,13 @@ jobs:
       - name: Run subprocess-heavy tests (GBK regression guard)
         # 目标：P0-QA-01 修复前在 Windows 上失败的那批子进程捕获测试。
         # 任一失败即退出非零 → 跨平台可复现性被破坏，必须修复后再合入。
+        # 【2026-10-27 补全】加入 test_instrument_convergent / test_reproducibility_adversarial：
+        # 两者用 sys.executable 派生子进程（check=True 不 capture，输出直达 pytest 管道），
+        # 同样依赖 PYTHONIOENCODING=utf-8 继承才能跨平台稳定——与本地实跑 154 passed 对齐。
         env:
           PYTHONIOENCODING: "utf-8"
         run: |
-          pytest tests/tools/test_sync_test_count.py tests/tools/test_causal_end_to_end.py tests/tools/test_checklist_audit.py tests/tools/test_fill_placeholders.py tests/tools/test_literature_triangulation_cvi.py tests/test_version_sync.py tests/lib/test_graphrag_security.py tests/lib/test_reliability_bootstrap.py tests/test_indicator_content_validity.py -v --tb=short
+          pytest tests/tools/test_sync_test_count.py tests/tools/test_causal_end_to_end.py tests/tools/test_checklist_audit.py tests/tools/test_fill_placeholders.py tests/tools/test_literature_triangulation_cvi.py tests/test_version_sync.py tests/lib/test_graphrag_security.py tests/lib/test_reliability_bootstrap.py tests/test_indicator_content_validity.py tests/lib/test_instrument_convergent.py tests/lib/test_reproducibility_adversarial.py -v --tb=short
 
   docker-build:
     name: Docker Build
@@ -342,3 +345,51 @@ jobs:
           python skills/tcm_text_mining/test.py
           python skills/fusion_inference/test.py
           python skills/evidence_grading/test.py
+
+  # --------------------------------------------------------------------------
+  # 【2026-10-27 P0-QA-01】前端测试门禁（新增，此前前端无任何自动化测试）。
+  #
+  # 背景：全面提升报告 §11.1 指出前端质量缺口——`package.json` 声明了
+  # `lint: eslint src/ --fix` 却未声明 eslint 依赖、无任何 ESLint 配置文件、
+  # 无测试脚本。`npm run lint` 在 CI 上实际从未真正跑过。
+  #
+  # 本 job 落地三件事：
+  #   ① Vitest 回归测试（tests/onboardingAnswers.test.js，锁定 P0-FE-01
+  #      答案键「写键=key、读键=key」语义，防索引读键再次混入）；
+  #   ② ESLint 检出不修复（去掉 --fix 作为唯一 CI lint 行为，报告 §9 要求）；
+  #   ③ 生产构建（vite build）确认可打包。
+  # 任一失败即阻断主分支。npm ci 走锁文件，保证可复现。
+  # --------------------------------------------------------------------------
+  frontend-test:
+    name: Frontend Test (Vitest + ESLint + build)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Run Vitest
+        working-directory: frontend
+        run: npm run test
+
+      - name: Lint (ESLint, no auto-fix)
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+        env:
+          # 与部署 workflow 一致：/app/ 子路径（SPA 不能顶替根路径 SEO 首页）
+          NODE_ENV: production
