@@ -143,7 +143,7 @@ class TestToolExecution:
         """--check must exit 0 given the tracked report passes threshold."""
         r = subprocess.run(
             [_python(), str(TOOL), "--check"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=120,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(REPO_ROOT), timeout=120,
         )
         assert r.returncode == 0, (
             f"--check returned {r.returncode}\nstdout={r.stdout[:400]}\nstderr={r.stderr[:400]}"
@@ -154,7 +154,7 @@ class TestToolExecution:
         before = REPORT.read_bytes()
         r = subprocess.run(
             [_python(), str(TOOL), "--show"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=120,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(REPO_ROOT), timeout=120,
         )
         assert r.returncode == 0
         after = REPORT.read_bytes()
