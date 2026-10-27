@@ -2,7 +2,7 @@
 """认证相关 Schema"""
 
 import re
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, field_validator, model_validator
 
 
 PASSWORD_MIN_LENGTH = 8
@@ -145,7 +145,30 @@ class TotpEnrollInput(BaseModel):
 
 
 class TotpVerifyInput(BaseModel):
-    """TOTP 验证码校验输入"""
+    """TOTP 验证码校验输入（第二因素：需先通过 /totp/challenge 拿到一次性挑战）"""
+
+    challenge: str  # 第一因素校验后签发的一次性短时挑战
+    code: str  # 6 位数字
+
+    @field_validator("challenge")
+    @classmethod
+    def validate_challenge(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("请先完成第一因素校验")
+        return v
+
+    @field_validator("code")
+    @classmethod
+    def validate_code(cls, v: str) -> str:
+        v = (v or "").strip().replace(" ", "")
+        if not v.isdigit() or len(v) != 6:
+            raise ValueError("验证码应为 6 位数字")
+        return v
+
+
+class TotpConfirmInput(BaseModel):
+    """TOTP 注册确认输入（仅含 6 位码，不需要 challenge——这是绑定流程不是登录）"""
 
     code: str  # 6 位数字
 
@@ -156,6 +179,43 @@ class TotpVerifyInput(BaseModel):
         if not v.isdigit() or len(v) != 6:
             raise ValueError("验证码应为 6 位数字")
         return v
+
+
+class TotpChallengeInput(BaseModel):
+    """TOTP 第二因素挑战输入：账号 + 第一因素（密码 或 短信/邮件验证码）"""
+
+    account: str  # 邮箱或手机号
+    password: str | None = None  # 密码通道的第一因素
+    otp_code: str | None = None  # 短信/邮件验证码通道的第一因素
+
+    @field_validator("account")
+    @classmethod
+    def validate_account(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("请输入邮箱或手机号")
+        if "@" in v:
+            if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", v):
+                raise ValueError("邮箱格式不正确")
+        else:
+            if not re.match(r"^1[3-9]\d{9}$", v):
+                raise ValueError("手机号格式不正确（应为 1[3-9] 开头的 11 位号码）")
+        return v
+
+    @model_validator(mode="after")
+    def _validate_first_factor(self):
+        if not self.password and not self.otp_code:
+            raise ValueError("请提供密码或短信验证码作为第一因素")
+        return self
+
+
+class TotpChallengeOutput(BaseModel):
+    """TOTP 挑战签发输出"""
+
+    challenge: str
+    expires_in: int  # 挑战有效期（秒）
+    method: str  # 第一因素使用的通道（password | otp）
+    requires_totp: bool  # 该账号是否启用了 TOTP
 
 
 class JurisdictionUpdateInput(BaseModel):
