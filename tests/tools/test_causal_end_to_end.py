@@ -51,7 +51,7 @@ def _run(*args, n_boot=2000, n_ind=100, tmp_dir=None, json_only=False):
         cmd += ["--output-dir", str(tmp_dir)]
     cmd += list(args)
     return subprocess.run(
-        cmd, capture_output=True, text=True, cwd=str(ROOT), timeout=90,
+        cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(ROOT), timeout=90,
     )
 
 
