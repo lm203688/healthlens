@@ -199,7 +199,7 @@ def check_security():
         try:
             r = subprocess.run(
                 ["git", "ls-files", "--error-unmatch", ".env"],
-                cwd=str(healthlens_dir), capture_output=True, text=True, timeout=10,
+                cwd=str(healthlens_dir), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10,
             )
             if r.returncode == 0:
                 issues.append({"severity": "critical", "issue": ".env 已被 git 跟踪，存在凭证泄露风险"})
@@ -226,7 +226,7 @@ def check_docker_containers(config):
             ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "BatchMode=yes",
              "-o", "ConnectTimeout=10", ssh_host,
              "docker ps --format '{{.Names}}|{{.Status}}'"],
-            capture_output=True, text=True, timeout=20,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
         )
         if result.returncode != 0:
             return {
