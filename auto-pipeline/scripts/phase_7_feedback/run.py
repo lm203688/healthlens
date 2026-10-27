@@ -59,7 +59,7 @@ def main() -> int:
             proc = subprocess.run(
                 [sys.executable, str(path)],
                 capture_output=True,
-                text=True,
+                text=True, encoding="utf-8", errors="replace",
                 timeout=timeout,
                 cwd=str(HERE),
             )
