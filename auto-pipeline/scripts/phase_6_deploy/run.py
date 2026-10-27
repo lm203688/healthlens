@@ -183,7 +183,7 @@ def build_dist(py_exe: str, out_dir: Path) -> bool:
     log(f"[build] 输出目录: {out_dir}")
     r = subprocess.run(
         [py_exe, str(BUILD_SCRIPT), "--out", str(out_dir)],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=600,
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600,
     )
     for line in (r.stdout or "").splitlines()[-24:]:
         log(f"  {line}")
@@ -238,7 +238,7 @@ def deploy_to_pages(dist_dir: Path, config: dict) -> dict:
         try:
             r = subprocess.run(
                 cmd, cwd=str(REPO_ROOT), env=env,
-                capture_output=True, text=True, timeout=900,
+                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=900,
             )
             rc, out = r.returncode, (r.stdout or "")
         except Exception as e:
