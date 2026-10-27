@@ -40,7 +40,13 @@ jobs:
         # 直接 exit 1——把"三个月后装出的是另一个系统"从可能性变成不可能。
         run: |
           pip install --upgrade pip "setuptools>=70" wheel
-          pip install -e ".[dev]" -c constraints.txt --require-hashes
+          # 【2026-10-27 P0-QA-01 修复】pip 硬限制：editable 本地包（-e .）
+          # 无法参与 --require-hashes（无单个文件可哈希），此前该行在 CI 上
+          # 必失败（"editable requirement cannot be installed when requiring
+          # hashes"）。生产依赖的 hash 完整性已由下方 "Constraints integrity
+          # gate" 用 --require-hashes -c constraints.txt -r requirements.txt
+          # 单独校验，故此处安装不带 --require-hashes，版本仍由 -c 约束。
+          pip install -e ".[dev]" -c constraints.txt
 
       - name: Constraints integrity gate
         # 【D2 门禁】确保 requirements.txt 与 constraints.txt 无冲突、无遗漏。
