@@ -157,7 +157,7 @@ def run_phase(phase_id: int, dry_run: bool = False, **params: Any) -> dict:
         result = subprocess.run(
             [sys.executable, str(run_script), "--params", json.dumps(params, ensure_ascii=False)],
             capture_output=True,
-            text=True,
+            text=True, encoding="utf-8", errors="replace",
             cwd=str(phase_dir),
             timeout=300,
             env={**__import__("os").environ, "HEALTHLENS_ROOT": str(ROOT)},
