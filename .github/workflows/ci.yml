@@ -153,6 +153,50 @@ jobs:
           name: coverage-report
           path: coverage.xml
 
+  # --------------------------------------------------------------------------
+  # 【2026-10-27 P0-QA-01】Windows 跨平台门禁（双 CI 之二）。
+  #
+  # 背景：全面评估报告 §三 P0 质量项发现，本机 Windows 分组测试有 19 个失败
+  # 全部集中于 GBK 解码子进程输出（subprocess.run 在 Windows 默认区域
+  # cp936/GBK 下解码 UTF-8 中文输出失败，或子进程自身因 stdout 编码为 GBK
+  # 抛 UnicodeEncodeError）。这使跨平台贡献者与发布结果不可复现。
+  #
+  # 修复：① 所有 subprocess.run 捕获点统一 encoding="utf-8", errors="replace"；
+  # ② tests/conftest.py 顶层 os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+  # 让派生的 Python 子进程以 UTF-8 输出；③ 本 job 在 Windows 上真实跑这些
+  # 子进程密集型测试，任何 GBK 回归立即失败。
+  #
+  # 说明：不能复用主 job 的 `-c constraints.txt --require-hashes`——该文件
+  # 的 sha256 是 Linux wheel 的（2026-10-17 用 pip install --dry-run 生成），
+  # Windows 会解析到不同平台的 wheel 而 hash 不匹配。故 Windows 走无 hash
+  # 安装（版本仍由 pyproject 的 [dev] 声明约束），专责测编码可复现性。
+  # --------------------------------------------------------------------------
+  windows-subprocess-test:
+    name: Windows Subprocess Encoding Test (GBK guard)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies (no hash pin — constraints.txt is Linux-wheel hashes)
+        run: |
+          pip install --upgrade pip "setuptools>=70" wheel
+          pip install -e ".[dev]"
+
+      - name: Run subprocess-heavy tests (GBK regression guard)
+        # 目标：P0-QA-01 修复前在 Windows 上失败的那批子进程捕获测试。
+        # 任一失败即退出非零 → 跨平台可复现性被破坏，必须修复后再合入。
+        env:
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          pytest tests/tools/test_sync_test_count.py tests/tools/test_causal_end_to_end.py tests/tools/test_checklist_audit.py tests/tools/test_fill_placeholders.py tests/tools/test_literature_triangulation_cvi.py tests/test_version_sync.py tests/lib/test_graphrag_security.py tests/lib/test_reliability_bootstrap.py tests/test_indicator_content_validity.py -v --tb=short
+
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
