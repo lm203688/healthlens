@@ -51,7 +51,7 @@ def crossref_query(doi):
             ["curl", "-s", "--max-time", "20", "--ssl-no-revoke", "--tlsv1.3",
              "-A", f"healthlens-verify/1.0 (mailto:{EMAIL})", "-w", "\n%{http_code}",
              url],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30,
         )
     except Exception as e:  # noqa
         return "error", {"error": str(e)}
