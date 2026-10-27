@@ -211,7 +211,7 @@ class SkillRegistry:
             result = subprocess.run(
                 [sys.executable, str(test_path)],
                 capture_output=True,
-                text=True,
+                text=True, encoding="utf-8", errors="replace",
                 cwd=str(HEALTHLENS_ROOT),
                 timeout=60,
             )
