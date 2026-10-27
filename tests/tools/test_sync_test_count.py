@@ -38,13 +38,13 @@ def _py():
 
 def test_check_passes_when_files_agree():
     """All four files currently claim the same N -> check exits 0."""
-    r = subprocess.run(_py() + ["--check"], capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(_py() + ["--check"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode == 0, f"check failed unexpectedly:\n{r.stdout}\n{r.stderr}"
     assert "all files agree" in r.stdout
 
 
 def test_check_output_lists_all_four_targets():
-    r = subprocess.run(_py() + ["--check"], capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(_py() + ["--check"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode == 0
     for rel in (
         "submissions/medrxiv/submission_manifest.json",
@@ -63,7 +63,7 @@ def test_check_output_lists_all_four_targets():
 # ---------------------------------------------------------------------------
 
 def test_print_emits_single_integer():
-    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode == 0
     n = int(r.stdout.strip())
     # Sanity: paper claims are in the plausible range (thousands, not hundreds).
@@ -72,7 +72,7 @@ def test_print_emits_single_integer():
 
 def test_printed_count_matches_each_file():
     """The single canonical N printed must appear as an actual claim in each file."""
-    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode == 0
     n = r.stdout.strip()
     pattern = r"\b" + n + r"\b"
@@ -110,7 +110,7 @@ def test_every_target_has_at_least_one_claim():
 def test_apply_is_idempotent(tmp_path, monkeypatch):
     """--apply with pytest.out matching the current canonical N must be a no-op."""
     # Figure out the current canonical N
-    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, cwd=ROOT)
+    r = subprocess.run(_py() + ["--print"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode == 0
     canonical = int(r.stdout.strip())
 
@@ -123,7 +123,7 @@ def test_apply_is_idempotent(tmp_path, monkeypatch):
                    encoding="utf-8")
 
     r2 = subprocess.run(_py() + ["--apply", "--pytest-out", str(out)],
-                        capture_output=True, text=True, cwd=ROOT)
+                        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r2.returncode == 0, f"apply failed:\n{r2.stdout}\n{r2.stderr}"
 
     # All four files must be byte-identical to their pre-apply state
@@ -143,7 +143,7 @@ def test_apply_updates_when_pytest_count_differs(tmp_path, monkeypatch):
                        encoding="utf-8")
 
         r = subprocess.run(_py() + ["--apply", "--pytest-out", str(out)],
-                           capture_output=True, text=True, cwd=ROOT)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
         assert r.returncode == 0, f"apply failed:\n{r.stdout}\n{r.stderr}"
 
         # All four files must now report the new N
@@ -152,7 +152,7 @@ def test_apply_updates_when_pytest_count_differs(tmp_path, monkeypatch):
             assert re.search(rf"\b{new_n}\b", text), f"{t} did not get updated to {new_n}"
 
         # And the check mode must now pass with the new canonical value
-        r2 = subprocess.run(_py() + ["--check"], capture_output=True, text=True, cwd=ROOT)
+        r2 = subprocess.run(_py() + ["--check"], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
         assert r2.returncode == 0, f"post-apply check failed:\n{r2.stdout}"
     finally:
         # Restore originals regardless of outcome
@@ -162,7 +162,7 @@ def test_apply_updates_when_pytest_count_differs(tmp_path, monkeypatch):
 
 def test_apply_missing_pytest_out_fails_cleanly(tmp_path):
     r = subprocess.run(_py() + ["--apply", "--pytest-out", str(tmp_path / "nope.out")],
-                       capture_output=True, text=True, cwd=ROOT)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
     assert r.returncode != 0
     assert "not found" in (r.stdout + r.stderr).lower()
 
