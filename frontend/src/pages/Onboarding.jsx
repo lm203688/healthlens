@@ -17,46 +17,14 @@ import { api } from "../api/client";
 import MedicalDisclaimer from "../components/HealthDisclaimer";
 import AxisRadar from "../components/AxisRadar";
 import { track } from "../lib/track";
-
-/* 3 道快速题，每题 3-4 个选项，映射到 H/D/G 三轴 */
-const QUICK_QUESTIONS = [
-  {
-    key: "sleep",
-    icon: "😴",
-    titleKey: "onboarding.q1Title",
-    options: [
-      { key: "a", labelKey: "onboarding.q1a", score: 30, symptom: "insomnia,fatigue" },
-      { key: "b", labelKey: "onboarding.q1b", score: 55, symptom: "early_wake" },
-      { key: "c", labelKey: "onboarding.q1c", score: 75, symptom: "" },
-      { key: "d", labelKey: "onboarding.q1d", score: 90, symptom: "" },
-    ],
-  },
-  {
-    key: "energy",
-    icon: "⚡",
-    titleKey: "onboarding.q2Title",
-    options: [
-      { key: "a", labelKey: "onboarding.q2a", score: 35, symptom: "fatigue,low_energy" },
-      { key: "b", labelKey: "onboarding.q2b", score: 60, symptom: "daytime_fatigue" },
-      { key: "c", labelKey: "onboarding.q2c", score: 80, symptom: "" },
-      { key: "d", labelKey: "onboarding.q2d", score: 92, symptom: "" },
-    ],
-  },
-  {
-    key: "mood",
-    icon: "🙂",
-    titleKey: "onboarding.q3Title",
-    options: [
-      { key: "a", labelKey: "onboarding.q3a", score: 30, symptom: "anxiety,low_mood,irritable" },
-      { key: "b", labelKey: "onboarding.q3b", score: 55, symptom: "stress" },
-      { key: "c", labelKey: "onboarding.q3c", score: 78, symptom: "" },
-      { key: "d", labelKey: "onboarding.q3d", score: 90, symptom: "" },
-    ],
-  },
-];
-
-/* 未解锁轴列表（Step 2 提示语用） */
-const LOCKED_AXES = ["A", "B", "C", "E", "F"];
+import {
+  QUICK_QUESTIONS,
+  LOCKED_AXES,
+  chosenQuestions,
+  allAnswered,
+  buildUserInput,
+  buildPartialScores,
+} from "../lib/onboardingAnswers";
 
 export default function Onboarding() {
   const { t } = useTranslation();
@@ -92,17 +60,13 @@ export default function Onboarding() {
   /* Step 1 完成：把 3 题拼成 user_input 调 /agent/fusion，得到部分八轴评分 */
   async function submitQuick() {
     // P0-FE-01：统一按 q.key 读取（此前按 answers[i] 索引读，永远 undefined，三题后无法提交）
-    const chosen = QUICK_QUESTIONS.filter((q) => answers[q.key]);
+    const chosen = chosenQuestions(answers);
     if (chosen.length < 3) return;
 
     setAnalyzing(true);
     try {
-      const parts = [];
-      if (chosen[0].symptom) parts.push(chosen[0].symptom);
-      if (chosen[1].symptom) parts.push(chosen[1].symptom);
-      if (chosen[2].symptom) parts.push(chosen[2].symptom);
       // 无具体症状也走一次 fusion，走"泛基线"（会返回未测量 8 轴，前端展示"3 轴已测"是产品层）
-      const resp = await api.agentFusion({ user_input: parts.join(" | ") || "baseline" });
+      const resp = await api.agentFusion({ user_input: buildUserInput(answers) });
       const data = await resp.json();
       if (resp.ok) {
         setResult(data);
@@ -141,16 +105,10 @@ export default function Onboarding() {
 
   /* Step 1 未完成时的按钮态 */
   // P0-FE-01：统一按 q.key 读取（此前按 answers[i] 索引读，永远 false，提交按钮恒被禁用）
-  const readyForSubmit = QUICK_QUESTIONS.every((q) => answers[q.key]);
+  const readyForSubmit = allAnswered(answers);
 
-  /* 部分八轴评分（仅 3 轴有值，其余为 0，用颜色区分） */
-  function buildPartialScores() {
-    const scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0 };
-    if (answers.sleep) scores.G = answers.sleep.score;
-    if (answers.energy) scores.D = answers.energy.score;
-    if (answers.mood) scores.H = answers.mood.score;
-    return scores;
-  }
+  /* 部分八轴评分（仅 3 轴有值，其余为 0，用颜色区分）——纯函数见 onboardingAnswers.js */
+  const scores = buildPartialScores(answers);
   const partialColors = {
     A: "#cbd5e1", B: "#cbd5e1", C: "#cbd5e1",
     D: "#06b6d4", E: "#cbd5e1", F: "#cbd5e1",
@@ -279,7 +237,6 @@ export default function Onboarding() {
   }
 
   /* Step 2：3 轴已测的雷达 + 引导连设备/传化验单 */
-  const scores = buildPartialScores();
   return (
     <div className="max-w-2xl mx-auto space-y-5">
       <div className="text-center">
