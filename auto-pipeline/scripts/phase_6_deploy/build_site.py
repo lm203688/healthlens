@@ -256,7 +256,7 @@ def build():
     def _run_npm(cmd: str, timeout: int = 600):
         return subprocess.run(
             cmd, cwd=str(ROOT / "frontend"), shell=True,
-            capture_output=True, text=True, timeout=timeout,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout,
         )
 
     if not _spa_ready():
