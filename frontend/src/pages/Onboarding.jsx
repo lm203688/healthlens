@@ -91,7 +91,8 @@ export default function Onboarding() {
 
   /* Step 1 完成：把 3 题拼成 user_input 调 /agent/fusion，得到部分八轴评分 */
   async function submitQuick() {
-    const chosen = QUICK_QUESTIONS.filter((_, i) => answers[i]);
+    // P0-FE-01：统一按 q.key 读取（此前按 answers[i] 索引读，永远 undefined，三题后无法提交）
+    const chosen = QUICK_QUESTIONS.filter((q) => answers[q.key]);
     if (chosen.length < 3) return;
 
     setAnalyzing(true);
@@ -139,7 +140,8 @@ export default function Onboarding() {
   }
 
   /* Step 1 未完成时的按钮态 */
-  const readyForSubmit = QUICK_QUESTIONS.every((_, i) => answers[i]);
+  // P0-FE-01：统一按 q.key 读取（此前按 answers[i] 索引读，永远 false，提交按钮恒被禁用）
+  const readyForSubmit = QUICK_QUESTIONS.every((q) => answers[q.key]);
 
   /* 部分八轴评分（仅 3 轴有值，其余为 0，用颜色区分） */
   function buildPartialScores() {
