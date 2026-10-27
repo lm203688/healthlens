@@ -121,7 +121,7 @@ def crossref_resolve(doi: str) -> tuple[str, dict]:
         proc = subprocess.run(
             ["curl", "-s", "--max-time", "20", "--ssl-no-revoke", "--tlsv1.3",
              "-A", EMAIL, "-w", "\n%{http_code}", url],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30,
         )
     except Exception as e:  # noqa: BLE001
         return "error", {"error": str(e)}
