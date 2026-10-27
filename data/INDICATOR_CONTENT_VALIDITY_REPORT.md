@@ -1,6 +1,6 @@
 # Indicator Content-Validity Panel (ICV-Panel) Report
 
-- **Date**: 2026-10-24
+- **Date**: 2026-10-27
 - **Indicators evaluated**: 16
 - **Consensus sources consulted**: 16
 - **S-ICV/Ave** (indicator-level mean agreement): **0.9409
