@@ -8,8 +8,8 @@ export function apiBase() { return API_BASE; }
 const APP_BASE = import.meta.env.BASE_URL || '/app/';
 
 async function request(path, options = {}) {
-  const token = localStorage.getItem('token');
   const headers = { 'Content-Type': 'application/json', ...options.headers };
+  const token = localStorage.getItem('token');
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const resp = await fetch(`${API_BASE}${path}`, { ...options, headers });
@@ -19,6 +19,42 @@ async function request(path, options = {}) {
     window.location.href = `${APP_BASE}login`;
   }
   return resp;
+}
+
+/* ===== P0-AUTH-01：统一鉴权请求工厂 =====
+ * 此前 agentTeamStream（SSE）与 genomeUpload（表单）绕过 request()，未附带本地 Bearer，
+ * 导致流式接口持续 401 降级、基因上传被后端强制登录拒绝。
+ * 三个工厂只在一个地方管理 token 与 401 跳转：
+ *  - request():      JSON 请求（默认 Content-Type: application/json + Bearer）
+ *  - requestForm():  表单请求（不设 Content-Type，让浏览器自动带 multipart boundary + Bearer）
+ *  - requestStream():流式请求（JSON + Bearer + credentials，不触发 401 跳转，由调用方处理）
+ */
+function bearerHeaders(extra = {}) {
+  const headers = { ...extra };
+  const token = localStorage.getItem('token');
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
+
+function handleAuthRedirect(resp) {
+  if (resp.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
+    window.location.href = `${APP_BASE}login`;
+  }
+  return resp;
+}
+
+// 表单请求：不设 Content-Type，仅附 Bearer + 401 跳转
+async function requestForm(path, options = {}) {
+  const resp = await fetch(`${API_BASE}${path}`, { ...options, headers: bearerHeaders(options.headers) });
+  return handleAuthRedirect(resp);
+}
+
+// 流式请求：JSON Content-Type + Bearer + credentials，不触发 401 跳转（流式自行处理）
+async function requestStream(path, options = {}) {
+  const headers = bearerHeaders({ 'Content-Type': 'application/json', ...options.headers });
+  return fetch(`${API_BASE}${path}`, { ...options, headers });
 }
 
 export const api = {
@@ -33,15 +69,17 @@ export const api = {
   otpVerify: (body) => request('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
 
   /* ===== TOTP 验证器 App 通道 =====
-   * enroll/disable 无需请求体；verify/confirm 传 { code }；method 传 { method: 'otp'|'totp' }
-   * 登录（verify）为未鉴权端点：仅 6 位码即可登录已绑定用户。
-   * 绑定（enroll/confirm/disable/method）需先登录，故放在个人档案页。 */
-  totpStatus:  ()     => request('/auth/totp/status'),
-  totpEnroll:  ()     => request('/auth/totp/enroll',  { method: 'POST' }),
-  totpVerify:  (body) => request('/auth/totp/verify',  { method: 'POST', body: JSON.stringify(body) }),
-  totpConfirm: (body) => request('/auth/totp/confirm', { method: 'POST', body: JSON.stringify(body) }),
-  totpDisable: ()     => request('/auth/totp/disable', { method: 'POST' }),
-  totpMethod:  (body) => request('/auth/totp/method',  { method: 'PUT',  body: JSON.stringify(body) }),
+   * P0-AUTH-02：TOTP 从「独立登录因素」改为「第一因素→挑战→TOTP」第二因素流程。
+   * challenge()：账号+第一因素（密码/OTP）→ 签发一次性短时挑战
+   * verify()   ：挑战+6 位码 → 签发登录 token（替代旧版仅凭码遍历全部用户）
+   * enroll/confirm/disable/method：绑定流程，仍需登录态，放在个人档案页。 */
+  totpStatus:   ()     => request('/auth/totp/status'),
+  totpChallenge:(body) => request('/auth/totp/challenge', { method: 'POST', body: JSON.stringify(body) }),
+  totpEnroll:   ()     => request('/auth/totp/enroll',  { method: 'POST' }),
+  totpVerify:   (body) => request('/auth/totp/verify',  { method: 'POST', body: JSON.stringify(body) }),
+  totpConfirm:  (body) => request('/auth/totp/confirm', { method: 'POST', body: JSON.stringify(body) }),
+  totpDisable:  ()     => request('/auth/totp/disable', { method: 'POST' }),
+  totpMethod:   (body) => request('/auth/totp/method',  { method: 'PUT',  body: JSON.stringify(body) }),
 
   /* ===== 法域/合规设置 ===== */
   updateJurisdiction: (body) => request('/auth/jurisdiction', { method: 'PUT', body: JSON.stringify(body) }),
@@ -50,10 +88,10 @@ export const api = {
   agentFusion: (body) => request('/agent/fusion', { method: 'POST', body: JSON.stringify(body) }),
   agentTeam:   (body) => request('/agent/team',   { method: 'POST', body: JSON.stringify(body) }),
   // P0-3b（2026-10-24）：SSE 流式版本，用 fetch + ReadableStream 消费（不用 EventSource 因为需要 POST body）
-  agentTeamStream: (body) => fetch(`${API_BASE}/agent/team/stream`, {
+  // P0-AUTH-01：改走统一 requestStream()，附带本地 Bearer（此前裸 fetch 无 Authorization，持续 401 降级）
+  agentTeamStream: (body) => requestStream('/agent/team/stream', {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   }),
 
@@ -93,7 +131,8 @@ export const api = {
   freemiumCheck: (featureCode) => request(`/freemium/check?feature_code=${featureCode}`),
 
   /* ===== 基因组上传 ===== */
-  genomeUpload: (formData) => fetch(`${API_BASE}/genome/upload`, { method: 'POST', body: formData }),
+  // P0-AUTH-01：改走统一 requestForm()，附带本地 Bearer（此前裸 fetch 无 Authorization，被后端强制登录拒绝）
+  genomeUpload: (formData) => requestForm('/genome/upload', { method: 'POST', body: formData }),
   genomeProfile: () => request('/genome/profile'),
   genomePgx: () => request('/genome/pgx'),
 
