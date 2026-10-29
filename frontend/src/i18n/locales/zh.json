@@ -544,7 +544,12 @@
     "retention": "健康目标",
     "pulse": "号脉",
     "myChanges": "我的变化",
-    "partner": "合作开发"
+    "partner": "合作开发",
+    "today": "今天",
+    "groupToday": "今天",
+    "groupExperiments": "我的实验",
+    "groupData": "我的数据",
+    "groupSupport": "专业支持"
   },
   "errors": {
     "notFound": "页面不存在",
@@ -898,5 +903,27 @@
     "applyBtn": "提交申请",
     "applySent": "已提交申请，请留意你的邮箱",
     "footerNote": "Powered-by HealthLens · api.healthlens.cc"
+  },
+  "today": {
+    "title": "今天",
+    "subtitle": "只看今天最重要的事，不堆模型。",
+    "status": "今日状态",
+    "topChange": "一个最重要变化",
+    "noTrend": "自测满 4 次后这里会给出趋势变化。",
+    "changeIsObservation": "自测后半段 vs 前半段的均分变化（观察值，非疗效结论）",
+    "action": "一个可执行行动",
+    "actionText": "今晚比平时早 30 分钟熄灯，并把手机放在卧室外充电。这是一项低风险、可逆的作息杠杆。",
+    "startSleep": "创建 8 周睡眠规律作息实验",
+    "creating": "创建中…",
+    "risks": "需要关注的风险",
+    "noRisk": "暂无高风险提示。健康管理建议仅供参考，不构成医疗诊断。",
+    "riskNote": "评估时间",
+    "noMetrics": "暂无关键指标。先去上传或自测一次，之后这里会显示最近数值。",
+    "selfCheckAvg": "近况自测均分",
+    "dim": {
+      "energy": "精力",
+      "digestion": "消化",
+      "sleep": "睡眠"
+    }
   }
 }
