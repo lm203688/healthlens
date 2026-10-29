@@ -544,7 +544,12 @@
     "retention": "Goals",
     "pulse": "Pulse",
     "myChanges": "My Changes",
-    "partner": "Partners"
+    "partner": "Partners",
+    "today": "Today",
+    "groupToday": "Today",
+    "groupExperiments": "My Experiments",
+    "groupData": "My Data",
+    "groupSupport": "Support"
   },
   "errors": {
     "notFound": "Page not found",
@@ -898,5 +903,27 @@
     "applyBtn": "Submit",
     "applySent": "Submitted. Check your inbox.",
     "footerNote": "Powered-by HealthLens · api.healthlens.cc"
+  },
+  "today": {
+    "title": "Today",
+    "subtitle": "Only what matters most today, no models.",
+    "status": "Today's Status",
+    "topChange": "One Most Important Change",
+    "noTrend": "Trends appear after 4+ self-checks.",
+    "changeIsObservation": "Difference between latter vs first half (observation, not treatment conclusion)",
+    "action": "One Actionable Step",
+    "actionText": "Turn off lights 30 mins earlier tonight. Keep phone outside bedroom. Low-risk, reversible habit.",
+    "startSleep": "Create 8-Week Sleep Experiment",
+    "creating": "Creating…",
+    "risks": "Risks to Watch",
+    "noRisk": "No high-risk alerts. Health suggestions are reference only, not medical diagnosis.",
+    "riskNote": "Assessed at",
+    "noMetrics": "No key metrics yet. Upload data or complete a self-check first.",
+    "selfCheckAvg": "Recent self-check average",
+    "dim": {
+      "energy": "Energy",
+      "digestion": "Digestion",
+      "sleep": "Sleep"
+    }
   }
 }
