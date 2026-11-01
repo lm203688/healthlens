@@ -51,6 +51,21 @@ class Settings(BaseSettings):
     # AI Model
     AI_MODEL_PATH: str = "./models"
 
+    # ------------------------------------------------------------------
+    # 外部参考数据库（结构生物学 / 化学信息学）
+    # ------------------------------------------------------------------
+    # NCBI 要求标明工具名与联系方式，缺失会被降级排队甚至拒绝。
+    # 有 API key 时限速从 3 req/s 提升到 10 req/s。
+    NCBI_API_KEY: str = ""
+    NCBI_EMAIL: str = ""
+    NCBI_TOOL: str = "healthlens"
+
+    # Schrödinger CADD 套件（需自备商业许可；留空表示未安装）
+    # SCHRODINGER 指向安装根目录，SCHRODINGER_SSH 可把作业投到远程 GPU 节点。
+    SCHRODINGER: str = ""
+    SCHRODINGER_SSH: str = ""
+    SCHRODINGER_LICENSE: str = ""
+
     # Agnes AI
     AGNES_API_KEY: str = ""
     AGNES_BASE_URL: str = "https://api.agnes-ai.com/v1"

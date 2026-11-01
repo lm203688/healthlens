@@ -148,6 +148,7 @@ def create_app() -> FastAPI:
     from app.api.growth import router as growth_router
     from app.api.growth_enhanced import router as growth_enhanced_router
     from app.api.health_tools import tools_public_router
+    from app.api.bio import router as bio_router
     from app.api.knowledge import router as knowledge_router
     from app.api.longitudinal import router as longitudinal_router
     from app.api.medication_adherence import router as adherence_router
@@ -213,6 +214,8 @@ def create_app() -> FastAPI:
     app.include_router(graphrag_router, prefix="/api/v1/graphrag", tags=["知识图谱"])
     # 指标别名词典（M02 P1：#126）— 名称解析 / 单位换算 / 参考区间分层
     app.include_router(indicator_router, prefix="/api/v1/indicator", tags=["指标词典"])
+    # 外部参考数据库（RCSB PDB / PubChem / NCBI BLAST / UniProt / AlphaFold / Schrödinger）
+    app.include_router(bio_router, prefix="/api/v1/bio", tags=["生物医学数据源"])
     # 号脉终端：脉象解读（agent 可调用的「号脉判断」入口）
     from app.api.pulse import router as pulse_router
 
