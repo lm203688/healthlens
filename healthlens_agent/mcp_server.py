@@ -469,6 +469,253 @@ def _tool_tcm_constitution(symptoms: str = "") -> dict:
 
 
 # ---------------------------------------------------------------------------
+# L1 参考数据层（公开结构 / 化学 / 同源性数据库）
+#
+# 与 L3 的本质区别：这些数据源全部是公开只读档案库（RCSB PDB / PubChem /
+# UniProt / AlphaFold / NCBI BLAST），查询参数是基因符号、PDB ID、化合物名，
+# 不携带任何用户健康数据，因此默认开启、不需要 HL_MCP_EXPOSE_PRIVATE。
+#
+# 诚实边界（写进每个工具的描述，防止下游 Agent 误用）：
+#   - RCSB 条目 = 实验测定结构（X-ray / cryo-EM / NMR），可作结构证据
+#   - AlphaFold = 计算预测，不得当作实验证据引用
+#   - PubChem 属性 = 计算值（computed），非实验测定
+#   - BLAST 在 NCBI 公共队列异步执行，排队可达数小时
+# ---------------------------------------------------------------------------
+_REF_DISCLAIMER = (
+    "Reference-database facts only (RCSB PDB / PubChem / UniProt / AlphaFold). "
+    "Experimental structures are evidence; AlphaFold models are predictions and must not "
+    "be cited as experimental evidence. PubChem properties are computed values. "
+    "Not medical advice."
+)
+
+_REF_HINTS = {
+    "not_found": "确认标识符拼写：基因用 HGNC 官方符号（TP53 而非 p53），PDB ID 为 4 位（4HHB）",
+    "invalid_input": "检查参数格式与取值范围",
+    "rate_limited": "上游限流，稍后重试；配置 NCBI_API_KEY 可提升配额",
+    "timeout": "上游超时；BLAST 公共队列可能排队数小时，用 hl_blast_status 轮询而非同步等待",
+    "license_unavailable": "Schrödinger 需自备商业许可，本项目不提供",
+}
+
+
+def _run_ref(factory):
+    """在同步 handler 中执行异步连接器调用。
+
+    MCP handler 是同步函数，参考数据源连接器是 async（httpx）。若当前线程已有
+    运行中的事件循环（FastAPI async 上下文），`asyncio.run()` 会抛
+    `RuntimeError: asyncio.run() cannot be called from a running event loop`，
+    故退化为在独立线程里新建事件循环。连接器的 httpx 客户端按事件循环隔离
+    （见 app/connectors/reference/base.py），因此跨线程安全。
+
+    `factory` 传零参可调用对象而非协程对象：协程对象若因异常未被 await
+    会触发 "coroutine was never awaited" 警告，工厂形式可避免。
+    """
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(factory())
+
+    import concurrent.futures
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(asyncio.run, factory()).result()
+
+
+def _ref_error(exc: Exception) -> dict:
+    """把连接器的 ReferenceError 映射成机器可读的 MCP 错误对象。"""
+    code = getattr(exc, "code", None) or "upstream_error"
+    detail = getattr(exc, "detail", None) or str(exc)
+    return {"error": code, "message": str(detail)[:500], "hint": _REF_HINTS.get(code, "")}
+
+
+def _as_int(value, default: int) -> int:
+    """MCP 客户端可能把数字传成字符串；越界或无法解析时退回默认值。"""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _tool_pdb_entry(pdb_id: str = "") -> dict:
+    """L1 — 按 PDB ID 取实验结构条目：标题、实验方法、分辨率、作者、实体、配体。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    pid = (pdb_id or "").strip().upper()
+    if not pid:
+        return {"error": "invalid_input", "message": "pdb_id 不能为空", "hint": _REF_HINTS["invalid_input"]}
+    try:
+        data = _run_ref(lambda: get_source("rcsb_pdb").describe(pid))
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:  # 网络/解析等非业务异常
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+def _tool_pdb_search(
+    text: str = "",
+    method: str = "",
+    max_resolution: str = "",
+    organism: str = "",
+    limit: str = "25",
+) -> dict:
+    """L1 — RCSB 全库检索（条件之间 AND）。method 需传完整方法名。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    n = max(1, min(_as_int(limit, 25), 100))
+    res = None if not str(max_resolution).strip() else float(max_resolution)
+    try:
+        data = _run_ref(
+            lambda: get_source("rcsb_pdb").search(
+                text=text or None,
+                method=method or None,
+                max_resolution=res,
+                organism=organism or None,
+                limit=n,
+            )
+        )
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except ValueError:
+        return {"error": "invalid_input", "message": "max_resolution 需为数字（如 2.5）", "hint": _REF_HINTS["invalid_input"]}
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+def _tool_compound_lookup(query: str = "") -> dict:
+    """L1 — 化合物查询：名称 / SMILES / InChIKey → CID、计算属性、同义词、CAS 号。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    q = (query or "").strip()
+    if not q:
+        return {"error": "invalid_input", "message": "query 不能为空", "hint": _REF_HINTS["invalid_input"]}
+    try:
+        data = _run_ref(lambda: get_source("pubchem").describe(q))
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+def _tool_compound_similar(query: str = "", threshold: str = "95", limit: str = "20") -> dict:
+    """L1 — 2D 指纹相似性搜索（Tanimoto ≥ threshold），返回相似化合物 CID 列表。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    q = (query or "").strip()
+    if not q:
+        return {"error": "invalid_input", "message": "query 不能为空", "hint": _REF_HINTS["invalid_input"]}
+    thr = max(1, min(_as_int(threshold, 95), 100))
+    n = max(1, min(_as_int(limit, 20), 100))
+
+    async def _go():
+        pc = get_source("pubchem")
+        resolved = await pc.resolve(q, namespace="auto")
+        cid = resolved["primary_cid"]
+        props = await pc.properties(cid)
+        smiles = props.get("canonical_smiles")
+        if not smiles:
+            raise ReferenceError("not_found", pc.SOURCE, f"CID {cid} 无 canonical SMILES，无法做相似性搜索")
+        sim = await pc.similar(smiles, threshold=thr, limit=n)
+        return {
+            "query": q,
+            "seed_cid": cid,
+            "seed_smiles": smiles,
+            "threshold": thr,
+            "similar": sim,
+            "source": pc.SOURCE,
+            "disclaimer": _REF_DISCLAIMER,
+        }
+
+    try:
+        return _run_ref(_go)
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+
+
+def _tool_target_profile(gene: str = "", max_structures: str = "10") -> dict:
+    """L1 — 靶点全景：基因 → UniProt 蛋白 → 实验结构清单 → AlphaFold 预测结构。
+
+    这是把"某个基因/蛋白有什么结构证据"一次答完的组合工具，替代三次往返调用。
+    """
+    from app.connectors.reference import ReferenceError, describe_target
+
+    g = (gene or "").strip().upper()
+    if not g:
+        return {"error": "invalid_input", "message": "gene 不能为空", "hint": _REF_HINTS["invalid_input"]}
+    n = max(1, min(_as_int(max_structures, 10), 50))
+    try:
+        data = _run_ref(lambda: describe_target(g, max_structures=n))
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+def _tool_blast_submit(sequence: str = "", program: str = "blastn", database: str = "core_nt") -> dict:
+    """L1 — 提交 BLAST 比对，立即返回 RID 与预估排队秒数（RTOE）。
+
+    公共队列排队时间不可控（实测 blastn 约 30 秒，blastp+swissprot 曾达 9.7 小时），
+    因此本工具只负责提交；取结果必须用 hl_blast_status / hl_blast_result 轮询。
+    """
+    from app.connectors.reference import ReferenceError, get_source
+
+    seq = (sequence or "").strip()
+    if not seq:
+        return {"error": "invalid_input", "message": "sequence 不能为空"}
+    try:
+        data = _run_ref(
+            lambda: get_source("ncbi_blast").submit(seq, program=program or "blastn", database=database or "core_nt")
+        )
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["next_step"] = "用 hl_blast_status 轮询 status；READY 后调用 hl_blast_result 取命中"
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+def _tool_blast_status(rid: str = "") -> dict:
+    """L1 — 查询 BLAST 任务状态（WAITING / RUNNING / READY / UNKNOWN）。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    r = (rid or "").strip().upper()
+    if not r:
+        return {"error": "invalid_input", "message": "rid 不能为空"}
+    try:
+        return _run_ref(lambda: get_source("ncbi_blast").status(r))
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+
+
+def _tool_blast_result(rid: str = "") -> dict:
+    """L1 — 取 BLAST 结果（解析后的命中 + HSP）。任务未完成时返回 not_ready。"""
+    from app.connectors.reference import ReferenceError, get_source
+
+    r = (rid or "").strip().upper()
+    if not r:
+        return {"error": "invalid_input", "message": "rid 不能为空"}
+    try:
+        data = _run_ref(lambda: get_source("ncbi_blast").fetch(r))
+    except ReferenceError as exc:
+        return _ref_error(exc)
+    except Exception as exc:
+        return {"error": "reference_unavailable", "message": str(exc)[:300]}
+    data["disclaimer"] = _REF_DISCLAIMER
+    return data
+
+
+# ---------------------------------------------------------------------------
 # Tool 注册表（分层）
 # ---------------------------------------------------------------------------
 _TOOLS_L1 = {
@@ -559,9 +806,95 @@ _TOOLS_L3 = {
 }
 
 
+_TOOLS_REF = {
+    "hl_target_profile": {
+        "handler": _tool_target_profile,
+        "description": (
+            "Target dossier: gene symbol -> UniProt protein -> list of experimental PDB structures "
+            "-> AlphaFold predicted model. Use when asked 'what structures exist for protein X'. "
+            "Experimental structures are evidence; AlphaFold is prediction. " + _REF_DISCLAIMER
+        ),
+        "args": {"gene": str, "max_structures": int},
+    },
+    "hl_pdb_entry": {
+        "handler": _tool_pdb_entry,
+        "description": (
+            "Fetch one experimental PDB entry by 4-character ID: title, experimental method, "
+            "resolution, authors, polymer entities/chains/source organism, bound ligands. " + _REF_DISCLAIMER
+        ),
+        "args": {"pdb_id": str},
+    },
+    "hl_pdb_search": {
+        "handler": _tool_pdb_search,
+        "description": (
+            "Search the full RCSB PDB archive. Conditions combine with AND. "
+            "'method' must be a full name such as 'X-RAY DIFFRACTION', 'ELECTRON MICROSCOPY', "
+            "'SOLUTION NMR'. 'max_resolution' in angstrom (lower is sharper). " + _REF_DISCLAIMER
+        ),
+        "args": {"text": str, "method": str, "max_resolution": float, "organism": str, "limit": int},
+    },
+    "hl_compound_lookup": {
+        "handler": _tool_compound_lookup,
+        "description": (
+            "Resolve a compound by name / SMILES / InChIKey to a PubChem CID, then return computed "
+            "properties (formula, MW, XLogP, TPSA, H-bond counts), synonyms and CAS numbers. " + _REF_DISCLAIMER
+        ),
+        "args": {"query": str},
+    },
+    "hl_compound_similar": {
+        "handler": _tool_compound_similar,
+        "description": (
+            "2D fingerprint (Tanimoto) similarity search on PubChem: given a seed compound, return "
+            "analogues at or above the threshold. Useful for scaffold hopping / analogue finding. "
+            + _REF_DISCLAIMER
+        ),
+        "args": {"query": str, "threshold": int, "limit": int},
+    },
+    "hl_blast_submit": {
+        "handler": _tool_blast_submit,
+        "description": (
+            "Submit a nucleotide/protein sequence to NCBI BLAST and return a RID plus estimated queue "
+            "seconds (RTOE). Runs on NCBI's shared public queue: minutes to hours. This tool only "
+            "submits; poll with hl_blast_status then fetch with hl_blast_result."
+        ),
+        "args": {"sequence": str, "program": str, "database": str},
+    },
+    "hl_blast_status": {
+        "handler": _tool_blast_status,
+        "description": "Poll a submitted BLAST job by RID. Returns WAITING / RUNNING / READY.",
+        "args": {"rid": str},
+    },
+    "hl_blast_result": {
+        "handler": _tool_blast_result,
+        "description": (
+            "Fetch parsed BLAST hits (accession, title, E-value, bit score, identity, alignment "
+            "ranges) for a READY RID. " + _REF_DISCLAIMER
+        ),
+        "args": {"rid": str},
+    },
+}
+
+
+_JSON_TYPES = {str: "string", int: "integer", float: "number", bool: "boolean", list: "array", dict: "object"}
+
+
+def _arg_schema(args: dict) -> dict:
+    """把 {参数名: Python 类型} 映射成 JSON Schema 的 properties。
+
+    历史实现把所有参数一律声明为 "string"，于是 limit / threshold 这类整数参数
+    会被 MCP 客户端按字符串发送（`"limit": "25"`）。这里按真实类型映射；handler
+    侧仍保留 `_as_int` 兜底，因为部分客户端并不严格遵守 schema。
+    """
+    return {k: {"type": _JSON_TYPES.get(v, "string")} for k, v in args.items()}
+
+
 def _active_tools() -> dict:
-    """返回当前激活的工具集。L1+L2 总是激活；L3 需 HL_MCP_EXPOSE_PRIVATE=1。"""
-    active = {**_TOOLS_L1, **_TOOLS_L2}
+    """返回当前激活的工具集。
+
+    L1 内容层 + L1 参考数据层 + L2 知识层总是激活（均不含个人数据）；
+    L3 用户层需 HL_MCP_EXPOSE_PRIVATE=1。
+    """
+    active = {**_TOOLS_L1, **_TOOLS_REF, **_TOOLS_L2}
     if _EXPOSE_PRIVATE:
         active.update(_TOOLS_L3)
     return active
@@ -661,7 +994,7 @@ def _run_jsonrpc_mode() -> None:
                 "description": spec["description"],
                 "inputSchema": {
                     "type": "object",
-                    "properties": {k: {"type": "string"} for k in spec["args"]},
+                    "properties": _arg_schema(spec["args"]),
                 },
             }
             for name, spec in tools.items()
