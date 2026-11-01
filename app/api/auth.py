@@ -1,5 +1,7 @@
 """认证路由 - 验证码登录（登录/注册合一）、密码登录、Token 刷新、当前用户信息"""
 import secrets
+import threading
+import time
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,6 +23,9 @@ from app.schemas.auth import (
     UserOutput,
     TotpEnrollInput,
     TotpVerifyInput,
+    TotpChallengeInput,
+    TotpChallengeOutput,
+    TotpConfirmInput,
     TotpStatusOutput,
     JurisdictionUpdateInput,
 )
@@ -47,6 +52,67 @@ def conditional_limit(limit: str):
     def noop(func):
         return func
     return noop
+
+
+# ---------------------------------------------------------------------------
+# TOTP 第二因素挑战存储（P0-AUTH-02）
+# 旧版 /totp/verify 仅凭 6 位码遍历全部启用 TOTP 的用户直接签发 token，
+# TOTP 被当成独立登录因素。此处改为两步：第一因素（密码/OTP）→ 签发一次性
+# 短时挑战 → 第二因素（TOTP 码 + 挑战）→ 签发 token。
+# 挑战一次性消费、TTL 过期、按 IP 审计。进程内 dict + 锁保证单进程一致；
+# 生产多 worker 应改用 Redis SET NX EX（参考 edge_ticket.py 的 _redis 模式）。
+# ---------------------------------------------------------------------------
+_TOTP_CHALLENGES: dict[str, dict] = {}  # challenge -> {user_id, created_at, consumed}
+_TOTP_CHALLENGES_LOCK = threading.Lock()
+_TOTP_CHALLENGE_TTL = 120  # 挑战有效期 2 分钟
+_TOTP_CHALLENGE_MAX_ATTEMPTS = 5  # 单挑战最多尝试次数
+
+
+def _create_totp_challenge(user_id: str, account: str, client_ip: str) -> str:
+    """签发一次性短时 TOTP 挑战（第一因素通过后调用）"""
+    challenge = secrets.token_urlsafe(32)
+    with _TOTP_CHALLENGES_LOCK:
+        # 清理过期挑战，防止内存膨胀
+        now = time.time()
+        expired = [
+            c for c, v in _TOTP_CHALLENGES.items()
+            if now - v["created_at"] > _TOTP_CHALLENGE_TTL
+        ]
+        for c in expired:
+            del _TOTP_CHALLENGES[c]
+        _TOTP_CHALLENGES[challenge] = {
+            "user_id": user_id,
+            "account": account,
+            "created_at": now,
+            "consumed": False,
+            "attempts": 0,
+            "ip": client_ip,
+        }
+    logger.info(f"[TOTP-CHALLENGE] issued user={user_id} account={account} ip={client_ip}")
+    return challenge
+
+
+def _consume_totp_challenge(challenge: str, client_ip: str) -> str | None:
+    """消费一次性 TOTP 挑战，返回 user_id；无效返回 None"""
+    with _TOTP_CHALLENGES_LOCK:
+        entry = _TOTP_CHALLENGES.get(challenge)
+        if not entry:
+            return None
+        if entry["consumed"]:
+            logger.warning(f"[TOTP-CHALLENGE] already consumed ip={client_ip}")
+            return None
+        now = time.time()
+        if now - entry["created_at"] > _TOTP_CHALLENGE_TTL:
+            del _TOTP_CHALLENGES[challenge]
+            logger.warning(f"[TOTP-CHALLENGE] expired ip={client_ip}")
+            return None
+        entry["attempts"] += 1
+        if entry["attempts"] > _TOTP_CHALLENGE_MAX_ATTEMPTS:
+            del _TOTP_CHALLENGES[challenge]
+            logger.warning(f"[TOTP-CHALLENGE] attempts exceeded ip={client_ip}")
+            return None
+        entry["consumed"] = True
+        return entry["user_id"]
 
 
 # ---------------------------------------------------------------------------
@@ -464,44 +530,121 @@ async def enroll_totp(request: Request, current_user: User = Depends(get_current
     }
 
 
-@router.post("/totp/verify", response_model=dict)
-@conditional_limit("10/minute")
-async def verify_totp_login(request: Request, body: TotpVerifyInput, db: AsyncSession = Depends(get_db)):
-    """TOTP 验证码校验并登录
+@router.post("/totp/challenge", response_model=dict)
+@conditional_limit("5/minute")
+async def create_totp_challenge(
+    request: Request, body: TotpChallengeInput, db: AsyncSession = Depends(get_db)
+):
+    """TOTP 第二因素挑战签发：第一因素（密码 或 短信/邮件验证码）校验通过后，
+    签发一次性短时挑战，供 /totp/verify 做第二因素校验。
 
-    与 /otp/verify 行为一致：账号存在则登录，不存在则自动创建。
+    P0-AUTH-02：旧版 /totp/verify 仅凭 6 位码遍历全部启用 TOTP 用户直接签发 token，
+    TOTP 被当成独立登录因素。此处改为两步流程：
+    1. POST /totp/challenge  ← 第一因素（密码/OTP）→ 签发一次性短时挑战
+    2. POST /totp/verify     ← 挑战 + TOTP 码    → 签发登录 token
+    挑战 2 分钟过期、最多 5 次尝试、一次性消费、按 IP 审计。
     """
-    code = (body.code or "").strip().replace(" ", "")
-    if not code.isdigit() or len(code) != 6:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": "验证码格式错误（应为 6 位数字）", "reason": "INVALID_CODE"},
-        )
-
-    # 查找已启用 TOTP 且码匹配的用户
-    result = await db.execute(select(User).where(User.totp_enabled == True))  # noqa: E712
-    candidates = result.scalars().all()
-
-    matched_user = None
-    for user in candidates:
-        if user.totp_secret and verify_totp(user.totp_secret, code):
-            matched_user = user
-            break
-
-    if matched_user is None:
+    user = await _find_user_by_account(db, body.account)
+    if user is None:
+        # 不暴露账号是否存在，统一返回"第一因素不正确"
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"message": "验证码不正确", "reason": "WRONG_CODE"},
+            detail={"message": "账号或验证码不正确", "reason": "INVALID_FIRST_FACTOR"},
         )
 
-    return _issue_token_payload(matched_user)
+    # 第一因素校验
+    if body.password:
+        if not verify_password(body.password, user.password_hash):
+            logger.warning(f"[TOTP-CHALLENGE] password mismatch account={body.account}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={"message": "账号或密码不正确", "reason": "INVALID_FIRST_FACTOR"},
+            )
+        method = "password"
+    elif body.otp_code:
+        ok, reason = await sms_service.verify_and_consume(db, body.account, body.otp_code)
+        if not ok:
+            messages = {
+                "NO_CODE": "请先获取验证码",
+                "EXPIRED": "验证码已过期，请重新获取",
+                "WRONG_CODE": "验证码不正确",
+                "TOO_MANY": "错误次数过多，请重新获取验证码",
+            }
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={"message": messages.get(reason, "验证码校验失败"), "reason": reason},
+            )
+        method = "otp"
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="请提供密码或短信验证码作为第一因素",
+        )
+
+    # 签发挑战（无论是否启用 TOTP 都签发，让前端决定下一步流程）
+    client_ip = request.client.host if request.client else "unknown"
+    challenge = _create_totp_challenge(user.id, body.account, client_ip)
+
+    return {
+        "success": True,
+        "data": {
+            "challenge": challenge,
+            "expires_in": _TOTP_CHALLENGE_TTL,
+            "method": method,
+            "requires_totp": bool(user.totp_enabled),
+        },
+    }
+
+
+@router.post("/totp/verify", response_model=dict)
+@conditional_limit("10/minute")
+async def verify_totp_login(
+    request: Request, body: TotpVerifyInput, db: AsyncSession = Depends(get_db)
+):
+    """TOTP 第二因素校验：用 /totp/challenge 签发的一次性挑战 + 6 位 TOTP 码换取登录 token。
+
+    P0-AUTH-02 安全整改（与旧版的关键区别）：
+    - 旧版：仅凭 6 位码遍历全部启用 TOTP 用户，TOTP 被当成独立登录因素 → 多用户遍历、
+      碰撞、猜测、账号定位都增加风险。
+    - 新版：TOTP 是第二因素，必须先通过第一因素（密码/OTP）拿到一次性短时挑战。
+      挑战 2 分钟过期、最多 5 次尝试、一次性消费，按账号+IP 审计。
+    """
+    client_ip = request.client.host if request.client else "unknown"
+
+    # 消费挑战（一次性 + 过期 + 尝试次数）
+    user_id = _consume_totp_challenge(body.challenge, client_ip)
+    if user_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={"message": "挑战已过期或已使用，请重新进行第一因素验证", "reason": "CHALLENGE_INVALID"},
+        )
+
+    # 查找用户并校验 TOTP
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if user is None or not user.totp_enabled or not user.totp_secret:
+        logger.warning(f"[TOTP-VERIFY] user not enabled for TOTP user_id={user_id}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"message": "该账号未启用 TOTP 二次验证", "reason": "TOTP_NOT_ENABLED"},
+        )
+
+    if not verify_totp(user.totp_secret, body.code):
+        logger.warning(f"[TOTP-VERIFY] code mismatch user_id={user_id} ip={client_ip}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={"message": "TOTP 验证码不正确", "reason": "WRONG_CODE"},
+        )
+
+    logger.info(f"[TOTP-VERIFY] success user_id={user_id} ip={client_ip}")
+    return _issue_token_payload(user)
 
 
 @router.post("/totp/confirm", response_model=dict)
 @conditional_limit("5/minute")
 async def confirm_totp_enroll(
     request: Request,
-    body: TotpVerifyInput,
+    body: TotpConfirmInput,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):

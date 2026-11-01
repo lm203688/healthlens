@@ -491,7 +491,7 @@ class TestRedactCLI:
     def _run(self, args: list[str], cwd: Path) -> subprocess.CompletedProcess:
         return subprocess.run(
             [sys.executable, str(GRAPHRAG_REDACT_CLI), *args],
-            cwd=str(cwd), capture_output=True, text=True, timeout=60,
+            cwd=str(cwd), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
         )
 
     def test_cli_help(self):

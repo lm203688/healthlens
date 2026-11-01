@@ -1,14 +1,9 @@
 """四角色 Agent 团队测试。"""
 
-import pytest
-from unittest.mock import patch
-
 from healthlens_agent import llm as llm_mod
 from healthlens_agent.team import (
     DEFAULT_MAX_ROUNDS,
-    RoundRecord,
     critic,
-    executor,
     planner,
     team_run,
 )

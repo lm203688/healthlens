@@ -32,7 +32,7 @@ OUT_MD = REPO_ROOT / "data" / "LITERATURE_TRIANGULATION_CVI_REPORT.md"
 def run(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
         [PYTHON, str(SCRIPT), *args],
-        capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=60,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(REPO_ROOT), timeout=60,
     )
 
 

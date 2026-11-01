@@ -1,9 +1,11 @@
 # HealthLens 健康全景平台 · 产品技术白皮书（宣传用）
 
-> 版本：0.22.0（后端）· 融合引擎 v0.6 · 配置中心 v0.8.2
-> 文档校对日期：2026-09-23（所有数字均于当日对线上实例与仓库代码复核）
+> 版本：0.37.0（后端）· 融合引擎 v0.6（8 轴 A–H）· 配置中心 v0.8.2 · Rubric v1（200 条）
+> 文档校对日期：2026-10-25（本轮对齐 v0.37.0；所有数字均于当日对线上实例 `api.healthlens.cc/api/v1/version=0.37.0` 与仓库代码复核）
 > 定位：**跨生态健康数据聚合 → AI 双轨健康解读（现代指标 + 中医体质）→ 个性化调理 → 古籍知识库 → 基因组学** 的全人健康管理平台
 > 本文档用于对外宣传与生态合作，含详细逻辑、使用场景、专业细节与理论基础。所有技术描述均源自当前代码与配置（已核实），并诚实标注各模块的成熟度（Phase 1 简化 vs 生产就绪）。
+>
+> **本轮增量（v0.22.0 → v0.37.0）**：SVIEE 五层证据体系（MCP 2026-07-28 / A2A v1.0.1 / DoWhy 因果 / 联邦学习 / Rubric 评估）、GraphRAG 知识图谱（1661 节点 / 2005 边 / 7 类型）、指标别名词典 v1.0（16 项 LOINC 映射 + 4 分层参考区间）、国标闸门（GB/T 2001 + 20348 术语映射）、Powered-by SDK（B2B API Key + 6 端点）、SCI-ready 提交包（medRxiv + Zenodo + OSF）、P1 产品收敛（Onboarding / 周报自动化 / 华为健康 / 合作开发者中心）。
 
 ---
 
@@ -116,7 +118,7 @@ fusion_score = gene_score × 0.6 + axis_weight × 0.3 + symptom_weight × 0.1
 
 ## 五、八轴融合推荐引擎（产品护城河）
 
-`app/lib/fusion_engine.py`（v0.3，确定性 + LLM 增强）：
+`app/lib/fusion_engine.py`（v0.6，8 轴 A–H + AXIS_BRIDGES 桥接 + 确定性 + LLM 可选增强）：
 
 ### 5.1 算法流程
 
@@ -209,49 +211,70 @@ fusion_score = gene_score × 0.6 + axis_weight × 0.3 + symptom_weight × 0.1
 
 ## 十、多源数据连接器
 
-`app/connectors/` 统一抽象：Apple Health / 华为健康 / 小米运动健康 / Withings / 医院 LIS。通过 `app/api/connections_public.py` 暴露 CRUD/同步，所有输出经脱敏网关。
+`app/connectors/` 统一抽象（11 个连接器模块，含 base + 10 品牌/协议实现）：
 
-> **成熟度**：连接器抽象层与接口已就位；各厂商真实 OAuth/API 对接为后续集成项（不与核心引擎耦合，可独立推进）。
+| 品牌/协议 | 模块 | 成熟度 |
+|----------|------|--------|
+| Apple Health | `apple_health.py` | ✅ 官方 XML 格式解析（真实可用） |
+| 华为健康 | `huawei_health.py` | ✅ OAuth2 + `health-health.cloud.huawei.com`（v0.36.0 上线） |
+| 小米运动健康 | `xiaomi_health.py` | 🟡 OAuth 骨架，Token 待申请 |
+| Withings | `withings.py` | ✅ OAuth2 + 官方 Health API（P0-7 已真实打通） |
+| Google Health Connect | `google_health.py` | ✅ Health Connect Record schema 解析（多 record type） |
+| 医院 LIS | `hospital_lis.py` | 🟡 通用 HL7/JSON，机构端待对接 |
+| 树莓派边缘网关 | `edge_gateway.py` + `pulse_gateway.py` | ✅ BLE→树莓派→Goertzel→`POST /device-metrics` |
+| Open Wearables | `open_wearables.py` | 🟡 AGPL 边界外，仅作格式兼容 |
+
+通过 `app/api/connections_public.py` 暴露 CRUD/同步，所有输出经脱敏网关。`/connections/status` 端点按品牌返回 `ready` / `needs_credentials`，缺 env var 时**fail-loud** 拒绝启动，不静默 mock。
 
 ---
 
-## 十一、Agent 能力库 + MCP + Skills（可独立测试）
+## 十一、Agent 能力库 + MCP + A2A + Skills（可独立测试）
 
-为对接 GOAI 类评测与对外赋能，落地无重型依赖的 Python 包 `healthlens_agent/`：
+为对接 GOAI 类评测与对外赋能，落地无重型依赖的 Python 包 `healthlens_agent/`（+ 生产端 `app/lib/` 中的重型模块）：
 
 - **四角色 Agent 团队**：Planner / Executor / Critic / Referee。
 - **融合安全管线**：两道闸门（前置红牌 + 后置去医疗化/八轴红线/证据断链）+ 审计，直接接入真实融合引擎。
 - **七维行为评测 + launch-risk score**（借鉴 GOAI 头部项目：MedAssist 红牌、LabGuard typed guard、Codenotary 遥测、DataFlow-Agent 可复现 DAG、EyeAgent 多模态）。
-- **MCP Server（5 工具）**：`fusion_engine / evidence_grade / risk_assess / tcm_constitution / knowledge_search`，供外部 Agent/Copilot 调用。
+- **MCP Server 2026-07-28**（生产端点 `POST /api/v1/mcp`）：`fusion_engine / evidence_grade / risk_assess / tcm_constitution / knowledge_search` 等，供外部 Agent/Copilot 调用；stdio 分发走 GHCR `ghcr.io/lm203688/healthlens-mcp:latest`。
+- **A2A v1.0.1**（`app/api/a2a.py` + `app/lib/a2a_task_store.py`）：JSON-RPC 2.0 端点，含 JWS 签名（`a2a_jws.py`）+ Task Store + Agent Card 自动同步（`tools/sync_version.py`）。
+- **A2A 联邦 demo**：两个本地 agent 通过 JSON-RPC 完成跨进程互操作（v0.30.0）。
 - **3 个 Seed Skill**：`tcm_text_mining`（古籍实体抽取+轴映射）、`fusion_inference`（古籍候选∩基因弱项→八轴建议）、`evidence_grading`（L1/L2/L3 分级）。
-- **HTTP 入口**：`POST /api/v1/agent/fusion`、`/agent/team`（try/except 守卫，能力不可用时自动跳过，不拖累主站）。
+- **HTTP 入口**：`POST /api/v1/agent/fusion`、`/agent/team`、**SSE 流式** `/agent/team/stream`（v0.36.0，分阶段 meta/plan/result/summary/done），try/except 守卫，能力不可用时自动跳过，不拖累主站。
+- **Powered-by SDK（v0.33.0，B2B）**：`app/integrations/sdk/` + `app/api/partners.py`（管理端 admin-only）+ `app/api/partner_api.py`（API Key 认证，6 端点：health / config / health-score / axis-assessment / tcm-recommendations / wellness-report）。
+- **claims_guard（v0.33.0，5 法域）**：`app/core/claims_policy/` 覆盖 CN 32 / US 26 / UK 20 / EU 24 / AU 5 banned_terms，21 个 AI 文本端点强制 fail-closed 拦截。
 
 ---
 
-## 十二、前端体验（14 页 + 3 分钟自评）
+## 十二、前端体验（18 页 + 3 分钟自评 + P1 引导）
 
-Vite + React，Tailwind 构建，导航 13 项 / 页面 14 个；完整 zh/en i18n（react-i18next，两语言各约 380+ key，LanguageSwitcher 持久化到 localStorage）。
+Vite + React，Tailwind 构建，导航 12 项 / 页面 18 个；完整 zh/en i18n（react-i18next，两语言各约 420+ key，LanguageSwitcher 持久化到 localStorage）。JS bundle 513 KB（gzip 159 KB）。
 
 | 页面 | 路由 | 功能 |
 |------|------|------|
+| 首次引导 | `/onboarding`（Onboarding） | **P1-1** 3 步首次引导：welcome → 30s 3 题快评（睡眠/精力/情绪 → G/D/H 轴）→ 3-of-8 雷达预览（3 彩色 + 5 灰 #cbd5e1）+ 5 轴解锁 CTA |
 | 仪表盘 | `/`（Dashboard） | 概览/弱项轴/融合评分/风险等级/中医体质；老用户展示历史概览 |
 | 健康评估 | `/assess`（HealthAssess） | 症状 + 基因弱项 → 融合引擎 → 个性化建议 |
 | 中医体质 | `/tcm`（TCMConstitution） | 8 题问卷 → 体质分析 |
 | 健康报告 | `/reports`（Reports） | 报告数据展示与趋势 |
 | 知识库 | `/knowledge`（Knowledge） | 全文检索/食疗方/非药物疗法 |
-| AI 对话 | `/agent`（AgentChat） | 四角色 Agent 团队对话界面 |
+| AI 对话 | `/agent`（AgentChat） | 四角色 Agent 团队对话界面（SSE 流式 + Markdown 渲染 + 会话持久化 + 多轮上下文） |
 | 每日打卡 | `/checkin`（CheckIn） | 血压/血糖/体重等指标记录 |
-| 登录 | `/login`（Login） | **邮箱/手机号 Tab 切换，统一密码登录，首次自动注册** |
+| 脉搏设备 | `/pulse`（PulseDevice） | Muse BLE → 树莓派 → Goertzel → 边缘网关 |
+| 我的变化 | `/changes`（MyChanges） | **P1-2** 长轨迹追踪 + 自动快照 + 周报生成（DoWhy 归因）+ 历史周报卡片 |
+| 轴画像 | `/axis`（AxisProfile） | 八轴详细画像 |
+| 合作开发者中心 | `/partner`（Partner） | **P1-4** 公开页：6 端点表 + curl 复制 + Auth/SDK/Quota 三卡 + 5 法域合规声明 + mailto 兜底申请表 |
+| 登录 | `/login`（Login） | 邮箱/手机号 Tab 切换 + OTP + TOTP，首次自动注册，首次登录自动跳 `/onboarding` |
 | 个人档案 | `/profile`（Profile） | 账号信息 + TOTP 验证器绑定/解绑 |
 | 数据上传 | `/upload`（Upload） | 基因组 VCF / Apple Health XML / Google Health Connect JSON 上传与解析结果回显 |
 | 健康目标 | `/retention`（Retention） | 三合一留存中心：健康目标(CRUD+进度) / 通知中心(未读+已读) / 依从追踪(服药计划与依从率) |
 | 分享报告 | `/share`（Share） | 生成免登录分享链接、复制、查看分享历史、撤销分享 |
 | 升级会员 | `/payment`（Payment） | Free / Pro（¥39.9/月）/ 终身（¥199）三档，CNY 走虎皮椒、USD 走 Creem |
 
-**3 分钟健康自评（Dashboard 核心交互）**：
-- 5 大身体系统（精力睡眠/情绪压力/消化代谢/免疫体质/运动体态），每系统 3 题频率量表（很少/偶尔/经常/总是）+ 自由描述。
-- 提交 → 调 `agentFusion` → 结果页展示：重点关注维度（弱项轴）、个性化建议（带"✅通过/🚫需警惕"安全闸门标记）、监测指标、证据等级、可展开的**证据链**、后置提醒。
-- 至少答 3 题或填自由描述才可提交；带实时进度条。
+**首次引导（P1-1）**：30s 3 题快评在浏览器内构造 30-92 区间分（不入后端），仅用于雷达预览；解锁 5 轴需真实上传数据或对接设备——诚实可视化，无伪造后端声明。
+
+**周报自动化（P1-2）**：Celery Beat 每周一 07:00 `user-weekly-report`；`_compute_axis_delta` 70/30 分窗；`POST /longitudinal/studies/{id}/weekly-report?days_back=N` + `GET /longitudinal/weekly-reports`；MyChanges 页面自动生成+历史列表。
+
+**P1 埋点覆盖 22/22**（P0-4 12 事件 + P1 新增 10 事件：6 onboarding + 4 partner）。
 
 ---
 
@@ -291,13 +314,25 @@ Vite + React，Tailwind 构建，导航 13 项 / 页面 14 个；完整 zh/en i1
 | 中医古籍书目（入库） | **701 部** | ✅ 真实入库（书名/作者/朝代/年份/类目） |
 | 结构化实体（神农本草经 365 + 食疗本草 248） | **613 条** | ✅ 确定性抽取，含原文引证 |
 | 古籍 txt 语料（待结构化） | 699 部 | 🟡 语料就位，规则扩展中 |
-| 数据库表 | **49 张**（线上 `information_schema` 实测） | ✅ |
-| API 端点 | **208 个操作 / 190 条路径**（`app.openapi()` 实测） | ✅ |
-| 路由模块 | **43 个 `include_router`** | ✅ |
-| 测试 | **194 个测试函数 / 42 个测试文件** | ✅ |
-| PGx 基因规则 | 8 个 | ✅ |
+| GraphRAG 知识图谱 | **1661 节点 / 2005 边 / 7 类型** | ✅ `app/lib/graphrag_engine.py` + 7 端点 + security 防御层 |
+| 指标别名词典 | **16 项 LOINC 映射**（glucose/hba1c/hs_crp/TC/HDL/LDL/VLDL/TG/eGFR/creatinine/BUN/uric_acid/TSH/BMI/BP_sys/BP_dia） | ✅ v1.0，4 人口学分层参考区间（adult_male/female/pediatric/senior） |
+| Rubric Benchmark | **200 条**（5 类别 × 40 条：axes_interpretation / tcm_terminology / claims_boundary / critical_values / uncertainty_expression） | ✅ v1 |
+| Claims Policy（5 法域） | CN 32 + US 26 + UK 20 + EU 24 + AU 5 banned_terms | ✅ fail-closed 拦截 21 端点 |
+| SVIEE 五层 | L0（MCP+A2A）/ L1（DoWhy+nOFE+SafetyBandit）/ L2（ts_serializer+sensor_adapter）/ L3（federated/不含 DP）/ L4（rubric+RAGAS+Biomni） | ✅ fail-loud |
+| 号脉特征库 | `data/pulse_signatures.json` + `app/lib/pulse_engine.py` | ✅ 缺失时抛 `PulseKnowledgeBaseError`→503 |
+| 号脉真数据 | Pulse-PPG 零样本评测脚手架 + `feature_baseline.py` | 🟡 真实权重未装 |
+| 数据库表 | **~37 张**（v0.31 前 49 张，v0.33 精简到 37） | ✅ alembic 迁移 + downgrade 测试 |
+| API 端点 | **56 个模块 / 61 个 `include_router`**（openapi 实测） | ✅ |
+| 前端页面 | **18 个**（含 P1 Onboarding/Partner/MyChanges/PulseDevice/AxisProfile） | ✅ |
+| 连接器 | **11 个模块**（含 base + 10 品牌/协议实现） | ✅ |
+| 测试 | **1970 passed / 8 skipped**（v0.37.0 CI） | ✅ |
+| Agent MCP 工具 | 5（fusion_engine / evidence_grade / risk_assess / tcm_constitution / knowledge_search） | ✅ |
+| A2A JSON-RPC | `POST /api/v1/a2a` + JWS + Task Store + Agent Card 自动同步 | ✅ |
+| Powered-by SDK | 6 端点（health/config/health-score/axis-assessment/tcm-recommendations/wellness-report） | ✅ API Key + Hash 存储 + prefix 列出 |
+| 案例库双 schema | 29 真证据 + 91 合成夹具（**绝不编造 DOI**，404→`unverified_no_publication`） | ✅ |
+| PGx 基因规则 | 8 个核心基因（CYP2D6/CYP2C19/CYP2C9/VKORC1/DPYD/TPMT/SLCO1B1/UGT1A1） | ✅ |
 | 现代指标解读规则 | 7 类（LOINC→ICD-11） | ✅ |
-| 九种体质算法 | 9 型 | ✅ |
+| 九种体质算法 | 9 型（中华中医药学会标准） | ✅ |
 
 ---
 
@@ -306,12 +341,15 @@ Vite + React，Tailwind 构建，导航 13 项 / 页面 14 个；完整 zh/en i1
 为对外宣传可信，明确标注以下**当前边界**（非缺陷，是 Roadmap）：
 
 1. **风险/指标解读引擎为自评量表**：非完整 Cox/China-PAR 系数表，定位"健康风险提示与生活方式干预"而非医学判断。ASCVD/糖尿病输出为无量纲倾向百分比（0-100），非 10 年发病概率。
-2. **古籍结构化覆盖低**：701 部仅 2 部完成实体级结构化，是内容增长主路径。
+2. **古籍结构化覆盖低**：701 部仅 2 部完成实体级结构化（365+248=613 条），是内容增长主路径。
 3. **PGx 真实数据接入**：规则层就绪，依赖用户上传标准基因型或第三方检测对接。
-4. **连接器**：抽象层与接口就绪，各厂商真实 OAuth 对接为后续项。
-5. **前端评估深度**：`/assess` 调融合引擎，依赖后端 agent 管线可用（已 try/except 守卫）。
-6. **告警通道**：Server酱 Key 未配置，目前仅本地日志告警（不影响主功能）。
-7. **凭证安全建议**：同机 AIShield 部署脚本曾硬编码 Cloudflare 令牌，建议轮换（HealthLens 独立后已不共享该令牌）。
+4. **连接器真实对接状态**：Apple Health XML ✅ / 华为健康 OAuth2 ✅（v0.36.0）/ Withings ✅ / Google Health Connect ✅；小米 OAuth Token 待申请 / 医院 LIS 通用格式机构端待对接 / Open Wearables 格式兼容（AGPL 边界外）。
+5. **联邦学习**：`app/lib/federated/*` + `app/api/federated.py` 6 端点就绪，单机多租户 Flower 仿真器 + 贝叶斯层次聚合；**声明"不含 DP"**——DP-SGD 未实现，仅统计量聚合，隐私保证限于不交换原始数据。
+6. **SCI 剩余门槛**：R1-R5 诚实性已全闭合；CVI 用 L-CVI + ICV-Panel 两源替代（不替代真实专家 Delphi，论文 §9 明确声明）；剩用户操作（ORCID / Zenodo token 铸 DOI / IRB 提交）。
+7. **optional 未装**：DoWhy / PyMC / Flower / XGrammar / RAGAS / Biomni / Pulse-PPG 真实权重——代码路径存在但默认走规则或 fail-loud，不静默 mock。
+8. **AU policy 宽松**：`wellness_boundary_strict: false`——AU 走宽松策略，需人工盯 AU 用户 payload（5 个 banned_terms）。
+9. **告警通道**：Server酱 Key 未配置，目前仅本地日志告警（不影响主功能）。
+10. **凭证安全建议**：同机 AIShield 部署脚本曾硬编码 Cloudflare 令牌，建议轮换（HealthLens 独立后已不共享该令牌）。
 
 > 以上均不影响"已上线、可用、数据真实"的宣传主张；标注边界反而是专业可信的体现。
 
@@ -323,7 +361,12 @@ Vite + React，Tailwind 构建，导航 13 项 / 页面 14 个；完整 zh/en i1
 - **自愈机制**：systemd `Restart=always`(5s) + 每 5 分钟看门狗 cron + AIShield 脚本 pkill 已收敛为只停自身。
 - **一键重建**：`sudo bash /usr/local/bin/setup_healthlens_tunnel.sh`（幂等）。
 - **监控**：Prometheus `/metrics`（HTTP 计数/延迟、OCR、Celery、DB 连接池）。
-- **部署**：Cloudflare Pages（`cf_pages_deploy.py`）+ ECS Docker Compose；CI 四 job（lint/test/docker-build/agent-lib/skills）。
+- **部署拓扑**：
+  - **后端**：ECS 阿里云（Ubuntu + Docker Compose）；`docker compose build` 在 4C/8G 上跑不动（42min 卡在 `[ocr]` extra）→ fast path：本地打包 → scp → 解包 → `docker cp` 差异（`app/` 除外）→ 手动 alembic 或 `Base.metadata.create_all` → `compose up -d`。v0.33.0 起 `docker commit` 固化镜像层，`--force-recreate` 不再丢 docker cp 内容。当前镜像 `healthlens-web:v0.37.0`（2.52GB）+ `:latest`。
+  - **前端**：Cloudflare Pages（healthlens-a3w.pages.dev + healthlens.cc 主域名）；`deploy-frontend.yml` workflow_dispatch 触发，产物 SPA 挂 `/app/` 子路径，根 `/` 由 `build_site.py` 把 `frontend/index.html` 的 `/src/main.jsx` 替换为实际 hashed bundle（v0.37.0-hotfix）。
+  - **API 网关**：`api.healthlens.cc` → 独立 Cloudflare Tunnel → 8000（FastAPI）；裸 IP 走 AIShield。
+- **CI 门禁**：GitHub Actions 四 job（lint/test/docker-build/agent-lib/skills）+ `tools/sync_version.py` 单一版本真源（`pyproject.toml` → `agent-card.json` → `CHANGELOG` → submissions 全同步）+ `tools/sync_test_count.py` manifest 测试数自动注入 + 依赖锁定 `constraints.txt`。
+- **版本发布链路**：本地 commit → `.workbuddy/cache/push_hl.py` Contents API 推送（git push TLS 不稳兜底）→ dispatch CF Pages → SCP+`docker cp`+`docker commit` 到 ECS → curl `/api/v1/version` 复验。
 
 ---
 
@@ -336,4 +379,4 @@ Vite + React，Tailwind 构建，导航 13 项 / 页面 14 个；完整 zh/en i1
 
 ---
 
-*文档生成基于代码与配置逐项核实（app/lib/fusion_engine.py、app/core/{tcm,risk,pgx,diagnosis}_engine.py、data/healthlens_config.json、frontend/src/pages/Dashboard.jsx、README.md、部署脚本）。技术细节如与最新代码冲突，以代码为准。*
+*文档校对于 2026-10-25，对齐生产版本 v0.37.0（`api.healthlens.cc/api/v1/version` = 0.37.0；ECS 镜像 `healthlens-web:v0.37.0` sha256:75ddc88；CF Pages `index-C-GgOeJr.js` 513KB）。基于代码与配置逐项核实：`app/lib/fusion_engine.py` v0.6、`app/core/{tcm,risk,pgx,diagnosis}_engine.py`、`app/core/tcm_safety.py`、`app/core/claims_policy/`、`app/core/compliance/gb2001.py`、`app/lib/graphrag_engine.py`、`app/lib/federated/*`、`app/lib/causal_simulator.py`、`data/indicator_dictionary.yaml` v1.0、`data/rubric_benchmark_v1.json`、`data/graphrag/knowledge_graph.json`、`frontend/src/pages/*.jsx`（18 页）、`pyproject.toml`、`agent-card.json`、`CHANGELOG.md`、部署脚本。技术细节如与最新代码冲突，以代码为准。*

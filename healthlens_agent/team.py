@@ -116,7 +116,8 @@ def _planner_llm(user_input: str) -> Plan | None:
     if not llm_mod.llm_enabled():
         return None
     try:
-        raw = llm_mod.chat(user=user_input, system=_PLANNER_SYSTEM, max_tokens=300)
+        # F841：raw 从未被读取；保留调用以维持既有 LLM 预热/副作用行为
+        llm_mod.chat(user=user_input, system=_PLANNER_SYSTEM, max_tokens=300)
         data = llm_mod.chat_json(user=user_input, system=_PLANNER_SYSTEM, max_tokens=300)
         axes = [a for a in data.get("axes", []) if a in _VALID_AXES]
         hints = [h for h in data.get("pathway_hints", []) if isinstance(h, str)]

@@ -83,7 +83,7 @@ async def create_shared_report(
     await db.commit()
     await db.refresh(report)
 
-    logger.info(f"[SharedReport] Created: user={user_id}, token={token}, type={report_type}")
+    logger.info(f"[SharedReport] Created: user={user_id}, token={token[:6]}..., type={report_type}")
     return report
 
 

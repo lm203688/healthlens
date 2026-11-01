@@ -157,105 +157,112 @@ export default function AgentChat() {
     };
 
     // P0-3b（2026-10-24）：优先走 SSE 流式，让前端分阶段收到 plan / result / summary
+    // P0-FE-03：用 try/finally 统一复位 loading —— 无论流完成 / 空流 / 中断 / 400 / 网络错误，
+    // 都不会让对话卡在"思考中"（此前 if (gotAny) return 直接绕过 setLoading(false)）。
     try {
-      const sseRes = await api.agentTeamStream(payload);
-      if (sseRes.ok && sseRes.headers.get('content-type')?.includes('text/event-stream')) {
-        // 流式消费 SSE 事件，边生成边渲染
-        const reader = sseRes.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-        let gotAny = false;
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-          // SSE 事件以 \n\n 分隔
-          let sep;
-          while ((sep = buffer.indexOf("\n\n")) !== -1) {
-            const raw = buffer.slice(0, sep);
-            buffer = buffer.slice(sep + 2);
-            const evt = parseSSE(raw);
-            if (!evt) continue;
-            gotAny = true;
-            handleSSEEvent(evt);
+      let streamed = false;
+      try {
+        const sseRes = await api.agentTeamStream(payload);
+        if (sseRes.ok && sseRes.headers.get('content-type')?.includes('text/event-stream')) {
+          // 流式消费 SSE 事件，边生成边渲染
+          const reader = sseRes.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = "";
+          let gotAny = false;
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            // SSE 事件以 \n\n 分隔
+            let sep;
+            while ((sep = buffer.indexOf("\n\n")) !== -1) {
+              const raw = buffer.slice(0, sep);
+              buffer = buffer.slice(sep + 2);
+              const evt = parseSSE(raw);
+              if (!evt) continue;
+              gotAny = true;
+              handleSSEEvent(evt);
+            }
           }
+          // 流已产生有效事件：标记并跳过非流式 fallback（不 return，让 finally 复位 loading）
+          streamed = gotAny;
         }
-        // 全部流式事件已消费
-        if (gotAny) return;
+      } catch {
+        // SSE 失败 → 静默降级到非流式
       }
-    } catch {
-      // SSE 失败 → 静默降级到非流式
-    }
+      if (streamed) return;
 
-    // 非流式 fallback（原有路径）
-    try {
-      const res = await api.agentTeam(payload);
-      /* 中间件兜底拦截：HTTP 400 + code=emergency_signal_detected */
-      if (res.status === 400) {
-        try {
-          const data = await res.json();
-          if (data.code === "emergency_signal_detected" || data.code === "extreme_biomarker_value") {
-            setMessages((m) => [...m, userMsg]);
-            setEmergency({ signal: { category: data.category, keywords: data.keywords }, guidance: data.guidance });
-            return;
+      // 非流式 fallback（原有路径）
+      try {
+        const res = await api.agentTeam(payload);
+        /* 中间件兜底拦截：HTTP 400 + code=emergency_signal_detected */
+        if (res.status === 400) {
+          try {
+            const data = await res.json();
+            if (data.code === "emergency_signal_detected" || data.code === "extreme_biomarker_value") {
+              // P0-FE-03：用户消息已在步骤 1 写入一次，此处不再重复追加
+              setEmergency({ signal: { category: data.category, keywords: data.keywords }, guidance: data.guidance });
+              return;
+            }
+          } catch {}
+          throw new Error("bad request");
+        }
+        const data = await res.json();
+        if (data.messages && Array.isArray(data.messages)) {
+          const parsed = data.messages.map((msg) => ({
+            role: msg.role || msg.sender || "agent",
+            content: msg.content || msg.text || "",
+            metadata: msg.metadata || {},
+          }));
+          setMessages((m) => [...m, ...parsed]);
+          // 持久化：每条单独 append，保留 ts
+          parsed.forEach(appendMessage);
+        } else if (data.plan || data.result || data.summary) {
+          // P0-3（2026-10-23）：修 U3——原来直接 JSON.stringify(plan) 让用户看到裸 JSON 与
+          // {"axes":["A"]}。改为把四角色输出转成"过程卡片"文本：标题 + 关键事实行，
+          // 用户能看到"计划→执行→评审→裁定"的真实工作流而不是 JSON 字面量。
+          const parts = [];
+          if (data.plan) {
+            const axes = (data.plan.axes || []).join(", ") || "—";
+            const hints = (data.plan.pathway_hints || []).join(", ") || "—";
+            parts.push({
+              role: "Planner",
+              content: `**计划**\n- 目标轴：${axes}\n- 通路提示：${hints}\n- 需要基因：${data.plan.needs_gene ? "是" : "否"}`,
+            });
           }
-        } catch {}
-        throw new Error("bad request");
+          if (data.result) {
+            const recs = Array.isArray(data.result.recommendations)
+              ? data.result.recommendations
+              : [];
+            const summary = recs.slice(0, 3).map((r) =>
+              `- ${r.prescription || r.targeted_pathway || r.case_id}`
+            ).join("\n");
+            parts.push({
+              role: "Executor",
+              content: `**执行结果**（共 ${recs.length} 条建议）\n${summary || typeof data.result === 'string' ? data.result : "（无）"}`,
+            });
+          }
+          if (data.summary) {
+            parts.push({ role: "Referee", content: `**评审**\n${data.summary}` });
+          }
+          if (parts.length === 0) {
+            parts.push({ role: "assistant", content: JSON.stringify(data, null, 2) });
+          }
+          setMessages((m) => [...m, ...parts]);
+          parts.forEach(appendMessage);
+        } else {
+          const fallback = { role: "assistant", content: JSON.stringify(data, null, 2) };
+          setMessages((m) => [...m, fallback]);
+          appendMessage(fallback);
+        }
+      } catch {
+        const err = { role: "assistant", content: t("agent.agentError") };
+        setMessages((m) => [...m, err]);
+        appendMessage(err);
       }
-      const data = await res.json();
-      if (data.messages && Array.isArray(data.messages)) {
-        const parsed = data.messages.map((msg) => ({
-          role: msg.role || msg.sender || "agent",
-          content: msg.content || msg.text || "",
-          metadata: msg.metadata || {},
-        }));
-        setMessages((m) => [...m, ...parsed]);
-        // 持久化：每条单独 append，保留 ts
-        parsed.forEach(appendMessage);
-      } else if (data.plan || data.result || data.summary) {
-        // P0-3（2026-10-23）：修 U3——原来直接 JSON.stringify(plan) 让用户看到裸 JSON 与
-        // {"axes":["A"]}。改为把四角色输出转成"过程卡片"文本：标题 + 关键事实行，
-        // 用户能看到"计划→执行→评审→裁定"的真实工作流而不是 JSON 字面量。
-        const parts = [];
-        if (data.plan) {
-          const axes = (data.plan.axes || []).join(", ") || "—";
-          const hints = (data.plan.pathway_hints || []).join(", ") || "—";
-          parts.push({
-            role: "Planner",
-            content: `**计划**\n- 目标轴：${axes}\n- 通路提示：${hints}\n- 需要基因：${data.plan.needs_gene ? "是" : "否"}`,
-          });
-        }
-        if (data.result) {
-          const recs = Array.isArray(data.result.recommendations)
-            ? data.result.recommendations
-            : [];
-          const summary = recs.slice(0, 3).map((r) =>
-            `- ${r.prescription || r.targeted_pathway || r.case_id}`
-          ).join("\n");
-          parts.push({
-            role: "Executor",
-            content: `**执行结果**（共 ${recs.length} 条建议）\n${summary || typeof data.result === 'string' ? data.result : "（无）"}`,
-          });
-        }
-        if (data.summary) {
-          parts.push({ role: "Referee", content: `**评审**\n${data.summary}` });
-        }
-        if (parts.length === 0) {
-          parts.push({ role: "assistant", content: JSON.stringify(data, null, 2) });
-        }
-        setMessages((m) => [...m, ...parts]);
-        parts.forEach(appendMessage);
-      } else {
-        const fallback = { role: "assistant", content: JSON.stringify(data, null, 2) };
-        setMessages((m) => [...m, fallback]);
-        appendMessage(fallback);
-      }
-    } catch {
-      const err = { role: "assistant", content: t("agent.agentError") };
-      setMessages((m) => [...m, err]);
-      appendMessage(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   function colorForRole(role) {

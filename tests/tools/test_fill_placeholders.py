@@ -100,7 +100,7 @@ def _build_sandbox(tmp_path: Path) -> Path:
 def run(*args, cwd=None):
     return subprocess.run(
         [PYTHON, str(SCRIPT), *args],
-        capture_output=True, text=True, cwd=str(cwd or REPO_ROOT),
+        capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(cwd or REPO_ROOT),
     )
 
 

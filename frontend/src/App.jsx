@@ -19,34 +19,62 @@ import Retention from './pages/Retention';
 import MyChanges from './pages/MyChanges';
 import Onboarding from './pages/Onboarding';
 import Partner from './pages/Partner';
+import Today from './pages/Today';
+import BioLookup from './pages/BioLookup';
 import LanguageSwitcher from './components/LanguageSwitcher';
 
-const NAV_ITEMS = [
-  { to: '/',           key: 'nav.dashboard', icon: '🏠' },
-  { to: '/assess',     key: 'nav.healthAssess', icon: '🩺' },
-  { to: '/tcm',        key: 'nav.tcm', icon: '🏥' },
-  { to: '/pulse',      key: 'nav.pulse', icon: '🫀' },
-  { to: '/axes',       key: 'nav.axis', icon: '🧭' },
-  { to: '/checkin',    key: 'nav.checkin', icon: '📅' },
-  { to: '/changes',    key: 'nav.myChanges', icon: '📈' },
-  { to: '/reports',    key: 'nav.reports', icon: '📊' },
-  { to: '/knowledge',  key: 'nav.knowledge', icon: '📚' },
-  { to: '/agent',      key: 'nav.agent', icon: '🤖' },
-  { to: '/upload',     key: 'nav.upload', icon: '📤' },
-  { to: '/retention',  key: 'nav.retention', icon: '🎯' },
-  { to: '/share',      key: 'nav.share', icon: '🔗' },
-  { to: '/payment',    key: 'nav.payment', icon: '💎' },
-  { to: '/profile',    key: 'nav.profile', icon: '👤' },
-  { to: '/partner',    key: 'nav.partner', icon: '🔌' },
+/* P1-PROD-01（2026-10-27）：四任务导航重组（报告 §4.2）。
+ * 16 个入口归入四个用户任务：今天 / 我的实验 / 我的数据 / 专业支持。
+ * 全部旧路由保留为深层链接（报告 §9「保留旧页面的深层链接」），不删任何路由。
+ */
+const NAV_GROUPS = [
+  {
+    titleKey: 'nav.groupToday',
+    items: [
+      { to: '/today',   key: 'nav.today',     icon: '☀️' },
+      { to: '/checkin', key: 'nav.checkin',   icon: '📅' },
+    ],
+  },
+  {
+    titleKey: 'nav.groupExperiments',
+    items: [
+      { to: '/',        key: 'nav.dashboard', icon: '🏠' },
+      { to: '/changes', key: 'nav.myChanges', icon: '📈' },
+      { to: '/axes',    key: 'nav.axis',      icon: '🧭' },
+      { to: '/retention', key: 'nav.retention', icon: '🎯' },
+    ],
+  },
+  {
+    titleKey: 'nav.groupData',
+    items: [
+      { to: '/assess',  key: 'nav.healthAssess', icon: '🩺' },
+      { to: '/upload',  key: 'nav.upload',   icon: '📤' },
+      { to: '/reports', key: 'nav.reports',  icon: '📊' },
+      { to: '/pulse',   key: 'nav.pulse',    icon: '🫀' },
+      { to: '/profile', key: 'nav.profile',  icon: '👤' },
+    ],
+  },
+  {
+    titleKey: 'nav.groupSupport',
+    items: [
+      { to: '/knowledge', key: 'nav.knowledge', icon: '📚' },
+      { to: '/bio',       key: 'nav.bio',       icon: '🔬' },
+      { to: '/tcm',       key: 'nav.tcm',       icon: '🏥' },
+      { to: '/agent',     key: 'nav.agent',     icon: '🤖' },
+      { to: '/share',     key: 'nav.share',     icon: '🔗' },
+      { to: '/payment',   key: 'nav.payment',   icon: '💎' },
+      { to: '/partner',   key: 'nav.partner',   icon: '🔌' },
+    ],
+  },
 ];
 
-// 移动端底部导航（5 个核心入口，其余走桌面端）
+// 移动端底部导航（5 个核心入口：今天优先，其余走桌面端）
 const MOBILE_NAV_ITEMS = [
-  { to: '/',        key: 'nav.dashboard', icon: '🏠' },
+  { to: '/today',   key: 'nav.today',        icon: '☀️' },
   { to: '/assess',  key: 'nav.healthAssess', icon: '🩺' },
-  { to: '/reports', key: 'nav.reports', icon: '📊' },
-  { to: '/agent',   key: 'nav.agent', icon: '🤖' },
-  { to: '/profile', key: 'nav.profile', icon: '👤' },
+  { to: '/reports', key: 'nav.reports',      icon: '📊' },
+  { to: '/agent',   key: 'nav.agent',        icon: '🤖' },
+  { to: '/profile', key: 'nav.profile',      icon: '👤' },
 ];
 
 // P0-8：公开路由（无需登录）
@@ -147,22 +175,31 @@ export default function App() {
             <span className="hidden sm:inline">HealthLens</span>
           </NavLink>
 
-          {/* 桌面端导航 */}
+          {/* 桌面端导航：四任务分组 */}
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map(item => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-emerald-50 text-emerald-700'
-                      : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-50'
-                  }`
-                }
-              >
-                <span className="mr-1">{item.icon}</span> {t(item.key)}
-              </NavLink>
+            {NAV_GROUPS.map(group => (
+              <div key={group.titleKey} className="flex flex-col gap-1">
+                <div className="px-3 py-1 text-xs font-medium text-slate-500 uppercase tracking-wide">
+                  {t(group.titleKey)}
+                </div>
+                <div className="flex gap-1">
+                  {group.items.map(item => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        `px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                          isActive
+                            ? 'bg-emerald-50 text-emerald-700'
+                            : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-50'
+                        }`
+                      }
+                    >
+                      <span className="mr-1">{item.icon}</span> {t(item.key)}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
             ))}
           </nav>
 
@@ -202,24 +239,32 @@ export default function App() {
         </div>
       </header>
 
-      {/* 移动端下拉菜单 */}
+      {/* 移动端下拉菜单：四任务分组 */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-b border-slate-100 shadow-lg max-h-96 overflow-y-auto">
           <nav className="px-4 py-2 space-y-1">
-            {NAV_ITEMS.map(item => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-emerald-50 text-emerald-700'
-                      : 'text-slate-600 hover:bg-slate-50'
-                  }`
-                }
-              >
-                <span className="text-lg">{item.icon}</span> {t(item.key)}
-              </NavLink>
+            {NAV_GROUPS.map(group => (
+              <div key={group.titleKey} className="pt-2">
+                <div className="px-3 py-1 text-xs font-medium text-slate-500 uppercase tracking-wide">
+                  {t(group.titleKey)}
+                </div>
+                {group.items.map(item => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
+                        isActive
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : 'text-slate-600 hover:bg-slate-50'
+                      }`
+                    }
+                  >
+                    <span className="text-lg">{item.icon}</span> {t(item.key)}
+                  </NavLink>
+                ))}
+              </div>
             ))}
           </nav>
         </div>
@@ -232,6 +277,9 @@ export default function App() {
           <Route path="/partner" element={<Partner />} />
           <Route path="/" element={
             <RequireAuth><Dashboard /></RequireAuth>
+          } />
+          <Route path="/today" element={
+            <RequireAuth><Today /></RequireAuth>
           } />
           <Route path="/assess" element={
             <RequireAuth><HealthAssess /></RequireAuth>
@@ -258,6 +306,8 @@ export default function App() {
             <RequireAuth><Reports /></RequireAuth>
           } />
           <Route path="/knowledge" element={<Knowledge />} />
+          {/* 文献与结构查询：纯公开参考数据，无需登录（同 /knowledge） */}
+          <Route path="/bio" element={<BioLookup />} />
           <Route path="/agent" element={
             <RequireAuth><AgentChat /></RequireAuth>
           } />

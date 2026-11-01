@@ -10,10 +10,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from app.api.deps import get_current_user
 from app.lib import pulse_engine
+from app.models.user import User
 
 router = APIRouter(prefix="/api/v1", tags=["脉象解读"])
 
@@ -42,7 +44,7 @@ def interpret_pulse(req: PulseInterpretIn):
 
 
 @router.post("/agent/pulse")
-def agent_pulse(req: PulseByUserIn):
+def agent_pulse(req: PulseByUserIn, current_user: User = Depends(get_current_user)):
     """供 agent / 前端按 user_ref 拉取并解读最近号脉结果。"""
     try:
         from app.api.device_metrics import recent

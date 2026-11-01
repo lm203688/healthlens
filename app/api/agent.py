@@ -20,14 +20,16 @@ import json
 import time
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from healthlens_agent.pipeline import PipelineResult, run_pipeline, UserProfile
 from healthlens_agent.team import team_run
 
+from app.api.deps import get_current_user
 from app.lib.claims_guard import apply_claims
+from app.models.user import User
 
 router = APIRouter(prefix="/api/v1/agent", tags=["智能体"])
 
@@ -71,7 +73,7 @@ def _combine_with_history(user_input: str, history: List[HistoryMsg]) -> str:
 
 
 @router.post("/fusion")
-def agent_fusion(req: FusionIn) -> Dict:
+def agent_fusion(req: FusionIn, current_user: User = Depends(get_current_user)) -> Dict:
     """运行融合安全管线，返回带安全审计与免责声明的融合结果。"""
     profile = UserProfile(
         pathway_scores=req.pathway_scores or {},
@@ -81,14 +83,14 @@ def agent_fusion(req: FusionIn) -> Dict:
     res: PipelineResult = run_pipeline(
         user_input=req.user_input, profile=profile, audit_log_path=req.audit_log_path,
     )
-    return apply_claims(res.to_dict(), None, "/api/v1/agent/fusion", jurisdiction="cn")
+    return apply_claims(res.to_dict(), current_user, "/api/v1/agent/fusion")
 
 
 @router.post("/team")
-def agent_team(req: ProfileIn) -> Dict:
+def agent_team(req: ProfileIn, current_user: User = Depends(get_current_user)) -> Dict:
     """运行四角色 Agent 团队，返回计划 / 执行 / 审查 / 裁判决策。"""
     user_input = _combine_with_history(req.user_input, req.history)
-    return apply_claims(team_run(user_input), None, "/api/v1/agent/team", jurisdiction="cn")
+    return apply_claims(team_run(user_input), current_user, "/api/v1/agent/team")
 
 
 # ---------------------------------------------------------------------------
@@ -101,7 +103,7 @@ def _sse_event(event: str, data: Any) -> str:
 
 
 @router.post("/team/stream")
-def agent_team_stream(req: ProfileIn):
+def agent_team_stream(req: ProfileIn, current_user: User = Depends(get_current_user)):
     """SSE 分阶段推送 Agent 团队结果。
 
     事件序列（严格按序）：

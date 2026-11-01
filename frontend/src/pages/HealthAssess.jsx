@@ -50,6 +50,8 @@ export default function HealthAssess() {
 
     setLoading(true);
     setError(null);
+    // P0-FE-02：进入“分析中”状态并真正发起请求（此前按钮仅 setStep(2)，从不调用 submit）
+    setStep(2);
     const parts = [];
     if (freeText.trim()) parts.push(freeText.trim());
     if (symptoms.length) parts.push(t('healthAssess.symptomsLabel') + symptoms.join('、'));
@@ -67,6 +69,8 @@ export default function HealthAssess() {
       try { track("result_viewed", { page: "health_assess" }); } catch {}
     } catch (err) {
       setError(err.message);
+      // P0-FE-02：失败回到表单，错误可见，用户可再次点击重试
+      setStep(1);
     } finally {
       setLoading(false);
     }
@@ -146,8 +150,8 @@ export default function HealthAssess() {
 
         <div className="flex gap-3">
           <button
-            onClick={() => setStep(2)}
-            disabled={symptoms.length === 0 && lifestyle.length === 0 && !freeText.trim()}
+            onClick={submit}
+            disabled={loading || (symptoms.length === 0 && lifestyle.length === 0 && !freeText.trim())}
             className="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-semibold hover:bg-emerald-700 disabled:opacity-50 transition"
           >
             {t('healthAssess.startAssess')}

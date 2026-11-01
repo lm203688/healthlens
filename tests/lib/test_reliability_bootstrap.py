@@ -109,7 +109,7 @@ def test_reliability_bootstrap_reliability_metrics_file_written():
         [sys.executable, "tools/reliability_bootstrap.py"],
         cwd=str(REPO_ROOT),
         capture_output=True,
-        text=True,
+        text=True, encoding="utf-8", errors="replace",
         timeout=120,
     )
     assert result.returncode == 0, f"脚本执行失败: {result.stderr}"

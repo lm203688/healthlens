@@ -53,6 +53,10 @@ export default function Login() {
   const [countdown, setCountdown] = useState(0);
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
+  // P0-AUTH-02：TOTP 两步流程状态（first=第一因素 / second=第二因素）
+  const [totpStep, setTotpStep] = useState('first');
+  const [totpChallenge, setTotpChallenge] = useState('');
+  const [password, setPassword] = useState('');
   const codeRef = useRef(null);
   const navigate = useNavigate();
 
@@ -147,17 +151,48 @@ export default function Login() {
     setError(null);
   }
 
-  // 验证器 App 通道：仅 6 位动态码，匹配已绑定用户即登录
+  // 验证器 App 通道：P0-AUTH-02 两步流程
+  // Step 1（first）：账号+密码 → POST /totp/challenge → 签发一次性挑战
+  // Step 2（second）：挑战+6位码 → POST /totp/verify → 签发登录 token
+  // 旧版仅凭 6 位码遍历全部启用 TOTP 用户，TOTP 被当成独立登录因素；
+  // 新版改为「第一因素→挑战→TOTP」第二因素流程，挑战 2 分钟过期、一次性消费。
   async function handleTotpLogin(e) {
     e.preventDefault();
     setError(null);
+
+    // ---- Step 1：第一因素（账号+密码）----
+    if (totpStep === 'first') {
+      if (!account.trim() || !password.trim()) {
+        setError(t('login.totpFirstFactorRequired'));
+        return;
+      }
+      setVerifying(true);
+      try {
+        const resp = await api.totpChallenge({ account: account.trim(), password });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(await readError(resp, t));
+        const payload = data.data || {};
+        setTotpChallenge(payload.challenge || '');
+        setTotpStep('second');
+        setCode('');
+        setNotice(t('login.totpFirstFactorOk'));
+        codeRef.current?.focus();
+      } catch (err) {
+        setError(err.message || t('login.verifyFailed'));
+      } finally {
+        setVerifying(false);
+      }
+      return;
+    }
+
+    // ---- Step 2：第二因素（TOTP 6 位码）----
     if (code.trim().length !== 6) {
       setError(t('login.totpCodeInvalid'));
       return;
     }
     setVerifying(true);
     try {
-      const resp = await api.totpVerify({ code: code.trim() });
+      const resp = await api.totpVerify({ challenge: totpChallenge, code: code.trim() });
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) throw new Error(await readError(resp, t));
       const { access_token, refresh_token, user } = data.data || {};
@@ -204,7 +239,7 @@ export default function Login() {
               <button
                 key={c.id}
                 type="button"
-                onClick={() => { setChannel(c.id); setError(null); setNotice(null); setCode(''); }}
+                onClick={() => { setChannel(c.id); setError(null); setNotice(null); setCode(''); setTotpStep('first'); setTotpChallenge(''); setPassword(''); }}
                 className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${
                   channel === c.id
                     ? 'bg-white text-emerald-700 shadow-sm'
@@ -300,27 +335,75 @@ export default function Login() {
               </button>
             </form>
           ) : (
-            <form onSubmit={handleTotpLogin} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  {t('login.totpLabel')}
-                </label>
-                <input
-                  ref={codeRef}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  value={code}
-                  onChange={(e) => { setCode(e.target.value.replace(/\D/g, '')); setError(null); }}
-                  placeholder={t('login.totpPlaceholder')}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                  autoComplete="one-time-code"
-                  required
-                />
-                <p className="mt-1 text-xs text-slate-400">
-                  {t('login.totpHint')}
-                </p>
-              </div>
+                        <form onSubmit={handleTotpLogin} className="space-y-4">
+              {totpStep === 'first' ? (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                      {t('login.phoneOrEmail')}
+                    </label>
+                    <input
+                      type="text"
+                      value={account}
+                      onChange={(e) => { setAccount(e.target.value); setError(null); }}
+                      placeholder={t('login.phoneOrEmailPlaceholder')}
+                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent"
+                      autoComplete="username"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                      {t('login.totpPasswordLabel')}
+                    </label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value); setError(null); }}
+                      placeholder={t('login.totpPasswordPlaceholder')}
+                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent"
+                      autoComplete="current-password"
+                      required
+                    />
+                    <p className="mt-1 text-xs text-slate-400">
+                      {t('login.totpFirstFactorHint')}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-emerald-700">{t('login.totpSecondFactorTitle')}</span>
+                    <button
+                      type="button"
+                      onClick={() => { setTotpStep('first'); setTotpChallenge(''); setCode(''); setNotice(null); setError(null); }}
+                      className="text-xs text-slate-500 hover:text-emerald-600"
+                    >
+                      {t('common.back')}
+                    </button>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                      {t('login.totpLabel')}
+                    </label>
+                    <input
+                      ref={codeRef}
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={code}
+                      onChange={(e) => { setCode(e.target.value.replace(/\D/g, '')); setError(null); }}
+                      placeholder={t('login.totpPlaceholder')}
+                      className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm tracking-widest focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent"
+                      autoComplete="one-time-code"
+                      required
+                    />
+                    <p className="mt-1 text-xs text-slate-400">
+                      {t('login.totpSecondFactorHint')}
+                    </p>
+                  </div>
+                </>
+              )}
 
               {error && (
                 <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
@@ -331,10 +414,17 @@ export default function Login() {
 
               <button
                 type="submit"
-                disabled={verifying || code.trim().length !== 6}
+                disabled={
+                  verifying ||
+                  (totpStep === 'first' ? !account.trim() || !password.trim() : code.trim().length !== 6)
+                }
                 className="w-full py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition"
               >
-                {verifying ? t('common.verifying') : t('login.enterApp')}
+                {verifying
+                  ? t('common.verifying')
+                  : totpStep === 'first'
+                    ? t('login.totpNextStep')
+                    : t('login.enterApp')}
               </button>
             </form>
           )}
