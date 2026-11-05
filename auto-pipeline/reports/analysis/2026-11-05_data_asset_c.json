@@ -1,6 +1,6 @@
 {
   "report_id": "data_asset_c_20261105",
-  "generated_at": "2026-11-05T08:56:37.971641",
+  "generated_at": "2026-11-05T17:48:40.867868",
   "data_source": "real_api_probe",
   "sources": [
     {
@@ -28,9 +28,9 @@
     {
       "name": "dbSNP",
       "type": "snp",
-      "total_records": 0,
+      "total_records": 1197210835,
       "last_sync": "2026-11-05",
-      "status": "unknown"
+      "status": "current"
     },
     {
       "name": "TCMKnowledge",
@@ -63,12 +63,6 @@
       "severity": "medium"
     },
     {
-      "source": "dbSNP",
-      "issue": "status_unknown",
-      "detail": "无法确认状态",
-      "severity": "medium"
-    },
-    {
       "source": "TCMKnowledge",
       "issue": "not_external",
       "detail": "本地知识库，需单独同步",
@@ -83,15 +77,15 @@
   ],
   "needs_sync": [],
   "value_estimate": {
-    "total_records": 4708791,
+    "total_records": 1201919626,
     "avg_value_per_record": 0.002,
     "freshness_score": 0.5,
-    "estimated_value_cny": 4708.79,
+    "estimated_value_cny": 1201919.63,
     "breakdown": {
       "KEGG": 0,
       "UniProt": 0,
       "ClinVar": 4708791,
-      "dbSNP": 0,
+      "dbSNP": 1197210835,
       "TCMKnowledge": 0,
       "UserData": 0
     }
