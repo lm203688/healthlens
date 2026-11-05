@@ -253,3 +253,4 @@ curl -s http://localhost:8000/api/v1/mcp \
 **同步/异步桥**：MCP handler 是同步函数、连接器是 async。若在 FastAPI 的 async
 上下文里直接 `asyncio.run()` 会抛 `RuntimeError`，`_run_ref()` 检测到运行中的
 事件循环时退化到独立线程新建循环。
+
