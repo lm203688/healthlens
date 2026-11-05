@@ -20,7 +20,7 @@ from app.services.emergency_interceptor import check_emergency
 # 注意：agent 家族端点必须纳入——用户自由文本输入的主要入口
 PROTECTED_PATHS = [
     "/api/v1/axes/assess",       # 八轴评估
-    "/api/v1/diagnosis/analyze", # AI 诊断分析
+    "/api/v1/diagnosis/analyze", # AI 辅助健康评估分析
     "/api/v1/frequency",         # 频率分析
     "/api/v1/repair",            # 修复方案
     "/api/v1/goals",             # 目标管理

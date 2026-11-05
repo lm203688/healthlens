@@ -36,6 +36,7 @@ from healthlens_agent.mcp_server import (
     _SERVER_VERSION,
     _EXPOSE_PRIVATE,
     _active_tools,
+    _arg_schema,
 )
 
 logger = logging.getLogger(__name__)
@@ -64,7 +65,7 @@ def _tool_defs() -> list[dict]:
             "description": spec["description"],
             "inputSchema": {
                 "type": "object",
-                "properties": {k: {"type": "string"} for k in spec["args"]},
+                "properties": _arg_schema(spec["args"]),
             },
         }
         for name, spec in tools.items()

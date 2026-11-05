@@ -167,6 +167,43 @@ def test_apply_missing_pytest_out_fails_cleanly(tmp_path):
     assert "not found" in (r.stdout + r.stderr).lower()
 
 
+def test_apply_accepts_explicit_passed_count():
+    """--passed N 绕开 pytest 汇总行解析。
+
+    为什么需要这条路径：某些运行环境（终端钩子、输出被截断）根本不打印
+    "N passed" 尾巴，此时 `--pytest-out` 解析必然失败。从 junit xml 统计出
+    权威数字后用 --passed 传入，比硬编码或猜测可靠。
+    """
+    before = {str(t): t.read_text(encoding="utf-8") for t in TARGETS}
+    try:
+        new_n = 1811
+        r = subprocess.run(_py() + ["--apply", "--passed", str(new_n)],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
+        assert r.returncode == 0, f"apply --passed failed:\n{r.stdout}\n{r.stderr}"
+        for t in TARGETS:
+            assert re.search(rf"\b{new_n}\b", t.read_text(encoding="utf-8")), \
+                f"{t} 未更新为 {new_n}"
+    finally:
+        for str_path, content in before.items():
+            Path(str_path).write_text(content, encoding="utf-8")
+
+
+def test_apply_without_any_source_still_reads_pytest_out(tmp_path):
+    """不传 --passed 时行为不变：仍从 pytest.out 解析（CI 走这条路径）。"""
+    before = {str(t): t.read_text(encoding="utf-8") for t in TARGETS}
+    try:
+        out = tmp_path / "pytest.out"
+        out.write_text("==== 1234 passed in 1.00s ====\n", encoding="utf-8")
+        r = subprocess.run(_py() + ["--apply", "--pytest-out", str(out)],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT)
+        # 只要解析路径仍生效即可：输出里必须出现解析到的 1234
+        assert "1234" in (r.stdout + r.stderr)
+    finally:
+        for str_path, content in before.items():
+            Path(str_path).write_text(content, encoding="utf-8")
+
+
+
 # ---------------------------------------------------------------------------
 # Guard against future regression: the CI workflow must actually call the gate
 # ---------------------------------------------------------------------------

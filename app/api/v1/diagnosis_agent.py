@@ -1,4 +1,9 @@
-"""AI 诊断 Agent 路由 - 异步诊断任务触发与状态查询"""
+"""AI 辅助健康评估 Agent 路由 - 异步评估任务触发与状态查询
+
+定位重构（2026-11-04）：对外表述从「AI 诊断 Agent」改为「AI 辅助健康
+评估 Agent」。本模块执行五层因果链的状态解读/风险分层/趋势预警，
+**不产生诊断结论**（诊断为独立门控模块，默认 inactive）。
+"""
 import asyncio
 import uuid
 from datetime import datetime, timezone
@@ -10,7 +15,7 @@ from loguru import logger
 from app.models.user import User
 from app.api.deps import get_current_user
 
-router = APIRouter(tags=["AI诊断Agent"])
+router = APIRouter(tags=["AI辅助评估Agent"])
 
 
 # ---------------------------------------------------------------------------
@@ -44,7 +49,7 @@ class LabResultInput(BaseModel):
 
 
 class DiagnosisAgentRequest(BaseModel):
-    """AI 诊断 Agent 请求"""
+    """AI 辅助健康评估 Agent 请求"""
     genes: list[VariantInput] = Field(default_factory=list, description="基因变异列表")
     lab_results: list[LabResultInput] = Field(default_factory=list, description="检验指标列表")
     tcm_symptoms: list[str] = Field(default_factory=list, description="中医症状列表")
@@ -60,8 +65,8 @@ async def run_diagnosis_agent(
     current_user: User = Depends(get_current_user),
 ):
     """
-    触发 AI 诊断 Agent 运行。
-    - 后台异步执行五层因果链分析
+    触发 AI 辅助健康评估 Agent 运行。
+    - 后台异步执行五层因果链分析（状态解读/风险分层/趋势预警）
     - 返回 task_id 用于查询状态
     """
     task_id = str(uuid.uuid4())
@@ -112,7 +117,7 @@ async def get_diagnosis_status(
     current_user: User = Depends(get_current_user),
 ):
     """
-    查询 AI 诊断任务状态。
+    查询 AI 辅助健康评估任务状态。
     - pending: 排队中
     - running: 分析中
     - completed: 完成（含 result）

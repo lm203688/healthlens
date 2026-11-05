@@ -126,3 +126,16 @@ frontend/vite.config.js.timestamp-*.mjs
 healthlens/**
 !healthlens/frontend
 !healthlens/frontend/**
+
+# ============================================================
+# 审计过程产生的临时产物（一次性脚本 / 临时虚拟环境 / 回滚快照）
+# 这些是历次审计留下的工作区残留，不应进入仓库。
+# ============================================================
+.audit-venv/
+_healthlens_dist_backup_*/
+_healthlens_removed_*/
+audit_verify_report.py
+
+# pytest 运行产物（CI 在运行时生成，不入库）
+pytest.out
+.pytest-report.xml

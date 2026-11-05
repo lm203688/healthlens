@@ -1,4 +1,4 @@
-"""西医诊断引擎测试"""
+"""西医健康评估引擎测试（定位重构：评估语义，非诊断）"""
 import pytest
 from app.core.diagnosis_engine import WesternDiagnosisEngine, DiagnosisFinding
 
@@ -57,3 +57,32 @@ class TestWesternDiagnosisEngine:
         # 验证返回的是 DiagnosisFinding 对象
         for f in findings:
             assert isinstance(f, DiagnosisFinding)
+            # 评估语义：kind 恒为 risk_finding，非 diagnosis
+            assert f.kind == "risk_finding"
+
+
+class TestAssessmentSemantics:
+    """评估语义测试（定位重构：不再宣称诊断）。"""
+
+    def test_assess_method_equivalent(self):
+        """assess_from_observations 与兼容别名行为一致。"""
+        engine = WesternDiagnosisEngine()
+        obs = [{"loinc_code": "2345-7", "loinc_name": "空腹血糖", "value_numeric": 7.8,
+                "reference_range_high": 6.1, "reference_range_low": 3.9}]
+        assert len(engine.assess_from_observations(obs)) == len(engine.diagnose_from_observations(obs))
+
+    def test_kind_is_risk_not_diagnosis(self):
+        """评估输出 kind 恒为 risk_finding（非 diagnosis）。"""
+        engine = WesternDiagnosisEngine()
+        findings = engine.assess_from_observations([
+            {"loinc_code": "2345-7", "loinc_name": "空腹血糖", "value_numeric": 7.8,
+             "reference_range_high": 6.1, "reference_range_low": 3.9},
+        ])
+        for f in findings:
+            assert f.kind == "risk_finding"
+
+    def test_docstring_reframes_as_assessment(self):
+        """引擎文档字符串已改为评估语义（无"诊断"宣称）。"""
+        import inspect
+        doc = inspect.getdoc(WesternDiagnosisEngine) or ""
+        assert "诊断" not in doc.split("\n")[0]

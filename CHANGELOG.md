@@ -4,6 +4,109 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.40.0] - 2026-11-04（定位重构：诊断门控 + 非药物引擎 + PRS 框架 + 诚实边界）
+
+### Changed（对外表述：AI 诊断 → AI 辅助健康评估）
+
+- **诊断措辞重构**：`diagnosis_engine.py` 及相关对外表述从「AI 诊断」改为「AI 辅助健康评估 + 风险分层 + 趋势预警」（AI 辅助，不独立诊断）。
+- **解释↔诊断边界层**（`app/core/diagnosis_gate.py`）：诊断为独立门控模块，默认 **inactive**（不激活，留接口）；激活前 `diagnose()` 仅返回 `not_active`，fail-closed，绝不降级放行。`interpret()` 永远可用（健康评估）。
+- **药物隔离声明**：个体化家庭合成药/中药（可控计量）列为远期隔离方向，不进 v1.0；平台只做「个体化用药建议（经持牌医师处方）→ 持牌药店/医疗机构调配」。
+
+### Added（核心交付物）
+
+- **非药物个性化方案引擎**（`app/core/non_pharma_engine.py`）：运动/饮食/睡眠/补剂按个体差异生成，翻译成「今天该做什么」可执行日课。内建信息完整度→精度分档（basic/standard/advanced，每档可用+标注 precision_level）。
+- **基因 WGS/PRS 框架接口**（`app/core/prs_framework.py`）：合规 gate 前置，PRS 诚实呈现「风险≠诊断」，AUC 0.6-0.7 属低-中等区分度。
+
+### Docs（诚实边界）
+
+- `docs/HEALTHLENS_POSITIONING_REFACTOR_2026-11-04.md`：定位重构架构决策与诚实边界声明。
+
+## [0.39.0] - 2026-11-01（参考数据能力接入 MCP：让 Agent 真正用得上结构/化学/同源性数据）
+
+### Added（`healthlens_agent/mcp_server.py` 新增 L1 参考数据层，8 个工具）
+
+v0.38.0 把 RCSB / PubChem / UniProt / AlphaFold / BLAST 接成了 REST + 网页，
+但 Agent 走的是 MCP，够不到这些能力——"有 API 没工具"与此前"有 API 没界面"
+是同一类断层。本轮补齐：
+
+- **`hl_target_profile`**（组合工具）——基因符号 → UniProt 蛋白 → 实验结构清单
+  （含总数，TP53 实测 323 条）→ AlphaFold 最佳模型（pLDDT）。一次调用替代三次往返。
+- **`hl_pdb_entry`** —— 单个 PDB 条目：标题、实验方法、分辨率、作者、聚合物实体/链/物种、结合配体。
+- **`hl_pdb_search`** —— RCSB 全库检索，条件 AND；method 需完整方法名，max_resolution 单位 Å。
+- **`hl_compound_lookup`** —— 名称 / SMILES / InChIKey → CID + 计算属性 + 同义词 + CAS 号。
+- **`hl_compound_similar`** —— 2D 指纹（Tanimoto）相似性搜索，用于骨架跃迁 / 类似物发现。
+- **`hl_blast_submit` / `hl_blast_status` / `hl_blast_result`** —— BLAST 三步式：
+  公共队列排队不可控（实测 blastn ~30 秒，blastp+swissprot 曾达 9.7 小时），
+  因此提交与取结果必须拆开，工具描述里显式要求轮询而非同步等待。
+
+### Changed
+
+- **工具分层**：新增 `_TOOLS_REF`（公开只读库，无个人数据）并入默认激活集；
+  L1 内容层 + L1 参考数据层 + L2 知识层默认开启，L3 私有层仍由
+  `HL_MCP_EXPOSE_PRIVATE=1` 单独门控。参考数据工具**不**依赖私有层开关。
+- **`_arg_schema()`（新）**：此前 `inputSchema` 把所有参数一律声明为 `"string"`，
+  导致 `limit` / `threshold` / `max_structures` 这类整数参数被客户端按字符串发送
+  （`"limit": "25"`）。现按 Python 类型映射 JSON Schema 类型；handler 侧保留
+  `_as_int` 兜底，兼容不严格遵守 schema 的客户端。`app/api/mcp_http.py` 复用同一实现，
+  消除两处重复定义。
+- **`_run_ref()`（新）**：MCP handler 是同步函数，连接器是 async。若在 FastAPI
+  的 async 上下文里直接 `asyncio.run()` 会抛 `RuntimeError`，故检测到运行中的
+  事件循环时退化到独立线程新建循环（连接器 httpx 客户端本就按事件循环隔离）。
+
+### Fixed
+
+- 参考数据错误统一映射为机器可读结构 `{error, message, hint}`（9 种错误码），
+  替代此前会被 MCP 客户端当成"成功返回一段报错文本"的裸异常。
+
+### Tests
+
+- `tests/test_mcp_reference_tools.py`（25 用例，全离线）锁死：参考工具默认激活、
+  L3 不泄漏、整数/浮点参数 schema 类型、`_run_ref` 在运行中事件循环下可用、
+  空/非法入参在本地拒绝（不打到上游）、AlphaFold 必须被标为预测、
+  PubChem 属性必须被标为计算值、BLAST 描述必须提示轮询。
+
+## [0.38.0] - 2026-11-01（外部参考数据库接入：结构生物学 / 化学信息学 / 同源性检索）
+
+### Added（`app/connectors/reference/` 新包，6 个数据源）
+
+- **`base.py`（ReferenceSource 基类，约 360 行）**——与既有 `BaseConnector`（用户健康数据 OAuth 同步）**严格分离**：这是只读公共参考数据，无用户授权、无 PII。统一提供：异步 httpx 连接池（**按事件循环隔离**，避免跨 loop 复用触发 `RuntimeError: Event loop is closed`）、指数退避重试、按数据源真实配额的限流、TTL 缓存（只缓存成功，错误永不缓存）、机器可读错误码（`not_found / invalid_input / rate_limited / timeout / network_error / upstream_error / parse_error / license_unavailable / not_implemented`）。
+- **`rcsb.py`**——RCSB PDB：`entry`（REST 轻量）、`describe`（GraphQL 一次取全：标题/方法/分辨率/作者/日期 + 聚合物实体/链/物种 + 非聚合物配体）、`search`（全文 + 方法/分辨率/物种/日期属性过滤，AND）、`search_by_uniprot`（按 UniProt 号列已解析结构）。
+- **`pubchem.py`**——PubChem PUG-REST：名称/SMILES/InChIKey → CID 解析（`auto` 按 InChIKey→SMILES→名称依次尝试）、14 项计算属性、同义词 + **CAS 号校验位验证**、2D 相似性搜索（走官方异步 `ListKey` 流程，非 `fastsimilarity` 近似）。
+- **`blast.py`**——NCBI BLAST URL API：submit / status / fetch 三步（**不允许同步等待**），JSON2 结果按 ZIP 解包 + 索引指针跳转，解析为结构化命中与 HSP。
+- **`uniprot.py` / `alphafold.py`**——UniProt（条目、基因符号→登录号）与 AlphaFold DB（预测模型、pLDDT 五档分层）。两者是让 RCSB 可按"基因"检索的必要枢纽（结构库按登录号索引，不认基因名）。
+- **`target.py`**——靶点桥接：基因 → UniProt → 实验结构（RCSB）+ 预测结构（AlphaFold）。主结果严格（解析不到即 404），增强结果可降级（单源失败不拖垮整链）。
+- **`schrodinger.py`**——Schrödinger CADD 适配层（PrepWizard / LigPrep / Epik / Glide / Prime MM-GBSA / Desmond / QikProp / SiteMap / WaterMap / FEP+）。**未安装或无许可时抛 `license_unavailable`，绝不返回伪造的对接分数或自由能**；支持本地与 SSH 远程执行。
+
+### Added（`app/api/bio.py`，18 个端点，`/api/v1/bio`）
+
+- 读接口全部**公开**（纯公开科学数据，无需登录，便于演示/SEO/B 端联调）；写接口（`/cadd/jobs`）需登录且限流更严。
+- BLAST 拆为 `POST /blast`（返回 RID）→ `GET /blast/{rid}/status` → `GET /blast/{rid}/result`；`POST /blast/run` 仅为脚本便利封装（默认 180s 超时）。
+- 错误统一映射为 HTTP 状态码：`not_found→404 / invalid_input→400 / rate_limited→429 / timeout→504 / license_unavailable→501 / upstream_error→502`，`detail` 内含机器可读 `code`。
+
+### Added（前端「文献与结构查询」页，`/bio`）
+
+- **`frontend/src/pages/BioLookup.jsx`（新增约 380 行）**——三标签：靶点（基因 → 蛋白 + 实验结构列表 + 预测结构卡）/ 结构（PDB ID → 元数据 + 实体 + 配体）/ 化合物（名称/SMILES → 属性 + CAS + 同义词 + SMILES）。
+- 诚实呈现：AlphaFold 卡固定带「预测 · 非实验证据」徽章与 disclaimer；PubChem 属性标注「计算值」；错误按 `code` 分类提示并显示原始 detail，不吞错。
+- `client.js` 新增 13 个 `bio*` 方法；`App.jsx` 在「专业支持」分组新增入口（与 `/knowledge` 同为公开路由）；i18n 中英各补 24 key（**887/887 完全对齐**）。
+
+### Added（配置与文档）
+
+- `app/config.py` 新增 `NCBI_TOOL / NCBI_EMAIL / NCBI_API_KEY / SCHRODINGER / SCHRODINGER_SSH / SCHRODINGER_LICENSE`；`.env.example` 同步注释说明。
+- **`docs/BIO_SOURCES.md`**——能力矩阵、18 端点参考、**四个实测踩坑记录**（BLAST JSON2 是 ZIP 包装 / PubChem 相似性不能带 `/cids/` / BLAST 公共队列 RTOE 可达 34,000s / RCSB GraphQL 字段名写错会整体失败）、限速与缓存策略、诚实边界表。
+
+### Added（测试，`tests/connectors/test_reference_sources.py`，47 用例）
+
+- 离线 43 例：TTL 缓存与淘汰、限流间隔、错误码契约、RCSB ID 规范化、BLAST 序列校验与 **ZIP 解包解析**（用合成 zip fixture 锁死）、PubChem CAS 校验位、AlphaFold pLDDT 分档、**Schrödinger 无许可必须报错**、OpenAPI 18 端点契约、错误码→HTTP 映射。
+- 联网 4 例：RCSB 4HHB（1.74 Å / HEM 配体）、PubChem aspirin（CID 2244 / C9H8O4 / CAS 50-78-2）、UniProt TP53→P04637、AlphaFold P04637。默认跳过，`HL_LIVE_BIO=1` 启用。
+
+### 实测记录（2026-11-01）
+
+- RCSB：4HHB → 1.74 Å、X-RAY、2 聚合物实体、HEM+PO4 配体；EM ≤3 Å 检索 11,152 条；P04637 关联 323 个结构。
+- PubChem：aspirin → CID 2244、C9H8O4、MW 180.16、XLogP 1.2；Tanimoto≥98 命中 147 条。
+- BLAST：blastn+core_nt 的 RTOE≈30s；**blastp+swissprot 同时刻 RTOE≈34,781s（约 9.7 小时）**——故必须异步。
+- AlphaFold：P04637 共 9 个模型，最佳 pLDDT 83.56（confident）。
+- Schrödinger：本机未安装，`capabilities.usable=false`，`run_job` 正确抛 `license_unavailable`。
+
 ## [0.37.0] - 2026-10-25（P1 产品收敛：Onboarding + 周报自动化 + 华为健康 + 合作开发者中心）
 
 ### Added（P1-1 首次进入 3 步引导）

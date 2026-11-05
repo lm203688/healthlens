@@ -127,13 +127,22 @@ def main() -> int:
                     help="Rewrite files to match the pytest output")
     ap.add_argument("--pytest-out", default="pytest.out",
                     help="Path to pytest -v output file (for --apply)")
+    ap.add_argument("--passed", type=int, default=None,
+                    help="直接给定 passed 数，与 --pytest-out 二选一。用于汇总行不可用的场景："
+                         "某些环境（终端钩子 / 输出截断）不打印 'N passed' 尾巴，"
+                         "此时从 junit xml 统计更可靠："
+                         "pytest --junitxml=report.xml 后统计无 failure/error/skipped 的 testcase。")
     args = ap.parse_args()
 
     counts = collect_all_counts()
 
     if args.apply:
-        pytest_passed = parse_pytest_passed(Path(args.pytest_out))
-        print(f"[sync] pytest passed = {pytest_passed}")
+        if args.passed is not None:
+            pytest_passed = args.passed
+            print(f"[sync] passed = {pytest_passed} (由 --passed 指定)")
+        else:
+            pytest_passed = parse_pytest_passed(Path(args.pytest_out))
+            print(f"[sync] pytest passed = {pytest_passed}")
         render(pytest_passed)
         # After render, sanity check
         canonical_after = resolve_canonical()

@@ -225,4 +225,23 @@ export const api = {
   analyticsSession: (body) => request('/analytics/session', { method: 'POST', body: JSON.stringify(body) }),
   analyticsConversion: (body) => request('/analytics/conversion', { method: 'POST', body: JSON.stringify(body) }),
   analyticsDashboard: () => request('/analytics/dashboard'),
+
+  /* ===== 外部参考数据库（RCSB PDB / PubChem / BLAST / UniProt / AlphaFold）=====
+   * 全部为公开只读数据，无需登录。BLAST 拆成 submit/status/result 三步：
+   * 公共队列可能排队数小时，不能同步等。 */
+  bioSources: (probe = false) => request(`/bio/sources${probe ? '?probe=true' : ''}`),
+  bioPdb: (pdbId) => request(`/bio/pdb/${encodeURIComponent(pdbId)}`),
+  bioPdbSearch: (body) => request('/bio/pdb/search', { method: 'POST', body: JSON.stringify(body) }),
+  bioPdbByUniprot: (acc) => request(`/bio/pdb/by-uniprot/${encodeURIComponent(acc)}`),
+  bioCompound: (q) => request(`/bio/compound?q=${encodeURIComponent(q)}`),
+  bioCompoundProps: (cid) => request(`/bio/compound/${cid}`),
+  bioCompoundSimilar: (body) => request('/bio/compound/similar', { method: 'POST', body: JSON.stringify(body) }),
+  bioBlastSubmit: (body) => request('/bio/blast', { method: 'POST', body: JSON.stringify(body) }),
+  bioBlastStatus: (rid) => request(`/bio/blast/${encodeURIComponent(rid)}/status`),
+  bioBlastResult: (rid) => request(`/bio/blast/${encodeURIComponent(rid)}/result`),
+  bioProteinByGene: (symbol) => request(`/bio/protein/gene/${encodeURIComponent(symbol)}`),
+  bioPredictedStructure: (acc) => request(`/bio/structure/predicted/${encodeURIComponent(acc)}`),
+  bioTarget: (gene, maxStructures = 10) =>
+    request(`/bio/target/${encodeURIComponent(gene)}?max_structures=${maxStructures}`),
+  bioCaddCapabilities: () => request('/bio/cadd/capabilities'),
 };

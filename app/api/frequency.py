@@ -209,10 +209,10 @@ async def create_prescription_from_diagnosis(
     current_user: User = Depends(get_current_user),
 ):
     """
-    从 AI 诊断 Agent 的结果直接生成频率处方。
+    从 AI 辅助健康评估 Agent 的结果直接生成频率处方。
 
-    - 输入：AI 诊断任务的 task_id
-    - 自动查询诊断结果并生成对应频率处方
+    - 输入：AI 辅助评估任务的 task_id
+    - 自动查询评估结果并生成对应频率处方
     """
     from app.api.v1.diagnosis_agent import _task_store
 

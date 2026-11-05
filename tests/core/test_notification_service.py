@@ -81,7 +81,7 @@ async def test_notify_diagnosis_ready(db_session):
     )
     notifications = result.scalars().all()
     assert len(notifications) == 1
-    assert notifications[0].title == "诊断报告已生成"
+    assert notifications[0].title == "健康评估报告已生成"
     assert notifications[0].category == "health_alert"
 
 

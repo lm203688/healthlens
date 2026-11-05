@@ -1,4 +1,9 @@
-"""核心诊断 AI 引擎 - 五层因果链融合诊断"""
+"""核心健康评估引擎 - 五层因果链状态解读
+
+定位重构（2026-11-04）：本模块从「融合诊断」改为「五层因果链状态解读 +
+风险分层 + 趋势预警」。输出为健康评估（方案/分析/修复/建议），
+**不产生诊断结论**（诊断为独立门控模块，默认 inactive）。
+"""
 import copy
 import json
 from typing import Any
@@ -209,13 +214,13 @@ SYSTEM_PROMPT = """你是一位融合中西医的**首席精准健康分析师**
 
 class DiagnosisAgent:
     """
-    融合诊断 Agent - 将基因变异、蛋白功能、细胞通路、中医证候和干预方案
-    整合为五层因果链诊断报告。
+    五层因果链评估 Agent - 将基因变异、蛋白功能、细胞通路、中医证候和
+    干预方案整合为五层因果链**状态解读/风险分层/趋势预警**报告。
     """
 
     async def run_full_diagnosis(self, user_data: dict) -> dict:
         """
-        运行完整诊断流程。
+        运行完整健康评估流程（非诊断）。
 
         Args:
             user_data: 用户数据字典，包含:
@@ -232,7 +237,7 @@ class DiagnosisAgent:
         tcm_symptoms = user_data.get("tcm_symptoms", [])
         user_id = user_data.get("user_id", "unknown")
 
-        logger.info(f"开始 AI 诊断 | user_id={user_id} | variants={len(genes)} | labs={len(lab_results)} | symptoms={len(tcm_symptoms)}")
+        logger.info(f"开始 AI 辅助评估 | user_id={user_id} | variants={len(genes)} | labs={len(lab_results)} | symptoms={len(tcm_symptoms)}")
 
         # ---- Step 1: L1 基因变异注释 (ClinVar) ----
         layer1_variants = await self._annotate_variants(genes)
@@ -255,14 +260,14 @@ class DiagnosisAgent:
         # 是否为已登录用户的真实分析（决定降级策略：真实分析绝不返回示例数据）
         authenticated = is_authenticated_context(user_data)
 
-        # ---- Step 5: 调用 LLM 生成诊断报告 ----
+        # ---- Step 5: 调用 LLM 生成评估报告 ----
         try:
             fusion_chain = await self._call_llm_for_diagnosis(
                 structured_data,
                 authenticated=authenticated,
                 user_id=user_id,
             )
-            logger.info(f"AI 诊断完成 | user_id={user_id}")
+            logger.info(f"AI 辅助评估完成 | user_id={user_id}")
             return fusion_chain
         except Exception as exc:
             reason = f"AI 分析服务调用失败：{exc}"
@@ -533,7 +538,7 @@ class DiagnosisAgent:
         user_id: Any = None,
     ) -> dict:
         """
-        调用 Agnes AI LLM 生成诊断报告。
+        调用 Agnes AI LLM 生成评估报告（非诊断）。
 
         Returns:
             解析为 dict 的五层因果链，与 getFusionDemoData 格式兼容

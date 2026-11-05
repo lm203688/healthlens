@@ -1,11 +1,11 @@
-"""西医诊断 + 处方系统端到端测试"""
+"""西医健康评估 + 处方系统端到端测试"""
 import pytest
 from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
 async def test_diagnosis_with_abnormal_observations(client, test_user_data):
-    """测试: 上传报告产生异常指标 → 触发AI诊断 → 查看诊断结果 → 开具处方"""
+    """测试: 上传报告产生异常指标 → 触发AI辅助健康评估 → 查看评估结果 → 开具处方"""
     # 注册登录
     register_resp = await client.post("/api/v1/auth/register", json=test_user_data)
     if register_resp.status_code not in (200, 201):
