@@ -78,11 +78,11 @@ async def send_notification(message: NotificationMessage) -> bool:
 
 
 async def notify_diagnosis_ready(user_id: str, diagnosis_count: int) -> None:
-    """诊断完成通知"""
+    """健康评估完成通知"""
     await send_notification(NotificationMessage(
         user_id=user_id,
-        title="诊断报告已生成",
-        body=f"AI已完成{diagnosis_count}项诊断分析，请前往查看。",
+        title="健康评估报告已生成",
+        body=f"AI已完成{diagnosis_count}项健康评估，请前往查看。",
         channel="in_app",
         category="health_alert",
         severity="info",

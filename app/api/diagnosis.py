@@ -1,4 +1,8 @@
-"""西医诊断路由 - AI 诊断触发、诊断历史、诊断审核
+"""西医健康评估路由 - AI 辅助健康评估触发、评估历史、评估复核
+
+定位重构（2026-11-04）：对外表述从「AI 诊断」改为「AI 辅助健康评估 +
+风险分层 + 趋势预警」。诊断作为独立门控模块（diagnosis_gate）默认
+inactive，本路由仅提供健康评估，不产生诊断结论。
 
 **管辖感知（Claims Engine 集成，2026-10-10 阶段 A3）**：
 - 每个端点在返回前调用 `filter_output(payload, jurisdiction, endpoint)`，
@@ -30,7 +34,7 @@ router = APIRouter(tags=["diagnosis"])
 # ---------------------------------------------------------------------------
 
 class AnalyzeRequest(BaseModel):
-    """触发 AI 诊断的请求参数"""
+    """触发 AI 辅助健康评估的请求参数"""
     include_observations: bool = True
     symptom_description: str | None = None
     record_ids: list[str] | None = None
@@ -54,10 +58,10 @@ async def trigger_analysis(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    触发 AI 辅助诊断分析
+    触发 AI 辅助健康评估（含风险分层与趋势预警）
     - 收集用户的 HealthObservation 数据
-    - 调用规则引擎进行诊断分析
-    - 分析完成后写入 DiagnosisResult 表
+    - 调用规则引擎进行风险分层评估（非诊断）
+    - 评估完成后写入 DiagnosisResult 表（kind=risk_finding）
 
     管辖感知：按用户 jurisdiction 检查 diagnosis_endpoint 开关，
     EU/US/UK 等严监管法域下会返回 403 拒绝响应。
@@ -120,9 +124,9 @@ async def list_diagnosis_results(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    获取诊断结果历史列表
+    获取评估结果历史列表
 
-    管辖感知：列表返回的每条诊断记录都会按用户法域过滤 ICD/severity 等越线字段。
+    管辖感知：列表返回的每条评估记录都会按用户法域过滤 ICD/severity 等越线字段。
     B0-3: 强区域驻留检查。
     """
     require_same_region(current_user, request)
@@ -187,7 +191,7 @@ async def get_diagnosis_result(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    获取诊断结果详情
+    获取评估结果详情
 
     管辖感知：详情返回同样按法域过滤 ICD/severity 等字段。
     B0-3: 强区域驻留检查。
@@ -259,7 +263,7 @@ async def review_diagnosis(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    审核/确认诊断结果
+    复核/确认评估结果（由持牌医师执行，非 AI 结论）
 
     B0-3: 强区域驻留检查（医生也只能在部署 region 内审核）。
     """

@@ -1,4 +1,9 @@
-"""西医诊断服务 - 聚合健康数据，调用规则引擎，生成诊断结果"""
+"""西医健康评估服务 - 聚合健康数据，调用规则引擎，生成风险分层结果
+
+定位重构（2026-11-04）：本服务执行的是「AI 辅助健康评估 + 风险分层 +
+趋势预警」，**不是诊断**。诊断作为独立门控模块（diagnosis_gate）默认
+inactive，不在此处产生疾病结论。
+"""
 import uuid
 from decimal import Decimal
 from datetime import datetime, timezone
@@ -11,7 +16,11 @@ from app.core.diagnosis_engine import WesternDiagnosisEngine
 
 
 async def trigger_diagnosis(db: AsyncSession, user_id: str) -> dict:
-    """触发 AI 诊断: 聚合指标 → 规则引擎分析 → 写入诊断结果"""
+    """触发 AI 辅助健康评估: 聚合指标 → 规则引擎分析 → 写入评估结果
+
+    注意：函数名保留 `trigger_diagnosis` 以兼容既有调用方/测试，但语义
+    已改为「健康评估」，输出字段 kind=risk_finding，不宣称诊断。
+    """
     engine = WesternDiagnosisEngine()
 
     # 1. 从 DB 获取最新指标
@@ -38,10 +47,10 @@ async def trigger_diagnosis(db: AsyncSession, user_id: str) -> dict:
             "reference_range_high": float(obs.reference_range_high) if obs.reference_range_high is not None else None,
         })
 
-    # 3. 调用规则引擎
-    findings = engine.diagnose_from_observations(obs_dicts)
+    # 3. 调用规则引擎（评估语义）
+    findings = engine.assess_from_observations(obs_dicts)
 
-    # 4. 写入诊断结果
+    # 4. 写入评估结果
     created_diagnoses = []
     for finding in findings:
         diagnosis = DiagnosisResult(
@@ -52,7 +61,7 @@ async def trigger_diagnosis(db: AsyncSession, user_id: str) -> dict:
             confidence=Decimal(str(finding.confidence)),
             severity=finding.severity,
             is_ai_generated=True,
-            status="pending",  # 待医生审核
+            status="pending",  # 待医生复核（评估结论须医疗机构确认）
         )
         db.add(diagnosis)
         created_diagnoses.append({
@@ -63,13 +72,19 @@ async def trigger_diagnosis(db: AsyncSession, user_id: str) -> dict:
             "confidence": finding.confidence,
             "evidence": finding.evidence,
             "recommendations": finding.recommendations,
+            "kind": finding.kind,
         })
 
     await db.commit()
-    logger.info(f"Diagnosis complete for user {user_id}: {len(findings)} findings")
+    logger.info(f"Health assessment complete for user {user_id}: {len(findings)} findings")
 
     return {
         "status": "completed",
         "total_findings": len(findings),
         "findings": created_diagnoses,
+        "assessment_mode": True,
+        "disclaimer": (
+            "本结果为 AI 辅助健康评估与风险分层，非诊断结论。"
+            "任何异常指标均须由持牌医疗机构复核确认。"
+        ),
     }

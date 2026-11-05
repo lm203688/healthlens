@@ -1,6 +1,20 @@
-"""西医 AI 诊断引擎
-Phase 1: 基于规则引擎的初步诊断（指标异常→疑似疾病映射）
-Phase 2: 集成医学大模型
+"""西医健康评估引擎（AI 辅助健康评估 + 风险分层 + 趋势预警）
+============================================================
+定位重构（2026-11-04，红线重构）：
+  · 本引擎**不再承担"诊断"**——它只做「AI 辅助健康评估 + 风险分层 +
+    趋势预警」，即对检验指标异常进行分级解读并给出就医建议。
+  · "诊断"作为独立门控模块（见 app/core/diagnosis_gate.py），默认
+    inactive，不激活、不注册、不产生疾病结论。
+  · 输出统一表述为「评估/发现/风险分层」，避免"疑似疾病/诊断"措辞。
+
+诚实边界：
+  · 本引擎是规则驱动的**探索性/研究性**工具，置信度 0.65 为启发式
+    权重，非临床验证值；不宣称"已验证诊断"。
+  · 任何"指标异常 → 疾病名"的映射仅为**风险提示**，须由持牌医疗
+    机构复核确认，不构成诊断结论。
+
+Phase 1: 基于规则引擎的健康评估（指标异常→风险分层映射）
+Phase 2: 集成医学大模型（评估增强，仍非诊断）
 """
 from decimal import Decimal
 from dataclasses import dataclass, field
@@ -8,16 +22,20 @@ from dataclasses import dataclass, field
 
 @dataclass
 class DiagnosisFinding:
-    name: str                    # 疾病/异常名称
-    icd_code: str               # ICD-11 编码
+    name: str                    # 风险/异常名称（不再称"疾病名"）
+    icd_code: str               # ICD-11 编码（仅供医疗机构参考映射）
     severity: str               # mild / moderate / severe
-    confidence: float           # 0-1 置信度
+    confidence: float           # 0-1 启发式权重（非临床验证）
     evidence: list[str]         # 依据的指标
-    recommendations: list[str]  # 建议
+    recommendations: list[str]  # 建议（就医/生活方式）
+    kind: str = "risk_finding"  # risk_finding（非 diagnosis）
 
 
 class WesternDiagnosisEngine:
-    """基于规则引擎的西医诊断 - Phase 1"""
+    """基于规则引擎的西医健康评估（AI 辅助）— Phase 1
+
+    本引擎仅做健康评估与风险分层，不产生医疗结论。
+    """
 
     # 常见指标异常 → 疑似疾病映射
     # key: loinc_code, value: (疾病名, icd_code, 严重度, 建议列表)
@@ -132,8 +150,8 @@ class WesternDiagnosisEngine:
         },
     }
 
-    def diagnose_from_observations(self, observations: list[dict]) -> list[DiagnosisFinding]:
-        """基于健康指标异常检测结果生成诊断建议"""
+    def assess_from_observations(self, observations: list[dict]) -> list[DiagnosisFinding]:
+        """基于健康指标异常检测结果生成风险分层评估（非诊断）"""
         findings = []
 
         for obs in observations:
@@ -155,9 +173,10 @@ class WesternDiagnosisEngine:
                         name=rule["name"],
                         icd_code=rule["icd_code"],
                         severity=rule["severity"],
-                        confidence=0.65,  # 规则引擎基础置信度
+                        confidence=0.65,  # 规则引擎启发式权重（非临床验证）
                         evidence=[f"{name}: {value} (参考上限 {high})"],
                         recommendations=rule["recommendations"],
+                        kind="risk_finding",
                     ))
             elif low is not None and value < low:
                 rule = rules.get("low")
@@ -169,10 +188,21 @@ class WesternDiagnosisEngine:
                         confidence=0.65,
                         evidence=[f"{name}: {value} (参考下限 {low})"],
                         recommendations=rule["recommendations"],
+                        kind="risk_finding",
                     ))
 
         return findings
 
+    # 兼容别名（旧调用方仍可用，但语义为"评估"）
+    def diagnose_from_observations(self, observations: list[dict]) -> list[DiagnosisFinding]:
+        """兼容别名：等同 assess_from_observations（语义已改为评估）。"""
+        return self.assess_from_observations(observations)
+
+    async def assess(self, user_id: str, observations: list[dict]) -> list[DiagnosisFinding]:
+        """异步接口 - 基于规则引擎的健康评估（非诊断）"""
+        return self.assess_from_observations(observations)
+
+    # 兼容别名
     async def diagnose(self, user_id: str, observations: list[dict]) -> list[DiagnosisFinding]:
-        """异步接口 - 基于规则引擎的诊断"""
-        return self.diagnose_from_observations(observations)
+        """兼容别名：等同 assess（语义已改为评估）。"""
+        return self.assess_from_observations(observations)
