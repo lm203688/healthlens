@@ -101,3 +101,4 @@ Initialization, complete-index generation, Header generation, Entries generation
 
 Do not preload, guess, or reconstruct these specialized workflows. The relevant Guide, tool descriptions, model Prompt, and CLI help provide platform invocation, request format, batch limits, approval rules, index-format details, and recovery steps as needed.
 <!-- aoci:end -->
+- When pushing to remote main, if conventional git is blocked by the network (e.g., GFW), use the Git Data API (v3) in topological order; API-created commits have different SHAs than local, so map parent SHAs before pushing merge commits.
