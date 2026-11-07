@@ -2,7 +2,7 @@
 
 <!-- mcp-name: io.github.lm203688/healthlens -->
 
-> 跨生态健康数据聚合 → AI 双轨诊断(西医+中医) → 精准治疗 → 古籍知识库 → 基因组学
+> 跨生态健康数据聚合 → AI 辅助健康评估 + 风险分层 + 趋势预警 → 古籍知识库 → 基因组学（PRS 风险分层）
 
 [![Tests](https://github.com/lm203688/healthlens/actions/workflows/ci.yml/badge.svg)](https://github.com/lm203688/healthlens/actions)
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
@@ -11,19 +11,18 @@
 
 ## 项目状态
 
-**v0.25.0** — 国际化阶段 A 落地：Claims 引擎 + 区域数据驻留 + 知识平面分离 + 参数外置
+**v0.40.0** — 定位重构：诊断门控 + 非药物引擎 + PRS 框架 + 诚实边界
 
-- 前端 MVP：Vite + React，6 页面（仪表盘/评估/体质/报告/知识库/AI 对话）
-- 3 个 Seed Skill：古籍文本挖掘 + 融合推理 + 证据分级
-- LLM 增强：`USE_LLM=1` 时本地 Ollama qwen3.8 对个人化处方做语义润色
-- MCP Server：5 个工具暴露为 MCP 协议（JSON-RPC 模式可用）
-- CI 全启用：agent-lib-test + skills-test + lint-and-test + docker-build
+- **定位**：精准健康评估与健康管理平台（**非医疗**），核心 = **AI 辅助健康评估 + 风险分层 + 趋势预警**（八轴稳态生物学 A–H + 五层因果链）
+- **解释↔诊断边界**：`diagnosis_gate.py` 独立门控默认 **inactive / fail-closed**，激活前不执行诊断逻辑；任何诊断结论须由**持牌医疗机构**出具
+- **药物隔离**：家庭合成药/中药（可控计量）远期隔离不进 v1.0；平台只做个体化用药建议（经持牌医师处方）→ 持牌药店/医疗机构调配
+- **核心交付物**：`non_pharma_engine.py`（三档精度 basic/standard/advanced，每档可用）+ `prs_framework.py`（风险≠诊断，AUC 0.6–0.7，gate 前置）
+- **真实数据验证第一优先**：全部 in-silico 合成数据（诚实标注），真实人群数据验证为第一优先战略目标，依赖合规评估（医疗器械分类 + 基因数据合规路径前置 gate）
 
-- 140+ 文件，25 张数据库表，75+ API 端点，15 个路由模块
-- 174 个测试全绿 (pytest-asyncio, 23s)
+- 2151 个测试函数（107 测试文件），定位重构核心 29 passed
 - 完整 RBAC 权限 + 安全加固 + 生产就绪
 - 中医古籍书目库：701 部已入库（488 部标注作者与朝代，按本草/方剂/医经/针灸等 9 类索引）
-- 其中 2 部已完成实体级结构化，产出 613 条药物/功效/原文引证记录
+- 四角色 Agent 团队（Planner/Executor/Critic/Referee）+ 融合安全管线 + 红队评测 + 偏见判定 + 审计闭环
 
 ## 技术栈
 
@@ -82,8 +81,8 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 ### 西医链路
 1. **报告上传** — PDF/图片 → OCR 解析 → 22 种指标自动提取
 2. **健康指标** — LOINC 标准存储，趋势分析，异常检测
-3. **AI 诊断** — 规则引擎：7 种异常 → ICD-11 映射 → 诊断建议
-4. **处方系统** — 医生开具处方 + 处方管理 CRUD
+3. **AI 辅助健康评估** — 规则引擎：7 种异常 → ICD-11 映射 → **风险分层 + 趋势预警**（非独立诊断；诊断门控默认 inactive/fail-closed，结论须持牌机构出具）
+4. **处方系统** — 医生开具处方 + 处方管理 CRUD（平台只做个体化用药建议，经持牌医师处方）
 5. **FHIR 导出** — R5 标准 Bundle (Patient + Observation + DiagnosticReport)
 
 ### 中医链路
@@ -114,6 +113,12 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 - **通知中心** — 站内通知/健康提醒/用药提醒
 - **用药依从性** — 服药计划/记录/依从率统计
 
+### 定位重构核心交付物（v0.40.0）
+- **解释↔诊断边界** — `app/core/diagnosis_gate.py`：诊断独立门控默认 inactive/fail-closed；`interpret()` 永远可用（健康评估）
+- **非药物个性化方案引擎** — `app/core/non_pharma_engine.py`：三档精度（basic/standard/advanced），每档可用，输出 precision_level
+- **基因深度解析（WGS/PRS）** — `app/core/prs_framework.py`：**风险≠诊断**，AUC 0.6–0.7，gate 前置（HEALTHLENS_GENOMICS_GATE 默认关闭）
+- **诚实边界（不宣称清单）**：不宣称"已验证诊断"（门控默认不激活）/ "PRS 可个体诊断"（群体相对风险）/ "非药物方案可治疗疾病"（健康管理建议）
+
 ## API 端点
 
 | 模块 | 路径 | 说明 |
@@ -122,7 +127,7 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 | 健康档案 | `/api/v1/profiles/*` | CRUD |
 | 报告管理 | `/api/v1/records/*` | 上传/列表/删除 |
 | 健康指标 | `/api/v1/observations/*` | 创建/批量/趋势/汇总 |
-| 西医诊断 | `/api/v1/diagnosis/*` | 分析/结果/审核 |
+| 西医诊断（门控） | `/api/v1/diagnosis/*` | 分析/结果/审核（默认 inactive/fail-closed，AI 辅助健康评估） |
 | 处方 | `/api/v1/medications/*` | 推荐/开具/历史/处方管理 |
 | 中医 | `/api/v1/tcm/*` | 体质/舌象/辨证/方剂/订单 |
 | **中医古籍** | `/api/v1/knowledge/*` | **食疗/非药物/调理方案/古籍** |
