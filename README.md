@@ -19,7 +19,7 @@
 - **核心交付物**：`non_pharma_engine.py`（三档精度 basic/standard/advanced，每档可用）+ `prs_framework.py`（风险≠诊断，AUC 0.6–0.7，gate 前置）
 - **真实数据验证第一优先**：全部 in-silico 合成数据（诚实标注），真实人群数据验证为第一优先战略目标，依赖合规评估（医疗器械分类 + 基因数据合规路径前置 gate）
 
-- 2151 个测试函数（107 测试文件），定位重构核心 29 passed
+- 2048 个测试函数（107 测试文件），定位重构核心 29 passed
 - 完整 RBAC 权限 + 安全加固 + 生产就绪
 - 中医古籍书目库：701 部已入库（488 部标注作者与朝代，按本草/方剂/医经/针灸等 9 类索引）
 - 四角色 Agent 团队（Planner/Executor/Critic/Referee）+ 融合安全管线 + 红队评测 + 偏见判定 + 审计闭环
@@ -82,8 +82,10 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 1. **报告上传** — PDF/图片 → OCR 解析 → 22 种指标自动提取
 2. **健康指标** — LOINC 标准存储，趋势分析，异常检测
 3. **AI 辅助健康评估** — 规则引擎：7 种异常 → ICD-11 映射 → **风险分层 + 趋势预警**（非独立诊断；诊断门控默认 inactive/fail-closed，结论须持牌机构出具）
-4. **处方系统** — 医生开具处方 + 处方管理 CRUD（平台只做个体化用药建议，经持牌医师处方）
-5. **FHIR 导出** — R5 标准 Bundle (Patient + Observation + DiagnosticReport)
+4. **信息完整度分级与置信度标注** — 抽屉组合 D1-D6：基础/标准/深度/旗舰年度 → 信息完整度自动分级 → 输出置信度标注（低完整度标注"信息不足、结论为探索性"）
+5. **持牌终审机制** — 诊断结论必须由持牌医疗机构终审，用户可见终审信息与置信度
+6. **处方系统** — 医生开具处方 + 处方管理 CRUD（平台只做个体化用药建议，经持牌医师处方）
+7. **FHIR 导出** — R5 标准 Bundle (Patient + Observation + DiagnosticReport)
 
 ### 中医链路
 1. **九种体质** — 中华中医药学会标准评分算法
@@ -115,9 +117,10 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.
 
 ### 定位重构核心交付物（v0.40.0）
 - **解释↔诊断边界** — `app/core/diagnosis_gate.py`：诊断独立门控默认 inactive/fail-closed；`interpret()` 永远可用（健康评估）
-- **非药物个性化方案引擎** — `app/core/non_pharma_engine.py`：三档精度（basic/standard/advanced），每档可用，输出 precision_level
+- **非药物个性化方案引擎** — `app/core/non_pharma_engine.py`：抽屉组合 D1-D6（基础/标准/深度/旗舰年度），三档精度（basic/standard/advanced），输出 precision_level 与置信度标注
 - **基因深度解析（WGS/PRS）** — `app/core/prs_framework.py`：**风险≠诊断**，AUC 0.6–0.7，gate 前置（HEALTHLENS_GENOMICS_GATE 默认关闭）
-- **诚实边界（不宣称清单）**：不宣称"已验证诊断"（门控默认不激活）/ "PRS 可个体诊断"（群体相对风险）/ "非药物方案可治疗疾病"（健康管理建议）
+- **持牌终审机制** — 诊断结论必须由持牌医疗机构终审，用户可见终审信息与置信度
+- **诚实边界（不宣称清单）**：不宣称"已验证诊断"（门控默认不激活）/ "PRS 可个体诊断"（群体相对风险）/ "非药物方案可治疗疾病"（健康管理建议）/ "已验证抗衰老效果"（研究性方向）
 
 ## API 端点
 
