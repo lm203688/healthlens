@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "version": "mechanism_evidence/v1",
+    "description": "机制层证据锚点：把领域机制研究挂接到既有通路上，作为机制深化的检索入口。",
+    "honesty_boundary": "本文件只登记机制层证据（细胞/动物实验与结构-功能研究），非临床可测健康指标；不进入评分、不作为干预杠杆、不改变任何输出数值。",
+    "doi_verification": "以下 DOI 均通过 Crossref REST API（api.crossref.org）解析成功（HTTP 200），并核对了题名与作者列表。核验日期 2026-11-18。",
+    "external_claim_note": "本文件的 pathway 描述中引用的奖项或荣誉称号来自外部资讯，未经本文件独立核验；已核验的仅为文献本身（题名/期刊/年/作者/DOI）。"
+  },
+  "pathways": [
+    {
+      "id": "epg_family_multicellular_autophagy",
+      "label": "多细胞生物特异自噬（EPG 家族）",
+      "axis_id": "A",
+      "related_pathway": "autophagy",
+      "relation": "relates_to",
+      "mechanism": "高等生物的选择性自噬由多细胞生物特异的 EPG 家族基因（线虫→哺乳动物保守）参与，机制层级深于酵母保守自噬。",
+      "note": "机制层证据，非临床可测健康指标；不进入评分。",
+      "evidence_tier": "2",
+      "hypothesis_level": true,
+      "evidence_dois": [
+        {
+          "doi": "10.1080/15548627.2017.1415591",
+          "title": "The ER-localized autophagy protein EPG-3/VMP1 regulates ER contacts with other organelles by modulating ATP2A/SERCA activity",
+          "journal": "Autophagy",
+          "year": 2018,
+          "authors": ["Yan G. Zhao", "Hong Zhang"]
+        },
+        {
+          "doi": "10.4161/auto.5.5.8624",
+          "title": "epg-1 functions in autophagy-regulated processes and may encode a highly divergent Atg13 homolog in C. elegans",
+          "journal": "Autophagy",
+          "year": 2009,
+          "authors": ["E. Tian", "Fuxin Wang", "Jinghua Han", "Hong Zhang"]
+        },
+        {
+          "doi": "10.4161/auto.7.2.14223",
+          "title": "The coiled-coil domain protein EPG-8 plays an essential role in the autophagy pathway in C. elegans",
+          "journal": "Autophagy",
+          "year": 2011,
+          "authors": ["Peiguo Yang", "Hong Zhang"]
+        },
+        {
+          "doi": "10.4161/auto.21163",
+          "title": "The C. elegans ATG101 homolog EPG-9 directly interacts with EPG-1/Atg13 and is essential for autophagy",
+          "journal": "Autophagy",
+          "year": 2012,
+          "authors": ["Qianqian Liang", "Peiguo Yang", "E. Tian", "Jinghua Han", "Hong Zhang"]
+        }
+      ]
+    }
+  ]
+}

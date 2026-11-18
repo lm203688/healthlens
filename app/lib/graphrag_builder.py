@@ -379,6 +379,62 @@ def build_graph_from_tcm_pathway_map(data: dict) -> list[BuildItem]:
     return items
 
 
+def build_graph_from_mechanism_evidence(data: dict) -> list[BuildItem]:
+    """从 mechanism_evidence_map 构建机制层证据节点与关联边。
+
+    - 每个 pathway 条目 → 一个 pathway 节点（type=pathway，挂 axis_id /
+      证据层级 / 机制说明 / 证据 DOI 清单）
+    - 若提供 related_pathway → relates_to 边到既有通路节点（kind=mechanism_layer，
+      表达"机制深化"关系，而非新的干预杠杆）
+
+    诚实边界：本函数只做结构组装与证据挂载，不做医学判断。EPG 等机制层
+    证据属细胞/动物实验与结构-功能研究，非临床可测健康指标，不进入评分、
+    不作为干预杠杆、不改变任何输出数值。节点/边不带"逆转/治疗"等临床措辞。
+    """
+    items: list[BuildItem] = []
+    pathways = (data or {}).get("pathways") or []
+    for p in pathways:
+        if not isinstance(p, dict):
+            continue
+        pid = str(p.get("id") or "").strip()
+        if not pid:
+            continue
+        label = str(p.get("label") or pid).strip()
+
+        props = {
+            "axis_id": p.get("axis_id"),
+            "source": "mechanism_evidence_map",
+            "evidence_tier": p.get("evidence_tier"),
+            "hypothesis_level": p.get("hypothesis_level"),
+            "mechanism": p.get("mechanism"),
+            "note": p.get("note"),
+        }
+        dois = p.get("evidence_dois") or []
+        if isinstance(dois, list):
+            dois = [d.get("doi") for d in dois
+                    if isinstance(d, dict) and (d.get("doi") or "").strip()]
+            if dois:
+                props["evidence_dois"] = dois
+        # 丢弃空值，保持属性干净
+        props = {k: v for k, v in props.items() if v not in (None, "", [])}
+
+        items.append(_node(_pathway_node_id(pid), "pathway", label, **props))
+
+        rel_pw = str(p.get("related_pathway") or "").strip()
+        if rel_pw:
+            relation = str(p.get("relation") or "relates_to").strip() or "relates_to"
+            items.append(_edge(
+                _pathway_node_id(pid),
+                _pathway_node_id(rel_pw),
+                relation,
+                kind="mechanism_layer",
+                source="mechanism_evidence_map",
+                evidence_tier=p.get("evidence_tier"),
+            ))
+
+    return items
+
+
 # ---------------------------------------------------------------------------
 # 全量构建
 # ---------------------------------------------------------------------------

@@ -399,6 +399,7 @@ def build_from_sources() -> KnowledgeGraph:
     from app.lib.graphrag_builder import (
         build_graph_from_axis_term_mapping,
         build_graph_from_classical_slices,
+        build_graph_from_mechanism_evidence,
         build_graph_from_pulse_signatures,
         build_graph_from_tcm_pathway_map,
         build_graph_from_tcm_structured,
@@ -412,10 +413,12 @@ def build_from_sources() -> KnowledgeGraph:
     axis_term_mapping = _load_json(data_dir / "axis_term_mapping.json")
     pulse_signatures = _load_json(data_dir / "pulse_signatures.json")
     tcm_pathway_map = _load_json(data_dir / "tcm_pathway_map.json")
+    mechanism_evidence_map = _load_json(data_dir / "mechanism_evidence_map.json")
 
     # 全部缺失 → fail-loud（宁可显式不可用，也不交付空图）
     if not any([tcm_shen_nong, tcm_shi_liao, classical_slices,
-                axis_term_mapping, pulse_signatures, tcm_pathway_map]):
+                axis_term_mapping, pulse_signatures, tcm_pathway_map,
+                mechanism_evidence_map]):
         raise GraphDataMissingError(
             "所有知识图谱源数据文件均缺失或不可读；图谱不可用。"
             "已尝试目录: " + str(data_dir)
@@ -439,6 +442,20 @@ def build_from_sources() -> KnowledgeGraph:
     # 2) 通路映射（西医通路别名）
     if tcm_pathway_map:
         for item in build_graph_from_tcm_pathway_map(tcm_pathway_map):
+            kind, payload = item
+            if kind == "node":
+                node_id, node_type, label, props = payload
+                graph.add_node(node_id, node_type, label, **(props or {}))
+            else:
+                src, dst, relation, props = payload
+                graph.add_edge(src, dst, relation, **(props or {}))
+        source_count += 1
+
+    # 2b) 机制层证据锚点（如多细胞生物特异自噬 EPG 家族 → autophagy 通路）
+    #     只做机制深化的结构挂载；节点标注 hypothesis_level / evidence_tier，
+    #     不参与评分，也不作为干预杠杆。
+    if mechanism_evidence_map:
+        for item in build_graph_from_mechanism_evidence(mechanism_evidence_map):
             kind, payload = item
             if kind == "node":
                 node_id, node_type, label, props = payload

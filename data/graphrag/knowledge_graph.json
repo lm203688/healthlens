@@ -1337,6 +1337,25 @@
       }
     },
     {
+      "id": "pathway:epg_family_multicellular_autophagy",
+      "type": "pathway",
+      "label": "多细胞生物特异自噬（EPG 家族）",
+      "properties": {
+        "axis_id": "A",
+        "source": "mechanism_evidence_map",
+        "evidence_tier": "2",
+        "hypothesis_level": true,
+        "mechanism": "高等生物的选择性自噬由多细胞生物特异的 EPG 家族基因（线虫→哺乳动物保守）参与，机制层级深于酵母保守自噬。",
+        "note": "机制层证据，非临床可测健康指标；不进入评分。",
+        "evidence_dois": [
+          "10.1080/15548627.2017.1415591",
+          "10.4161/auto.5.5.8624",
+          "10.4161/auto.7.2.14223",
+          "10.4161/auto.21163"
+        ]
+      }
+    },
+    {
       "id": "herb:神农本草经:丹沙",
       "type": "herb",
       "label": "丹沙",
@@ -20108,6 +20127,16 @@
       "properties": {
         "kind": "pathway_alias",
         "alias_of": "il1b_il18"
+      }
+    },
+    {
+      "src": "pathway:epg_family_multicellular_autophagy",
+      "dst": "pathway:autophagy",
+      "relation": "relates_to",
+      "properties": {
+        "kind": "mechanism_layer",
+        "source": "mechanism_evidence_map",
+        "evidence_tier": "2"
       }
     },
     {
@@ -39371,8 +39400,8 @@
     }
   ],
   "meta": {
-    "built_at": "2026-10-27T07:53:00+00:00",
-    "source_count": 6,
+    "built_at": "2026-11-18T10:18:53+00:00",
+    "source_count": 7,
     "version": "graphrag/v1",
     "wellness_disclaimer": "本图谱仅供健康管理参考，不构成专业健康建议。"
   }
