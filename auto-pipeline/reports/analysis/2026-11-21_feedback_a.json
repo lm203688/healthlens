@@ -1,6 +1,6 @@
 {
   "report_id": "feedback_a_20261121",
-  "generated_at": "2026-11-21T09:04:03.411255",
+  "generated_at": "2026-11-21T17:03:14.641150",
   "data_source": "http_probe",
   "success_rate": 33.3,
   "feedback_count": 3,
@@ -30,7 +30,7 @@
       "metrics": {
         "core_pages_ok": 4,
         "core_pages_total": 4,
-        "avg_latency_ms": 76
+        "avg_latency_ms": 81
       },
       "performance": "above_average",
       "data_source": "http_probe"
